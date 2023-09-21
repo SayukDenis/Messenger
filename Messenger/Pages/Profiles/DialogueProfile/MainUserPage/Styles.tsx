@@ -1,17 +1,12 @@
-import React, { Component, useState } from "react";
-import {
-  StyleSheet,
-  Platform,
-  StatusBar,
-  Dimensions,
-  View,
-  Text,
-} from "react-native";
+//Oleksii Kovalenko telegram - @traewe
+
+import React from "react";
+import { StyleSheet, Dimensions, Text } from "react-native";
 
 import * as Font from "expo-font";
 
 let customFonts = {
-  JacquesFrancois: require("./DialogueProfileAssets/JacquesFrancois-Regular.ttf"),
+  JacquesFrancois: require("./Assets/JacquesFrancois-Regular.ttf"),
 };
 
 export class JacquesFrancoisText extends React.Component<
@@ -57,7 +52,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     alignItems: "center",
-    height: 73 * figmaHeightPixelConverter,
+    height: 72.5 * figmaHeightPixelConverter,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 40,
@@ -114,7 +109,7 @@ export const styles = StyleSheet.create({
     top: 0.1 * Dimensions.get("screen").height,
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
-    height: 36 * figmaHeightPixelConverter,
+    height: 30 * figmaHeightPixelConverter,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     borderBottomLeftRadius: 0,
@@ -128,6 +123,17 @@ export const styles = StyleSheet.create({
   },
   multimediaTitle: {
     color: "rgb(124, 79, 145)",
-    fontSize: 17,
+    fontSize: 16.5,
+  },
+  rectangleUnderMultimedia: {
+    backgroundColor: "rgb(124, 79, 145)",
+    height: 6,
+    width: "100%",
+    position: "absolute",
+    top: 18 * figmaHeightPixelConverter,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
 });

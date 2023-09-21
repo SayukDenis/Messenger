@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { Provider } from "react";
-import DialogueProfileMainUserPage from "./Pages/Profiles/DialogueProfile/DialogueProfileMainUserPage";
+import { Provider } from "react-redux";
+import MainUserPage from "./Pages/Profiles/DialogueProfile/MainUserPage/MainUserPage";
 
 export default function App() {
-  return <DialogueProfileMainUserPage />;
+  return <MainUserPage />;
 }
