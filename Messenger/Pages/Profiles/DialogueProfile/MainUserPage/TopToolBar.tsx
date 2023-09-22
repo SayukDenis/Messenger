@@ -6,19 +6,19 @@ import { JacquesFrancoisText, styles } from "./Styles";
 import { Entypo, Fontisto } from "@expo/vector-icons";
 
 interface TopToolBarProps {
-  profileName: string;
-  lastTimeOnline: string;
+  primaryTitle: string;
+  secondaryTitle: string;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   return (
     <View style={styles.topToolBar}>
       <JacquesFrancoisText
-        text={props.profileName}
+        text={props.primaryTitle}
         style={styles.profileTitle}
       />
       <JacquesFrancoisText
-        text={props.lastTimeOnline}
+        text={props.secondaryTitle}
         style={styles.onlineStatusTitle}
       />
       <TouchableWithoutFeedback
