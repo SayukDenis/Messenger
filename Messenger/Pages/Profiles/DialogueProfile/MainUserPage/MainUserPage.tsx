@@ -17,15 +17,15 @@ if (profileName.length > 10) {
 }
 
 const MainUserPage = () => {
-  const [isShownAlbumsSelectButton, setIsShownAlbumsSelectButton] =
+  const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
 
   return (
     <View style={styles.mainContainer}>
-      {isShownAlbumsSelectButton === true && (
+      {isPhotoAlbumSelectionVisible === true && (
         <TouchableWithoutFeedback
           onPress={() => {
-            setIsShownAlbumsSelectButton(false);
+            setIsPhotoAlbumSelectionVisible(false);
           }}
         >
           <BlurView intensity={10} style={styles.blurEffect} />
@@ -36,8 +36,20 @@ const MainUserPage = () => {
       <AvatarWithCallingButtons AvatarURL={avatarURL} />
 
       <MultimediaBar
-        isShownAlbumsSelectButton={isShownAlbumsSelectButton}
-        setIsShownAlbumsSelectButton={setIsShownAlbumsSelectButton}
+        isPhotoAlbumSelectionVisible={isPhotoAlbumSelectionVisible}
+        setIsPhotoAlbumSelectionVisible={setIsPhotoAlbumSelectionVisible}
+        photosButtonTitle="Photos"
+        albumsButtonTitle="Albums"
+        filesButtonTitle="Files"
+        voiceButtonTitle="Voice"
+        linksButtonTitle="Links"
+        videosButtonTitle="Videos"
+        photosQuantity={60000}
+        videosQuantity={2000}
+        albumsQuantity={50}
+        filesQuantity={3}
+        voiceQuantity={3214}
+        linksQuantity={5}
       />
     </View>
   );

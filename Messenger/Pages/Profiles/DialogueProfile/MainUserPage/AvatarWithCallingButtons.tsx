@@ -30,14 +30,18 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
             alert("Calling (no camera)...");
           }}
         >
-          <FontAwesome5 name="phone-alt" size={35} color="black" />
+          <FontAwesome5 name="phone-alt" size={35} style={styles.phone} />
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
             alert("Calling (with camera)...");
           }}
         >
-          <FontAwesome name="video-camera" size={35} color="black" />
+          <FontAwesome
+            name="video-camera"
+            size={35}
+            style={styles.videoCamera}
+          />
         </TouchableWithoutFeedback>
       </View>
     </View>
