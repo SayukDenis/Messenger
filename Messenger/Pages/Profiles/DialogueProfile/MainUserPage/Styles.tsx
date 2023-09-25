@@ -166,11 +166,17 @@ export const styles = StyleSheet.create({
   photosOrAlbumsSelectedName: {
     width: 80,
   },
-  blurEffect: {
+  blurEffectPhotosAlbumButton: {
     width: "100%",
     height: "100%",
     position: "absolute",
     zIndex: 1,
+  },
+  blurEffectElseFeaturesButton: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    zIndex: 3,
   },
   phone: {
     color: "black",
@@ -198,5 +204,14 @@ export const styles = StyleSheet.create({
   multimediaQuantityTitle: {
     alignSelf: "center",
     color: "white",
+  },
+  elseFeaturesButtonsContainer: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    right: 0.06 * Dimensions.get("screen").width,
+    top: 0.045 * Dimensions.get("screen").height,
+    backgroundColor: "blue",
+    width: 200,
+    height: 200,
   },
 });

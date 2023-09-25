@@ -1,12 +1,13 @@
 //Oleksii Kovalenko telegram - @traewe
 
 import React, { useState } from "react";
-import { Touchable, TouchableWithoutFeedback, View } from "react-native";
+import { TouchableWithoutFeedback, View } from "react-native";
 import { styles } from "./Styles";
 import TopToolBar from "./TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import MultimediaBar from "./MultimediaBar";
 import { BlurView } from "expo-blur";
+import Blur from "./Blur";
 
 const avatarURL: string = "https://picsum.photos/id/1084/536/354";
 var profileName: string = "ДенисDenis";
@@ -20,24 +21,36 @@ const MainUserPage = () => {
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
 
+  const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
+
   return (
     <View style={styles.mainContainer}>
-      {isPhotoAlbumSelectionVisible === true && (
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setIsPhotoAlbumSelectionVisible(false);
-          }}
-        >
-          <BlurView intensity={10} style={styles.blurEffect} />
-        </TouchableWithoutFeedback>
-      )}
-      <TopToolBar primaryTitle={profileName} secondaryTitle={lastTimeOnline} />
+      <Blur
+        visibleWhen={isPhotoAlbumSelectionVisible}
+        onPress={() => {
+          setIsPhotoAlbumSelectionVisible(false);
+        }}
+        style={styles.blurEffectPhotosAlbumButton}
+      />
+      <Blur
+        visibleWhen={isElseFeaturesVisible === true}
+        onPress={() => {
+          setIsElseFeaturesVisible(false);
+        }}
+        style={styles.blurEffectElseFeaturesButton}
+      />
+
+      <TopToolBar
+        primaryTitle={profileName}
+        secondaryTitle={lastTimeOnline}
+        elseFeaturesPressing={setIsElseFeaturesVisible}
+      />
 
       <AvatarWithCallingButtons AvatarURL={avatarURL} />
 
       <MultimediaBar
-        isPhotoAlbumSelectionVisible={isPhotoAlbumSelectionVisible}
-        setIsPhotoAlbumSelectionVisible={setIsPhotoAlbumSelectionVisible}
+        isphotoOrAlbumButtonHolding={isPhotoAlbumSelectionVisible}
+        photoOrAlbumButtonHolding={setIsPhotoAlbumSelectionVisible}
         photosButtonTitle="Photos"
         albumsButtonTitle="Albums"
         filesButtonTitle="Files"

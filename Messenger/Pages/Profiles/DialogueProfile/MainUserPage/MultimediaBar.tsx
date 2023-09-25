@@ -3,11 +3,10 @@
 import React, { useState } from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
 import { styles, JacquesFrancoisText } from "./Styles";
-import { BlurView } from "expo-blur";
 
 interface MultimediaBarProps {
-  isPhotoAlbumSelectionVisible: boolean;
-  setIsPhotoAlbumSelectionVisible: (value: boolean) => void;
+  isphotoOrAlbumButtonHolding: boolean;
+  photoOrAlbumButtonHolding: (value: boolean) => void;
   photosButtonTitle: string;
   albumsButtonTitle: string;
   filesButtonTitle: string;
@@ -29,6 +28,23 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
 
   const [photosAndAlbumsState, setPhotosAndAlbumsState] = useState("Photos");
 
+  const indexes: number[] = [0, 1, 2, 3, 4];
+  const buttonsList: string[] = ["Photos", "Albums", "Files", "Voice", "Links"];
+  const buttonTitles: string[] = [
+    props.photosButtonTitle,
+    props.albumsButtonTitle,
+    props.filesButtonTitle,
+    props.voiceButtonTitle,
+    props.linksButtonTitle,
+  ];
+  const quantities: number[] = [
+    props.photosQuantity,
+    props.albumsQuantity,
+    props.filesQuantity,
+    props.voiceQuantity,
+    props.linksQuantity,
+  ];
+
   return (
     <View style={styles.multimediaBar}>
       <View style={styles.multimediaQuantitiesContainer}>
@@ -37,41 +53,33 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
             style={styles.multimediaQuantityTitle}
           >{`${props.photosQuantity.toLocaleString()} ${props.photosButtonTitle.toLowerCase()}, ${props.videosQuantity.toLocaleString()} ${props.videosButtonTitle.toLowerCase()}`}</Text>
         )}
-        {pressedMultimediaButton === "Albums" && (
-          <Text
-            style={styles.multimediaQuantityTitle}
-          >{`${props.albumsQuantity.toLocaleString()} ${props.albumsButtonTitle.toLowerCase()}`}</Text>
-        )}
-        {pressedMultimediaButton === "Files" && (
-          <Text
-            style={styles.multimediaQuantityTitle}
-          >{`${props.filesQuantity.toLocaleString()} ${props.filesButtonTitle.toLowerCase()}`}</Text>
-        )}
-        {pressedMultimediaButton === "Voice" && (
-          <Text
-            style={styles.multimediaQuantityTitle}
-          >{`${props.voiceQuantity.toLocaleString()} ${props.voiceButtonTitle.toLowerCase()}`}</Text>
-        )}
-        {pressedMultimediaButton === "Links" && (
-          <Text
-            style={styles.multimediaQuantityTitle}
-          >{`${props.linksQuantity.toLocaleString()} ${props.linksButtonTitle.toLowerCase()}`}</Text>
+        {indexes.map(
+          (index) =>
+            index != 0 &&
+            pressedMultimediaButton === buttonsList[index] && (
+              <Text
+                key={index}
+                style={styles.multimediaQuantityTitle}
+              >{`${quantities[index].toLocaleString()} ${buttonTitles[
+                index
+              ].toLowerCase()}`}</Text>
+            )
         )}
       </View>
       <TouchableWithoutFeedback
         onPress={() => {
           setPressedMultimediaButton(photosAndAlbumsState);
-          props.setIsPhotoAlbumSelectionVisible(false);
+          props.photoOrAlbumButtonHolding(false);
         }}
         onLongPress={() => {
-          props.setIsPhotoAlbumSelectionVisible(true);
+          props.photoOrAlbumButtonHolding(true);
         }}
       >
         <View>
-          {props.isPhotoAlbumSelectionVisible === true && (
+          {props.isphotoOrAlbumButtonHolding === true && (
             <TouchableWithoutFeedback
               onPress={() => {
-                props.setIsPhotoAlbumSelectionVisible(false);
+                props.photoOrAlbumButtonHolding(false);
                 setPhotosAndAlbumsState((prevState) =>
                   prevState == "Photos" ? "Albums" : "Photos"
                 );
@@ -107,54 +115,33 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
           </View>
         </View>
       </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setPressedMultimediaButton("Files");
-          props.setIsPhotoAlbumSelectionVisible(false);
-        }}
-      >
-        <View style={styles.filesButton}>
-          <JacquesFrancoisText
-            text={props.filesButtonTitle}
-            style={styles.multimediaTitle}
-          />
-          {pressedMultimediaButton === "Files" && (
-            <View style={styles.rectangleUnderMultimediaButton} />
-          )}
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setPressedMultimediaButton("Voice");
-          props.setIsPhotoAlbumSelectionVisible(false);
-        }}
-      >
-        <View>
-          <JacquesFrancoisText
-            text={props.voiceButtonTitle}
-            style={styles.multimediaTitle}
-          />
-          {pressedMultimediaButton === "Voice" && (
-            <View style={styles.rectangleUnderMultimediaButton} />
-          )}
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setPressedMultimediaButton("Links");
-          props.setIsPhotoAlbumSelectionVisible(false);
-        }}
-      >
-        <View>
-          <JacquesFrancoisText
-            text={props.linksButtonTitle}
-            style={styles.multimediaTitle}
-          />
-          {pressedMultimediaButton === "Links" && (
-            <View style={styles.rectangleUnderMultimediaButton} />
-          )}
-        </View>
-      </TouchableWithoutFeedback>
+      {indexes.map(
+        (index) =>
+          index != 0 &&
+          index != 1 && (
+            <TouchableWithoutFeedback
+              key={index}
+              onPress={() => {
+                setPressedMultimediaButton(buttonsList[index]);
+                props.photoOrAlbumButtonHolding(false);
+              }}
+            >
+              <View
+                style={
+                  buttonsList[index] === "Files" ? styles.filesButton : null
+                }
+              >
+                <JacquesFrancoisText
+                  text={buttonTitles[index]}
+                  style={styles.multimediaTitle}
+                />
+                {pressedMultimediaButton === buttonsList[index] && (
+                  <View style={styles.rectangleUnderMultimediaButton} />
+                )}
+              </View>
+            </TouchableWithoutFeedback>
+          )
+      )}
     </View>
   );
 };

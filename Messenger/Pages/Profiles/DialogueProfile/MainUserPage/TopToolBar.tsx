@@ -8,6 +8,7 @@ import { Entypo, Fontisto } from "@expo/vector-icons";
 interface TopToolBarProps {
   primaryTitle: string;
   secondaryTitle: string;
+  elseFeaturesPressing: (value: boolean) => void;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
@@ -47,7 +48,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback
         onPress={() => {
-          alert("Else features...");
+          props.elseFeaturesPressing(true);
         }}
       >
         <Entypo
