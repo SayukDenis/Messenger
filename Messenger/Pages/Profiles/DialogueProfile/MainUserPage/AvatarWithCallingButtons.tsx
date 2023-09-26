@@ -3,7 +3,8 @@
 import React from "react";
 import { View, TouchableWithoutFeedback, Image } from "react-native";
 import { styles } from "./Styles";
-import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import PhoneIcon from "./Icons/PhoneIcon.tsx";
+import VideoCameraIcon from "./Icons/VideoCameraIcon.tsx";
 
 interface AvatarWithCallingButtonsProps {
   AvatarURL: string;
@@ -30,18 +31,18 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
             alert("Calling (no camera)...");
           }}
         >
-          <FontAwesome5 name="phone-alt" size={35} style={styles.phone} />
+          <View style={styles.phone}>
+            <PhoneIcon />
+          </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
             alert("Calling (with camera)...");
           }}
         >
-          <FontAwesome
-            name="video-camera"
-            size={35}
-            style={styles.videoCamera}
-          />
+          <View style={styles.videoCamera}>
+            <VideoCameraIcon />
+          </View>
         </TouchableWithoutFeedback>
       </View>
     </View>

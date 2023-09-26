@@ -46,7 +46,12 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
   ];
 
   return (
-    <View style={styles.multimediaBar}>
+    <View
+      style={[
+        styles.multimediaBar,
+        { zIndex: props.isphotoOrAlbumButtonHolding === true ? 2 : 0 },
+      ]}
+    >
       <View style={styles.multimediaQuantitiesContainer}>
         {pressedMultimediaButton === "Photos" && (
           <Text

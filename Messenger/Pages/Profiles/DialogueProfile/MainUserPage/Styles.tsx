@@ -2,6 +2,7 @@
 
 import React from "react";
 import { StyleSheet, Dimensions, Text } from "react-native";
+import MainUserPage from "./MainUserPage";
 
 import * as Font from "expo-font";
 
@@ -86,18 +87,24 @@ export const styles = StyleSheet.create({
     top: 0.045 * Dimensions.get("screen").height,
     alignSelf: "flex-start",
     left: 0.045 * Dimensions.get("screen").width,
+    width: 30 * figmaWidthPixelConverter,
+    height: 30 * figmaWidthPixelConverter,
   },
   searchMessagesButton: {
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.175 * Dimensions.get("screen").width,
     top: 0.045 * Dimensions.get("screen").height,
+    width: 25 * figmaWidthPixelConverter,
+    height: 25 * figmaWidthPixelConverter,
   },
   elseFeaturesButton: {
     position: "absolute",
     alignSelf: "flex-end",
-    right: 0.06 * Dimensions.get("screen").width,
-    top: 0.045 * Dimensions.get("screen").height,
+    right: 0.035 * Dimensions.get("screen").width,
+    top: 0.025 * Dimensions.get("screen").height,
+    width: 40 * figmaWidthPixelConverter,
+    height: 40 * figmaWidthPixelConverter,
   },
   horizontalContainerForCalling: {
     flexDirection: "row",
@@ -121,7 +128,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 20 * figmaHeightPixelConverter,
     gap: Dimensions.get("screen").width / 8.5,
-    zIndex: 2,
   },
   multimediaTitle: {
     color: "rgb(124, 79, 145)",
@@ -176,13 +182,15 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
-    zIndex: 3,
+    zIndex: 1,
   },
   phone: {
-    color: "black",
+    width: 34 * figmaWidthPixelConverter,
+    height: 34 * figmaWidthPixelConverter,
   },
   videoCamera: {
-    color: "black",
+    width: 34 * figmaWidthPixelConverter,
+    height: 34 * figmaWidthPixelConverter,
   },
   multimediaQuantitiesContainer: {
     position: "absolute",
@@ -207,11 +215,34 @@ export const styles = StyleSheet.create({
   },
   elseFeaturesButtonsContainer: {
     position: "absolute",
-    alignSelf: "flex-end",
     right: 0.06 * Dimensions.get("screen").width,
-    top: 0.045 * Dimensions.get("screen").height,
-    backgroundColor: "blue",
+    top: 0.065 * Dimensions.get("screen").height,
     width: 200,
     height: 200,
+  },
+  additionalFeatureButton: {
+    width: "100%",
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "rgb(231, 230,	228)",
+    borderWidth: 0.5,
+    borderColor: "rgb(161, 156, 145)",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 4.5 * figmaWidthPixelConverter,
+    paddingLeft: 17 * figmaWidthPixelConverter,
+  },
+  additionalFeatureTitle: {
+    fontSize: 16,
+  },
+  additionalFeatureIcon: {
+    width: 18 * figmaWidthPixelConverter,
+    height: 18 * figmaWidthPixelConverter,
+    color: "black",
+  },
+  blockButton: {
+    color: "red",
+    fontSize: 16,
   },
 });

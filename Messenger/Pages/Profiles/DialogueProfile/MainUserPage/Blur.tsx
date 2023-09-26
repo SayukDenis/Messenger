@@ -1,3 +1,5 @@
+//Oleksii Kovalenko telegram - @traewe
+
 import React from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { BlurView } from "expo-blur";
@@ -13,7 +15,7 @@ const Blur: React.FC<BlurProps> = (props) => {
     <>
       {props.visibleWhen && (
         <TouchableWithoutFeedback onPress={props.onPress}>
-          <BlurView intensity={10} style={props.style} />
+          <BlurView intensity={8} style={props.style} />
         </TouchableWithoutFeedback>
       )}
     </>
