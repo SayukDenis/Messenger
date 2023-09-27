@@ -10,14 +10,11 @@ const avatarURL: string = "https://picsum.photos/id/1084/536/354";
 var profileName: string = "ДенисDenis";
 var lastTimeOnline: string = "Був online давно";
 
-if (profileName.length > 10) {
-  profileName = profileName.slice(0, 10) + "...";
-}
-
 const MainUserPage = () => {
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
+
   return (
     <View style={styles.mainContainer}>
       <Blur
@@ -63,8 +60,8 @@ const MainUserPage = () => {
         voiceButtonTitle="Voice"
         linksButtonTitle="Links"
         videosButtonTitle="Videos"
-        photosQuantity={60000}
-        videosQuantity={2000}
+        photosQuantity={600}
+        videosQuantity={20}
         albumsQuantity={50}
         filesQuantity={3}
         voiceQuantity={3214}

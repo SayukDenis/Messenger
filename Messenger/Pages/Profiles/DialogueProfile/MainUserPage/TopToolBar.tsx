@@ -1,6 +1,6 @@
 //Oleksii Kovalenko telegram - @traewe
 
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import { JacquesFrancoisText, styles } from "./Styles";
 import Blur from "./Blur";
@@ -12,6 +12,7 @@ import BlockIcon from "./Icons/BlockIcon.tsx";
 import GoBackIcon from "./Icons/GoBackIcon.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
+import MutedIcon from "./Icons/MutedIcon.tsx";
 
 interface TopToolBarProps {
   primaryTitle: string;
@@ -28,6 +29,12 @@ interface TopToolBarProps {
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
+  const [isMuted, setIsMuted] = useState(false);
+
+  if (props.primaryTitle.length > 9) {
+    props.primaryTitle = props.primaryTitle.slice(0, 9);
+  }
+
   return (
     <View
       style={[
@@ -45,10 +52,15 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         }}
         style={styles.blurEffectElseFeaturesButton}
       />
-      <JacquesFrancoisText
-        text={props.primaryTitle}
-        style={styles.profileTitle}
-      />
+
+      <View style={styles.containerForProfiteTitle}>
+        <JacquesFrancoisText
+          text={props.primaryTitle}
+          style={styles.profileTitle}
+        />
+        {isMuted && <MutedIcon style={styles.mutedIcon} />}
+      </View>
+
       <JacquesFrancoisText
         text={props.secondaryTitle}
         style={styles.onlineStatusTitle}
@@ -98,7 +110,12 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
             </View>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setIsMuted(!isMuted);
+              props.elseFeaturesPressing(false);
+            }}
+          >
             <View style={styles.additionalFeatureButton}>
               <OffNotificationIcon style={styles.additionalFeatureIcon} />
               <JacquesFrancoisText

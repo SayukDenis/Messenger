@@ -63,9 +63,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   profileTitle: {
-    fontSize: 28,
-    alignSelf: "center",
-    position: "absolute",
+    fontSize: 23,
     fontFamily: "JacquesFrancois",
   },
   onlineStatusTitle: {
@@ -73,7 +71,7 @@ export const styles = StyleSheet.create({
     color: "#808080",
     alignSelf: "center",
     fontFamily: "JacquesFrancois",
-    top: 27,
+    top: 23 * figmaHeightPixelConverter,
   },
   mainAvatarImage: {
     width: 120 * figmaHeightPixelConverter,
@@ -102,7 +100,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.035 * Dimensions.get("screen").width,
-    top: 0.025 * Dimensions.get("screen").height,
+    top: 0.0225 * Dimensions.get("screen").height,
     width: 40 * figmaWidthPixelConverter,
     height: 40 * figmaWidthPixelConverter,
   },
@@ -244,5 +242,18 @@ export const styles = StyleSheet.create({
   blockButton: {
     color: "red",
     fontSize: 16,
+  },
+  containerForProfiteTitle: {
+    position: "absolute",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 0.04 * Dimensions.get("screen").height,
+  },
+  mutedIcon: {
+    width: 25,
+    height: 25,
+    left: 4 * figmaWidthPixelConverter,
+    top: 2 * figmaHeightPixelConverter,
   },
 });
