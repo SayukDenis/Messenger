@@ -1,27 +1,15 @@
 //Oleksii Kovalenko telegram - @traewe
 
-import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  TouchableWithoutFeedback,
-  Animated,
-  Easing,
-  Text,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import React, { useState } from "react";
+import { View, TouchableWithoutFeedback } from "react-native";
 import { JacquesFrancoisText, styles } from "./Styles";
 import Blur from "./Blur";
-import OffNotificationIcon from "./Icons/OffNotificationIcon.tsx";
-import ClearChatIcon from "./Icons/ClearChatIcon.tsx";
-import SettingsIcon from "./Icons/SettingsIcon.tsx";
-import ForwardContactIcon from "./Icons/ForwardContactIcon.tsx";
-import BlockIcon from "./Icons/BlockIcon.tsx";
 import GoBackIcon from "./Icons/GoBackIcon.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
 import MutedIcon from "./Icons/MutedIcon.tsx";
-import * as Animatable from "react-native-animatable";
+import Username from "./Username.tsx";
+import ElseFeaturesButtons from "./ElseFeaturesButtons.tsx";
 
 interface TopToolBarProps {
   primaryTitle: string;
@@ -39,62 +27,6 @@ interface TopToolBarProps {
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   const [isMuted, setIsMuted] = useState(false);
-
-  const Animate = () => {
-    const animatedValue = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-      const animateText = () => {
-        Animated.timing(animatedValue, {
-          toValue: 1,
-          duration: 300 * props.primaryTitle.length, // Тривалість анімації (у мілісекундах)
-          useNativeDriver: false,
-        }).start(() => {
-          teleportText();
-        });
-      };
-
-      const teleportText = () => {
-        Animated.timing(animatedValue, {
-          toValue: 0,
-          duration: 0, // Тривалість телепортації (нульова, щоб була миттєва)
-          useNativeDriver: false,
-        }).start(() => {
-          animateText(); // Після телепортації розпочинається новий цикл анімації
-        });
-      };
-
-      animateText();
-    }, [animatedValue]);
-
-    const marginLeft = animatedValue.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [
-        Dimensions.get("screen").width * 0.7 * props.primaryTitle.length * 0.07,
-        0,
-        -Dimensions.get("screen").width *
-          0.7 *
-          props.primaryTitle.length *
-          0.07,
-      ],
-    });
-
-    return (
-      <ScrollView>
-        <Animated.View
-          style={{
-            transform: [{ translateX: marginLeft }],
-          }}
-        >
-          <JacquesFrancoisText
-            numberOfLines={1}
-            text={props.primaryTitle}
-            style={styles.profileTitle}
-          />
-        </Animated.View>
-      </ScrollView>
-    );
-  };
 
   return (
     <View
@@ -114,20 +46,8 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         style={styles.blurEffectElseFeaturesButton}
       />
 
-      <View
-        style={[
-          styles.containerForProfiteTitle,
-          {
-            width: Dimensions.get("screen").width * 0.575,
-            overflow: "hidden",
-            right: (100 * Dimensions.get("screen").width) / 356,
-          },
-        ]}
-      >
-        <View style={{ width: props.primaryTitle.length * 15 }}>
-          <Animate />
-        </View>
-      </View>
+      <Username primaryTitle={props.primaryTitle} />
+
       {isMuted && <MutedIcon style={styles.mutedIcon} />}
 
       <JacquesFrancoisText
@@ -144,6 +64,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
           <GoBackIcon />
         </View>
       </TouchableWithoutFeedback>
+
       <TouchableWithoutFeedback
         onPress={() => {
           alert("Searching...");
@@ -162,69 +83,21 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
           <ElseFeaturesIcon />
         </View>
       </TouchableWithoutFeedback>
-      {props.elseFeaturesVisible && (
-        <View
-          style={[
-            styles.elseFeaturesButtonsContainer,
-            { zIndex: props.elseFeaturesVisible ? 2 : 0 },
-          ]}
-        >
-          <TouchableWithoutFeedback>
-            <View style={styles.additionalFeatureButton}>
-              <SettingsIcon style={styles.additionalFeatureIcon} />
-              <JacquesFrancoisText
-                text={props.settingsTitle}
-                style={styles.additionalFeatureTitle}
-              />
-            </View>
-          </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setIsMuted(!isMuted);
-              props.elseFeaturesPressing(false);
-            }}
-          >
-            <View style={styles.additionalFeatureButton}>
-              <OffNotificationIcon style={styles.additionalFeatureIcon} />
-              <JacquesFrancoisText
-                text={props.offNotificationtitle}
-                style={styles.additionalFeatureTitle}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback>
-            <View style={styles.additionalFeatureButton}>
-              <ClearChatIcon style={styles.additionalFeatureIcon} />
-              <JacquesFrancoisText
-                text={props.clearChatTItle}
-                style={styles.additionalFeatureTitle}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback>
-            <View style={styles.additionalFeatureButton}>
-              <ForwardContactIcon style={styles.additionalFeatureIcon} />
-              <JacquesFrancoisText
-                text={props.forwardContactTitle}
-                style={styles.additionalFeatureTitle}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback>
-            <View style={styles.additionalFeatureButton}>
-              <BlockIcon style={styles.additionalFeatureIcon} />
-              <JacquesFrancoisText
-                text={props.blockTitle}
-                style={styles.blockButton}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-      )}
+      <ElseFeaturesButtons
+        isVisible={props.elseFeaturesVisible}
+        setIsVisible={props.elseFeaturesPressing}
+        OffOnNotificationClick={() => {
+          setIsMuted(!isMuted);
+        }}
+        settingsTitle={props.settingsTitle}
+        offNotificationtitle={props.offNotificationtitle}
+        onNotificationtitle={props.onNotificationtitle}
+        clearChatTItle={props.clearChatTItle}
+        forwardContactTitle={props.forwardContactTitle}
+        blockTitle={props.blockTitle}
+        unblockTitle={props.unblockTitle}
+      />
     </View>
   );
 };

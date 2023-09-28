@@ -252,6 +252,8 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     top: 0.04 * Dimensions.get("screen").height,
+    borderBottomWidth: 0.2,
+    borderRadius: 2,
   },
   mutedIcon: {
     width: 25,
