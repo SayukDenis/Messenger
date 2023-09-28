@@ -7,7 +7,7 @@ import MultimediaBar from "./MultimediaBar";
 import Blur from "./Blur";
 
 const avatarURL: string = "https://picsum.photos/id/1084/536/354";
-var profileName: string = "ДенисDenis";
+var profileName: string = "ДенисDenis Denis dwad ";
 var lastTimeOnline: string = "Був online давно";
 
 const MainUserPage = () => {

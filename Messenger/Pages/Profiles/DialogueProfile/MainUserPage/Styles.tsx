@@ -11,7 +11,7 @@ let customFonts = {
 };
 
 export class JacquesFrancoisText extends React.Component<
-  { text: string; style?: any },
+  { text: string; style?: any; numberOfLines?: number },
   { fontsLoaded: boolean }
 > {
   state = {
@@ -32,9 +32,12 @@ export class JacquesFrancoisText extends React.Component<
       return null;
     }
 
-    const { text, style } = this.props;
+    const { style } = this.props;
     return (
-      <Text style={{ fontFamily: "JacquesFrancois", ...style }}>
+      <Text
+        numberOfLines={this.props.numberOfLines}
+        style={{ fontFamily: "JacquesFrancois", ...style }}
+      >
         {this.props.text}
       </Text>
     );
@@ -63,7 +66,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   profileTitle: {
-    fontSize: 23,
+    fontSize: 21,
     fontFamily: "JacquesFrancois",
   },
   onlineStatusTitle: {
