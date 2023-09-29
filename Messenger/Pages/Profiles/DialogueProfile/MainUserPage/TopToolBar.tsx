@@ -7,7 +7,6 @@ import Blur from "./Blur";
 import GoBackIcon from "./Icons/GoBackIcon.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
-import MutedIcon from "./Icons/MutedIcon.tsx";
 import Name from "./Name.tsx";
 import ElseFeaturesButtons from "./ElseFeaturesButtons.tsx";
 
@@ -48,9 +47,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
       />
 
       {/* Main name */}
-      <Name primaryTitle={props.primaryTitle} />
-
-      {isMuted && <MutedIcon style={styles.mutedIcon} />}
+      <Name primaryTitle={props.primaryTitle} isMuted={isMuted} />
 
       {/* Secondary title */}
       <JacquesFrancoisText

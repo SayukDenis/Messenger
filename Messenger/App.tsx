@@ -5,5 +5,5 @@ import MainUserPage from "./Pages/Profiles/DialogueProfile/MainUserPage/MainUser
 import AppNavigation from "./Pages/Profiles/GroupProfile/Navigation";
 
 export default function App() {
-  return <AppNavigation />;
+  return <MainUserPage />;
 }

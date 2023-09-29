@@ -10,7 +10,7 @@ import Blur from "./Blur";
 
 // Data from user
 const avatarURL: string = "https://picsum.photos/id/1084/536/354";
-var profileName: string = "Олексій Коваленко";
+var profileName: string = "Гудзь Владdwadsss";
 var lastTimeOnline: string = "Був online давно";
 
 const MainUserPage = () => {

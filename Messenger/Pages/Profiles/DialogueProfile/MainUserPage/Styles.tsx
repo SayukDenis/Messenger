@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   profileTitle: {
-    fontSize: 21,
+    fontSize: 20,
     fontFamily: "JacquesFrancois",
   },
   onlineStatusTitle: {
@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
   searchMessagesButton: {
     position: "absolute",
     alignSelf: "flex-end",
-    right: 0.175 * Dimensions.get("screen").width,
+    right: 0.155 * Dimensions.get("screen").width,
     top: 0.045 * Dimensions.get("screen").height,
     width: 25 * figmaWidthPixelConverter,
     height: 25 * figmaWidthPixelConverter,
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
   elseFeaturesButton: {
     position: "absolute",
     alignSelf: "flex-end",
-    right: 0.035 * Dimensions.get("screen").width,
+    right: 0.03 * Dimensions.get("screen").width,
     top: 0.0225 * Dimensions.get("screen").height,
     width: 40 * figmaWidthPixelConverter,
     height: 40 * figmaWidthPixelConverter,
@@ -248,19 +248,30 @@ export const styles = StyleSheet.create({
     color: "red",
     fontSize: 16,
   },
-  containerForProfiteTitle: {
+  containerForProfiteTitleLongVersion: {
     position: "absolute",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     top: 0.04 * Dimensions.get("screen").height,
-    borderBottomWidth: 0.2,
-    borderRadius: 2,
+    gap: 0.02 * Dimensions.get("screen").width,
+    width: Dimensions.get("screen").width * 0.6,
+    right: (90 * Dimensions.get("screen").width) / 356,
+  },
+  containerForProfiteTitleShortVersion: {
+    position: "absolute",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 0.04 * Dimensions.get("screen").height,
+    gap: 0.015 * Dimensions.get("screen").width,
   },
   mutedIcon: {
     width: 25,
     height: 25,
-    left: 4 * figmaWidthPixelConverter,
-    top: 2 * figmaHeightPixelConverter,
+    position: "relative",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
