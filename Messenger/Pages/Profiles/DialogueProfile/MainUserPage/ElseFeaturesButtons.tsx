@@ -1,4 +1,4 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
@@ -32,6 +32,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             { zIndex: props.isVisible ? 2 : 0 },
           ]}
         >
+          {/* Settings button */}
           <TouchableWithoutFeedback>
             <View style={styles.additionalFeatureButton}>
               <SettingsIcon style={styles.additionalFeatureIcon} />
@@ -42,6 +43,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             </View>
           </TouchableWithoutFeedback>
 
+          {/* Toggle Notification button */}
           <TouchableWithoutFeedback
             onPress={() => {
               props.OffOnNotificationClick();
@@ -57,6 +59,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             </View>
           </TouchableWithoutFeedback>
 
+          {/* Clear chat button */}
           <TouchableWithoutFeedback>
             <View style={styles.additionalFeatureButton}>
               <ClearChatIcon style={styles.additionalFeatureIcon} />
@@ -67,6 +70,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             </View>
           </TouchableWithoutFeedback>
 
+          {/* Forward contact button */}
           <TouchableWithoutFeedback>
             <View style={styles.additionalFeatureButton}>
               <ForwardContactIcon style={styles.additionalFeatureIcon} />
@@ -77,6 +81,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             </View>
           </TouchableWithoutFeedback>
 
+          {/* Toggle block button */}
           <TouchableWithoutFeedback>
             <View style={styles.additionalFeatureButton}>
               <BlockIcon style={styles.additionalFeatureIcon} />

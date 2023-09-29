@@ -1,4 +1,4 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
 import { View, TouchableWithoutFeedback, Image } from "react-native";
@@ -15,6 +15,7 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
 ) => {
   return (
     <View>
+      {/* Touchable avatar image */}
       <TouchableWithoutFeedback
         onPress={() => {
           alert("avatar press");
@@ -25,6 +26,8 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
           source={{ uri: props.AvatarURL }}
         />
       </TouchableWithoutFeedback>
+
+      {/* Phone button */}
       <View style={styles.horizontalContainerForCalling}>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -35,6 +38,8 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
             <PhoneIcon />
           </View>
         </TouchableWithoutFeedback>
+
+        {/* Videocamera button */}
         <TouchableWithoutFeedback
           onPress={() => {
             alert("Calling (with camera)...");

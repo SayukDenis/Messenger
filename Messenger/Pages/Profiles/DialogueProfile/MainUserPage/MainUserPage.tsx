@@ -1,3 +1,5 @@
+// Oleksii Kovalenko telegram - @traewe
+
 import React, { useState } from "react";
 import { View } from "react-native";
 import { styles } from "./Styles";
@@ -6,6 +8,7 @@ import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import MultimediaBar from "./MultimediaBar";
 import Blur from "./Blur";
 
+// Data from user
 const avatarURL: string = "https://picsum.photos/id/1084/536/354";
 var profileName: string = "Олексій Коваленко";
 var lastTimeOnline: string = "Був online давно";
@@ -17,6 +20,7 @@ const MainUserPage = () => {
 
   return (
     <View style={styles.mainContainer}>
+      {/* Blur if photo or album button is on long press */}
       <Blur
         visibleWhen={isPhotoAlbumSelectionVisible}
         onPress={() => {
@@ -25,6 +29,7 @@ const MainUserPage = () => {
         style={styles.blurEffectPhotosAlbumButton}
       />
 
+      {/* Blur if else features button is pressed */}
       <Blur
         visibleWhen={isElseFeaturesVisible === true}
         onPress={() => {
@@ -33,6 +38,7 @@ const MainUserPage = () => {
         style={styles.blurEffectElseFeaturesButton}
       />
 
+      {/* Top tool bar with buttons*/}
       <TopToolBar
         primaryTitle={profileName}
         secondaryTitle={lastTimeOnline}
@@ -47,8 +53,10 @@ const MainUserPage = () => {
         unblockTitle="Unblock"
       />
 
+      {/* Touchable avatar image with phone and videocamera buttons*/}
       <AvatarWithCallingButtons AvatarURL={avatarURL} />
 
+      {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
       <MultimediaBar
         isphotoOrAlbumButtonHolding={isPhotoAlbumSelectionVisible}
         photoOrAlbumButtonHolding={(value) =>

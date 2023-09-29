@@ -1,8 +1,7 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
 import { StyleSheet, Dimensions, Text } from "react-native";
-import MainUserPage from "./MainUserPage";
 
 import * as Font from "expo-font";
 
@@ -10,8 +9,9 @@ let customFonts = {
   JacquesFrancois: require("./Assets/JacquesFrancois-Regular.ttf"),
 };
 
+// Component for making text with Jacques-Fancois font
 export class JacquesFrancoisText extends React.Component<
-  { text: string; style?: any; numberOfLines?: number },
+  { text?: string; style?: any; numberOfLines?: number },
   { fontsLoaded: boolean }
 > {
   state = {
@@ -44,9 +44,11 @@ export class JacquesFrancoisText extends React.Component<
   }
 }
 
+// Coefficients for transmitting sizes from Figma to user's device
 const figmaHeightPixelConverter = Dimensions.get("screen").height / 648;
 const figmaWidthPixelConverter = Dimensions.get("screen").width / 356;
 
+// Main styles for main user page
 export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,

@@ -1,4 +1,4 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React, { useEffect, useRef } from "react";
 import { View, Animated, Dimensions } from "react-native";
@@ -8,7 +8,7 @@ interface UsernameProps {
   primaryTitle: string;
 }
 
-const Username: React.FC<UsernameProps> = (props) => {
+const Name: React.FC<UsernameProps> = (props) => {
   const Animate = () => {
     const animatedValue = useRef(new Animated.Value(0)).current;
 
@@ -78,4 +78,4 @@ const Username: React.FC<UsernameProps> = (props) => {
   );
 };
 
-export default Username;
+export default Name;

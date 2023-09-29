@@ -1,4 +1,4 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React, { useState } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
@@ -8,12 +8,12 @@ import GoBackIcon from "./Icons/GoBackIcon.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
 import MutedIcon from "./Icons/MutedIcon.tsx";
-import Username from "./Username.tsx";
+import Name from "./Name.tsx";
 import ElseFeaturesButtons from "./ElseFeaturesButtons.tsx";
 
 interface TopToolBarProps {
   primaryTitle: string;
-  secondaryTitle: string;
+  secondaryTitle?: string;
   elseFeaturesVisible: boolean;
   settingsTitle: string;
   offNotificationtitle: string;
@@ -38,6 +38,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         },
       ]}
     >
+      {/* Blur if is features is pressed*/}
       <Blur
         visibleWhen={props.elseFeaturesVisible}
         onPress={() => {
@@ -46,15 +47,18 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         style={styles.blurEffectElseFeaturesButton}
       />
 
-      <Username primaryTitle={props.primaryTitle} />
+      {/* Main name */}
+      <Name primaryTitle={props.primaryTitle} />
 
       {isMuted && <MutedIcon style={styles.mutedIcon} />}
 
+      {/* Secondary title */}
       <JacquesFrancoisText
         text={props.secondaryTitle}
         style={styles.onlineStatusTitle}
       />
 
+      {/* Going back button */}
       <TouchableWithoutFeedback
         onPress={() => {
           alert("Going back...");
@@ -65,6 +69,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         </View>
       </TouchableWithoutFeedback>
 
+      {/* Search message button */}
       <TouchableWithoutFeedback
         onPress={() => {
           alert("Searching...");
@@ -74,6 +79,8 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
           <SearchIcon />
         </View>
       </TouchableWithoutFeedback>
+
+      {/* Else features button */}
       <TouchableWithoutFeedback
         onPress={() => {
           props.elseFeaturesPressing(true);
@@ -84,6 +91,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         </View>
       </TouchableWithoutFeedback>
 
+      {/* Else features which appear when else features button is pressed*/}
       <ElseFeaturesButtons
         isVisible={props.elseFeaturesVisible}
         setIsVisible={props.elseFeaturesPressing}
