@@ -11,22 +11,19 @@ import Name from "./Name.tsx";
 import ElseFeaturesButtons from "./ElseFeaturesButtons.tsx";
 
 interface TopToolBarProps {
+  elseFeaturesPressing: (value: boolean) => void;
+  elseFeaturesVisible: boolean;
   primaryTitle: string;
   secondaryTitle?: string;
-  elseFeaturesVisible: boolean;
-  settingsTitle: string;
-  offNotificationtitle: string;
-  onNotificationtitle: string;
-  clearChatTItle: string;
-  forwardContactTitle: string;
-  blockTitle: string;
-  unblockTitle: string;
-  elseFeaturesPressing: (value: boolean) => void;
+  setIsClearChatClicked: (value: boolean) => void;
+  isClearChatClicked: boolean;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   const [isMuted, setIsMuted] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
+  const blockStatusTitle: string = "Blocked";
   return (
     <View
       style={[
@@ -43,11 +40,19 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         onPress={() => {
           props.elseFeaturesPressing(false);
         }}
-        style={styles.blurEffectElseFeaturesButton}
+        style={[styles.blurEffect, { zIndex: 1 }]}
       />
 
       {/* Main name */}
       <Name primaryTitle={props.primaryTitle} isMuted={isMuted} />
+
+      {/* if blocked */}
+      {isBlocked && (
+        <JacquesFrancoisText
+          text={isBlocked ? blockStatusTitle : ""}
+          style={styles.blockStatus}
+        />
+      )}
 
       {/* Secondary title */}
       <JacquesFrancoisText
@@ -95,13 +100,15 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
         OffOnNotificationClick={() => {
           setIsMuted(!isMuted);
         }}
-        settingsTitle={props.settingsTitle}
-        offNotificationtitle={props.offNotificationtitle}
-        onNotificationtitle={props.onNotificationtitle}
-        clearChatTItle={props.clearChatTItle}
-        forwardContactTitle={props.forwardContactTitle}
-        blockTitle={props.blockTitle}
-        unblockTitle={props.unblockTitle}
+        isMuted={isMuted}
+        BlockClick={() => {
+          setIsBlocked(!isBlocked);
+        }}
+        isBlocked={isBlocked}
+        setIsClearChatClicked={(value: boolean) => {
+          props.setIsClearChatClicked(value);
+        }}
+        isClearChatClicked={props.isClearChatClicked}
       />
     </View>
   );

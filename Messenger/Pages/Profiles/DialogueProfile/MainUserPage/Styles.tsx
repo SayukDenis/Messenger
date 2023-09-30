@@ -45,8 +45,10 @@ export class JacquesFrancoisText extends React.Component<
 }
 
 // Coefficients for transmitting sizes from Figma to user's device
-const figmaHeightPixelConverter = Dimensions.get("screen").height / 648;
-const figmaWidthPixelConverter = Dimensions.get("screen").width / 356;
+const screenHeight = Dimensions.get("screen").height;
+const screenWidth = Dimensions.get("screen").width;
+const figmaHeightPixelConverter = screenHeight / 648;
+const figmaWidthPixelConverter = screenWidth / 356;
 
 // Main styles for main user page
 export const styles = StyleSheet.create({
@@ -58,7 +60,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     alignItems: "center",
-    height: 72.5 * figmaHeightPixelConverter,
+    height: 75 * figmaHeightPixelConverter,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 37,
@@ -76,47 +78,55 @@ export const styles = StyleSheet.create({
     color: "#808080",
     alignSelf: "center",
     fontFamily: "JacquesFrancois",
-    top: 23 * figmaHeightPixelConverter,
+    top: 28 * figmaHeightPixelConverter,
+  },
+  blockStatus: {
+    fontSize: 14,
+    color: "red",
+    alignSelf: "center",
+    fontFamily: "JacquesFrancois",
+    position: "absolute",
+    top: 46 * figmaHeightPixelConverter,
   },
   mainAvatarImage: {
     width: 120 * figmaHeightPixelConverter,
     height: 120 * figmaHeightPixelConverter,
     borderRadius: 100,
     alignSelf: "center",
-    top: 0.02 * Dimensions.get("screen").height,
+    top: 0.02 * screenHeight,
   },
   goBackFromProfileButton: {
     position: "absolute",
-    top: 0.045 * Dimensions.get("screen").height,
+    top: 0.045 * screenHeight,
     alignSelf: "flex-start",
-    left: 0.045 * Dimensions.get("screen").width,
+    left: 0.045 * screenWidth,
     width: 30 * figmaWidthPixelConverter,
     height: 30 * figmaWidthPixelConverter,
   },
   searchMessagesButton: {
     position: "absolute",
     alignSelf: "flex-end",
-    right: 0.155 * Dimensions.get("screen").width,
-    top: 0.045 * Dimensions.get("screen").height,
+    right: 0.155 * screenWidth,
+    top: 0.045 * screenHeight,
     width: 25 * figmaWidthPixelConverter,
     height: 25 * figmaWidthPixelConverter,
   },
   elseFeaturesButton: {
     position: "absolute",
     alignSelf: "flex-end",
-    right: 0.03 * Dimensions.get("screen").width,
-    top: 0.0225 * Dimensions.get("screen").height,
+    right: 0.03 * screenWidth,
+    top: 0.0225 * screenHeight,
     width: 40 * figmaWidthPixelConverter,
     height: 40 * figmaWidthPixelConverter,
   },
   horizontalContainerForCalling: {
     flexDirection: "row",
     justifyContent: "center",
-    top: 0.04 * Dimensions.get("screen").height,
+    top: 0.04 * screenHeight,
     gap: 90,
   },
   multimediaBar: {
-    top: 0.1 * Dimensions.get("screen").height,
+    top: 0.1 * screenHeight,
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     height: 30 * figmaHeightPixelConverter,
@@ -130,7 +140,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingLeft: 20 * figmaHeightPixelConverter,
-    gap: Dimensions.get("screen").width / 8.5,
+    gap: screenWidth / 8.5,
   },
   multimediaTitle: {
     color: "rgb(124, 79, 145)",
@@ -162,7 +172,7 @@ export const styles = StyleSheet.create({
   },
   albumsOrPhotosAppearingButton: {
     backgroundColor: "rgb(231, 230,	228)",
-    width: 90,
+    width: 0.237 * screenWidth,
     height: 30 * figmaHeightPixelConverter,
     borderRadius: 100,
     bottom: 30 * figmaHeightPixelConverter,
@@ -175,13 +185,7 @@ export const styles = StyleSheet.create({
   photosOrAlbumsSelectedName: {
     width: 80,
   },
-  blurEffectPhotosAlbumButton: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    zIndex: 1,
-  },
-  blurEffectElseFeaturesButton: {
+  blurEffect: {
     width: "100%",
     height: "100%",
     position: "absolute",
@@ -218,8 +222,8 @@ export const styles = StyleSheet.create({
   },
   elseFeaturesButtonsContainer: {
     position: "absolute",
-    right: 0.06 * Dimensions.get("screen").width,
-    top: 0.065 * Dimensions.get("screen").height,
+    right: 0.06 * screenWidth,
+    top: 0.065 * screenHeight,
     width: 200,
     height: 200,
   },
@@ -244,7 +248,7 @@ export const styles = StyleSheet.create({
     height: 18 * figmaWidthPixelConverter,
     color: "black",
   },
-  blockButton: {
+  blockButtonTitle: {
     color: "red",
     fontSize: 16,
   },
@@ -253,18 +257,22 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: 0.04 * Dimensions.get("screen").height,
-    gap: 0.02 * Dimensions.get("screen").width,
-    width: Dimensions.get("screen").width * 0.6,
-    right: (90 * Dimensions.get("screen").width) / 356,
+    top: 0.04 * screenHeight,
+    gap: 0.02 * screenWidth,
+    width: screenWidth * 0.6,
+  },
+  innerContainerForLongProfileTitle: {
+    overflow: "hidden",
+    borderBottomWidth: 0.2,
+    borderRadius: 2,
   },
   containerForProfiteTitleShortVersion: {
     position: "absolute",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: 0.04 * Dimensions.get("screen").height,
-    gap: 0.015 * Dimensions.get("screen").width,
+    top: 0.04 * screenHeight,
+    gap: 0.015 * screenWidth,
   },
   mutedIcon: {
     width: 25,

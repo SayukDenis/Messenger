@@ -10,12 +10,14 @@ import Blur from "./Blur";
 
 // Data from user
 const avatarURL: string = "https://picsum.photos/id/1084/536/354";
-var profileName: string = "Гудзь Владdwadsss";
+var profileName: string = "Олексій Коваленко Володимирович";
 var lastTimeOnline: string = "Був online давно";
 
 const MainUserPage = () => {
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
+    useState(false);
+  const [isClearChatButtonClicked, setIsClearChatButtonClicked] =
     useState(false);
 
   return (
@@ -26,7 +28,7 @@ const MainUserPage = () => {
         onPress={() => {
           setIsPhotoAlbumSelectionVisible(false);
         }}
-        style={styles.blurEffectPhotosAlbumButton}
+        style={styles.blurEffect}
       />
 
       {/* Blur if else features button is pressed */}
@@ -35,7 +37,16 @@ const MainUserPage = () => {
         onPress={() => {
           setIsElseFeaturesVisible(false);
         }}
-        style={styles.blurEffectElseFeaturesButton}
+        style={styles.blurEffect}
+      />
+
+      {/* Blur if clear chat is pressed */}
+      <Blur
+        visibleWhen={isClearChatButtonClicked === true}
+        onPress={() => {
+          setIsClearChatButtonClicked(false);
+        }}
+        style={[styles.blurEffect, { zIndex: 3 }]}
       />
 
       {/* Top tool bar with buttons*/}
@@ -43,14 +54,11 @@ const MainUserPage = () => {
         primaryTitle={profileName}
         secondaryTitle={lastTimeOnline}
         elseFeaturesVisible={isElseFeaturesVisible === true}
-        elseFeaturesPressing={(value) => setIsElseFeaturesVisible(value)}
-        settingsTitle="Settings"
-        offNotificationtitle="Off notification"
-        onNotificationtitle="On notification"
-        clearChatTItle="Clear chat"
-        forwardContactTitle="Forward contact"
-        blockTitle="Block"
-        unblockTitle="Unblock"
+        elseFeaturesPressing={(value: boolean) =>
+          setIsElseFeaturesVisible(value)
+        }
+        setIsClearChatClicked={(value) => setIsClearChatButtonClicked(value)}
+        isClearChatClicked={isClearChatButtonClicked}
       />
 
       {/* Touchable avatar image with phone and videocamera buttons*/}

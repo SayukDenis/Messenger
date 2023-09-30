@@ -1,28 +1,37 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import { JacquesFrancoisText, styles } from "./Styles.tsx";
 import OffNotificationIcon from "./Icons/OffNotificationIcon.tsx";
+import OnNotificationIcon from "./Icons/OnNotificationIcon.tsx";
 import ClearChatIcon from "./Icons/ClearChatIcon.tsx";
 import SettingsIcon from "./Icons/SettingsIcon.tsx";
 import ForwardContactIcon from "./Icons/ForwardContactIcon.tsx";
 import BlockIcon from "./Icons/BlockIcon.tsx";
+import UnblockIcon from "./Icons/UnblockIcon.tsx";
+import Blur from "./Blur.tsx";
 
 interface ElseFeaturesButtonsProps {
   isVisible: boolean;
   setIsVisible: (value: boolean) => void;
-  OffOnNotificationClick: any;
-  settingsTitle: string;
-  offNotificationtitle: string;
-  onNotificationtitle: string;
-  clearChatTItle: string;
-  forwardContactTitle: string;
-  blockTitle: string;
-  unblockTitle: string;
+  OffOnNotificationClick: () => void;
+  isMuted: boolean;
+  BlockClick: () => void;
+  isBlocked: boolean;
+  setIsClearChatClicked: (value: boolean) => void;
+  isClearChatClicked: boolean;
 }
 
 const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
+  const settingsTitle: string = "Settings";
+  const offNotificationtitle: string = "Off notification";
+  const onNotificationtitle: string = "On notification";
+  const clearChatTItle: string = "Clear chat";
+  const forwardContactTitle: string = "Forward contact";
+  const blockButtonTitle: string = "Block";
+  const unblockButtonTitle: string = "Unblock";
+
   return (
     <>
       {props.isVisible && (
@@ -37,7 +46,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             <View style={styles.additionalFeatureButton}>
               <SettingsIcon style={styles.additionalFeatureIcon} />
               <JacquesFrancoisText
-                text={props.settingsTitle}
+                text={settingsTitle}
                 style={styles.additionalFeatureTitle}
               />
             </View>
@@ -51,20 +60,30 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             }}
           >
             <View style={styles.additionalFeatureButton}>
-              <OffNotificationIcon style={styles.additionalFeatureIcon} />
+              {props.isMuted ? (
+                <OnNotificationIcon style={styles.additionalFeatureIcon} />
+              ) : (
+                <OffNotificationIcon style={styles.additionalFeatureIcon} />
+              )}
               <JacquesFrancoisText
-                text={props.offNotificationtitle}
+                text={
+                  props.isMuted ? onNotificationtitle : offNotificationtitle
+                }
                 style={styles.additionalFeatureTitle}
               />
             </View>
           </TouchableWithoutFeedback>
 
           {/* Clear chat button */}
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              props.setIsClearChatClicked(true);
+            }}
+          >
             <View style={styles.additionalFeatureButton}>
               <ClearChatIcon style={styles.additionalFeatureIcon} />
               <JacquesFrancoisText
-                text={props.clearChatTItle}
+                text={clearChatTItle}
                 style={styles.additionalFeatureTitle}
               />
             </View>
@@ -75,19 +94,28 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
             <View style={styles.additionalFeatureButton}>
               <ForwardContactIcon style={styles.additionalFeatureIcon} />
               <JacquesFrancoisText
-                text={props.forwardContactTitle}
+                text={forwardContactTitle}
                 style={styles.additionalFeatureTitle}
               />
             </View>
           </TouchableWithoutFeedback>
 
           {/* Toggle block button */}
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              props.BlockClick();
+              props.setIsVisible(false);
+            }}
+          >
             <View style={styles.additionalFeatureButton}>
-              <BlockIcon style={styles.additionalFeatureIcon} />
+              {props.isBlocked ? (
+                <UnblockIcon style={styles.additionalFeatureIcon} />
+              ) : (
+                <BlockIcon style={styles.additionalFeatureIcon} />
+              )}
               <JacquesFrancoisText
-                text={props.blockTitle}
-                style={styles.blockButton}
+                text={props.isBlocked ? unblockButtonTitle : blockButtonTitle}
+                style={styles.blockButtonTitle}
               />
             </View>
           </TouchableWithoutFeedback>

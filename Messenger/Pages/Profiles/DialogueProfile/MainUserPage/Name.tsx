@@ -17,15 +17,16 @@ const Name: React.FC<UsernameProps> = (props) => {
   // Animation of running text
   const Animate = () => {
     const animatedValue = useRef(new Animated.Value(0)).current;
+    const [isFirstAnimation, setIsFirstAnimation] = useState(true);
 
     useEffect(() => {
       const animateText = () => {
         Animated.timing(animatedValue, {
           toValue: 1,
-          duration: 35 * textWidth,
+          duration: (isFirstAnimation ? 37 : 35) * textWidth,
           useNativeDriver: false,
         }).start(() => {
-          teleportText();
+          setIsFirstAnimation(false), teleportText();
         });
       };
 
@@ -42,19 +43,28 @@ const Name: React.FC<UsernameProps> = (props) => {
       animateText();
     }, [animatedValue]);
 
+    const marginLeftFirstCycle = animatedValue.interpolate({
+      inputRange: [0, 0.5, 1],
+      outputRange: [0, 0, -screenWidth * 0.004 * textWidth],
+    });
+
     const marginLeft = animatedValue.interpolate({
       inputRange: [0, 0.5, 1],
       outputRange: [
-        Dimensions.get("screen").width * 0.004 * textWidth,
+        screenWidth * 0.004 * textWidth,
         0,
-        -Dimensions.get("screen").width * 0.004 * textWidth,
+        -screenWidth * 0.004 * textWidth,
       ],
     });
 
     return (
       <Animated.View
         style={{
-          transform: [{ translateX: marginLeft }],
+          transform: [
+            {
+              translateX: isFirstAnimation ? marginLeftFirstCycle : marginLeft,
+            },
+          ],
         }}
       >
         <JacquesFrancoisText
@@ -85,20 +95,20 @@ const Name: React.FC<UsernameProps> = (props) => {
           style={[
             styles.containerForProfiteTitleLongVersion,
             {
-              width: props.isMuted ? screenWidth * 0.5 : screenWidth * 0.6,
-              right: props.isMuted ? screenWidth * 0.3 : screenWidth * 0.25,
+              width: props.isMuted ? screenWidth * 0.6 : screenWidth * 0.55,
+              right: props.isMuted ? screenWidth * 0.215 : screenWidth * 0.24,
             },
           ]}
         >
           <View
-            style={{
-              width: props.isMuted ? screenWidth * 0.5 : screenWidth * 0.6,
-              overflow: "hidden",
-              borderBottomWidth: 0.2,
-              borderRadius: 2,
-            }}
+            style={[
+              styles.innerContainerForLongProfileTitle,
+              {
+                width: props.isMuted ? screenWidth * 0.412 : screenWidth * 0.5,
+              },
+            ]}
           >
-            <View style={{ width: textWidth * 1.1 }}>
+            <View style={{ width: textWidth * 1.4 }}>
               <Animate />
             </View>
           </View>
