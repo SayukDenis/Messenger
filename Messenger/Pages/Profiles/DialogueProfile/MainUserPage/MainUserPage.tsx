@@ -7,9 +7,10 @@ import TopToolBar from "./TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import MultimediaBar from "./MultimediaBar";
 import Blur from "./Blur";
+import ElseFeaturesButtons from "./ElseFeaturesButtons";
 
 // Data from user
-const avatarURL: string = "https://picsum.photos/id/1084/536/354";
+
 var profileName: string = "Олексій Коваленко Володимирович";
 var lastTimeOnline: string = "Був online давно";
 
@@ -19,6 +20,8 @@ const MainUserPage = () => {
     useState(false);
   const [isClearChatButtonClicked, setIsClearChatButtonClicked] =
     useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   return (
     <View style={styles.mainContainer}>
@@ -53,16 +56,34 @@ const MainUserPage = () => {
       <TopToolBar
         primaryTitle={profileName}
         secondaryTitle={lastTimeOnline}
-        elseFeaturesVisible={isElseFeaturesVisible === true}
-        elseFeaturesPressing={(value: boolean) =>
+        isElseFeaturesVisible={isElseFeaturesVisible === true}
+        setIsElseFeaturesVisible={(value: boolean) =>
           setIsElseFeaturesVisible(value)
         }
-        setIsClearChatClicked={(value) => setIsClearChatButtonClicked(value)}
-        isClearChatClicked={isClearChatButtonClicked}
+        isMuted={isMuted}
+        isBlocked={isBlocked}
+      />
+
+      {/* Else features which appear when else features button is pressed*/}
+      <ElseFeaturesButtons
+        isVisible={isElseFeaturesVisible}
+        setIsVisible={(value: boolean) => setIsElseFeaturesVisible(value)}
+        isMuted={isMuted}
+        setIsMuted={(value: boolean) => {
+          setIsMuted(value);
+        }}
+        isBlocked={isBlocked}
+        setIsBlocked={(value: boolean) => {
+          setIsBlocked(value);
+        }}
+        isClearChatButtonClicked={isClearChatButtonClicked}
+        setIsClearChatButtonClicked={(value: boolean) => {
+          setIsClearChatButtonClicked(value);
+        }}
       />
 
       {/* Touchable avatar image with phone and videocamera buttons*/}
-      <AvatarWithCallingButtons AvatarURL={avatarURL} />
+      <AvatarWithCallingButtons />
 
       {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
       <MultimediaBar
@@ -70,18 +91,6 @@ const MainUserPage = () => {
         photoOrAlbumButtonHolding={(value) =>
           setIsPhotoAlbumSelectionVisible(value)
         }
-        photosButtonTitle="Photos"
-        albumsButtonTitle="Albums"
-        filesButtonTitle="Files"
-        voiceButtonTitle="Voice"
-        linksButtonTitle="Links"
-        videosButtonTitle="Videos"
-        photosQuantity={600}
-        videosQuantity={20}
-        albumsQuantity={50}
-        filesQuantity={3}
-        voiceQuantity={3214}
-        linksQuantity={5}
       />
     </View>
   );

@@ -6,13 +6,13 @@ import { styles } from "./Styles";
 import PhoneIcon from "./Icons/PhoneIcon.tsx";
 import VideoCameraIcon from "./Icons/VideoCameraIcon.tsx";
 
-interface AvatarWithCallingButtonsProps {
-  AvatarURL: string;
-}
+interface AvatarWithCallingButtonsProps {}
 
 const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
   props
 ) => {
+  const avatarURL: string = "https://picsum.photos/id/1084/536/354";
+
   return (
     <View>
       {/* Touchable avatar image */}
@@ -21,10 +21,7 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
           alert("avatar press");
         }}
       >
-        <Image
-          style={styles.mainAvatarImage}
-          source={{ uri: props.AvatarURL }}
-        />
+        <Image style={styles.mainAvatarImage} source={{ uri: avatarURL }} />
       </TouchableWithoutFeedback>
 
       {/* Phone button */}

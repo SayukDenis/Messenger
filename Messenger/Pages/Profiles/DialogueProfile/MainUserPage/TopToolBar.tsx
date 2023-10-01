@@ -1,55 +1,33 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import { JacquesFrancoisText, styles } from "./Styles";
-import Blur from "./Blur";
 import GoBackIcon from "./Icons/GoBackIcon.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
 import Name from "./Name.tsx";
-import ElseFeaturesButtons from "./ElseFeaturesButtons.tsx";
 
 interface TopToolBarProps {
-  elseFeaturesPressing: (value: boolean) => void;
-  elseFeaturesVisible: boolean;
+  setIsElseFeaturesVisible: (value: boolean) => void;
+  isElseFeaturesVisible: boolean;
   primaryTitle: string;
   secondaryTitle?: string;
-  setIsClearChatClicked: (value: boolean) => void;
-  isClearChatClicked: boolean;
+  isMuted?: boolean;
+  isBlocked?: boolean;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
-  const [isMuted, setIsMuted] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
-
   const blockStatusTitle: string = "Blocked";
   return (
-    <View
-      style={[
-        styles.topToolBar,
-        {
-          zIndex: props.elseFeaturesVisible ? 2 : 0,
-          borderWidth: props.elseFeaturesVisible ? 0 : 1.5,
-        },
-      ]}
-    >
-      {/* Blur if is features is pressed*/}
-      <Blur
-        visibleWhen={props.elseFeaturesVisible}
-        onPress={() => {
-          props.elseFeaturesPressing(false);
-        }}
-        style={[styles.blurEffect, { zIndex: 1 }]}
-      />
-
+    <View style={styles.topToolBar}>
       {/* Main name */}
-      <Name primaryTitle={props.primaryTitle} isMuted={isMuted} />
+      <Name primaryTitle={props.primaryTitle} isMuted={props.isMuted} />
 
       {/* if blocked */}
-      {isBlocked && (
+      {props.isBlocked && (
         <JacquesFrancoisText
-          text={isBlocked ? blockStatusTitle : ""}
+          text={props.isBlocked ? blockStatusTitle : ""}
           style={styles.blockStatus}
         />
       )}
@@ -85,31 +63,13 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
       {/* Else features button */}
       <TouchableWithoutFeedback
         onPress={() => {
-          props.elseFeaturesPressing(true);
+          props.setIsElseFeaturesVisible(true);
         }}
       >
         <View style={styles.elseFeaturesButton}>
           <ElseFeaturesIcon />
         </View>
       </TouchableWithoutFeedback>
-
-      {/* Else features which appear when else features button is pressed*/}
-      <ElseFeaturesButtons
-        isVisible={props.elseFeaturesVisible}
-        setIsVisible={props.elseFeaturesPressing}
-        OffOnNotificationClick={() => {
-          setIsMuted(!isMuted);
-        }}
-        isMuted={isMuted}
-        BlockClick={() => {
-          setIsBlocked(!isBlocked);
-        }}
-        isBlocked={isBlocked}
-        setIsClearChatClicked={(value: boolean) => {
-          props.setIsClearChatClicked(value);
-        }}
-        isClearChatClicked={props.isClearChatClicked}
-      />
     </View>
   );
 };

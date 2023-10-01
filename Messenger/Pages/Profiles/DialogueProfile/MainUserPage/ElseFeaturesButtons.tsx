@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import { JacquesFrancoisText, styles } from "./Styles.tsx";
 import OffNotificationIcon from "./Icons/OffNotificationIcon.tsx";
@@ -10,17 +10,16 @@ import SettingsIcon from "./Icons/SettingsIcon.tsx";
 import ForwardContactIcon from "./Icons/ForwardContactIcon.tsx";
 import BlockIcon from "./Icons/BlockIcon.tsx";
 import UnblockIcon from "./Icons/UnblockIcon.tsx";
-import Blur from "./Blur.tsx";
 
 interface ElseFeaturesButtonsProps {
-  isVisible: boolean;
   setIsVisible: (value: boolean) => void;
-  OffOnNotificationClick: () => void;
+  isVisible: boolean;
+  setIsMuted: (value: boolean) => void;
   isMuted: boolean;
-  BlockClick: () => void;
+  setIsBlocked: (value: boolean) => void;
   isBlocked: boolean;
-  setIsClearChatClicked: (value: boolean) => void;
-  isClearChatClicked: boolean;
+  setIsClearChatButtonClicked: (value: boolean) => void;
+  isClearChatButtonClicked: boolean;
 }
 
 const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
@@ -55,7 +54,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {/* Toggle Notification button */}
           <TouchableWithoutFeedback
             onPress={() => {
-              props.OffOnNotificationClick();
+              props.setIsMuted(!props.isMuted);
               props.setIsVisible(false);
             }}
           >
@@ -77,7 +76,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {/* Clear chat button */}
           <TouchableWithoutFeedback
             onPress={() => {
-              props.setIsClearChatClicked(true);
+              props.setIsClearChatButtonClicked(true);
             }}
           >
             <View style={styles.additionalFeatureButton}>
@@ -103,7 +102,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {/* Toggle block button */}
           <TouchableWithoutFeedback
             onPress={() => {
-              props.BlockClick();
+              props.setIsBlocked(!props.isBlocked);
               props.setIsVisible(false);
             }}
           >

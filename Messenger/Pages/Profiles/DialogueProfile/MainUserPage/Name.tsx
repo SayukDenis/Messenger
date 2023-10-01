@@ -7,7 +7,7 @@ import MutedIcon from "./Icons/MutedIcon.tsx";
 
 interface UsernameProps {
   primaryTitle: string;
-  isMuted: boolean;
+  isMuted?: boolean;
 }
 
 const Name: React.FC<UsernameProps> = (props) => {
@@ -20,40 +20,57 @@ const Name: React.FC<UsernameProps> = (props) => {
     const [isFirstAnimation, setIsFirstAnimation] = useState(true);
 
     useEffect(() => {
-      const animateText = () => {
+      const PushTextToLeft = () => {
+        setTimeout(() => {
+          Animated.timing(animatedValue, {
+            toValue: 1,
+            duration: 20 * textWidth,
+            useNativeDriver: false,
+          }).start(() => {
+            setIsFirstAnimation(false);
+            TeleportText();
+          });
+        }, 2000);
+      };
+
+      const PushTextToCenter = () => {
         Animated.timing(animatedValue, {
-          toValue: 1,
-          duration: (isFirstAnimation ? 37 : 35) * textWidth,
+          toValue: 0.5,
+          duration: 20 * textWidth,
           useNativeDriver: false,
         }).start(() => {
-          setIsFirstAnimation(false), teleportText();
+          PushTextToLeft();
         });
       };
 
-      const teleportText = () => {
+      const TeleportText = () => {
         Animated.timing(animatedValue, {
           toValue: 0,
           duration: 0,
           useNativeDriver: false,
         }).start(() => {
-          animateText();
+          PushTextToCenter();
         });
       };
 
-      animateText();
+      PushTextToLeft();
     }, [animatedValue]);
 
     const marginLeftFirstCycle = animatedValue.interpolate({
       inputRange: [0, 0.5, 1],
-      outputRange: [0, 0, -screenWidth * 0.004 * textWidth],
+      outputRange: [
+        0,
+        -screenWidth * 0.0015 * textWidth,
+        -screenWidth * 0.003 * textWidth,
+      ],
     });
 
     const marginLeft = animatedValue.interpolate({
       inputRange: [0, 0.5, 1],
       outputRange: [
-        screenWidth * 0.004 * textWidth,
+        screenWidth * 0.003 * textWidth,
         0,
-        -screenWidth * 0.004 * textWidth,
+        -screenWidth * 0.003 * textWidth,
       ],
     });
 
@@ -108,7 +125,7 @@ const Name: React.FC<UsernameProps> = (props) => {
               },
             ]}
           >
-            <View style={{ width: textWidth * 1.4 }}>
+            <View style={{ width: textWidth * 1.3 }}>
               <Animate />
             </View>
           </View>

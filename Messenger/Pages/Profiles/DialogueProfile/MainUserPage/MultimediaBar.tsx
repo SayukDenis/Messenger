@@ -7,22 +7,23 @@ import { styles, JacquesFrancoisText } from "./Styles";
 interface MultimediaBarProps {
   isphotoOrAlbumButtonHolding: boolean;
   photoOrAlbumButtonHolding: (value: boolean) => void;
-  photosButtonTitle: string;
-  albumsButtonTitle: string;
-  filesButtonTitle: string;
-  voiceButtonTitle: string;
-  linksButtonTitle: string;
-  videosButtonTitle: string;
-
-  photosQuantity: number;
-  videosQuantity: number;
-  albumsQuantity: number;
-  filesQuantity: number;
-  voiceQuantity: number;
-  linksQuantity: number;
 }
 
 const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
+  const photosButtonTitle: string = "Photos";
+  const albumsButtonTitle: string = "Albums";
+  const filesButtonTitle: string = "Files";
+  const voiceButtonTitle: string = "Voice";
+  const linksButtonTitle: string = "Links";
+  const videosButtonTitle: string = "Videos";
+
+  const photosQuantity: number = 600;
+  const videosQuantity: number = 20;
+  const albumsQuantity: number = 50;
+  const filesQuantity: number = 3;
+  const voiceQuantity: number = 3214;
+  const linksQuantity: number = 5;
+
   // Shows which multimedia button is currently pressed
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
@@ -33,18 +34,18 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
   const indexes: number[] = [0, 1, 2, 3, 4];
   const buttonsList: string[] = ["Photos", "Albums", "Files", "Voice", "Links"];
   const buttonTitles: string[] = [
-    props.photosButtonTitle,
-    props.albumsButtonTitle,
-    props.filesButtonTitle,
-    props.voiceButtonTitle,
-    props.linksButtonTitle,
+    photosButtonTitle,
+    albumsButtonTitle,
+    filesButtonTitle,
+    voiceButtonTitle,
+    linksButtonTitle,
   ];
   const quantities: number[] = [
-    props.photosQuantity,
-    props.albumsQuantity,
-    props.filesQuantity,
-    props.voiceQuantity,
-    props.linksQuantity,
+    photosQuantity,
+    albumsQuantity,
+    filesQuantity,
+    voiceQuantity,
+    linksQuantity,
   ];
 
   return (
@@ -59,7 +60,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
         {pressedMultimediaButton === "Photos" && (
           <Text
             style={styles.multimediaQuantityTitle}
-          >{`${props.photosQuantity.toLocaleString()} ${props.photosButtonTitle.toLowerCase()}, ${props.videosQuantity.toLocaleString()} ${props.videosButtonTitle.toLowerCase()}`}</Text>
+          >{`${photosQuantity.toLocaleString()} ${photosButtonTitle.toLowerCase()}, ${videosQuantity.toLocaleString()} ${videosButtonTitle.toLowerCase()}`}</Text>
         )}
         {indexes.map(
           (index) =>
@@ -102,8 +103,8 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
                 <JacquesFrancoisText
                   text={
                     photosAndAlbumsState === "Albums"
-                      ? props.photosButtonTitle
-                      : props.albumsButtonTitle
+                      ? photosButtonTitle
+                      : albumsButtonTitle
                   }
                   style={styles.multimediaTitle}
                 />
@@ -114,8 +115,8 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
             <JacquesFrancoisText
               text={
                 photosAndAlbumsState === "Albums"
-                  ? props.albumsButtonTitle
-                  : props.photosButtonTitle
+                  ? albumsButtonTitle
+                  : photosButtonTitle
               }
               style={styles.multimediaTitle}
             />
