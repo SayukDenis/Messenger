@@ -8,6 +8,7 @@ import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import MultimediaBar from "./MultimediaBar";
 import Blur from "./Blur";
 import ElseFeaturesButtons from "./ElseFeaturesButtons";
+import ClearChatApproval from "./ClearChatApproval";
 
 // Data from user
 
@@ -79,6 +80,20 @@ const MainUserPage = () => {
         isClearChatButtonClicked={isClearChatButtonClicked}
         setIsClearChatButtonClicked={(value: boolean) => {
           setIsClearChatButtonClicked(value);
+        }}
+      />
+
+      {/* Approval to clear chat if clear button is clicked via else features buttons */}
+      <ClearChatApproval
+        isClearChatButtonClicked={isClearChatButtonClicked}
+        setIsClearChatButtonClicked={(value: boolean) => {
+          setIsClearChatButtonClicked(value);
+        }}
+        AgreeClick={() => {
+          alert("Agree");
+        }}
+        DisagreeClick={() => {
+          alert("Disagree");
         }}
       />
 

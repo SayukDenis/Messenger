@@ -16,8 +16,8 @@ interface ElseFeaturesButtonsProps {
   isVisible: boolean;
   setIsMuted: (value: boolean) => void;
   isMuted: boolean;
-  setIsBlocked: (value: boolean) => void;
-  isBlocked: boolean;
+  setIsBlocked?: (value: boolean) => void;
+  isBlocked?: boolean;
   setIsClearChatButtonClicked: (value: boolean) => void;
   isClearChatButtonClicked: boolean;
 }
@@ -34,12 +34,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
   return (
     <>
       {props.isVisible && (
-        <View
-          style={[
-            styles.elseFeaturesButtonsContainer,
-            { zIndex: props.isVisible ? 2 : 0 },
-          ]}
-        >
+        <View style={styles.elseFeaturesButtonsContainer}>
           {/* Settings button */}
           <TouchableWithoutFeedback>
             <View style={styles.additionalFeatureButton}>
@@ -102,7 +97,9 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {/* Toggle block button */}
           <TouchableWithoutFeedback
             onPress={() => {
-              props.setIsBlocked(!props.isBlocked);
+              if (props.setIsBlocked !== undefined) {
+                props.setIsBlocked(!props.isBlocked);
+              }
               props.setIsVisible(false);
             }}
           >
