@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
-import { styles, JacquesFrancoisText } from "./Styles";
+import { styles, JacquesFrancoisText } from "../ProfileStyles";
 
 interface MultimediaBarProps {
   isphotoOrAlbumButtonHolding: boolean;

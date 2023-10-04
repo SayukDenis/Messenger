@@ -2,13 +2,12 @@
 
 import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
-import { JacquesFrancoisText, styles } from "./Styles.tsx";
+import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
 
 interface ClearChatApprovalProps {
   setIsClearChatButtonClicked: (value: boolean) => void;
   isClearChatButtonClicked: boolean;
   AgreeClick: () => void;
-  DisagreeClick: () => void;
 }
 
 const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
@@ -42,7 +41,6 @@ const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
 
             <TouchableWithoutFeedback
               onPress={() => {
-                props.DisagreeClick();
                 props.setIsClearChatButtonClicked(false);
               }}
             >

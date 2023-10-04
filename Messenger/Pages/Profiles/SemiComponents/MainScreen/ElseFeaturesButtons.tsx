@@ -2,7 +2,8 @@
 
 import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
-import { JacquesFrancoisText, styles } from "./Styles.tsx";
+import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
+import { StackNavigationProp } from "@react-navigation/stack";
 import OffNotificationIcon from "./Icons/OffNotificationIcon.tsx";
 import OnNotificationIcon from "./Icons/OnNotificationIcon.tsx";
 import ClearChatIcon from "./Icons/ClearChatIcon.tsx";
@@ -20,6 +21,8 @@ interface ElseFeaturesButtonsProps {
   isBlocked?: boolean;
   setIsClearChatButtonClicked: (value: boolean) => void;
   isClearChatButtonClicked: boolean;
+  navigation: StackNavigationProp<{}>;
+  settingsClick: () => void;
 }
 
 const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
@@ -36,7 +39,12 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
       {props.isVisible && (
         <View style={styles.elseFeaturesButtonsContainer}>
           {/* Settings button */}
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              props.settingsClick();
+              props.setIsVisible(false);
+            }}
+          >
             <View style={styles.additionalFeatureButton}>
               <SettingsIcon style={styles.additionalFeatureIcon} />
               <JacquesFrancoisText

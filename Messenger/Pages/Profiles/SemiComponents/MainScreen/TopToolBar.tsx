@@ -2,19 +2,19 @@
 
 import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
-import { JacquesFrancoisText, styles } from "./Styles";
-import GoBackIcon from "./Icons/GoBackIcon.tsx";
+import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
+import GoBackButton from "./GoBackButton.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
 import Name from "./Name.tsx";
 
 interface TopToolBarProps {
-  setIsElseFeaturesVisible: (value: boolean) => void;
-  isElseFeaturesVisible: boolean;
+  setIsElseFeaturesVisible?: (value: boolean) => void;
   primaryTitle: string;
   secondaryTitle?: string;
   isMuted?: boolean;
   isBlocked?: boolean;
+  isSearchButtonVisible: boolean;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
@@ -22,7 +22,11 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   return (
     <View style={styles.topToolBar}>
       {/* Main name */}
-      <Name primaryTitle={props.primaryTitle} isMuted={props.isMuted} />
+      <Name
+        primaryTitle={props.primaryTitle}
+        isMuted={props.isMuted}
+        style={styles.profileTitle}
+      />
 
       {/* if blocked */}
       {props.isBlocked && (
@@ -39,31 +43,26 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
       />
 
       {/* Going back button */}
-      <TouchableWithoutFeedback
-        onPress={() => {
-          alert("Going back...");
-        }}
-      >
-        <View style={styles.goBackFromProfileButton}>
-          <GoBackIcon />
-        </View>
-      </TouchableWithoutFeedback>
+      <GoBackButton onPress={() => alert("Going back")} />
 
       {/* Search message button */}
-      <TouchableWithoutFeedback
-        onPress={() => {
-          alert("Searching...");
-        }}
-      >
-        <View style={styles.searchMessagesButton}>
-          <SearchIcon />
-        </View>
-      </TouchableWithoutFeedback>
+      {props.isSearchButtonVisible && (
+        <TouchableWithoutFeedback
+          onPress={() => {
+            alert("Searching...");
+          }}
+        >
+          <View style={styles.searchMessagesButton}>
+            <SearchIcon />
+          </View>
+        </TouchableWithoutFeedback>
+      )}
 
       {/* Else features button */}
       <TouchableWithoutFeedback
         onPress={() => {
-          props.setIsElseFeaturesVisible(true);
+          if (props.setIsElseFeaturesVisible != undefined)
+            props.setIsElseFeaturesVisible(true);
         }}
       >
         <View style={styles.elseFeaturesButton}>

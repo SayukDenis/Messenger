@@ -2,20 +2,25 @@
 
 import React, { useState } from "react";
 import { View } from "react-native";
-import { styles } from "./Styles";
-import TopToolBar from "./TopToolBar";
+import { styles } from "../../SemiComponents/ProfileStyles";
+import { StackNavigationProp } from "@react-navigation/stack";
+import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
-import MultimediaBar from "./MultimediaBar";
-import Blur from "./Blur";
-import ElseFeaturesButtons from "./ElseFeaturesButtons";
-import ClearChatApproval from "./ClearChatApproval";
+import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
+import Blur from "../../SemiComponents/MainScreen/Blur";
+import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
+import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
 
 // Data from user
 
 var profileName: string = "Олексій Коваленко Володимирович";
 var lastTimeOnline: string = "Був online давно";
 
-const MainUserPage = () => {
+type MainUserPageProps = {
+  navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
+};
+
+const MainUserPage: React.FC<MainUserPageProps> = ({ navigation }) => {
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
@@ -57,12 +62,12 @@ const MainUserPage = () => {
       <TopToolBar
         primaryTitle={profileName}
         secondaryTitle={lastTimeOnline}
-        isElseFeaturesVisible={isElseFeaturesVisible === true}
         setIsElseFeaturesVisible={(value: boolean) =>
           setIsElseFeaturesVisible(value)
         }
         isMuted={isMuted}
         isBlocked={isBlocked}
+        isSearchButtonVisible={true}
       />
 
       {/* Else features which appear when else features button is pressed*/}
@@ -81,6 +86,8 @@ const MainUserPage = () => {
         setIsClearChatButtonClicked={(value: boolean) => {
           setIsClearChatButtonClicked(value);
         }}
+        navigation={navigation}
+        settingsClick={() => navigation.navigate("SettingsScreen" as never)}
       />
 
       {/* Approval to clear chat if clear button is clicked via else features buttons */}
@@ -91,9 +98,6 @@ const MainUserPage = () => {
         }}
         AgreeClick={() => {
           alert("Agree");
-        }}
-        DisagreeClick={() => {
-          alert("Disagree");
         }}
       />
 

@@ -330,4 +330,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     color: "rgb(179, 17, 17)",
   },
+  headerTitle: {
+    fontSize: 27,
+  },
 });

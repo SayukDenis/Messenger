@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { View, Animated, Dimensions, Text } from "react-native";
-import { JacquesFrancoisText, styles } from "./Styles";
+import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
 import MutedIcon from "./Icons/MutedIcon.tsx";
 
 interface UsernameProps {
   primaryTitle: string;
   isMuted?: boolean;
+  style: any;
 }
 
 const Name: React.FC<UsernameProps> = (props) => {
@@ -87,7 +88,7 @@ const Name: React.FC<UsernameProps> = (props) => {
         <JacquesFrancoisText
           numberOfLines={1}
           text={props.primaryTitle}
-          style={styles.profileTitle}
+          style={props.style}
         />
       </Animated.View>
     );
@@ -97,7 +98,7 @@ const Name: React.FC<UsernameProps> = (props) => {
     <>
       <View style={{ position: "absolute", opacity: 0 }}>
         <Text
-          style={styles.profileTitle}
+          style={props.style}
           onLayout={(event) => {
             setTextWidth(event.nativeEvent.layout.width);
           }}
@@ -139,7 +140,7 @@ const Name: React.FC<UsernameProps> = (props) => {
           <JacquesFrancoisText
             numberOfLines={1}
             text={props.primaryTitle}
-            style={styles.profileTitle}
+            style={props.style}
           />
           {props.isMuted && <MutedIcon style={styles.mutedIcon} />}
         </View>
