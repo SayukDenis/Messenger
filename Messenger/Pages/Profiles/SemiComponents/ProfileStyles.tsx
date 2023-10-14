@@ -54,7 +54,7 @@ const figmaWidthPixelConverter = screenWidth / 356;
 export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: "rgb(218, 182, 113)",
+    backgroundColor: "rgb(227, 192, 124)",
   },
   topToolBar: {
     backgroundColor: "rgb(231, 230,	228)",
@@ -332,5 +332,32 @@ export const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 27,
+  },
+  settingsOption: {
+    top: 0.04 * screenHeight,
+    width: 0.9 * screenWidth,
+    height: 0.07 * screenHeight,
+    backgroundColor: "rgb(218, 182, 113)",
+    borderRadius: 9,
+    borderWidth: 0.5,
+    borderColor: "rgb(161, 156, 145)",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    alignSelf: "center",
+  },
+  settingsOptionTitle: {
+    position: "absolute",
+    left: 0.045 * screenWidth,
+    fontFamily: "JacquesFrancois",
+    fontSize: 20,
+    color: "rgb(92, 64, 129)",
+  },
+  settingOptionRightArrow: {
+    position: "absolute",
+    right: 0.045 * screenWidth,
+    width: 11 * figmaWidthPixelConverter,
+    height: 17 * figmaWidthPixelConverter,
+    color: "rgb(111, 111, 111)",
   },
 });
