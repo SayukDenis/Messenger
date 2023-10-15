@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainUserScreen from "./MainUserScreen/MainUserScreen.tsx";
 import SettingsScreen from "./SettingsScreen/SettingsScreen.tsx";
+import PermissionScreen from "./PermissionScreen/PermissionScreen.tsx";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ const DialogueProfile = () => {
       >
         <Stack.Screen name="MainUserScreen" component={MainUserScreen} />
         <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+        <Stack.Screen name="PermissionScreen" component={PermissionScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

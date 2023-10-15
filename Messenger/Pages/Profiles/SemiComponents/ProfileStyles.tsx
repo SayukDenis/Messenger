@@ -348,7 +348,7 @@ export const styles = StyleSheet.create({
   },
   settingsOptionTitle: {
     position: "absolute",
-    left: 0.045 * screenWidth,
+    left: 0.05 * screenWidth,
     fontFamily: "JacquesFrancois",
     fontSize: 20,
     color: "rgb(92, 64, 129)",
@@ -359,5 +359,43 @@ export const styles = StyleSheet.create({
     width: 11 * figmaWidthPixelConverter,
     height: 17 * figmaWidthPixelConverter,
     color: "rgb(111, 111, 111)",
+  },
+  intervalTitle: {
+    fontFamily: "JacquesFrancois",
+    fontSize: 20,
+  },
+  containerForIntervalTitle: {
+    top: 0.04 * screenHeight,
+    width: 0.9 * screenWidth,
+    height: 0.04 * screenHeight,
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  checkMark: {
+    width: 20 * figmaWidthPixelConverter,
+    height: 13 * figmaHeightPixelConverter,
+    position: "absolute",
+    right: 0.05 * screenWidth,
+    color: "rgb(41, 121, 179)",
+  },
+  toggleButtonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    right: 0.05 * screenWidth,
+  },
+  toggleButtonBackground: {
+    width: 0.15 * screenWidth,
+    height: 0.034 * screenHeight,
+    backgroundColor: "rgb(161, 156, 145)",
+    borderRadius: 20,
+    justifyContent: "center",
+    padding: 0.003 * screenHeight,
+  },
+  toggleButtonCircle: {
+    height: 0.027 * screenHeight,
+    width: 0.027 * screenHeight,
+    borderRadius: 20,
+    backgroundColor: "white",
   },
 });

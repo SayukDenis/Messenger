@@ -1,3 +1,5 @@
+// Oleksii Kovalenko telegram - @traewe
+
 import React from "react";
 import { Svg, Path, Rect } from "react-native-svg";
 

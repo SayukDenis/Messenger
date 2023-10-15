@@ -1,12 +1,12 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableWithoutFeedback, Text } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import Header from "../../SemiComponents/Header";
 import GoBackButton from "../../SemiComponents/MainScreen/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-import SettingsOption from "../../SemiComponents/SettingsScreen/SettingsOption";
+import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 
 type SettingsScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -21,27 +21,40 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <Header primaryTitle={settingsTitle} style={styles.headerTitle} />
+
       {/* Going back button */}
       <GoBackButton onPress={() => navigation.goBack()} />
 
-      <SettingsOption
-        text={branchesTitle}
+      <TouchableWithoutFeedback
         onPress={() => {
-          alert("BRANCHES");
+          alert("Branches");
         }}
-      />
-      <SettingsOption
-        text={editWallpaperTitle}
+      >
+        <View style={styles.settingsOption}>
+          <Text style={styles.settingsOptionTitle}>{branchesTitle}</Text>
+          <RightArrow style={styles.settingOptionRightArrow} />
+        </View>
+      </TouchableWithoutFeedback>
+
+      <TouchableWithoutFeedback
         onPress={() => {
-          alert("edit");
+          alert("Edit wallpaper");
         }}
-      />
-      <SettingsOption
-        text={permissionTitle}
-        onPress={() => {
-          alert("permission");
-        }}
-      />
+      >
+        <View style={styles.settingsOption}>
+          <Text style={styles.settingsOptionTitle}>{editWallpaperTitle}</Text>
+          <RightArrow style={styles.settingOptionRightArrow} />
+        </View>
+      </TouchableWithoutFeedback>
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("PermissionScreen" as never)}
+      >
+        <View style={styles.settingsOption}>
+          <Text style={styles.settingsOptionTitle}>{permissionTitle}</Text>
+          <RightArrow style={styles.settingOptionRightArrow} />
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };

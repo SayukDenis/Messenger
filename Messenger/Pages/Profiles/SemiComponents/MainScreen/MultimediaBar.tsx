@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
 import { styles, JacquesFrancoisText } from "../ProfileStyles";
 
@@ -10,6 +10,8 @@ interface MultimediaBarProps {
 }
 
 const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
+  const [maxQuantitiesTitleWidth, setMaxQuantitiesTitleWidth] = useState(0);
+
   const photosButtonTitle: string = "Photos";
   const albumsButtonTitle: string = "Albums";
   const filesButtonTitle: string = "Files";
@@ -31,6 +33,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
   // Shows photos or albums is selected
   const [photosAndAlbumsState, setPhotosAndAlbumsState] = useState("Photos");
 
+  // !!!!!!!ПЕРЕРОБИТИ!!!!!!!
   const indexes: number[] = [0, 1, 2, 3, 4];
   const buttonsList: string[] = ["Photos", "Albums", "Files", "Voice", "Links"];
   const buttonTitles: string[] = [
@@ -48,6 +51,43 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
     linksQuantity,
   ];
 
+  // Finding max width for multimedia quantities containter
+  const CalculateMaxQuantitiesTitleWidth = () => {
+    return (
+      <View style={{ position: "absolute", opacity: 0 }}>
+        <Text
+          style={styles.multimediaQuantityTitle}
+          onLayout={(event) => {
+            event.nativeEvent.layout.width > maxQuantitiesTitleWidth &&
+              setMaxQuantitiesTitleWidth(event.nativeEvent.layout.width);
+          }}
+        >
+          {`${photosQuantity.toLocaleString()} ${photosButtonTitle.toLowerCase()}, ${videosQuantity.toLocaleString()} ${videosButtonTitle.toLowerCase()}`}
+        </Text>
+        {indexes.map(
+          (index) =>
+            index != 0 &&
+            index != 1 && (
+              <Text
+                key={index}
+                style={styles.multimediaQuantityTitle}
+                onLayout={(event) => {
+                  event.nativeEvent.layout.width > maxQuantitiesTitleWidth &&
+                    setMaxQuantitiesTitleWidth(event.nativeEvent.layout.width);
+                }}
+              >{`${quantities[index].toLocaleString()} ${buttonTitles[
+                index
+              ].toLowerCase()}`}</Text>
+            )
+        )}
+      </View>
+    );
+  };
+
+  useEffect(() => {
+    setMaxQuantitiesTitleWidth(0);
+  }, []);
+
   return (
     <View
       style={[
@@ -55,8 +95,14 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
         { zIndex: props.isphotoOrAlbumButtonHolding === true ? 2 : 0 },
       ]}
     >
+      <CalculateMaxQuantitiesTitleWidth />
       {/* Container that shows quantities of currently pressed multimedia */}
-      <View style={styles.multimediaQuantitiesContainer}>
+      <View
+        style={[
+          styles.multimediaQuantitiesContainer,
+          { width: maxQuantitiesTitleWidth + 20 },
+        ]}
+      >
         {pressedMultimediaButton === "Photos" && (
           <Text
             style={styles.multimediaQuantityTitle}

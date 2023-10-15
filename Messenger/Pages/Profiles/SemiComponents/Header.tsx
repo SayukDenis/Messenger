@@ -1,13 +1,13 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View } from "react-native";
+import { View, TextStyle } from "react-native";
 import { styles } from "./ProfileStyles.tsx";
 import Name from "./MainScreen/Name.tsx";
 
 interface HeaderProps {
   primaryTitle: string;
-  style: any;
+  style: TextStyle;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {

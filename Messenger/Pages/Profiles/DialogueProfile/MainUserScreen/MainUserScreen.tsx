@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -10,11 +10,9 @@ import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
+import { user } from "../../SemiComponents/DBUser";
 
 // Data from user
-
-var profileName: string = "Олексій Коваленко Володимирович";
-var lastTimeOnline: string = "Був online давно";
 
 type MainUserPageProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -26,8 +24,13 @@ const MainUserPage: React.FC<MainUserPageProps> = ({ navigation }) => {
     useState(false);
   const [isClearChatButtonClicked, setIsClearChatButtonClicked] =
     useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [isMuted, setIsMuted] = useState(user.isMuted);
+  const [isBlocked, setIsBlocked] = useState(user.isBlocked);
+
+  useEffect(() => {
+    user.isBlocked = isBlocked;
+    user.isMuted = isMuted;
+  });
 
   return (
     <View style={styles.mainContainer}>
@@ -60,8 +63,8 @@ const MainUserPage: React.FC<MainUserPageProps> = ({ navigation }) => {
 
       {/* Top tool bar with buttons*/}
       <TopToolBar
-        primaryTitle={profileName}
-        secondaryTitle={lastTimeOnline}
+        primaryTitle={user.profileName}
+        secondaryTitle={user.lastTimeOnline}
         setIsElseFeaturesVisible={(value: boolean) =>
           setIsElseFeaturesVisible(value)
         }
