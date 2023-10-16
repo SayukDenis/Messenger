@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Text, ScrollView,StatusBar } from "react-native";
+import { View, Text, ScrollView,StatusBar,Button } from "react-native";
 import QuestionsHeader from "./QuestinsHeader/QuestinsHeader";
 import StyleQuestionsPage from "./StyleQuestionsPage";
 
-const QuestionPage = () =>{
-    return<View>
+const QuestionPage: React.FC<any> = ({ navigation })=>{
+    return<View style={StyleQuestionsPage.conteiner}>
     <StatusBar hidden={true}/>
-    <QuestionsHeader></QuestionsHeader>
+    <QuestionsHeader navigation = {navigation}></QuestionsHeader>
     <ScrollView style ={StyleQuestionsPage.textConteinre}>
         <Text>Telintik Social Network Documentation</Text>
         <Text>Introduction:</Text>

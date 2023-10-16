@@ -6,7 +6,7 @@ const windowWidth = Dimensions.get('window').width;
 const StyleConfidentialityCenter = StyleSheet.create({
     centerConteiner:{
         display:'flex',
-        margin:"3%"
+        margin:"3%",
     },
 
     textStyle:{

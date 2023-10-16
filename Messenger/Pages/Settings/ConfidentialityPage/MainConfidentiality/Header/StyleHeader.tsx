@@ -24,7 +24,7 @@ const StyleHeadr = StyleSheet.create({
     },
 
     backbutton:{
-        backgroundColor:'blue',
+       
     },
 
     conteinerConfidentialityPage:{

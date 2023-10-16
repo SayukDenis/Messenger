@@ -5,7 +5,8 @@ import Settingspage from '../Settings';
 import SavedmessagePage from '../../../SavedMessagePage/SavedMessagePage';
 import EditPage from '../../EdiitPage/EditPage';
 import QuestionPage from '../../../Questionspage/Questionspage';
-import Center from './Center';
+import ChatFolderPage from '../../../ChatFolderPage/ChatFolderPage';
+import ConfidentialityPage from '../../../ConfidentialityPage/MainConfidentiality/ConfidentialPage';
 
 
 
@@ -22,12 +23,12 @@ const Navigation = () => {
           headerShown: false, 
         }}
       >
-      
-        <Stack.Screen name="Center" component={Center} />
         <Stack.Screen name="Settings" component={Settingspage} />
         <Stack.Screen name="Saved message" component={SavedmessagePage} />
         <Stack.Screen name="Edit page" component={EditPage} />
         <Stack.Screen name="Question page" component={QuestionPage} />
+        <Stack.Screen name="Chat folders" component={ChatFolderPage} />
+        <Stack.Screen name="Confidentiality" component={ConfidentialityPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -4,7 +4,7 @@ import StyleCentre from './StyleCenter';
 import StyleButtonList from './StyleButtonLIst';
 import SavedmessagePage from '../../../SavedMessagePage/SavedMessagePage';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import Header from '../Header/Heder';
 
 const Stack = createStackNavigator();
 
@@ -16,15 +16,15 @@ const Center: React.FC<any> = ({ navigation })=>{
         };
 
         return <View style={StyleCentre.conteiner} >
-
+                                
                                 <Image style={StyleCentre.imgStyle} source={{uri:'https://www.meme-arsenal.com/memes/a297a80a2839282005e0a60135421919.jpg'}}></Image>
-                                <View style={StyleCentre.button}><Button title ="Edit" ></Button></View>
+                                <View style={StyleCentre.button}><Button title ="Edit"  onPress={() => navigation.navigate('Edit page')} ></Button></View>
                                 <View style={StyleCentre.box}></View>
                                 <Text style= {StyleCentre.text}>Settings</Text>
                                 <View>
                                     {items.map((item, index) => (
                                     <View key={index} >
-                                        <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Edit page')}>
+                                        <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate(item)}>
                                         <Text>{item}</Text>
                                         </TouchableOpacity>
                                     </View>
