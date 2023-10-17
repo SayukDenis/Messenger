@@ -5,7 +5,7 @@ import { ViewStyle } from "react-native";
 import { Svg, Line } from "react-native-svg";
 
 interface CheckMarkProps {
-  style?: ViewStyle;
+  style: ViewStyle;
 }
 
 const CheckMark: React.FC<CheckMarkProps> = (props) => {

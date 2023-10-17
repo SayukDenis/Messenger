@@ -1,7 +1,14 @@
+// Oleksii Kovalenko telegram - @traewe
+
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path, Line } from "react-native-svg";
 
-const SearchIcon = (props: any) => {
+interface SearchIconProps {
+  style?: ViewStyle;
+}
+
+const SearchIcon: React.FC<SearchIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 14 14" fill="none">
       <Path

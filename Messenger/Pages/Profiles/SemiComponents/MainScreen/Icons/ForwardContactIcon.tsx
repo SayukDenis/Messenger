@@ -1,9 +1,14 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
-const ForwardContactIcon = (props: any) => {
+interface ForwardContactIconProps {
+  style: ViewStyle;
+}
+
+const ForwardContactIcon: React.FC<ForwardContactIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 8 11" fill="none">
       <Path

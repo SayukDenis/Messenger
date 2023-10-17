@@ -6,25 +6,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import MainUserScreen from "./MainUserScreen/MainUserScreen.tsx";
 import SettingsScreen from "./SettingsScreen/SettingsScreen.tsx";
 import PermissionScreen from "./PermissionScreen/PermissionScreen.tsx";
+import BranchesScreen from "./BranchesScreen/BranchesScreen.tsx";
+import NewBranchScreen from "./BranchesScreen/NewBranchScreen/NewBranchScreen.tsx";
+import Navigation from "./Navigation.tsx";
 
 const Stack = createStackNavigator();
 
 const DialogueProfile = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="MainUserScreen"
-        screenOptions={{
-          headerShown: false,
-          animationEnabled: false,
-        }}
-      >
-        <Stack.Screen name="MainUserScreen" component={MainUserScreen} />
-        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-        <Stack.Screen name="PermissionScreen" component={PermissionScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return <Navigation />;
 };
 
 export default DialogueProfile;

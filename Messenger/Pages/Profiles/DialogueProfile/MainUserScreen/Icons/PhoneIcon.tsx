@@ -1,7 +1,14 @@
-import React from "react";
-import { Svg, Path, Rect } from "react-native-svg";
+// Oleksii Kovalenko telegram - @traewe
 
-const PhoneIcon = (props: any) => {
+import React from "react";
+import { ViewStyle } from "react-native";
+import { Svg, Path } from "react-native-svg";
+
+interface PhoneIconProps {
+  style?: ViewStyle;
+}
+
+const PhoneIcon: React.FC<PhoneIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 24 24" fill="none">
       <Path

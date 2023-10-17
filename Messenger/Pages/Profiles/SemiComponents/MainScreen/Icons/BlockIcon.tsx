@@ -1,9 +1,14 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { ViewStyle } from "react-native";
 import Svg, { Path, Circle } from "react-native-svg";
 
-const BlockIcon = (props: any) => {
+interface BlockIconProps {
+  style: ViewStyle;
+}
+
+const BlockIcon: React.FC<BlockIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 24 24" fill="none">
       <Circle cx="12" cy="12" r="9" stroke="red" stroke-width="10" />

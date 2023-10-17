@@ -20,15 +20,13 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Header primaryTitle={settingsTitle} style={styles.headerTitle} />
+      <Header primaryTitle={settingsTitle} />
 
       {/* Going back button */}
       <GoBackButton onPress={() => navigation.goBack()} />
 
       <TouchableWithoutFeedback
-        onPress={() => {
-          alert("Branches");
-        }}
+        onPress={() => navigation.navigate("BranchesScreen" as never)}
       >
         <View style={styles.settingsOption}>
           <Text style={styles.settingsOptionTitle}>{branchesTitle}</Text>

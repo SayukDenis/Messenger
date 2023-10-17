@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, Text, Switch } from "react-native";
+import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import Header from "../../SemiComponents/Header";
 import GoBackButton from "../../SemiComponents/MainScreen/GoBackButton";
@@ -42,7 +42,7 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Header primaryTitle={permissionTitle} style={styles.headerTitle} />
+      <Header primaryTitle={permissionTitle} />
 
       {/* Going back button */}
       <GoBackButton onPress={() => navigation.goBack()} />
@@ -66,8 +66,8 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
         </View>
       </TouchableOpacity>
 
-      <View style={styles.containerForIntervalTitle}>
-        <Text style={styles.intervalTitle}>Interval</Text>
+      <View style={styles.containerForSettingTitle}>
+        <Text style={styles.settingTitle}>Interval</Text>
       </View>
 
       {/* Different buttons to set an interval */}
@@ -78,6 +78,7 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
           onPress={() => {
             setSelectedInterval(interval.value);
           }}
+          hitSlop={{ top: -0.03 * Dimensions.get("screen").height }}
         >
           <View style={styles.settingsOption}>
             <Text style={styles.settingsOptionTitle}>{interval.title}</Text>

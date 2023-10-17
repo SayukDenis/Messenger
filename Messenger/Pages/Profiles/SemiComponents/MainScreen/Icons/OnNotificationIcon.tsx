@@ -1,9 +1,14 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
-const OnNotificationIcon = (props: any) => {
+interface OnNotificationIconProps {
+  style: ViewStyle;
+}
+
+const OnNotificationIcon: React.FC<OnNotificationIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 8 10" fill="none">
       <Path

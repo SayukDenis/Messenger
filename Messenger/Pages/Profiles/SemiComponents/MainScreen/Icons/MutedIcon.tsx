@@ -1,7 +1,14 @@
+// Oleksii Kovalenko telegram - @traewe
+
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
-const MutedIcon = (props: any) => {
+interface MutedIconProps {
+  style: ViewStyle;
+}
+
+const MutedIcon: React.FC<MutedIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 14 11" fill="none">
       <Path

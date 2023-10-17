@@ -1,7 +1,14 @@
+// Oleksii Kovalenko telegram - @traewe
+
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path, Rect } from "react-native-svg";
 
-const GoBackIcon = (props: any) => {
+interface GoBackIconProps {
+  style: ViewStyle;
+}
+
+const GoBackIcon: React.FC<GoBackIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 12 23" fill="none">
       <Rect

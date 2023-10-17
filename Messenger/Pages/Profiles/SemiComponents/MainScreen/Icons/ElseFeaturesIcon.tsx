@@ -1,7 +1,14 @@
+// Oleksii Kovalenko telegram - @traewe
+
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
-const ElseFeaturesIcon = (props: any) => {
+interface ElseFeaturesIconProps {
+  style?: ViewStyle;
+}
+
+const ElseFeaturesIcon: React.FC<ElseFeaturesIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 16 21" fill="none">
       <Path

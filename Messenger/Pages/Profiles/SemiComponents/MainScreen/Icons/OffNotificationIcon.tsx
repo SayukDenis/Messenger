@@ -1,9 +1,14 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
-const OffNotificationIcon = (props: any) => {
+interface OffNotificationIconProps {
+  style: ViewStyle;
+}
+
+const OffNotificationIcon: React.FC<OffNotificationIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 11 10" fill="none">
       <Path

@@ -1,9 +1,14 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { ViewStyle } from "react-native";
 import Svg, { Path, Line } from "react-native-svg";
 
-const ClearChatIcon = (props: any) => {
+interface ClearChatIconProps {
+  style: ViewStyle;
+}
+
+const ClearChatIcon: React.FC<ClearChatIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 9 11" fill="none">
       <Path

@@ -1,9 +1,14 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path, Rect } from "react-native-svg";
 
-const RightArrow = (props: any) => {
+interface RightArrowProps {
+  style: ViewStyle;
+}
+
+const RightArrow: React.FC<RightArrowProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 5 11" fill="none">
       <Rect

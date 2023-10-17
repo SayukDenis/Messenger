@@ -12,6 +12,7 @@ import { styles } from "../../SemiComponents/ProfileStyles";
 
 interface ToggleButtonProps {
   containerStyle?: ViewStyle;
+  circleStyle?: ViewStyle;
   isEnabled: boolean;
   Toggle: (value: boolean) => void;
 }
@@ -41,20 +42,18 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
       if (
         (props.isEnabled === false && currentPosition === "Right") ||
         (props.isEnabled === true && currentPosition === "Left")
-      ) {
+      )
         Move();
-      }
-      console.log(props.isEnabled);
     }, []);
 
     const marginFromRightToLeft = animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [(0.15 * screenWidth) / 2, 0],
+      outputRange: [0.075 * screenWidth, 0],
     });
 
     const marginFromLeftToRight = animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, (0.15 * screenWidth) / 2],
+      outputRange: [0, 0.075 * screenWidth],
     });
 
     return (
@@ -72,6 +71,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
                 ? "rgb(42, 223, 71)"
                 : "rgb(161, 156, 145)",
             },
+            props.containerStyle,
           ]}
         >
           <Animated.View
@@ -86,7 +86,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
               ],
             }}
           >
-            <View style={styles.toggleButtonCircle} />
+            <View style={[styles.toggleButtonCircle, props.circleStyle]} />
           </Animated.View>
         </View>
       </TouchableOpacity>

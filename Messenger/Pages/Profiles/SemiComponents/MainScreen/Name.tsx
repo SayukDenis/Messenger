@@ -1,98 +1,20 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState, useEffect, useRef } from "react";
-import { View, Animated, Dimensions, Text } from "react-native";
+import React, { useState } from "react";
+import { View, Dimensions, Text, TextStyle } from "react-native";
 import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
 import MutedIcon from "./Icons/MutedIcon.tsx";
+import NameAnimation from "./NameAnimation.tsx";
 
 interface UsernameProps {
   primaryTitle: string;
   isMuted?: boolean;
-  style: any;
+  style: TextStyle;
 }
 
 const Name: React.FC<UsernameProps> = (props) => {
   const [textWidth, setTextWidth] = useState(0);
   const screenWidth = Dimensions.get("screen").width;
-
-  // Animation of running text
-  const Animate = () => {
-    const animatedValue = useRef(new Animated.Value(0)).current;
-    const [isFirstAnimation, setIsFirstAnimation] = useState(true);
-
-    useEffect(() => {
-      const PushTextToLeft = () => {
-        setTimeout(() => {
-          Animated.timing(animatedValue, {
-            toValue: 1,
-            duration: 20 * textWidth,
-            useNativeDriver: false,
-          }).start(() => {
-            setIsFirstAnimation(false);
-            TeleportText();
-          });
-        }, 2000);
-      };
-
-      const PushTextToCenter = () => {
-        Animated.timing(animatedValue, {
-          toValue: 0.5,
-          duration: 20 * textWidth,
-          useNativeDriver: false,
-        }).start(() => {
-          PushTextToLeft();
-        });
-      };
-
-      const TeleportText = () => {
-        Animated.timing(animatedValue, {
-          toValue: 0,
-          duration: 0,
-          useNativeDriver: false,
-        }).start(() => {
-          PushTextToCenter();
-        });
-      };
-
-      PushTextToLeft();
-    }, [animatedValue]);
-
-    const marginLeftFirstCycle = animatedValue.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [
-        0,
-        -screenWidth * 0.0015 * textWidth,
-        -screenWidth * 0.003 * textWidth,
-      ],
-    });
-
-    const marginLeft = animatedValue.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [
-        screenWidth * 0.003 * textWidth,
-        0,
-        -screenWidth * 0.003 * textWidth,
-      ],
-    });
-
-    return (
-      <Animated.View
-        style={{
-          transform: [
-            {
-              translateX: isFirstAnimation ? marginLeftFirstCycle : marginLeft,
-            },
-          ],
-        }}
-      >
-        <JacquesFrancoisText
-          numberOfLines={1}
-          text={props.primaryTitle}
-          style={props.style}
-        />
-      </Animated.View>
-    );
-  };
 
   return (
     <>
@@ -127,7 +49,11 @@ const Name: React.FC<UsernameProps> = (props) => {
             ]}
           >
             <View style={{ width: textWidth * 1.3 }}>
-              <Animate />
+              <NameAnimation
+                primaryTitle={props.primaryTitle}
+                textWidth={textWidth}
+                style={props.style}
+              />
             </View>
           </View>
           {props.isMuted && <MutedIcon style={styles.mutedIcon} />}
@@ -149,4 +75,4 @@ const Name: React.FC<UsernameProps> = (props) => {
   );
 };
 
-export default Name;
+export default React.memo(Name);

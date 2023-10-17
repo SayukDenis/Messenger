@@ -7,14 +7,17 @@ import Name from "./MainScreen/Name.tsx";
 
 interface HeaderProps {
   primaryTitle: string;
-  style: TextStyle;
+  style?: TextStyle;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
   return (
     <View style={styles.topToolBar}>
       {/* Main name */}
-      <Name primaryTitle={props.primaryTitle} style={props.style} />
+      <Name
+        primaryTitle={props.primaryTitle}
+        style={props.style ? props.style : styles.headerTitle}
+      />
     </View>
   );
 };

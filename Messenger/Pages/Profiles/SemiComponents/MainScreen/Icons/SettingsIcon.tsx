@@ -1,9 +1,14 @@
-//Oleksii Kovalenko telegram - @traewe
+// Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { ViewStyle } from "react-native";
 import { Svg, Path } from "react-native-svg";
 
-const SettingsIcon = (props: any) => {
+interface SettingsIconProps {
+  style: ViewStyle;
+}
+
+const SettingsIcon: React.FC<SettingsIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 24 24" fill="none">
       <Path
