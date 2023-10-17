@@ -4,11 +4,11 @@ import StylePassword from "./StylePassword";
 import PasswordHeader from "./PasswordHeader/PasswoedHeader";
 import PasswordCenter from "./PasswordCenter/PasswondCenter";
 
-const PasswordPage = ()=>{
-    return <>
-    <PasswordHeader></PasswordHeader>
+const PasswordPage : React.FC<any> = ({ navigation })=>{
+    return <View style={StylePassword.passwordConteiner}>
+    <PasswordHeader navigation ={navigation} ></PasswordHeader>
     <PasswordCenter></PasswordCenter>
-    </>
+    </View>
 }
 
 export default PasswordPage;

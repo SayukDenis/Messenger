@@ -8,7 +8,7 @@ const ConfidentialityPage: React.FC<any> = ({ navigation })=> {
     return <View style={StyleConf.conteiner}  >
         <StatusBar hidden={true}/>
         <Header  navigation = {navigation}></Header>
-        <Confidentialitycenter></Confidentialitycenter>
+        <Confidentialitycenter navigation = {navigation}></Confidentialitycenter>
     </View>
 }
 

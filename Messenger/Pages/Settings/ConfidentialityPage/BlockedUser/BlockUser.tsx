@@ -4,10 +4,10 @@ import BlocUserHeader from './BlockUserHeader/BlockUserHeader';
 import StyleBlockUser from './StyleBlockedUser';
 import BlockUserCenter from './BlockUserCenter/BlockuserCenter';
 
-const BlockUser = ()=>{
+const BlockUser : React.FC<any> = ({ navigation })=>{
     return<View style= {StyleBlockUser.BlockUserConteiner}>
-        <BlocUserHeader></BlocUserHeader>
-        <BlockUserCenter></BlockUserCenter>
+        <BlocUserHeader navigation = {navigation}></BlocUserHeader>
+        <BlockUserCenter navigation = {navigation}></BlockUserCenter>
     </View>
 }
 

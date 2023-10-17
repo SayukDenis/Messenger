@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet,View,Button, Text, TouchableOpacity } from "react-native";
+import {View, Text, TouchableOpacity } from "react-native";
 import StyleBlockUserHeader from "./StyleBlockUser";
 
-const BlocUserHeader = ()=>{
+const BlocUserHeader: React.FC<any> = ({ navigation })=> {
     return <View style = {StyleBlockUserHeader.header}>
-        <Button title ='but'></Button>
+        <TouchableOpacity onPress={() => navigation.goBack()}><Text>but</Text></TouchableOpacity>
         <Text>Blocked users</Text>
         <TouchableOpacity><Text style={StyleBlockUserHeader.unblockButt}>Unblock</Text></TouchableOpacity>
     </View>
