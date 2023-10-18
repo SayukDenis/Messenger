@@ -8,17 +8,19 @@ import Branches from "./Branches/Branches";
 import Role from "./Role/Role";
 import CreateRole from "./Role/CreateRole/CreateRole";
 import RolePermission from "./Role/CreateRole/RolePermission/RolePermission";
+import MainGroupPage from "./MainGroupPage/MainGroupPage";
 
 const Stack = createStackNavigator();
 export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SettingsMenu"
+        initialRouteName="MainGroupPage"
         screenOptions={{
           headerShown: false, // Приховуємо верхню шапку для всіх екранів
         }}
       >
+        <Stack.Screen name="MainGroupPage" component={MainGroupPage} />
         <Stack.Screen name="SettingsMenu" component={SettingsMenu} />
         <Stack.Screen name="AuditLog" component={AuditLog} />
         <Stack.Screen name="Branches" component={Branches} />

@@ -6,6 +6,7 @@ export interface UserProps {
   isBlocked: boolean;
   profileName: string;
   lastTimeOnline: string;
+  MembersCount: string;
   isEmergencyMessagesEnabled: boolean;
 }
 
@@ -17,5 +18,6 @@ export const user: UserProps = {
   isBlocked: false,
   profileName: "Олексій Коваленко Володимирович",
   lastTimeOnline: "Був online давно",
+  MembersCount: "9 members",
   isEmergencyMessagesEnabled: false,
 };
