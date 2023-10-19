@@ -15,146 +15,16 @@ import GoBackButton from "../../../SemiComponents/MainScreen/GoBackButton";
 import { styles } from "../../../SemiComponents/ProfileStyles";
 import CrossIcon from "../Icons/CrossIcon";
 import EmojiList from "./EmojiList";
+import ColorList from "./ColorList";
+import EmojiAndColorButtons from "./EmojiAndColorButtons";
+import ColorSelection from "./ColorSelection";
+import EmojiSelection from "./EmojiSelection";
+import Blur from "../../../SemiComponents/MainScreen/Blur";
+import BranchColorPicker from "./BranchColorPicker";
 
 type BranchesProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
-
-const emojis = [
-  "😀",
-  "😃",
-  "😍",
-  "😄",
-  "😁",
-  "😆",
-  "🥹",
-  "😅",
-  "😂",
-  "🤣",
-  "🥲",
-  "☺️",
-  "😊",
-  "😇",
-  "🙂",
-  "🙃",
-  "😉",
-  "😌",
-  "🥰",
-  "😘",
-  "😗",
-  "😙",
-  "😚",
-  "😋",
-  "😛",
-  "😝",
-  "😜",
-  "🤪",
-  "🤨",
-  "🧐",
-  "🤓",
-  "😎",
-  "🥸",
-  "🤩",
-  "🥳",
-  "😏",
-  "😒",
-  "😞",
-  "😔",
-  "😟",
-  "😕",
-  "🙁",
-  "☹️",
-  "😣",
-  "😖",
-  "😫",
-  "😩",
-  "🥺",
-  "😢",
-  "😭",
-  "😤",
-  "😠",
-  "😡",
-  "🤬",
-  "🤯",
-  "😳",
-  "🥵",
-  "🥶",
-  "😶",
-  "😱",
-  "😨",
-  "😰",
-  "😥",
-  "😓",
-  "🤗",
-  "🤔",
-  "🫣",
-  "🤭",
-  "🫢",
-  "🫡",
-  "🤫",
-  "🫠",
-  "🤥",
-  "😶",
-  "🫥",
-  "😐",
-  "🫤",
-  "😑",
-  "😬",
-  "🙄",
-  "😯",
-  "😦",
-  "😧",
-  "😮",
-  "😲",
-  "🥱",
-  "😴",
-  "🤤",
-  "😪",
-  "😵",
-  "🤐",
-  "🥴",
-  "🤢",
-  "🤮",
-  "🤧",
-  "😷",
-  "🤒",
-  "🤕",
-  "🤑",
-  "🤠",
-  "😈",
-  "👿",
-  "👹",
-  "👺",
-  "💩",
-  "👻",
-  "💀",
-  "👽",
-  "👾",
-  "🤖",
-  "🎃",
-  "😺",
-  "😸",
-  "😹",
-  "😻",
-  "😼",
-  "😽",
-  "🙀",
-  "👍",
-  "👋",
-  "🎉",
-  "🤯",
-  "😎",
-  "🦫",
-  "❤️",
-  "🤡",
-  "😂",
-  "😡",
-  "😭",
-  "😐",
-  "🤓",
-  "🤢",
-  "👽",
-];
 
 const screenWidth: number = Dimensions.get("screen").width;
 
@@ -163,17 +33,27 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
   const nameTitle: string = "Name";
   const branchNamePlaceHolder: string = "Name Branch";
   const designBranchTitle: string = "Design branch";
-  const resetTitle: string = "Reset";
 
   const [branchName, setBranchName] = useState("");
   const [pickedEmoji, setPickedEmoji] = useState("");
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
-  const [lengthOfAllEmojisPlusSpaces, setLengthOfAllEmojisPlusSpaces] =
-    useState(0);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
+  const [pickedColor, setPickedColor] = useState("rgb(62, 62, 62)");
+  const [pickedSpecialColor, setPickedSpecialColor] =
+    useState("rgb(255, 255, 255)");
+  const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
+    useState(false);
 
   return (
     <View style={styles.mainContainer}>
+      <Blur
+        visibleWhen={isSpecialColorSelectionVisible === true}
+        onPress={() => {
+          setIsSpecialColorSelectionVisible(false);
+        }}
+        style={styles.blurEffect}
+      />
+
       <Header primaryTitle={newBranchTitle} />
 
       <GoBackButton onPress={() => navigation.goBack()} />
@@ -194,7 +74,6 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
             style={styles.newBranchNameInput}
             onChangeText={(text: string) => {
               setBranchName(text);
-              console.log(text);
             }}
             value={branchName}
             placeholder={branchNamePlaceHolder}
@@ -206,71 +85,41 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
           <Text style={styles.settingTitle}>{designBranchTitle}</Text>
         </View>
 
-        <View style={{ flexDirection: "row" }}>
-          {/* Select emoji button */}
-          {!isEmojiSelectionVisible && (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                setIsEmojiSelectionVisible(true);
-              }}
-            >
-              <View
-                style={[
-                  styles.containerForSettingTitle,
-                  { top: 0.05 * Dimensions.get("screen").height },
-                ]}
-              >
-                <View style={styles.pickEmojiButtonContainer}>
-                  <Text style={styles.selectedEmojiForBranch}>😀</Text>
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
-          )}
-        </View>
+        <EmojiAndColorButtons
+          isVisible={!isEmojiSelectionVisible && !isColorSelectionVisible}
+          onColorClick={() => setIsColorSelectionVisible(true)}
+          onEmojiClick={() => setIsEmojiSelectionVisible(true)}
+        />
+
+        {/* Choosing color menu */}
+        <ColorSelection
+          isVisible={isColorSelectionVisible}
+          onSpecialColorPress={() => {
+            setIsSpecialColorSelectionVisible(true);
+          }}
+          onColorClick={(color) => {
+            setPickedColor(color);
+          }}
+          onCloseClick={() => {
+            setIsColorSelectionVisible(false);
+          }}
+          pickedColor={pickedColor}
+          pickedSpecialColor={pickedSpecialColor}
+        />
+
+        <BranchColorPicker isVisible={isSpecialColorSelectionVisible} />
 
         {/* Choosing emoji menu */}
-        {isEmojiSelectionVisible && (
-          <>
-            <View style={styles.closeEmojiSelectionButtonContainer}>
-              {/* Close emoji selection button */}
-              <TouchableOpacity
-                onPress={() => {
-                  setIsEmojiSelectionVisible(false);
-                }}
-              >
-                <View style={styles.closeEmojiSelectionButton}>
-                  <CrossIcon style={styles.crossIcon} />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <EmojiList
-              emojis={emojis}
-              pickedEmoji={pickedEmoji}
-              onEmojiPress={(emoji) => {
-                setPickedEmoji(emoji);
-              }}
-              style={{
-                height:
-                  (lengthOfAllEmojisPlusSpaces / (screenWidth * 0.9)) *
-                  Dimensions.get("screen").height *
-                  0.027,
-              }}
-              numColumns={Math.floor(lengthOfAllEmojisPlusSpaces / screenWidth)}
-            />
-          </>
-        )}
-
-        {/* Finding sizes that emoji container should consist of */}
-        <Text
-          style={{ fontSize: 23, position: "absolute", opacity: 0 }}
-          onLayout={(event) => {
-            setLengthOfAllEmojisPlusSpaces(
-              event.nativeEvent.layout.width * emojis.length
-            );
+        <EmojiSelection
+          isVisible={isEmojiSelectionVisible}
+          onEmojiClick={(emoji) => {
+            setPickedEmoji(emoji);
           }}
-        >
-          {emojis[0] + " "}
-        </Text>
+          pickedEmoji={pickedEmoji}
+          onCloseClick={() => {
+            setIsEmojiSelectionVisible(false);
+          }}
+        />
       </View>
     </View>
   );

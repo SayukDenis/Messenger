@@ -7,7 +7,7 @@ import { BlurView } from "expo-blur";
 interface BlurProps {
   visibleWhen: boolean;
   onPress: any;
-  style?: any;
+  style: any;
 }
 
 const Blur: React.FC<BlurProps> = (props) => {

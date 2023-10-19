@@ -53,17 +53,17 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
     inputRange: [0, 0.5, 1],
     outputRange: [
       0,
-      -screenWidth * 0.0015 * props.textWidth,
-      -screenWidth * 0.003 * props.textWidth,
+      -screenWidth * 0.00175 * props.textWidth,
+      -screenWidth * 0.0035 * props.textWidth,
     ],
   });
 
   const marginLeft = animatedValue.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [
-      screenWidth * 0.003 * props.textWidth,
+      screenWidth * 0.0035 * props.textWidth,
       0,
-      -screenWidth * 0.003 * props.textWidth,
+      -screenWidth * 0.0035 * props.textWidth,
     ],
   });
 

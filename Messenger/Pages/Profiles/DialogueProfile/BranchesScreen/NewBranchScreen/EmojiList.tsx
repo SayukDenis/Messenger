@@ -18,15 +18,17 @@ interface EmojiListProps {
   style?: ViewStyle;
   numColumns: number;
 }
+
 const EmojiList: React.FC<EmojiListProps> = (props) => {
   return (
     <View style={[styles.emojiSelectionContainer, props.style]}>
       <FlatList
+        key={props.numColumns}
         data={props.emojis}
         keyExtractor={(item) => item}
         horizontal={false}
         numColumns={props.numColumns}
-        contentContainerStyle={{ width: "100%", padding: 16 }}
+        contentContainerStyle={{ width: "100%", padding: 15 }}
         renderItem={({ item }) => (
           <TouchableWithoutFeedback
             onPress={() => {
