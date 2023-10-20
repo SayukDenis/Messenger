@@ -21,12 +21,14 @@ import ColorSelection from "./ColorSelection";
 import EmojiSelection from "./EmojiSelection";
 import Blur from "../../../SemiComponents/MainScreen/Blur";
 import BranchColorPicker from "./BranchColorPicker";
+import BranchAppearance from "./BranchAppearance";
 
 type BranchesProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
 
 const screenWidth: number = Dimensions.get("screen").width;
+const screenHeight: number = Dimensions.get("screen").height;
 
 const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
   const newBranchTitle: string = "New Branch";
@@ -47,7 +49,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <Blur
-        visibleWhen={isSpecialColorSelectionVisible === true}
+        visibleWhen={isSpecialColorSelectionVisible}
         onPress={() => {
           setIsSpecialColorSelectionVisible(false);
         }}
@@ -77,6 +79,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
             }}
             value={branchName}
             placeholder={branchNamePlaceHolder}
+            maxLength={25}
           />
         </View>
 
@@ -107,7 +110,13 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
           pickedSpecialColor={pickedSpecialColor}
         />
 
-        <BranchColorPicker isVisible={isSpecialColorSelectionVisible} />
+        <BranchColorPicker
+          isVisible={isSpecialColorSelectionVisible}
+          pickedColor={pickedColor}
+          onColorChange={(color) => {
+            setPickedColor(color);
+          }}
+        />
 
         {/* Choosing emoji menu */}
         <EmojiSelection
@@ -118,6 +127,20 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
           pickedEmoji={pickedEmoji}
           onCloseClick={() => {
             setIsEmojiSelectionVisible(false);
+          }}
+        />
+
+        <BranchAppearance
+          emoji={pickedEmoji}
+          name={branchName}
+          color={pickedColor}
+          style={{
+            top:
+              !isEmojiSelectionVisible && !isColorSelectionVisible
+                ? 0.08 * screenHeight
+                : isSpecialColorSelectionVisible
+                ? -0.31 * screenHeight
+                : 0.04 * screenHeight,
           }}
         />
       </View>
