@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import Header from "../../SemiComponents/Header";
-import GoBackButton from "../../SemiComponents/MainScreen/GoBackButton";
+import GoBackButton from "../../SemiComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CheckMark from "../../SemiComponents/Assets/Icons/CheckMark";
 import { user } from "../../SemiComponents/DBUser";

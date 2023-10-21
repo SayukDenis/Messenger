@@ -4,7 +4,6 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "../../../SemiComponents/ProfileStyles";
 import SpecialSelectedColorIcon from "../Icons/SpecialSelectedColorIcon.tsx";
-import { ColorPicker } from "react-native-color-picker";
 
 interface ColorListProps {
   pickedColor: string;
@@ -59,12 +58,7 @@ const ColorList: React.FC<ColorListProps> = (props) => {
             props.onSpecialColorPress();
           }}
         >
-          <View
-            style={[
-              styles.specialSelectedColorContainer,
-              { backgroundColor: props.pickedSpecialColor },
-            ]}
-          >
+          <View style={styles.specialSelectedColorContainer}>
             <SpecialSelectedColorIcon style={styles.specialSelectedColorIcon} />
           </View>
         </TouchableOpacity>

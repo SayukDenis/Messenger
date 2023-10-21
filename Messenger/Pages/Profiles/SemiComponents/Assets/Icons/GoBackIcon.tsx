@@ -5,7 +5,7 @@ import { ViewStyle } from "react-native";
 import { Svg, Path, Rect } from "react-native-svg";
 
 interface GoBackIconProps {
-  style: ViewStyle;
+  style?: ViewStyle;
 }
 
 const GoBackIcon: React.FC<GoBackIconProps> = (props) => {

@@ -5,13 +5,12 @@ import {
   View,
   Text,
   TextInput,
-  Platform,
   Keyboard,
   KeyboardEvent,
   Dimensions,
 } from "react-native";
 import { styles } from "../../../SemiComponents/ProfileStyles";
-import { TriangleColorPicker, toHsv, fromHsv } from "react-native-color-picker";
+import ColorPicker from "react-native-wheel-color-picker";
 
 interface BranchColorPickerProps {
   isVisible: boolean;
@@ -21,7 +20,7 @@ interface BranchColorPickerProps {
 
 const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
   const colorPickerTitle: string = "Custom";
-  const [color, setColor] = useState(toHsv("red"));
+  const [color, setColor] = useState("#7c4f91");
   const [inputText, setInputText] = useState("");
 
   // To adjust circle sizes when keyboard is opened or closed
@@ -39,12 +38,12 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
 
   useEffect(() => {
     if (inputText.length === 6) {
-      setColor(toHsv(inputText));
+      setColor(inputText);
     }
   }, [inputText]);
 
   useEffect(() => {
-    props.onColorChange(fromHsv(color));
+    props.onColorChange(color);
   }, [props.isVisible]);
 
   return (
@@ -58,21 +57,26 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
           <View
             style={[
               styles.colorPickerInnerContainer,
-              { backgroundColor: fromHsv(color) },
+              { backgroundColor: color },
             ]}
           >
             <View
               style={[styles.circleAroundColorPicker, { width: circleWidth }]}
             >
-              <TriangleColorPicker
-                style={styles.colorPickerElement}
-                onColorChange={(color) => {
-                  setColor(color);
-                  setInputText("");
-                }}
-                color={color}
-                hideControls={true}
-              />
+              <View style={styles.colorPickerElement}>
+                <ColorPicker
+                  onColorChange={(color) => {
+                    setColor(color);
+                  }}
+                  thumbSize={32}
+                  sliderSize={27}
+                  row={true}
+                  gapSize={8}
+                  swatches={false}
+                  color={color}
+                  shadeSliderThumb={true}
+                />
+              </View>
             </View>
           </View>
 
@@ -83,11 +87,11 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
                 style={styles.inputColorText}
                 onChangeText={(value) => {
                   if (/^[a-zA-Z0-9]*$/.test(value)) {
-                    setInputText(value);
+                    setInputText(value.toUpperCase());
                   }
                 }}
                 value={inputText}
-                placeholder="1E1E1E"
+                placeholder="7C4F91"
                 placeholderTextColor={"rgb(185, 185, 185)"}
                 maxLength={6}
                 autoCapitalize="characters"

@@ -1,9 +1,9 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableWithoutFeedback } from "react-native";
-import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
-import GoBackButton from "./GoBackButton.tsx";
+import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { styles } from "../ProfileStyles.tsx";
+import GoBackButton from "../GoBackButton.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
 import Name from "./Name.tsx";
@@ -30,17 +30,13 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
 
       {/* if blocked */}
       {props.isBlocked && (
-        <JacquesFrancoisText
-          text={props.isBlocked ? blockStatusTitle : ""}
-          style={styles.blockStatus}
-        />
+        <Text style={styles.blockStatus}>
+          {props.isBlocked ? blockStatusTitle : ""}
+        </Text>
       )}
 
       {/* Secondary title */}
-      <JacquesFrancoisText
-        text={props.secondaryTitle}
-        style={styles.onlineStatusTitle}
-      />
+      <Text style={styles.secondaryTitle}>{props.secondaryTitle}</Text>
 
       {/* Going back button */}
       <GoBackButton onPress={() => alert("Going back")} />

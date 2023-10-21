@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
-import { styles, JacquesFrancoisText } from "../ProfileStyles";
+import { styles } from "../ProfileStyles";
 
 interface MultimediaBarProps {
-  isphotoOrAlbumButtonHolding: boolean;
-  photoOrAlbumButtonHolding: (value: boolean) => void;
+  isLongPressed: boolean;
+  onLongPress: (value: boolean) => void;
 }
 
 const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
@@ -92,7 +92,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
     <View
       style={[
         styles.multimediaBar,
-        { zIndex: props.isphotoOrAlbumButtonHolding === true ? 2 : 0 },
+        { zIndex: props.isLongPressed === true ? 2 : 0 },
       ]}
     >
       <CalculateMaxQuantitiesTitleWidth />
@@ -126,17 +126,17 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
       <TouchableWithoutFeedback
         onPress={() => {
           setPressedMultimediaButton(photosAndAlbumsState);
-          props.photoOrAlbumButtonHolding(false);
+          props.onLongPress(false);
         }}
         onLongPress={() => {
-          props.photoOrAlbumButtonHolding(true);
+          props.onLongPress(true);
         }}
       >
         <View>
-          {props.isphotoOrAlbumButtonHolding === true && (
+          {props.isLongPressed === true && (
             <TouchableWithoutFeedback
               onPress={() => {
-                props.photoOrAlbumButtonHolding(false);
+                props.onLongPress(false);
                 setPhotosAndAlbumsState((prevState) =>
                   prevState == "Photos" ? "Albums" : "Photos"
                 );
@@ -146,26 +146,20 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
               }}
             >
               <View style={styles.albumsOrPhotosAppearingButton}>
-                <JacquesFrancoisText
-                  text={
-                    photosAndAlbumsState === "Albums"
-                      ? photosButtonTitle
-                      : albumsButtonTitle
-                  }
-                  style={styles.multimediaTitle}
-                />
+                <Text style={styles.multimediaTitle}>
+                  {photosAndAlbumsState === "Albums"
+                    ? photosButtonTitle
+                    : albumsButtonTitle}
+                </Text>
               </View>
             </TouchableWithoutFeedback>
           )}
           <View style={styles.photosOrAlbumsSelectedName}>
-            <JacquesFrancoisText
-              text={
-                photosAndAlbumsState === "Albums"
-                  ? albumsButtonTitle
-                  : photosButtonTitle
-              }
-              style={styles.multimediaTitle}
-            />
+            <Text style={styles.multimediaTitle}>
+              {photosAndAlbumsState === "Albums"
+                ? albumsButtonTitle
+                : photosButtonTitle}
+            </Text>
             {pressedMultimediaButton === photosAndAlbumsState && (
               <View style={styles.rectangleUnderPhotosOrAlbumsButton} />
             )}
@@ -182,7 +176,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
               key={index}
               onPress={() => {
                 setPressedMultimediaButton(buttonsList[index]);
-                props.photoOrAlbumButtonHolding(false);
+                props.onLongPress(false);
               }}
             >
               <View
@@ -190,10 +184,9 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
                   buttonsList[index] === "Files" ? styles.filesButton : null
                 }
               >
-                <JacquesFrancoisText
-                  text={buttonTitles[index]}
-                  style={styles.multimediaTitle}
-                />
+                <Text style={styles.multimediaTitle}>
+                  {buttonTitles[index]}
+                </Text>
                 {pressedMultimediaButton === buttonsList[index] && (
                   <View style={styles.rectangleUnderMultimediaButton} />
                 )}

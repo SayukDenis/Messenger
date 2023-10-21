@@ -1,15 +1,15 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity, Text, Dimensions } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { styles } from "../../../SemiComponents/ProfileStyles";
 import CrossIcon from "../Icons/CrossIcon";
 import ColorList from "./ColorList";
 
 interface ColorSelectionProps {
   isVisible: boolean;
-  onColorClick: (value: string) => void;
-  onCloseClick: () => void;
+  onColorPress: (value: string) => void;
+  onClosePress: () => void;
   pickedColor: string;
   pickedSpecialColor: string;
   onSpecialColorPress: () => void;
@@ -24,7 +24,7 @@ const ColorSelection: React.FC<ColorSelectionProps> = (props) => {
             {/* Close emoji selection button */}
             <TouchableOpacity
               onPress={() => {
-                props.onCloseClick();
+                props.onClosePress();
               }}
             >
               <View style={styles.closeEmojiSelectionButton}>
@@ -36,7 +36,7 @@ const ColorSelection: React.FC<ColorSelectionProps> = (props) => {
             <ColorList
               onSpecialColorPress={props.onSpecialColorPress}
               pickedColor={props.pickedColor}
-              onColorPress={props.onColorClick}
+              onColorPress={props.onColorPress}
               pickedSpecialColor={props.pickedSpecialColor}
             />
           </View>

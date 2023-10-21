@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { View, Dimensions, Text, TextStyle } from "react-native";
-import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
+import { styles } from "../ProfileStyles.tsx";
 import MutedIcon from "./Icons/MutedIcon.tsx";
 import NameAnimation from "./NameAnimation.tsx";
 
@@ -63,11 +63,9 @@ const Name: React.FC<UsernameProps> = (props) => {
       {/* if text is short */}
       {textWidth <= screenWidth * (props.isMuted ? 0.45 : 0.484) && (
         <View style={styles.containerForProfiteTitleShortVersion}>
-          <JacquesFrancoisText
-            numberOfLines={1}
-            text={props.primaryTitle}
-            style={props.style}
-          />
+          <Text numberOfLines={1} style={props.style}>
+            {props.primaryTitle}
+          </Text>
           {props.isMuted && <MutedIcon style={styles.mutedIcon} />}
         </View>
       )}

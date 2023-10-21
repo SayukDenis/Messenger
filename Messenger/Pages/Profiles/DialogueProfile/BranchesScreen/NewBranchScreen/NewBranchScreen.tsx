@@ -6,16 +6,12 @@ import {
   Dimensions,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../../../SemiComponents/Header";
-import GoBackButton from "../../../SemiComponents/MainScreen/GoBackButton";
+import GoBackButton from "../../../SemiComponents/GoBackButton";
 import { styles } from "../../../SemiComponents/ProfileStyles";
-import CrossIcon from "../Icons/CrossIcon";
-import EmojiList from "./EmojiList";
-import ColorList from "./ColorList";
 import EmojiAndColorButtons from "./EmojiAndColorButtons";
 import ColorSelection from "./ColorSelection";
 import EmojiSelection from "./EmojiSelection";
@@ -35,14 +31,14 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
   const nameTitle: string = "Name";
   const branchNamePlaceHolder: string = "Name Branch";
   const designBranchTitle: string = "Design branch";
+  const doneTitle: string = "Done";
+  const noNameWarningTitle: string = "You have to enter a name";
 
   const [branchName, setBranchName] = useState("");
   const [pickedEmoji, setPickedEmoji] = useState("");
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
   const [pickedColor, setPickedColor] = useState("rgb(62, 62, 62)");
-  const [pickedSpecialColor, setPickedSpecialColor] =
-    useState("rgb(255, 255, 255)");
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
 
@@ -59,6 +55,16 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
       <Header primaryTitle={newBranchTitle} />
 
       <GoBackButton onPress={() => navigation.goBack()} />
+
+      <TouchableOpacity
+        style={styles.doneButtonContainer}
+        onPress={() => {
+          if (branchName.length == 0) alert(noNameWarningTitle);
+          else navigation.goBack();
+        }}
+      >
+        <Text style={styles.doneButtonTitle}>{doneTitle}</Text>
+      </TouchableOpacity>
 
       <View
         style={{
@@ -87,11 +93,10 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
         <View style={styles.containerForSettingTitle}>
           <Text style={styles.settingTitle}>{designBranchTitle}</Text>
         </View>
-
         <EmojiAndColorButtons
           isVisible={!isEmojiSelectionVisible && !isColorSelectionVisible}
-          onColorClick={() => setIsColorSelectionVisible(true)}
-          onEmojiClick={() => setIsEmojiSelectionVisible(true)}
+          onColorPress={() => setIsColorSelectionVisible(true)}
+          onEmojiPress={() => setIsEmojiSelectionVisible(true)}
         />
 
         {/* Choosing color menu */}
@@ -100,14 +105,14 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
           onSpecialColorPress={() => {
             setIsSpecialColorSelectionVisible(true);
           }}
-          onColorClick={(color) => {
+          onColorPress={(color) => {
             setPickedColor(color);
           }}
-          onCloseClick={() => {
+          onClosePress={() => {
             setIsColorSelectionVisible(false);
           }}
           pickedColor={pickedColor}
-          pickedSpecialColor={pickedSpecialColor}
+          pickedSpecialColor={pickedColor}
         />
 
         <BranchColorPicker
@@ -117,7 +122,6 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
             setPickedColor(color);
           }}
         />
-
         {/* Choosing emoji menu */}
         <EmojiSelection
           isVisible={isEmojiSelectionVisible}
@@ -139,7 +143,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
               !isEmojiSelectionVisible && !isColorSelectionVisible
                 ? 0.08 * screenHeight
                 : isSpecialColorSelectionVisible
-                ? -0.31 * screenHeight
+                ? -0.3 * screenHeight
                 : 0.04 * screenHeight,
           }}
         />

@@ -1,9 +1,9 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { styles } from "../ProfileStyles";
+import { styles } from "./ProfileStyles";
 import { View, TouchableWithoutFeedback } from "react-native";
-import GoBackIcon from "./Icons/GoBackIcon";
+import GoBackIcon from "./Assets/Icons/GoBackIcon";
 
 interface GoBackButtonProps {
   onPress: any;

@@ -3,47 +3,6 @@
 import React from "react";
 import { StyleSheet, Dimensions, Text } from "react-native";
 
-import * as Font from "expo-font";
-
-let customFonts = {
-  JacquesFrancois: require("./Assets/JacquesFrancois-Regular.ttf"),
-};
-
-// Component for making text with Jacques-Fancois font
-export class JacquesFrancoisText extends React.Component<
-  { text?: string; style?: any; numberOfLines?: number },
-  { fontsLoaded: boolean }
-> {
-  state = {
-    fontsLoaded: false,
-  };
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
-
-  componentDidMount() {
-    this._loadFontsAsync();
-  }
-
-  render() {
-    if (!this.state.fontsLoaded) {
-      return null;
-    }
-
-    const { style } = this.props;
-    return (
-      <Text
-        numberOfLines={this.props.numberOfLines}
-        style={{ fontFamily: "JacquesFrancois", ...style }}
-      >
-        {this.props.text}
-      </Text>
-    );
-  }
-}
-
 // Coefficients for transmitting sizes from Figma to user's device
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
@@ -71,20 +30,20 @@ export const styles = StyleSheet.create({
   },
   profileTitle: {
     fontSize: 20,
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
   },
-  onlineStatusTitle: {
+  secondaryTitle: {
     fontSize: 14,
     color: "#808080",
     alignSelf: "center",
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
     top: 28 * figmaHeightPixelConverter,
   },
   blockStatus: {
     fontSize: 14,
     color: "red",
     alignSelf: "center",
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
     position: "absolute",
     top: 46 * figmaHeightPixelConverter,
   },
@@ -146,6 +105,7 @@ export const styles = StyleSheet.create({
     color: "rgb(124, 79, 145)",
     fontSize: 16.5,
     alignSelf: "center",
+    fontFamily: "JacquesFrancois-Regular",
   },
   rectangleUnderMultimediaButton: {
     backgroundColor: "rgb(124, 79, 145)",
@@ -243,6 +203,7 @@ export const styles = StyleSheet.create({
   },
   additionalFeatureTitle: {
     fontSize: 16,
+    fontFamily: "JacquesFrancois-Regular",
   },
   additionalFeatureIcon: {
     width: 18 * figmaWidthPixelConverter,
@@ -252,6 +213,7 @@ export const styles = StyleSheet.create({
   blockButtonTitle: {
     color: "red",
     fontSize: 16,
+    fontFamily: "JacquesFrancois-Regular",
   },
   containerForProfiteTitleLongVersion: {
     position: "absolute",
@@ -302,6 +264,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: "center",
     bottom: 0.045 * screenHeight,
+    fontFamily: "JacquesFrancois-Regular",
   },
   clearChatAgreeButton: {
     backgroundColor: "rgb(220, 220, 220)",
@@ -324,14 +287,20 @@ export const styles = StyleSheet.create({
     borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
   },
-  agreeTitle: { fontSize: 16, alignSelf: "center" },
+  agreeTitle: {
+    fontSize: 16,
+    alignSelf: "center",
+    fontFamily: "JacquesFrancois-Regular",
+  },
   disagreeTitle: {
     fontSize: 16,
     alignSelf: "center",
     color: "rgb(179, 17, 17)",
+    fontFamily: "JacquesFrancois-Regular",
   },
   headerTitle: {
     fontSize: 27,
+    fontFamily: "JacquesFrancois-Regular",
   },
   settingsOption: {
     top: 0.04 * screenHeight,
@@ -349,7 +318,7 @@ export const styles = StyleSheet.create({
   settingsOptionTitle: {
     position: "absolute",
     left: 0.05 * screenWidth,
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
     color: "rgb(92, 64, 129)",
   },
@@ -361,7 +330,7 @@ export const styles = StyleSheet.create({
     color: "rgb(111, 111, 111)",
   },
   settingTitle: {
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
   },
   containerForSettingTitle: {
@@ -408,14 +377,14 @@ export const styles = StyleSheet.create({
   plusBranchTitle: {
     position: "absolute",
     left: 0.09 * screenWidth + 22 * figmaWidthPixelConverter,
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
     color: "rgb(92, 64, 129)",
   },
   newBranchNameInput: {
     width: "90%",
     fontSize: 17,
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
   },
   pickEmojiButtonContainer: {
     backgroundColor: "rgb(218, 182, 113)",
@@ -519,6 +488,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     right: 0.013 * screenWidth,
+    backgroundColor: "white",
   },
   specialSelectedColorIcon: {
     width: 0.16 * screenWidth,
@@ -527,7 +497,6 @@ export const styles = StyleSheet.create({
   colorPickerOuterContainer: {
     width: "75%",
     height: "41%",
-    backgroundColor: "white",
     zIndex: 2,
     alignSelf: "center",
     bottom: 0.3 * screenHeight,
@@ -545,7 +514,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   colorPickerTitle: {
-    fontFamily: "JacquesFrancois",
+    fontFamily: "JacquesFrancois-Regular",
     color: "rgb(161, 118, 217)",
     fontSize: 18,
   },
@@ -585,7 +554,6 @@ export const styles = StyleSheet.create({
   colorPickerElement: {
     width: "100%",
     height: "100%",
-    alignSelf: "center",
   },
   circleAroundColorPicker: {
     borderRadius: 100,
@@ -616,8 +584,19 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     left: 0.01 * screenHeight,
   },
-  branchTitle: { fontSize: 16, fontFamily: "JacquesFrancois" },
+  branchTitle: { fontSize: 16, fontFamily: "JacquesFrancois-Regular" },
   branchTitleContainer: {
     left: 0.02 * screenHeight,
+  },
+  doneButtonContainer: {
+    position: "absolute",
+    top: 0.0579 * screenHeight - 7.09,
+    right: 0,
+    width: 0.2 * screenWidth,
+  },
+  doneButtonTitle: {
+    fontSize: 21,
+    fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(92, 64, 129)",
   },
 });

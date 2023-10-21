@@ -6,8 +6,8 @@ import { styles } from "../../../SemiComponents/ProfileStyles";
 
 interface EmojiAndColorButtonsProps {
   isVisible: boolean;
-  onEmojiClick: () => void;
-  onColorClick: () => void;
+  onEmojiPress: () => void;
+  onColorPress: () => void;
 }
 
 const EmojiAndColorButtons: React.FC<EmojiAndColorButtonsProps> = (props) => {
@@ -26,7 +26,7 @@ const EmojiAndColorButtons: React.FC<EmojiAndColorButtonsProps> = (props) => {
           {/* Select emoji button */}
           <TouchableOpacity
             onPress={() => {
-              props.onEmojiClick();
+              props.onEmojiPress();
             }}
           >
             <View style={styles.pickEmojiButtonContainer}>
@@ -37,7 +37,7 @@ const EmojiAndColorButtons: React.FC<EmojiAndColorButtonsProps> = (props) => {
           {/* Select color button */}
           <TouchableOpacity
             onPress={() => {
-              props.onColorClick();
+              props.onColorPress();
             }}
           >
             <View

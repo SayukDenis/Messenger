@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, ViewStyle } from "react-native";
 import { styles } from "../../../SemiComponents/ProfileStyles";
 

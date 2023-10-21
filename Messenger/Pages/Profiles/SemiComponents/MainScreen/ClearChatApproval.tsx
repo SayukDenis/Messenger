@@ -1,13 +1,13 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableWithoutFeedback } from "react-native";
-import { JacquesFrancoisText, styles } from "../ProfileStyles.tsx";
+import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { styles } from "../ProfileStyles.tsx";
 
 interface ClearChatApprovalProps {
-  setIsClearChatButtonClicked: (value: boolean) => void;
-  isClearChatButtonClicked: boolean;
-  AgreeClick: () => void;
+  onAnyPress: () => void;
+  isPressed: boolean;
+  onAgreePress: () => void;
 }
 
 const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
@@ -17,38 +17,29 @@ const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
 
   return (
     <>
-      {props.isClearChatButtonClicked && (
+      {props.isPressed && (
         <View style={styles.clearChatApproval}>
-          <JacquesFrancoisText
-            text={approvalText}
-            style={styles.clearChatApprovalText}
-          />
+          <Text style={styles.clearChatApprovalText}>{approvalText}</Text>
 
           <View style={{ flexDirection: "row" }}>
             <TouchableWithoutFeedback
               onPress={() => {
-                props.AgreeClick();
-                props.setIsClearChatButtonClicked(false);
+                props.onAgreePress();
+                props.onAnyPress();
               }}
             >
               <View style={styles.clearChatAgreeButton}>
-                <JacquesFrancoisText
-                  text={agreeButtonText}
-                  style={styles.agreeTitle}
-                />
+                <Text style={styles.agreeTitle}>{agreeButtonText}</Text>
               </View>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback
               onPress={() => {
-                props.setIsClearChatButtonClicked(false);
+                props.onAnyPress();
               }}
             >
               <View style={styles.clearChatDisagreeButton}>
-                <JacquesFrancoisText
-                  text={disagreeButtonText}
-                  style={styles.disagreeTitle}
-                />
+                <Text style={styles.disagreeTitle}>{disagreeButtonText}</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>

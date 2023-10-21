@@ -12,8 +12,6 @@ import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesBut
 import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
 import { user } from "../../SemiComponents/DBUser";
 
-// Data from user
-
 type MainUserPageProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
@@ -78,28 +76,28 @@ const MainUserPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         isVisible={isElseFeaturesVisible}
         setIsVisible={(value: boolean) => setIsElseFeaturesVisible(value)}
         isMuted={isMuted}
-        setIsMuted={(value: boolean) => {
+        onMutePress={(value: boolean) => {
           setIsMuted(value);
         }}
         isBlocked={isBlocked}
-        setIsBlocked={(value: boolean) => {
+        onBlockPress={(value: boolean) => {
           setIsBlocked(value);
         }}
-        isClearChatButtonClicked={isClearChatButtonClicked}
-        setIsClearChatButtonClicked={(value: boolean) => {
+        isClearChatPressed={isClearChatButtonClicked}
+        onClearChatPress={(value: boolean) => {
           setIsClearChatButtonClicked(value);
         }}
         navigation={navigation}
-        settingsClick={() => navigation.navigate("SettingsScreen" as never)}
+        settingsPress={() => navigation.navigate("SettingsScreen" as never)}
       />
 
       {/* Approval to clear chat if clear button is clicked via else features buttons */}
       <ClearChatApproval
-        isClearChatButtonClicked={isClearChatButtonClicked}
-        setIsClearChatButtonClicked={(value: boolean) => {
-          setIsClearChatButtonClicked(value);
+        isPressed={isClearChatButtonClicked}
+        onAnyPress={() => {
+          setIsClearChatButtonClicked(false);
         }}
-        AgreeClick={() => {
+        onAgreePress={() => {
           alert("Agree");
         }}
       />
@@ -109,10 +107,8 @@ const MainUserPage: React.FC<MainUserPageProps> = ({ navigation }) => {
 
       {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
       <MultimediaBar
-        isphotoOrAlbumButtonHolding={isPhotoAlbumSelectionVisible}
-        photoOrAlbumButtonHolding={(value) =>
-          setIsPhotoAlbumSelectionVisible(value)
-        }
+        isLongPressed={isPhotoAlbumSelectionVisible}
+        onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
       />
     </View>
   );
