@@ -8,6 +8,7 @@ export interface UserProps {
   lastTimeOnline: string;
   MembersCount: string;
   isEmergencyMessagesEnabled: boolean;
+  GroupBio: string;
 }
 
 export const user: UserProps = {
@@ -18,6 +19,7 @@ export const user: UserProps = {
   isBlocked: false,
   profileName: "Олексій Коваленко Володимирович",
   lastTimeOnline: "Був online давно",
-  MembersCount: "9 members",
+  MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,
+  GroupBio: "Aboba - cool",
 };

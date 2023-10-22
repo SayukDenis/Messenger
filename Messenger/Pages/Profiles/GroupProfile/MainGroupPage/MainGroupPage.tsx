@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
-import AvatarWithCallingButtons from "../../DialogueProfile/MainUserScreen/AvatarWithCallingButtons";
 import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
 import Blur from "../../SemiComponents/MainScreen/Blur";
-import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
+import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtonsGroup";
 import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
+import BioAndLink from "./BioAndLink";
 import { user } from "../../SemiComponents/DBUser";
 
 // Data from user
@@ -93,24 +93,31 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
 
       {/* Approval to clear chat if clear button is clicked via else features buttons */}
       <ClearChatApproval
-        isClearChatButtonClicked={isClearChatButtonClicked}
-        setIsClearChatButtonClicked={(value: boolean) => {
-          setIsClearChatButtonClicked(value);
+        isPressed={isClearChatButtonClicked}
+        onAnyPress={() => {
+          setIsClearChatButtonClicked(false);
         }}
-        AgreeClick={() => {
+        onAgreePress={() => {
           alert("Agree");
         }}
       />
 
-      {/* Touchable avatar image with phone and videocamera buttons*/}
-      <AvatarWithCallingButtons />
+      <Image
+        style={{
+          width: 100,
+          height: 100,
+          borderRadius: 100,
+          left: "38%",
+          top: "2%",
+        }}
+        source={{ uri: user.ImagePath }}
+      />
 
+      <BioAndLink />
       {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
       <MultimediaBar
-        isphotoOrAlbumButtonHolding={isPhotoAlbumSelectionVisible}
-        photoOrAlbumButtonHolding={(value) =>
-          setIsPhotoAlbumSelectionVisible(value)
-        }
+        isLongPressed={isPhotoAlbumSelectionVisible}
+        onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
       />
     </View>
   );
