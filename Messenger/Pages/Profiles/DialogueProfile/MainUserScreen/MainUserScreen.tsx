@@ -12,11 +12,11 @@ import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesBut
 import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
 import { user } from "../../SemiComponents/DBUser";
 
-type MainUserPageProps = {
+type MainUserScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
 
-const MainUserPage: React.FC<MainUserPageProps> = ({ navigation }) => {
+const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
@@ -114,4 +114,4 @@ const MainUserPage: React.FC<MainUserPageProps> = ({ navigation }) => {
   );
 };
 
-export default MainUserPage;
+export default MainUserScreen;

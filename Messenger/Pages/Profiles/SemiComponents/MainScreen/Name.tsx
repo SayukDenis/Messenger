@@ -48,7 +48,7 @@ const Name: React.FC<UsernameProps> = (props) => {
               },
             ]}
           >
-            <View style={{ width: textWidth * 1.45 }}>
+            <View style={{ width: textWidth * 2 }}>
               <NameAnimation
                 primaryTitle={props.primaryTitle}
                 textWidth={textWidth}

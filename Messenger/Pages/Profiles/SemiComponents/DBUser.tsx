@@ -17,7 +17,7 @@ export const user: UserProps = {
   selectedInterval: 0,
   isMuted: false,
   isBlocked: false,
-  profileName: "Олексій Коваленко Володимирович",
+  profileName: "Олексій Док Док Док",
   lastTimeOnline: "Був online давно",
   MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,

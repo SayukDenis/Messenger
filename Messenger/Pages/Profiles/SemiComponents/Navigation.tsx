@@ -24,6 +24,7 @@ export default function StartPage() {
         initialRouteName="ChooseAuthor"
         screenOptions={{
           headerShown: false, // Приховуємо верхню шапку для всіх екранів
+          animationEnabled: false,
         }}
       >
         <Stack.Screen name="ChooseAuthor" component={ChooseAuthor} />

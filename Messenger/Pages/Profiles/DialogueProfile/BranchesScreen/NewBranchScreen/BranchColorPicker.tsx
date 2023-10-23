@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { styles } from "../../../SemiComponents/ProfileStyles";
 import ColorPicker from "react-native-wheel-color-picker";
+import tinycolor from "tinycolor2";
 
 interface BranchColorPickerProps {
   isVisible: boolean;
@@ -37,7 +38,7 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
   });
 
   useEffect(() => {
-    if (inputText.length === 6) {
+    if (inputText.length === 6 && tinycolor(inputText).isValid()) {
       setColor(inputText);
     }
   }, [inputText]);

@@ -8,11 +8,11 @@ import Header from "../../SemiComponents/Header";
 import GoBackButton from "../../SemiComponents/GoBackButton";
 import PlusIcon from "./Icons/PlusIcon";
 
-type BranchesProps = {
+type BranchesScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
 
-const Branches: React.FC<BranchesProps> = ({ navigation }) => {
+const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
   const branchesTitle: string = "Branches";
   const branchTitle: string = "Branch";
 
@@ -36,4 +36,4 @@ const Branches: React.FC<BranchesProps> = ({ navigation }) => {
   );
 };
 
-export default Branches;
+export default BranchesScreen;
