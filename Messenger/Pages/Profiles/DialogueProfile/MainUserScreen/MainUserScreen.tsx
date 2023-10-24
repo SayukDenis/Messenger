@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { View } from "react-native";
-import { styles } from "../../SemiComponents/ProfileStyles";
+import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";

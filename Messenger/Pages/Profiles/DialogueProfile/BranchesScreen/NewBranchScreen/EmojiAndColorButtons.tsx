@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 
 interface EmojiAndColorButtonsProps {
   isVisible: boolean;

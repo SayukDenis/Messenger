@@ -11,7 +11,7 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../../../SemiComponents/Header";
 import GoBackButton from "../../../SemiComponents/GoBackButton";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 import EmojiAndColorButtons from "./EmojiAndColorButtons";
 import ColorSelection from "./ColorSelection";
 import EmojiSelection from "./EmojiSelection";
@@ -77,7 +77,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
         </View>
 
         {/* Branch name input */}
-        <View style={styles.settingsOption}>
+        <View style={styles.settingOption}>
           <TextInput
             style={styles.newBranchNameInput}
             onChangeText={(text: string) => {

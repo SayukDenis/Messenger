@@ -9,7 +9,7 @@ import {
   KeyboardEvent,
   Dimensions,
 } from "react-native";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 import ColorPicker from "react-native-wheel-color-picker";
 import tinycolor from "tinycolor2";
 

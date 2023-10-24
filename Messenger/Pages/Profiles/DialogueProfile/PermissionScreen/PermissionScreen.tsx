@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
-import { styles } from "../../SemiComponents/ProfileStyles";
+import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import GoBackButton from "../../SemiComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -53,10 +53,8 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
           setIsEmergencyMessagesEnabled(!isEmergencyMessagesEnabled);
         }}
       >
-        <View style={styles.settingsOption}>
-          <Text style={styles.settingsOptionTitle}>
-            {emergencyMessageTitle}
-          </Text>
+        <View style={styles.settingOption}>
+          <Text style={styles.settingOptionTitle}>{emergencyMessageTitle}</Text>
           <ToggleButton
             isEnabled={isEmergencyMessagesEnabled}
             Toggle={() => {
@@ -80,8 +78,8 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
           }}
           hitSlop={{ top: -0.03 * Dimensions.get("screen").height }}
         >
-          <View style={styles.settingsOption}>
-            <Text style={styles.settingsOptionTitle}>{interval.title}</Text>
+          <View style={styles.settingOption}>
+            <Text style={styles.settingOptionTitle}>{interval.title}</Text>
             {selectedInverval === interval.value && (
               <CheckMark style={styles.checkMark} />
             )}

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
-import { styles } from "../ProfileStyles";
+import { styles } from "./Styles.tsx";
 
 interface MultimediaBarProps {
   isLongPressed: boolean;

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, TouchableWithoutFeedback, Image } from "react-native";
-import { styles } from "../../SemiComponents/ProfileStyles.tsx";
+import { styles } from "./Styles.tsx";
 import PhoneIcon from "./Icons/PhoneIcon.tsx";
 import VideoCameraIcon from "./Icons/VideoCameraIcon.tsx";
 

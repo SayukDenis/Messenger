@@ -8,55 +8,61 @@ interface NameAnimationProps {
 }
 
 const NameAnimation: React.FC<NameAnimationProps> = (props) => {
-  const animatedValueOne = useRef(new Animated.Value(0)).current;
   const [isFirstAnimation, setIsFirstAnimation] = useState(true);
   const screenWidth: number = Dimensions.get("screen").width;
 
-  useEffect(() => {
-    const PushTextToLeft = () => {
-      setTimeout(() => {
-        Animated.timing(animatedValueOne, {
-          toValue: 1,
-          duration: 25 * props.textWidth,
-          useNativeDriver: false,
-        }).start(() => {
-          setIsFirstAnimation(false);
-          TeleportText();
-        });
-      }, 2000);
-    };
+  const animatedValueOne = useRef(new Animated.Value(0)).current;
+  const animatedValueTwo = useRef(new Animated.Value(0)).current;
 
-    const PushTextToCenter = () => {
-      setTimeout(() => {
-        Animated.timing(animatedValueOne, {
-          toValue: 0.5,
-          duration: 25 * props.textWidth,
-          useNativeDriver: false,
-        }).start(() => {
-          PushTextToLeft();
-        });
-      }, 6.65 * props.textWidth);
-    };
-
-    const TeleportText = () => {
-      Animated.timing(animatedValueOne, {
-        toValue: 0,
-        duration: 0,
+  const PushTextToLeft = (animatedValue: Animated.Value) => {
+    setTimeout(() => {
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 25 * props.textWidth,
         useNativeDriver: false,
       }).start(() => {
-        PushTextToCenter();
+        setIsFirstAnimation(false);
+        TeleportText(animatedValue);
       });
-    };
+    }, 2000);
+  };
 
-    PushTextToLeft();
+  const PushTextToCenter = (animatedValue: Animated.Value) => {
+    setTimeout(() => {
+      Animated.timing(animatedValue, {
+        toValue: 0.5,
+        duration: 25 * props.textWidth,
+        useNativeDriver: false,
+      }).start(() => {
+        PushTextToLeft(animatedValue);
+      });
+    }, 6.65 * props.textWidth);
+  };
+
+  const TeleportText = (animatedValue: Animated.Value) => {
+    Animated.timing(animatedValue, {
+      toValue: 0,
+      duration: 0,
+      useNativeDriver: false,
+    }).start(() => {
+      PushTextToCenter(animatedValue);
+    });
+  };
+
+  useEffect(() => {
+    PushTextToLeft(animatedValueOne);
   }, [animatedValueOne]);
 
-  const marginLeftFirstCycle = animatedValueOne.interpolate({
+  useEffect(() => {
+    PushTextToCenter(animatedValueTwo);
+  }, [animatedValueTwo]);
+
+  const marginFirstCycle = animatedValueOne.interpolate({
     inputRange: [0, 1],
     outputRange: [0, -screenWidth * 0.005 * props.textWidth],
   });
 
-  const marginLeft = animatedValueOne.interpolate({
+  const marginForAnimatedValueOne = animatedValueOne.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [
       screenWidth * 0.005 * props.textWidth,
@@ -65,47 +71,7 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
     ],
   });
 
-  const animatedValueTwo = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    const PushTextToLeft = () => {
-      setTimeout(() => {
-        Animated.timing(animatedValueTwo, {
-          toValue: 1,
-          duration: 25 * props.textWidth,
-          useNativeDriver: false,
-        }).start(() => {
-          TeleportText();
-        });
-      }, 2000);
-    };
-
-    const PushTextToCenter = () => {
-      setTimeout(() => {
-        Animated.timing(animatedValueTwo, {
-          toValue: 0.5,
-          duration: 25 * props.textWidth,
-          useNativeDriver: false,
-        }).start(() => {
-          PushTextToLeft();
-        });
-      }, 6.65 * props.textWidth);
-    };
-
-    const TeleportText = () => {
-      Animated.timing(animatedValueTwo, {
-        toValue: 0,
-        duration: 0,
-        useNativeDriver: false,
-      }).start(() => {
-        PushTextToCenter();
-      });
-    };
-
-    PushTextToCenter();
-  }, [animatedValueTwo]);
-
-  const marginLeftTwo = animatedValueTwo.interpolate({
+  const marginForAnimatedValueTwo = animatedValueTwo.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [
       screenWidth * 0.005 * props.textWidth,
@@ -120,7 +86,9 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
         style={{
           transform: [
             {
-              translateX: isFirstAnimation ? marginLeftFirstCycle : marginLeft,
+              translateX: isFirstAnimation
+                ? marginFirstCycle
+                : marginForAnimatedValueOne,
             },
           ],
         }}
@@ -133,7 +101,7 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
         style={{
           transform: [
             {
-              translateX: marginLeftTwo,
+              translateX: marginForAnimatedValueTwo,
             },
           ],
         }}

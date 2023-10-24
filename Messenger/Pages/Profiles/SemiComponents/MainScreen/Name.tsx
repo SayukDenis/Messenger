@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { View, Dimensions, Text, TextStyle } from "react-native";
-import { styles } from "../ProfileStyles.tsx";
+import { styles } from "./Styles.tsx";
 import MutedIcon from "./Icons/MutedIcon.tsx";
 import NameAnimation from "./NameAnimation.tsx";
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
-import { styles } from "../ProfileStyles.tsx";
+import { styles } from "./Styles.tsx";
 import GoBackButton from "../GoBackButton.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";

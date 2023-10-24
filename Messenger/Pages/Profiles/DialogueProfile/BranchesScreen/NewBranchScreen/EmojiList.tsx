@@ -8,7 +8,7 @@ import {
   Text,
   ViewStyle,
 } from "react-native";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 import RedCrossIcon from "../Icons/RedCrossIcon";
 
 interface EmojiListProps {

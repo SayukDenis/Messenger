@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import ColorList from "./ColorList";
 

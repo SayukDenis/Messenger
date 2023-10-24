@@ -8,7 +8,7 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
-import { styles } from "../../SemiComponents/ProfileStyles";
+import { styles } from "./Styles";
 
 interface ToggleButtonProps {
   containerStyle?: ViewStyle;

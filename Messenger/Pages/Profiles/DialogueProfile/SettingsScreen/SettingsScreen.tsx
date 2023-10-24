@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
-import { styles } from "../../SemiComponents/ProfileStyles";
+import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import GoBackButton from "../../SemiComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -28,8 +28,8 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
       <TouchableWithoutFeedback
         onPress={() => navigation.navigate("BranchesScreen" as never)}
       >
-        <View style={styles.settingsOption}>
-          <Text style={styles.settingsOptionTitle}>{branchesTitle}</Text>
+        <View style={styles.settingOption}>
+          <Text style={styles.settingOptionTitle}>{branchesTitle}</Text>
           <RightArrow style={styles.settingOptionRightArrow} />
         </View>
       </TouchableWithoutFeedback>
@@ -39,8 +39,8 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
           alert("Edit wallpaper");
         }}
       >
-        <View style={styles.settingsOption}>
-          <Text style={styles.settingsOptionTitle}>{editWallpaperTitle}</Text>
+        <View style={styles.settingOption}>
+          <Text style={styles.settingOptionTitle}>{editWallpaperTitle}</Text>
           <RightArrow style={styles.settingOptionRightArrow} />
         </View>
       </TouchableWithoutFeedback>
@@ -48,8 +48,8 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
       <TouchableWithoutFeedback
         onPress={() => navigation.navigate("PermissionScreen" as never)}
       >
-        <View style={styles.settingsOption}>
-          <Text style={styles.settingsOptionTitle}>{permissionTitle}</Text>
+        <View style={styles.settingOption}>
+          <Text style={styles.settingOptionTitle}>{permissionTitle}</Text>
           <RightArrow style={styles.settingOptionRightArrow} />
         </View>
       </TouchableWithoutFeedback>

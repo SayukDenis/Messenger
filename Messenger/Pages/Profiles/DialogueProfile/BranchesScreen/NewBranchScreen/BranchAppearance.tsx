@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, Text, ViewStyle } from "react-native";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 
 interface BranchAppearanceProps {
   emoji: string;

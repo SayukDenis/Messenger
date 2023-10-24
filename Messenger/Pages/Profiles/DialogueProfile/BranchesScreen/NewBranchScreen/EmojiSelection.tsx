@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import EmojiList from "./EmojiList";
 

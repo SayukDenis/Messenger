@@ -3,7 +3,7 @@
 import React from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { styles } from "../../SemiComponents/ProfileStyles";
+import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import GoBackButton from "../../SemiComponents/GoBackButton";
 import PlusIcon from "./Icons/PlusIcon";
@@ -27,7 +27,7 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           navigation.navigate("NewBranchScreen" as never);
         }}
       >
-        <View style={styles.settingsOption}>
+        <View style={styles.settingOption}>
           <PlusIcon style={styles.plusIcon} />
           <Text style={styles.plusBranchTitle}>{branchTitle}</Text>
         </View>

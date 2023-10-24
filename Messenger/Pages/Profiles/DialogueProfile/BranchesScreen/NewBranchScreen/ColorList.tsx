@@ -2,7 +2,7 @@
 
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
-import { styles } from "../../../SemiComponents/ProfileStyles";
+import { styles } from "../Styles";
 import SpecialSelectedColorIcon from "../Icons/SpecialSelectedColorIcon.tsx";
 
 interface ColorListProps {

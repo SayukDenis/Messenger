@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
-import { styles } from "../ProfileStyles.tsx";
+import { styles } from "./Styles.tsx";
 
 interface ClearChatApprovalProps {
   onAnyPress: () => void;

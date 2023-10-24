@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableWithoutFeedback, Text } from "react-native";
-import { styles } from "../ProfileStyles.tsx";
+import { styles } from "./Styles.tsx";
 import { StackNavigationProp } from "@react-navigation/stack";
 import OffNotificationIcon from "./Icons/OffNotificationIcon.tsx";
 import OnNotificationIcon from "./Icons/OnNotificationIcon.tsx";
@@ -78,6 +78,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
               </Text>
             </View>
           </TouchableWithoutFeedback>
+          ііі
           {/* View member button */}
           <TouchableWithoutFeedback>
             <View style={styles.additionalFeatureButton}>
@@ -87,7 +88,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
               </Text>
             </View>
           </TouchableWithoutFeedback>
-          {/* Delete group button */}
+          я{/* Delete group button */}
           <TouchableWithoutFeedback
             onPress={() => {
               props.setIsClearChatButtonClicked(true);
