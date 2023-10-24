@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles.tsx";
 
 interface ClearChatApprovalProps {
@@ -22,26 +22,24 @@ const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
           <Text style={styles.clearChatApprovalText}>{approvalText}</Text>
 
           <View style={{ flexDirection: "row" }}>
-            <TouchableWithoutFeedback
+            <TouchableOpacity
               onPress={() => {
                 props.onAgreePress();
                 props.onAnyPress();
               }}
+              style={styles.clearChatAgreeButton}
             >
-              <View style={styles.clearChatAgreeButton}>
-                <Text style={styles.agreeTitle}>{agreeButtonText}</Text>
-              </View>
-            </TouchableWithoutFeedback>
+              <Text style={styles.agreeTitle}>{agreeButtonText}</Text>
+            </TouchableOpacity>
 
-            <TouchableWithoutFeedback
+            <TouchableOpacity
               onPress={() => {
                 props.onAnyPress();
               }}
+              style={styles.clearChatDisagreeButton}
             >
-              <View style={styles.clearChatDisagreeButton}>
-                <Text style={styles.disagreeTitle}>{disagreeButtonText}</Text>
-              </View>
-            </TouchableWithoutFeedback>
+              <Text style={styles.disagreeTitle}>{disagreeButtonText}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}

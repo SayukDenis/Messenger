@@ -89,6 +89,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         }}
         navigation={navigation}
         settingsPress={() => navigation.navigate("SettingsScreen" as never)}
+        mode="user"
       />
 
       {/* Approval to clear chat if clear button is clicked via else features buttons */}

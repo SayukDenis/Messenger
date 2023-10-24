@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Text } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
 import Blur from "../../SemiComponents/MainScreen/Blur";
-import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtonsGroup";
+import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
 import BioAndLink from "./BioAndLink";
 import { user } from "../../SemiComponents/DBUser";
@@ -76,19 +76,20 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         isVisible={isElseFeaturesVisible}
         setIsVisible={(value: boolean) => setIsElseFeaturesVisible(value)}
         isMuted={isMuted}
-        setIsMuted={(value: boolean) => {
+        onMutePress={(value: boolean) => {
           setIsMuted(value);
         }}
         isBlocked={isBlocked}
-        setIsBlocked={(value: boolean) => {
+        onBlockPress={(value: boolean) => {
           setIsBlocked(value);
         }}
-        isClearChatButtonClicked={isClearChatButtonClicked}
-        setIsClearChatButtonClicked={(value: boolean) => {
+        isClearChatPressed={isClearChatButtonClicked}
+        onClearChatPress={(value: boolean) => {
           setIsClearChatButtonClicked(value);
         }}
         navigation={navigation}
-        settingsClick={() => navigation.navigate("SettingsMenu" as never)}
+        settingsPress={() => navigation.navigate("SettingsScreen" as never)}
+        mode="group"
       />
 
       {/* Approval to clear chat if clear button is clicked via else features buttons */}

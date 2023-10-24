@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
@@ -22,16 +22,15 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
 
       <GoBackButton onPress={() => navigation.goBack()} />
 
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate("NewBranchScreen" as never);
         }}
+        style={styles.settingOption}
       >
-        <View style={styles.settingOption}>
-          <PlusIcon style={styles.plusIcon} />
-          <Text style={styles.plusBranchTitle}>{branchTitle}</Text>
-        </View>
-      </TouchableWithoutFeedback>
+        <PlusIcon style={styles.plusIcon} />
+        <Text style={styles.plusBranchTitle}>{branchTitle}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

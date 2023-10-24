@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles.tsx";
 import GoBackButton from "../GoBackButton.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
@@ -43,28 +43,26 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
 
       {/* Search message button */}
       {props.isSearchButtonVisible && (
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           onPress={() => {
             alert("Searching...");
           }}
+          style={styles.searchMessagesButton}
         >
-          <View style={styles.searchMessagesButton}>
-            <SearchIcon />
-          </View>
-        </TouchableWithoutFeedback>
+          <SearchIcon />
+        </TouchableOpacity>
       )}
 
       {/* Else features button */}
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => {
           if (props.setIsElseFeaturesVisible != undefined)
             props.setIsElseFeaturesVisible(true);
         }}
+        style={styles.elseFeaturesButton}
       >
-        <View style={styles.elseFeaturesButton}>
-          <ElseFeaturesIcon />
-        </View>
-      </TouchableWithoutFeedback>
+        <ElseFeaturesIcon />
+      </TouchableOpacity>
     </View>
   );
 };

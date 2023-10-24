@@ -2,7 +2,7 @@
 
 import React from "react";
 import { styles } from "./ProfileStyles";
-import { View, TouchableWithoutFeedback } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import GoBackIcon from "./Assets/Icons/GoBackIcon";
 
 interface GoBackButtonProps {
@@ -11,15 +11,14 @@ interface GoBackButtonProps {
 
 const GoBackButton: React.FC<GoBackButtonProps> = (props) => {
   return (
-    <TouchableWithoutFeedback
+    <TouchableOpacity
       onPress={() => {
         props.onPress();
       }}
+      style={styles.goBackFromProfileButton}
     >
-      <View style={styles.goBackFromProfileButton}>
-        <GoBackIcon />
-      </View>
-    </TouchableWithoutFeedback>
+      <GoBackIcon />
+    </TouchableOpacity>
   );
 };
 

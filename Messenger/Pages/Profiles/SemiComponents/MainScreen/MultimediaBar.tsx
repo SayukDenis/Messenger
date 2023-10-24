@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useEffect, useState } from "react";
-import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles.tsx";
 
 interface MultimediaBarProps {
@@ -123,7 +123,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
       </View>
 
       {/* Photos or albums button, after long pressing selection between photos and albums appears */}
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => {
           setPressedMultimediaButton(photosAndAlbumsState);
           props.onLongPress(false);
@@ -132,66 +132,56 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
           props.onLongPress(true);
         }}
       >
-        <View>
-          {props.isLongPressed === true && (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                props.onLongPress(false);
-                setPhotosAndAlbumsState((prevState) =>
-                  prevState == "Photos" ? "Albums" : "Photos"
-                );
-                setPressedMultimediaButton(
-                  photosAndAlbumsState == "Photos" ? "Albums" : "Photos"
-                );
-              }}
-            >
-              <View style={styles.albumsOrPhotosAppearingButton}>
-                <Text style={styles.multimediaTitle}>
-                  {photosAndAlbumsState === "Albums"
-                    ? photosButtonTitle
-                    : albumsButtonTitle}
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-          )}
-          <View style={styles.photosOrAlbumsSelectedName}>
+        {props.isLongPressed === true && (
+          <TouchableOpacity
+            onPress={() => {
+              props.onLongPress(false);
+              setPhotosAndAlbumsState((prevState) =>
+                prevState == "Photos" ? "Albums" : "Photos"
+              );
+              setPressedMultimediaButton(
+                photosAndAlbumsState == "Photos" ? "Albums" : "Photos"
+              );
+            }}
+            style={styles.albumsOrPhotosAppearingButton}
+          >
             <Text style={styles.multimediaTitle}>
               {photosAndAlbumsState === "Albums"
-                ? albumsButtonTitle
-                : photosButtonTitle}
+                ? photosButtonTitle
+                : albumsButtonTitle}
             </Text>
-            {pressedMultimediaButton === photosAndAlbumsState && (
-              <View style={styles.rectangleUnderPhotosOrAlbumsButton} />
-            )}
-          </View>
+          </TouchableOpacity>
+        )}
+        <View style={styles.photosOrAlbumsSelectedName}>
+          <Text style={styles.multimediaTitle}>
+            {photosAndAlbumsState === "Albums"
+              ? albumsButtonTitle
+              : photosButtonTitle}
+          </Text>
+          {pressedMultimediaButton === photosAndAlbumsState && (
+            <View style={styles.rectangleUnderPhotosOrAlbumsButton} />
+          )}
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
 
       {/* Files, voice, links buttons */}
       {indexes.map(
         (index) =>
           index != 0 &&
           index != 1 && (
-            <TouchableWithoutFeedback
+            <TouchableOpacity
               key={index}
               onPress={() => {
                 setPressedMultimediaButton(buttonsList[index]);
                 props.onLongPress(false);
               }}
+              style={buttonsList[index] === "Files" ? styles.filesButton : null}
             >
-              <View
-                style={
-                  buttonsList[index] === "Files" ? styles.filesButton : null
-                }
-              >
-                <Text style={styles.multimediaTitle}>
-                  {buttonTitles[index]}
-                </Text>
-                {pressedMultimediaButton === buttonsList[index] && (
-                  <View style={styles.rectangleUnderMultimediaButton} />
-                )}
-              </View>
-            </TouchableWithoutFeedback>
+              <Text style={styles.multimediaTitle}>{buttonTitles[index]}</Text>
+              {pressedMultimediaButton === buttonsList[index] && (
+                <View style={styles.rectangleUnderMultimediaButton} />
+              )}
+            </TouchableOpacity>
           )
       )}
     </View>

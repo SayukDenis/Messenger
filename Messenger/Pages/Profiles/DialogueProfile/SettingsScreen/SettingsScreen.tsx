@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableWithoutFeedback, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import GoBackButton from "../../SemiComponents/GoBackButton";
@@ -25,34 +25,31 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
       {/* Going back button */}
       <GoBackButton onPress={() => navigation.goBack()} />
 
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => navigation.navigate("BranchesScreen" as never)}
+        style={styles.settingOption}
       >
-        <View style={styles.settingOption}>
-          <Text style={styles.settingOptionTitle}>{branchesTitle}</Text>
-          <RightArrow style={styles.settingOptionRightArrow} />
-        </View>
-      </TouchableWithoutFeedback>
+        <Text style={styles.settingOptionTitle}>{branchesTitle}</Text>
+        <RightArrow style={styles.settingOptionRightArrow} />
+      </TouchableOpacity>
 
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => {
           alert("Edit wallpaper");
         }}
+        style={styles.settingOption}
       >
-        <View style={styles.settingOption}>
-          <Text style={styles.settingOptionTitle}>{editWallpaperTitle}</Text>
-          <RightArrow style={styles.settingOptionRightArrow} />
-        </View>
-      </TouchableWithoutFeedback>
+        <Text style={styles.settingOptionTitle}>{editWallpaperTitle}</Text>
+        <RightArrow style={styles.settingOptionRightArrow} />
+      </TouchableOpacity>
 
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => navigation.navigate("PermissionScreen" as never)}
+        style={styles.settingOption}
       >
-        <View style={styles.settingOption}>
-          <Text style={styles.settingOptionTitle}>{permissionTitle}</Text>
-          <RightArrow style={styles.settingOptionRightArrow} />
-        </View>
-      </TouchableWithoutFeedback>
+        <Text style={styles.settingOptionTitle}>{permissionTitle}</Text>
+        <RightArrow style={styles.settingOptionRightArrow} />
+      </TouchableOpacity>
     </View>
   );
 };

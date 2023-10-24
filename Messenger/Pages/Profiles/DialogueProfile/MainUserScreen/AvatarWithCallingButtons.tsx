@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableWithoutFeedback, Image } from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import { styles } from "./Styles.tsx";
 import PhoneIcon from "./Icons/PhoneIcon.tsx";
 import VideoCameraIcon from "./Icons/VideoCameraIcon.tsx";
@@ -16,36 +16,34 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
   return (
     <View>
       {/* Touchable avatar image */}
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => {
           alert("avatar press");
         }}
       >
         <Image style={styles.mainAvatarImage} source={{ uri: avatarURL }} />
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
 
       {/* Phone button */}
       <View style={styles.horizontalContainerForCalling}>
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           onPress={() => {
             alert("Calling (no camera)...");
           }}
+          style={styles.phone}
         >
-          <View style={styles.phone}>
-            <PhoneIcon />
-          </View>
-        </TouchableWithoutFeedback>
+          <PhoneIcon />
+        </TouchableOpacity>
 
         {/* Videocamera button */}
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           onPress={() => {
             alert("Calling (with camera)...");
           }}
+          style={styles.videoCamera}
         >
-          <View style={styles.videoCamera}>
-            <VideoCameraIcon />
-          </View>
-        </TouchableWithoutFeedback>
+          <VideoCameraIcon />
+        </TouchableOpacity>
       </View>
     </View>
   );
