@@ -6,7 +6,7 @@ import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
-import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
+import ClearChatApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import BioAndLink from "./BioAndLink";
 import { user } from "../../SemiComponents/DBUser";
 

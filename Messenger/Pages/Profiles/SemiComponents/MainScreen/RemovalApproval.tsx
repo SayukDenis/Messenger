@@ -4,14 +4,14 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles.tsx";
 
-interface ClearChatApprovalProps {
+interface RemovalApprovalProps {
   onAnyPress: () => void;
   isPressed: boolean;
   onAgreePress: () => void;
+  text: string;
 }
 
-const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
-  const approvalText: string = "Do you really want to clear the chat?";
+const RemovalApproval: React.FC<RemovalApprovalProps> = (props) => {
   const agreeButtonText: string = "Agree";
   const disagreeButtonText: string = "Disagree";
 
@@ -19,7 +19,7 @@ const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
     <>
       {props.isPressed && (
         <View style={styles.clearChatApproval}>
-          <Text style={styles.clearChatApprovalText}>{approvalText}</Text>
+          <Text style={styles.clearChatApprovalText}>{props.text}</Text>
 
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
@@ -47,4 +47,4 @@ const ClearChatApproval: React.FC<ClearChatApprovalProps> = (props) => {
   );
 };
 
-export default ClearChatApproval;
+export default RemovalApproval;

@@ -15,6 +15,7 @@ import SettingsScreen from "../DialogueProfile/SettingsScreen/SettingsScreen.tsx
 import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen.tsx";
 import BranchesScreen from "../DialogueProfile/BranchesScreen/BranchesScreen.tsx";
 import NewBranchScreen from "../DialogueProfile/BranchesScreen/NewBranchScreen/NewBranchScreen";
+import { user } from "./DBUser.tsx";
 
 const Stack = createStackNavigator();
 export default function StartPage() {
@@ -23,7 +24,7 @@ export default function StartPage() {
       <Stack.Navigator
         initialRouteName="ChooseAuthor"
         screenOptions={{
-          headerShown: false, // Приховуємо верхню шапку для всіх екранів
+          headerShown: false,
           animationEnabled: false,
         }}
       >

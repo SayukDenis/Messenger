@@ -9,7 +9,7 @@ import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
-import ClearChatApproval from "../../SemiComponents/MainScreen/ClearChatApproval";
+import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { user } from "../../SemiComponents/DBUser";
 
 type MainUserScreenProps = {
@@ -93,7 +93,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
       />
 
       {/* Approval to clear chat if clear button is clicked via else features buttons */}
-      <ClearChatApproval
+      <RemovalApproval
         isPressed={isClearChatButtonClicked}
         onAnyPress={() => {
           setIsClearChatButtonClicked(false);
@@ -101,6 +101,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         onAgreePress={() => {
           alert("Agree");
         }}
+        text={user.clearChatText}
       />
 
       {/* Touchable avatar image with phone and videocamera buttons*/}

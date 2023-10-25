@@ -23,6 +23,7 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
   const colorPickerTitle: string = "Custom";
   const [color, setColor] = useState("#7c4f91");
   const [inputText, setInputText] = useState("");
+  const [isKeyboardOpened, setIsKeyboardOpened] = useState(false);
 
   // To adjust circle sizes when keyboard is opened or closed
   const [circleWidth, setcircleWidth] = useState(
@@ -31,10 +32,12 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
 
   Keyboard.addListener("keyboardDidShow", (event: KeyboardEvent) => {
     setcircleWidth(0.2 * Dimensions.get("screen").height);
+    setIsKeyboardOpened(true);
   });
 
   Keyboard.addListener("keyboardDidHide", (event: KeyboardEvent) => {
     setcircleWidth(0.225 * Dimensions.get("screen").height);
+    setIsKeyboardOpened(false);
   });
 
   useEffect(() => {
@@ -64,15 +67,28 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
             <View
               style={[styles.circleAroundColorPicker, { width: circleWidth }]}
             >
-              <View style={styles.colorPickerElement}>
+              <View
+                style={[
+                  styles.colorPickerElement,
+                  {
+                    right: isKeyboardOpened
+                      ? 0.032 * Dimensions.get("screen").width
+                      : 0.005 * Dimensions.get("screen").width,
+                  },
+                ]}
+              >
                 <ColorPicker
                   onColorChange={(color) => {
                     setColor(color);
                   }}
-                  thumbSize={32}
-                  sliderSize={27}
+                  thumbSize={
+                    isKeyboardOpened
+                      ? 0.17 * Dimensions.get("screen").width
+                      : 0.11 * Dimensions.get("screen").width
+                  }
+                  sliderSize={isKeyboardOpened ? 25 : 27}
                   row={true}
-                  gapSize={8}
+                  gapSize={0.015 * Dimensions.get("screen").width}
                   swatches={false}
                   color={color}
                   shadeSliderThumb={true}

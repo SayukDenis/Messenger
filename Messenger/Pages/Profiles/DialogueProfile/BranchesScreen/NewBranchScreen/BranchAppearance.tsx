@@ -14,11 +14,16 @@ interface BranchAppearanceProps {
 const BranchAppearance: React.FC<BranchAppearanceProps> = (props) => {
   return (
     <View style={[styles.branchAppearanceContainer, props.style]}>
-      <View style={[styles.branchAvatar, { backgroundColor: props.color }]}>
+      <View
+        style={[
+          styles.branchAvatarWhileCreatingBranch,
+          { backgroundColor: props.color },
+        ]}
+      >
         <Text style={{ fontSize: 24 }}>{props.emoji}</Text>
       </View>
       <View style={styles.branchTitleContainer}>
-        <Text style={styles.branchTitle}>{props.name}</Text>
+        <Text style={styles.branchTitleWhileCreating}>{props.name}</Text>
       </View>
     </View>
   );

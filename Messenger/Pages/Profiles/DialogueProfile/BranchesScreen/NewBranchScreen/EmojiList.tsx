@@ -3,7 +3,7 @@
 import React from "react";
 import {
   FlatList,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   View,
   Text,
   ViewStyle,
@@ -30,29 +30,26 @@ const EmojiList: React.FC<EmojiListProps> = (props) => {
         numColumns={props.numColumns}
         contentContainerStyle={{ width: "100%", padding: 15 }}
         renderItem={({ item }) => (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={() => {
               if (props.pickedEmoji == item) props.onEmojiPress("");
               else props.onEmojiPress(item);
             }}
+            style={[
+              styles.blueBackgroundForPickedEmoji,
+              {
+                backgroundColor:
+                  props.pickedEmoji === item
+                    ? "rgb(93, 171, 228)"
+                    : "rgb(218, 182, 113)",
+              },
+            ]}
           >
-            <View
-              style={[
-                styles.blueBackgroundForPickedEmoji,
-                {
-                  backgroundColor:
-                    props.pickedEmoji === item
-                      ? "rgb(93, 171, 228)"
-                      : "rgb(218, 182, 113)",
-                },
-              ]}
-            >
-              {props.pickedEmoji == item && (
-                <RedCrossIcon style={styles.redCrossIcon} />
-              )}
-              <Text style={{ fontSize: 23 }}>{item}</Text>
-            </View>
-          </TouchableWithoutFeedback>
+            {props.pickedEmoji == item && (
+              <RedCrossIcon style={styles.redCrossIcon} />
+            )}
+            <Text style={{ fontSize: 23 }}>{item}</Text>
+          </TouchableOpacity>
         )}
       />
     </View>

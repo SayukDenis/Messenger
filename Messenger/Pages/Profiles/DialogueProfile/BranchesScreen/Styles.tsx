@@ -23,17 +23,26 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "flex-start",
   },
-  branchAvatar: {
-    width: 0.055 * screenHeight,
-    height: 0.055 * screenHeight,
+  branchAvatarWhileCreatingBranch: {
+    width: 0.045 * screenHeight,
+    height: 0.045 * screenHeight,
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
-    left: 0.01 * screenHeight,
+    left: 0.0125 * screenHeight,
   },
-  branchTitle: { fontSize: 16, fontFamily: "JacquesFrancois-Regular" },
-  branchTitleContainer: {
-    left: 0.02 * screenHeight,
+  branchAvatarInList: {
+    width: 0.045 * screenHeight,
+    height: 0.045 * screenHeight,
+    borderRadius: 100,
+    position: "absolute",
+    left: 0.0125 * screenHeight,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  branchTitleWhileCreating: {
+    fontSize: 17,
+    fontFamily: "JacquesFrancois-Regular",
   },
   colorPickerOuterContainer: {
     width: "75%",
@@ -217,6 +226,16 @@ export const styles = StyleSheet.create({
     height: 22 * figmaWidthPixelConverter,
     color: "rgb(92, 64, 129)",
   },
+  branchTitleContainer: {
+    position: "absolute",
+    left: 0.09 * screenWidth + 22 * figmaWidthPixelConverter,
+    width: "65%",
+    justifyContent: "center",
+  },
+  branchTitleInList: {
+    fontFamily: "JacquesFrancois-Regular",
+    fontSize: 20,
+  },
   plusBranchTitle: {
     position: "absolute",
     left: 0.09 * screenWidth + 22 * figmaWidthPixelConverter,
@@ -274,6 +293,14 @@ export const styles = StyleSheet.create({
     width: "90%",
     fontSize: 17,
     fontFamily: "JacquesFrancois-Regular",
+  },
+  binIconContainer: {
+    position: "absolute",
+    right: 0.045 * screenWidth,
+  },
+  binIcon: {
+    width: 0.05 * screenWidth,
+    height: 0.05 * screenHeight,
   },
 });
 

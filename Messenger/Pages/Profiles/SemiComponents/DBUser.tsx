@@ -9,6 +9,9 @@ export interface UserProps {
   MembersCount: string;
   isEmergencyMessagesEnabled: boolean;
   GroupBio: string;
+  branches: Array<Branch>;
+  clearChatText: string;
+  removalText: string;
 }
 
 export const user: UserProps = {
@@ -22,4 +25,19 @@ export const user: UserProps = {
   MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,
   GroupBio: "Aboba - cool",
+  branches: new Array<Branch>(),
+  clearChatText: "Do you really want to clear chat?",
+  removalText: "Do you really want to delete",
 };
+
+export class Branch {
+  name: string;
+  emoji: string;
+  color: string;
+
+  constructor(name: string, emoji: string, color: string) {
+    this.name = name;
+    this.emoji = emoji;
+    this.color = color;
+  }
+}

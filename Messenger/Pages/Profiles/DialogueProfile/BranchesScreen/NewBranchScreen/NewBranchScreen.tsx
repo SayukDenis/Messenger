@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Dimensions,
@@ -18,6 +18,8 @@ import EmojiSelection from "./EmojiSelection";
 import Blur from "../../../SemiComponents/MainScreen/Blur";
 import BranchColorPicker from "./BranchColorPicker";
 import BranchAppearance from "./BranchAppearance";
+import { user, Branch } from "../../../SemiComponents/DBUser";
+import { update } from "../BranchesScreen";
 
 type BranchesProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -33,6 +35,8 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
   const designBranchTitle: string = "Design branch";
   const doneTitle: string = "Done";
   const noNameWarningTitle: string = "You have to enter a name";
+  const nameIsBusyTitle: string = "This name is already taken";
+  var isValid: boolean = true;
 
   const [branchName, setBranchName] = useState("");
   const [pickedEmoji, setPickedEmoji] = useState("");
@@ -59,8 +63,29 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
       <TouchableOpacity
         style={styles.doneButtonContainer}
         onPress={() => {
-          if (branchName.length == 0) alert(noNameWarningTitle);
-          else navigation.goBack();
+          if (branchName.length == 0) {
+            isValid = false;
+            alert(noNameWarningTitle);
+          }
+
+          user.branches.map((branch) => {
+            if (branch.name == branchName) {
+              isValid = false;
+              alert(nameIsBusyTitle);
+            }
+          });
+
+          if (isValid) {
+            user.branches.push(
+              new Branch(branchName, pickedEmoji, pickedColor)
+            );
+
+            user.branches.sort((a, b) => a.name.localeCompare(b.name));
+
+            update.digit += 1;
+
+            navigation.goBack();
+          }
         }}
       >
         <Text style={styles.doneButtonTitle}>{doneTitle}</Text>
@@ -152,4 +177,4 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
   );
 };
 
-export default React.memo(NewBranchScreen);
+export default NewBranchScreen;

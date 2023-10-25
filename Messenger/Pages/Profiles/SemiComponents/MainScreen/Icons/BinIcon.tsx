@@ -4,11 +4,11 @@ import React from "react";
 import { ViewStyle } from "react-native";
 import Svg, { Path, Line } from "react-native-svg";
 
-interface ClearChatIconProps {
+interface BinIconProps {
   style: ViewStyle;
 }
 
-const ClearChatIcon: React.FC<ClearChatIconProps> = (props) => {
+const BinIcon: React.FC<BinIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 9 11" fill="none">
       <Path
@@ -68,4 +68,4 @@ const ClearChatIcon: React.FC<ClearChatIconProps> = (props) => {
   );
 };
 
-export default ClearChatIcon;
+export default BinIcon;
