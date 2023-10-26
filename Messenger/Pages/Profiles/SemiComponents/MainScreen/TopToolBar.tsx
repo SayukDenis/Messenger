@@ -7,6 +7,7 @@ import GoBackButton from "../GoBackButton.tsx";
 import SearchIcon from "./Icons/SearchIcon.tsx";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon.tsx";
 import Name from "./Name.tsx";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 interface TopToolBarProps {
   setIsElseFeaturesVisible?: (value: boolean) => void;
@@ -15,6 +16,7 @@ interface TopToolBarProps {
   isMuted?: boolean;
   isBlocked?: boolean;
   isSearchButtonVisible: boolean;
+  navigation: StackNavigationProp<{}>;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
@@ -39,7 +41,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
       <Text style={styles.secondaryTitle}>{props.secondaryTitle}</Text>
 
       {/* Going back button */}
-      <GoBackButton onPress={() => alert("Going back")} />
+      <GoBackButton onPress={() => props.navigation.goBack()} />
 
       {/* Search message button */}
       {props.isSearchButtonVisible && (

@@ -3,10 +3,23 @@
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles.tsx";
+import Photos from "./Photos.tsx";
+
+class Button {
+  name: string;
+  title: string;
+  quantity: number;
+  constructor(name: string, title: string, quantity: number) {
+    this.name = name;
+    this.title = title;
+    this.quantity = quantity;
+  }
+}
 
 interface MultimediaBarProps {
   isLongPressed: boolean;
   onLongPress: (value: boolean) => void;
+  onPress: (value: string) => void;
 }
 
 const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
@@ -33,22 +46,32 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
   // Shows photos or albums is selected
   const [photosAndAlbumsState, setPhotosAndAlbumsState] = useState("Photos");
 
-  // !!!!!!!ПЕРЕРОБИТИ!!!!!!!
-  const indexes: number[] = [0, 1, 2, 3, 4];
-  const buttonsList: string[] = ["Photos", "Albums", "Files", "Voice", "Links"];
-  const buttonTitles: string[] = [
-    photosButtonTitle,
-    albumsButtonTitle,
-    filesButtonTitle,
-    voiceButtonTitle,
-    linksButtonTitle,
-  ];
-  const quantities: number[] = [
-    photosQuantity,
-    albumsQuantity,
-    filesQuantity,
-    voiceQuantity,
-    linksQuantity,
+  const buttonData: Button[] = [
+    {
+      name: "Photos",
+      title: photosButtonTitle,
+      quantity: photosQuantity,
+    },
+    {
+      name: "Albums",
+      title: albumsButtonTitle,
+      quantity: albumsQuantity,
+    },
+    {
+      name: "Files",
+      title: filesButtonTitle,
+      quantity: filesQuantity,
+    },
+    {
+      name: "Voice",
+      title: voiceButtonTitle,
+      quantity: voiceQuantity,
+    },
+    {
+      name: "Links",
+      title: linksButtonTitle,
+      quantity: linksQuantity,
+    },
   ];
 
   // Finding max width for multimedia quantities containter
@@ -64,20 +87,18 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
         >
           {`${photosQuantity.toLocaleString()} ${photosButtonTitle.toLowerCase()}, ${videosQuantity.toLocaleString()} ${videosButtonTitle.toLowerCase()}`}
         </Text>
-        {indexes.map(
-          (index) =>
-            index != 0 &&
-            index != 1 && (
+        {buttonData.map(
+          (button) =>
+            button.name != "Photos" &&
+            button.name != "Albums" && (
               <Text
-                key={index}
+                key={button.name}
                 style={styles.multimediaQuantityTitle}
                 onLayout={(event) => {
                   event.nativeEvent.layout.width > maxQuantitiesTitleWidth &&
                     setMaxQuantitiesTitleWidth(event.nativeEvent.layout.width);
                 }}
-              >{`${quantities[index].toLocaleString()} ${buttonTitles[
-                index
-              ].toLowerCase()}`}</Text>
+              >{`${button.quantity.toLocaleString()} ${button.title.toLowerCase()}`}</Text>
             )
         )}
       </View>
@@ -108,16 +129,14 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
             style={styles.multimediaQuantityTitle}
           >{`${photosQuantity.toLocaleString()} ${photosButtonTitle.toLowerCase()}, ${videosQuantity.toLocaleString()} ${videosButtonTitle.toLowerCase()}`}</Text>
         )}
-        {indexes.map(
-          (index) =>
-            index != 0 &&
-            pressedMultimediaButton === buttonsList[index] && (
+        {buttonData.map(
+          (button) =>
+            button.name != "Photos" &&
+            pressedMultimediaButton === button.name && (
               <Text
-                key={index}
+                key={button.name}
                 style={styles.multimediaQuantityTitle}
-              >{`${quantities[index].toLocaleString()} ${buttonTitles[
-                index
-              ].toLowerCase()}`}</Text>
+              >{`${button.quantity.toLocaleString()} ${button.title.toLowerCase()}`}</Text>
             )
         )}
       </View>
@@ -126,6 +145,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
       <TouchableOpacity
         onPress={() => {
           setPressedMultimediaButton(photosAndAlbumsState);
+          props.onPress(photosAndAlbumsState);
           props.onLongPress(false);
         }}
         onLongPress={() => {
@@ -140,6 +160,9 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
                 prevState == "Photos" ? "Albums" : "Photos"
               );
               setPressedMultimediaButton(
+                photosAndAlbumsState == "Photos" ? "Albums" : "Photos"
+              );
+              props.onPress(
                 photosAndAlbumsState == "Photos" ? "Albums" : "Photos"
               );
             }}
@@ -165,20 +188,21 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
       </TouchableOpacity>
 
       {/* Files, voice, links buttons */}
-      {indexes.map(
-        (index) =>
-          index != 0 &&
-          index != 1 && (
+      {buttonData.map(
+        (button) =>
+          button.name != "Photos" &&
+          button.name != "Albums" && (
             <TouchableOpacity
-              key={index}
+              key={button.name}
               onPress={() => {
-                setPressedMultimediaButton(buttonsList[index]);
+                setPressedMultimediaButton(button.name);
+                props.onPress(button.name);
                 props.onLongPress(false);
               }}
-              style={buttonsList[index] === "Files" ? styles.filesButton : null}
+              style={button.name === "Files" ? styles.filesButton : null}
             >
-              <Text style={styles.multimediaTitle}>{buttonTitles[index]}</Text>
-              {pressedMultimediaButton === buttonsList[index] && (
+              <Text style={styles.multimediaTitle}>{button.title}</Text>
+              {pressedMultimediaButton === button.name && (
                 <View style={styles.rectangleUnderMultimediaButton} />
               )}
             </TouchableOpacity>

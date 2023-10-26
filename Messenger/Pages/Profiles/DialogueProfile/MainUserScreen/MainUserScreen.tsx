@@ -6,7 +6,7 @@ import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
-import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
+import Multimedia from "../../SemiComponents/MainScreen/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
@@ -69,6 +69,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         isMuted={isMuted}
         isBlocked={isBlocked}
         isSearchButtonVisible={true}
+        navigation={navigation}
       />
 
       {/* Else features which appear when else features button is pressed*/}
@@ -108,7 +109,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
       <AvatarWithCallingButtons />
 
       {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
-      <MultimediaBar
+      <Multimedia
         isLongPressed={isPhotoAlbumSelectionVisible}
         onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
       />

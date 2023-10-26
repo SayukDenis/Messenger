@@ -20,6 +20,7 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
         onPress={() => {
           alert("avatar press");
         }}
+        style={styles.mainAvatarImage}
       >
         <Image style={styles.mainAvatarImage} source={{ uri: avatarURL }} />
       </TouchableOpacity>

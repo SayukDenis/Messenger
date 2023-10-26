@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     height: 120 * figmaHeightPixelConverter,
     borderRadius: 100,
     alignSelf: "center",
-    top: 0.02 * screenHeight,
+    top: 0.015 * screenHeight,
   },
   horizontalContainerForCalling: {
     flexDirection: "row",
