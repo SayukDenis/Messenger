@@ -4,22 +4,22 @@ import React from "react";
 import {
   View,
   FlatList,
-  TouchableOpacity,
   Text,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { user } from "../DBUser.tsx";
 import styles from "./Styles.tsx";
-import DownArrowIcon from "./Icons/DownArrowIcon.tsx";
+import MicrophoneIcon from "./Icons/MicrophoneIcon.tsx";
 
-interface FilesProps {}
+interface VoiceProps {}
 
-const Files: React.FC<FilesProps> = (props) => {
+const Voice: React.FC<VoiceProps> = (props) => {
   return (
     <View style={styles.mediaContainer}>
       <FlatList
-        data={user.files}
-        keyExtractor={(item) => user.files.indexOf(item).toString()}
+        data={user.voice}
+        keyExtractor={(item) => user.voice.indexOf(item).toString()}
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{
@@ -31,27 +31,22 @@ const Files: React.FC<FilesProps> = (props) => {
             <TouchableOpacity
               style={styles.fileContainer}
               onPress={() => {
-                alert(item.name + " is pressed...");
+                alert(item.author + "'s voice message is pressed...");
               }}
             >
               <View style={styles.fileFormatContainer}>
-                <Text numberOfLines={1} style={styles.fileFormatText}>
-                  {item.format}
-                </Text>
+                <MicrophoneIcon style={styles.microphoneIcon} />
               </View>
-              <View style={styles.fileNameContainer}>
+              <View style={[styles.fileNameContainer, { width: "50%" }]}>
                 <Text numberOfLines={1} style={styles.fileNameText}>
-                  {item.name}
+                  {item.author}
                 </Text>
               </View>
-              <TouchableOpacity
-                onPress={() => {
-                  alert("Downloading " + item.name + "...");
-                }}
-                style={styles.downloadFileIconContainer}
-              >
-                <DownArrowIcon style={styles.downloadFileIcon} />
-              </TouchableOpacity>
+              <View style={styles.voiceTimeAndDateContainer}>
+                <Text numberOfLines={1} style={styles.fileNameText}>
+                  {item.time + " " + item.date}
+                </Text>
+              </View>
             </TouchableOpacity>
           );
         }}
@@ -60,4 +55,4 @@ const Files: React.FC<FilesProps> = (props) => {
   );
 };
 
-export default Files;
+export default Voice;

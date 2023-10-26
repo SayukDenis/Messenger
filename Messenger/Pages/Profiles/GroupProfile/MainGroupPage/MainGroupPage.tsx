@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, Text } from "react-native";
+import { View, Image, ScrollView } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
-import MultimediaBar from "../../SemiComponents/MainScreen/MultimediaBar";
+import Multimedia from "../../SemiComponents/MainScreen/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
-import ClearChatApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import BioAndLink from "./BioAndLink";
 import { user } from "../../SemiComponents/DBUser";
 
@@ -40,7 +40,6 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         }}
         style={styles.blurEffect}
       />
-
       {/* Blur if else features button is pressed */}
       <Blur
         visibleWhen={isElseFeaturesVisible === true}
@@ -49,7 +48,6 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         }}
         style={styles.blurEffect}
       />
-
       {/* Blur if clear chat is pressed */}
       <Blur
         visibleWhen={isClearChatButtonClicked === true}
@@ -58,7 +56,6 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         }}
         style={[styles.blurEffect, { zIndex: 3 }]}
       />
-
       {/* Top tool bar with buttons*/}
       <TopToolBar
         primaryTitle={user.Nickname}
@@ -69,8 +66,8 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         isMuted={isMuted}
         isBlocked={isBlocked}
         isSearchButtonVisible={true}
+        onGoBackPress={() => navigation.goBack()}
       />
-
       {/* Else features which appear when else features button is pressed*/}
       <ElseFeaturesButtons
         isVisible={isElseFeaturesVisible}
@@ -91,9 +88,8 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         settingsPress={() => navigation.navigate("SettingsScreen" as never)}
         mode="group"
       />
-
       {/* Approval to clear chat if clear button is clicked via else features buttons */}
-      <ClearChatApproval
+      <RemovalApproval
         isPressed={isClearChatButtonClicked}
         onAnyPress={() => {
           setIsClearChatButtonClicked(false);
@@ -101,8 +97,8 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         onAgreePress={() => {
           alert("Agree");
         }}
+        text="Do you really want to delete a chat?"
       />
-
       <Image
         style={{
           width: 100,
@@ -113,10 +109,9 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         }}
         source={{ uri: user.ImagePath }}
       />
-
       <BioAndLink />
       {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
-      <MultimediaBar
+      <Multimedia
         isLongPressed={isPhotoAlbumSelectionVisible}
         onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
       />

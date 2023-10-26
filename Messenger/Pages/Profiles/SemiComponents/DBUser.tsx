@@ -14,6 +14,8 @@ export interface UserProps {
   files: Array<File>;
   clearChatText: string;
   removalText: string;
+  voice: Array<Voice>;
+  links: Array<Link>;
 }
 
 export const user: UserProps = {
@@ -90,6 +92,115 @@ export const user: UserProps = {
     { name: "file1", format: "png" },
     { name: "file1", format: "pdf" },
   ],
+  voice: [
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Віктор", time: "15:09", date: "04.10.2023" },
+    { author: "Капець довге ім'я", time: "23:15", date: "15.12.2003" },
+    {
+      author: "Lorem ipsum dolor sit amet, consectetur",
+      time: "15:09",
+      date: "15.10.2023",
+    },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+    { author: "Олексій", time: "15:09", date: "15.10.2023" },
+  ],
+  links: [
+    {
+      name: "Important info",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+    {
+      name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+  ],
 };
 
 export class Branch {
@@ -119,5 +230,27 @@ export class File {
   constructor(name: string, format: string) {
     this.name = name;
     this.format = format;
+  }
+}
+
+export class Voice {
+  author: string;
+  time: string;
+  date: string;
+
+  constructor(author: string, time: string, date: string) {
+    this.author = author;
+    this.time = time;
+    this.date = date;
+  }
+}
+
+export class Link {
+  name: string;
+  url: string;
+
+  constructor(name: string, url: string) {
+    this.name = name;
+    this.url = url;
   }
 }

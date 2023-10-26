@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles.tsx";
 import Photos from "./Photos.tsx";
+import { user } from "../DBUser.tsx";
 
 class Button {
   name: string;
@@ -35,9 +36,6 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
   const photosQuantity: number = 600;
   const videosQuantity: number = 20;
   const albumsQuantity: number = 50;
-  const filesQuantity: number = 3;
-  const voiceQuantity: number = 3214;
-  const linksQuantity: number = 5;
 
   // Shows which multimedia button is currently pressed
   const [pressedMultimediaButton, setPressedMultimediaButton] =
@@ -60,17 +58,17 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
     {
       name: "Files",
       title: filesButtonTitle,
-      quantity: filesQuantity,
+      quantity: user.files.length,
     },
     {
       name: "Voice",
       title: voiceButtonTitle,
-      quantity: voiceQuantity,
+      quantity: user.voice.length,
     },
     {
       name: "Links",
       title: linksButtonTitle,
-      quantity: linksQuantity,
+      quantity: user.links.length,
     },
   ];
 

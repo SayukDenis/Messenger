@@ -283,7 +283,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   fileFormatContainer: {
-    width: "15%",
+    width: "13%",
     height: 0.0475 * screenHeight,
     backgroundColor: "rgb(227, 192, 124)",
     borderWidth: 0.5,
@@ -314,6 +314,18 @@ export const styles = StyleSheet.create({
     right: 0.04 * screenWidth,
   },
   downloadFileIcon: { width: 0.04 * screenWidth, height: 0.04 * screenHeight },
+  microphoneIcon: {
+    width: 0.04 * screenWidth,
+    height: 0.04 * screenHeight,
+  },
+  voiceTimeAndDateContainer: {
+    width: "50%",
+    height: 0.0475 * screenHeight,
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    right: -0.065 * screenWidth,
+  },
 });
 
 export default styles;

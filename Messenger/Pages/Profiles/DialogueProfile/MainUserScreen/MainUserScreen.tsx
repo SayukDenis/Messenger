@@ -69,7 +69,9 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         isMuted={isMuted}
         isBlocked={isBlocked}
         isSearchButtonVisible={true}
-        navigation={navigation}
+        onGoBackPress={() => {
+          navigation.goBack();
+        }}
       />
 
       {/* Else features which appear when else features button is pressed*/}
@@ -104,6 +106,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         }}
         text={user.clearChatText}
       />
+
       <ScrollView
         style={{
           flex: 1,

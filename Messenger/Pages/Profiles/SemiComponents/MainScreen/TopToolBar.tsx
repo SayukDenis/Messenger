@@ -16,7 +16,7 @@ interface TopToolBarProps {
   isMuted?: boolean;
   isBlocked?: boolean;
   isSearchButtonVisible: boolean;
-  navigation: StackNavigationProp<{}>;
+  onGoBackPress: () => void;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
@@ -41,7 +41,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
       <Text style={styles.secondaryTitle}>{props.secondaryTitle}</Text>
 
       {/* Going back button */}
-      <GoBackButton onPress={() => props.navigation.goBack()} />
+      <GoBackButton onPress={() => props.onGoBackPress()} />
 
       {/* Search message button */}
       {props.isSearchButtonVisible && (

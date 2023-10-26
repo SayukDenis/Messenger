@@ -4,22 +4,22 @@ import React from "react";
 import {
   View,
   FlatList,
-  TouchableOpacity,
   Text,
   Dimensions,
+  TouchableOpacity,
+  Linking,
 } from "react-native";
 import { user } from "../DBUser.tsx";
 import styles from "./Styles.tsx";
-import DownArrowIcon from "./Icons/DownArrowIcon.tsx";
 
-interface FilesProps {}
+interface LinksProps {}
 
-const Files: React.FC<FilesProps> = (props) => {
+const Links: React.FC<LinksProps> = (props) => {
   return (
     <View style={styles.mediaContainer}>
       <FlatList
-        data={user.files}
-        keyExtractor={(item) => user.files.indexOf(item).toString()}
+        data={user.links}
+        keyExtractor={(item) => user.links.indexOf(item).toString()}
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{
@@ -31,27 +31,43 @@ const Files: React.FC<FilesProps> = (props) => {
             <TouchableOpacity
               style={styles.fileContainer}
               onPress={() => {
-                alert(item.name + " is pressed...");
+                alert(item.url + "'s voice message is pressed...");
               }}
             >
               <View style={styles.fileFormatContainer}>
                 <Text numberOfLines={1} style={styles.fileFormatText}>
-                  {item.format}
+                  png
                 </Text>
               </View>
-              <View style={styles.fileNameContainer}>
+              <View
+                style={[
+                  styles.fileNameContainer,
+                  { width: "95%", bottom: "50%" },
+                ]}
+              >
                 <Text numberOfLines={1} style={styles.fileNameText}>
                   {item.name}
                 </Text>
               </View>
-              <TouchableOpacity
-                onPress={() => {
-                  alert("Downloading " + item.name + "...");
-                }}
-                style={styles.downloadFileIconContainer}
+              <View
+                style={[styles.fileNameContainer, { width: "95%", top: "50%" }]}
               >
-                <DownArrowIcon style={styles.downloadFileIcon} />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL(item.url);
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      styles.fileNameText,
+                      { color: "rgb(43, 118, 134)" },
+                    ]}
+                  >
+                    {item.url}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </TouchableOpacity>
           );
         }}
@@ -60,4 +76,4 @@ const Files: React.FC<FilesProps> = (props) => {
   );
 };
 
-export default Files;
+export default Links;
