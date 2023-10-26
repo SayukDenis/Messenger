@@ -23,8 +23,9 @@ const Photos: React.FC<PhotosProps> = (props) => {
         numColumns={3}
         contentContainerStyle={{
           gap: 0.005 * Dimensions.get("screen").width,
-          paddingBottom: 0.1 * Dimensions.get("screen").height,
+          paddingBottom: 0.08 * Dimensions.get("screen").height,
         }}
+        scrollEnabled={false}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity

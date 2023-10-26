@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
@@ -104,15 +104,29 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         }}
         text={user.clearChatText}
       />
+      <ScrollView
+        style={{
+          flex: 1,
+          zIndex: isPhotoAlbumSelectionVisible ? 2 : 0,
+        }}
+        contentContainerStyle={{
+          zIndex: isPhotoAlbumSelectionVisible ? 2 : 0,
+        }}
+        overScrollMode="never"
+        showsVerticalScrollIndicator={false}
+        onScroll={() => {
+          setIsPhotoAlbumSelectionVisible(false);
+        }}
+      >
+        {/* Touchable avatar image with phone and videocamera buttons*/}
+        <AvatarWithCallingButtons />
 
-      {/* Touchable avatar image with phone and videocamera buttons*/}
-      <AvatarWithCallingButtons />
-
-      {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
-      <Multimedia
-        isLongPressed={isPhotoAlbumSelectionVisible}
-        onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
-      />
+        {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
+        <Multimedia
+          isLongPressed={isPhotoAlbumSelectionVisible}
+          onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
+        />
+      </ScrollView>
     </View>
   );
 };

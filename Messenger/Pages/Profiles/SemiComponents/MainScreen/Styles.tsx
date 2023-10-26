@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     height: 40 * figmaWidthPixelConverter,
   },
   multimediaBar: {
-    top: 0.1 * screenHeight,
+    top: 55 * figmaHeightPixelConverter,
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     height: 30 * figmaHeightPixelConverter,
@@ -109,10 +109,10 @@ export const styles = StyleSheet.create({
   },
   albumsOrPhotosAppearingButton: {
     backgroundColor: "rgb(231, 230,	228)",
-    width: 0.237 * screenWidth,
-    height: 30 * figmaHeightPixelConverter,
+    width: 0.24 * screenWidth,
+    height: 25 * figmaHeightPixelConverter,
     borderRadius: 100,
-    bottom: 30 * figmaHeightPixelConverter,
+    bottom: 25 * figmaHeightPixelConverter,
     alignSelf: "center",
     justifyContent: "center",
     borderWidth: 1.5,
@@ -264,9 +264,8 @@ export const styles = StyleSheet.create({
   mediaContainer: {
     width: "100%",
     height: "100%",
-    top: 0.1 * screenHeight,
+    top: 55 * figmaHeightPixelConverter,
     backgroundColor: "rgb(174, 174, 174)",
-    overflow: "hidden",
     flex: 1,
   },
   photo: {
@@ -277,7 +276,8 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: 0.0475 * screenHeight,
     backgroundColor: "rgb(227, 192, 124)",
-    borderWidth: 0.5,
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderColor: "black",
     justifyContent: "center",
     alignItems: "center",

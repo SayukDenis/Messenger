@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import {} from "react-native";
+import { Dimensions, ScrollView, View } from "react-native";
 import styles from "./Styles.tsx";
 import MultimediaBar from "./MultimediaBar.tsx";
 import Photos from "./Photos.tsx";
@@ -16,9 +16,6 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
 
-  useEffect(() => {
-    console.log(pressedMultimediaButton);
-  });
   return (
     <>
       <MultimediaBar

@@ -23,8 +23,9 @@ const Files: React.FC<FilesProps> = (props) => {
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{
-          paddingBottom: 0.12 * Dimensions.get("screen").height,
+          paddingBottom: 0.08 * Dimensions.get("screen").height,
         }}
+        scrollEnabled={false}
         renderItem={({ item }) => {
           return (
             <View style={styles.fileContainer}>
