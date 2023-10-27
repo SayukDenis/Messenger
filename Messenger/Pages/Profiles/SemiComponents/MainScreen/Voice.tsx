@@ -23,7 +23,7 @@ const Voice: React.FC<VoiceProps> = (props) => {
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{
-          paddingBottom: 0.08 * Dimensions.get("screen").height,
+          paddingBottom: 0.09 * Dimensions.get("screen").height,
         }}
         scrollEnabled={false}
         renderItem={({ item }) => {

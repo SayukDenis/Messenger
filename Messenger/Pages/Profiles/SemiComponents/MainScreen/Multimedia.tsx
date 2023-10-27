@@ -8,6 +8,7 @@ import Photos from "./Photos.tsx";
 import Files from "./Files.tsx";
 import Voice from "./Voice.tsx";
 import Links from "./Links.tsx";
+import Albums from "./Albums.tsx";
 
 interface MultimediaProps {
   isLongPressed: boolean;
@@ -29,6 +30,7 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
       />
 
       {pressedMultimediaButton == "Photos" && <Photos />}
+      {pressedMultimediaButton == "Albums" && <Albums />}
       {pressedMultimediaButton == "Files" && <Files />}
       {pressedMultimediaButton == "Voice" && <Voice />}
       {pressedMultimediaButton == "Links" && <Links />}

@@ -24,6 +24,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
         contentContainerStyle={{
           gap: 0.005 * Dimensions.get("screen").width,
           paddingBottom: 0.08 * Dimensions.get("screen").height,
+          backgroundColor: "rgb(174, 174, 174)",
         }}
         scrollEnabled={false}
         renderItem={({ item }) => {

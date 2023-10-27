@@ -16,6 +16,7 @@ export interface UserProps {
   removalText: string;
   voice: Array<Voice>;
   links: Array<Link>;
+  albums: Array<Album>;
 }
 
 export const user: UserProps = {
@@ -201,6 +202,164 @@ export const user: UserProps = {
       url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     },
   ],
+  albums: [
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/2/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+        { url: "https://picsum.photos/id/1/5000/3333" },
+      ],
+    },
+    {
+      name: "Name",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Name",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+    {
+      name: "Aboba",
+      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
+      photosAndVideos: [
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/1084/536/354" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+        { url: "https://picsum.photos/id/2/5000/3333" },
+      ],
+    },
+  ],
 };
 
 export class Branch {
@@ -252,5 +411,21 @@ export class Link {
   constructor(name: string, url: string) {
     this.name = name;
     this.url = url;
+  }
+}
+
+export class Album {
+  name: string;
+  mainPhoto: PhotoOrVideo;
+  photosAndVideos: Array<PhotoOrVideo>;
+
+  constructor(
+    name: string,
+    mainPhoto: PhotoOrVideo,
+    photosAndVideos: Array<PhotoOrVideo>
+  ) {
+    this.name = name;
+    this.mainPhoto = mainPhoto;
+    this.photosAndVideos = photosAndVideos;
   }
 }

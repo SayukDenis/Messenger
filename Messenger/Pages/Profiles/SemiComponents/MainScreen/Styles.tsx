@@ -1,6 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import { StyleSheet, Dimensions } from "react-native";
+import { user } from "../DBUser";
 
 // Coefficients for transmitting sizes from Figma to user's device
 const screenHeight = Dimensions.get("screen").height;
@@ -265,7 +266,6 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     top: 55 * figmaHeightPixelConverter,
-    backgroundColor: "rgb(174, 174, 174)",
     flex: 1,
   },
   photo: {
@@ -326,6 +326,44 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     right: -0.065 * screenWidth,
   },
+  allAlbumsContainer: {
+    backgroundColor: "rgb(174, 174, 174)",
+    paddingBottom: 0.08 * screenHeight,
+    gap: 0.01 * screenHeight,
+    height:
+      (user.albums.length + 1) % 2 == 0
+        ? 0.15 * screenHeight +
+            Math.ceil(user.albums.length / 2) * 0.205 * screenHeight >
+          0.65 * screenHeight
+          ? 0.15 * screenHeight +
+            Math.ceil(user.albums.length / 2) * 0.205 * screenHeight
+          : 0.65 * screenHeight
+        : 0.15 * screenHeight +
+            (Math.ceil(user.albums.length / 2) - 1) * 0.205 * screenHeight >
+          0.65 * screenHeight
+        ? 0.15 * screenHeight +
+          (Math.ceil(user.albums.length / 2) - 1) * 0.205 * screenHeight
+        : 0.65 * screenHeight,
+  },
+  albumContainer: {
+    width: 0.5 * screenWidth,
+    height: 0.195 * screenHeight,
+    top: 0.02 * screenHeight,
+    left: 0.075 * screenWidth,
+  },
+  albumMainPhoto: {
+    width: 0.35 * screenWidth,
+    height: 0.15 * screenHeight,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  albumInfoContainer: {
+    width: "70%",
+  },
+  albumNameText: { fontSize: 16, fontFamily: "JacquesFrancois-Regular" },
+  albumPhotosAndVideosQuantityText: { fontSize: 13, color: "dimgrey" },
+  plusAlbumIcon: { width: 0.12 * screenWidth, height: 0.12 * screenWidth },
 });
 
 export default styles;
