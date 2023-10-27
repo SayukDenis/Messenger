@@ -58,7 +58,7 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
       />
       {/* Top tool bar with buttons*/}
       <TopToolBar
-        primaryTitle={user.Nickname}
+        primaryTitle={user.profileName}
         secondaryTitle={user.MembersCount}
         setIsElseFeaturesVisible={(value: boolean) =>
           setIsElseFeaturesVisible(value)
@@ -85,7 +85,7 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
           setIsClearChatButtonClicked(value);
         }}
         navigation={navigation}
-        settingsPress={() => navigation.navigate("SettingsScreen" as never)}
+        settingsPress={() => navigation.navigate("SettingsMenu" as never)}
         mode="group"
       />
       {/* Approval to clear chat if clear button is clicked via else features buttons */}

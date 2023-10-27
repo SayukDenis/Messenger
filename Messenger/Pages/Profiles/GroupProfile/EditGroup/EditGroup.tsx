@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native";
-import { styles } from "./ProfileGroupStyles"; // Адаптувати шлях до правильного файлу
+import { SafeAreaView, View } from "react-native";
+import { styles } from "./ProfileGroupStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { GroupHead } from "./GroupHeadProfile";
 import { GroupBio } from "./GroupBio";
@@ -10,10 +10,9 @@ import { EditGroupPhoto } from "./EditGroupPhoto";
 import { User } from "./UserProfile";
 
 export default function EditGroup() {
-  const [users, setUsers] = useState<UserProps[]>([]);
   const [GroupHeadNameExample, setGroupHeadNameExample] = useState("");
   const [bioTextExample, setBioTextExample] = useState("");
-  const [menuVisible, setMenuVisible] = useState(false); // Початково приховане меню
+  const [menuVisible, setMenuVisible] = useState(false);
   const [GroupNameExample, setGroupNameExample] = useState("");
   const [GroupImage, setGroupImage] = useState(
     "https://picsum.photos/id/237/536/354"
@@ -26,7 +25,7 @@ export default function EditGroup() {
         <EditGroupPhoto />
         <GroupName setGroupNameExample={setGroupNameExample} />
         <GroupBio setBioTextExample={setBioTextExample} />
-        <User ImagePath={user.ImagePath} Nickname={user.Nickname} />
+        <User {...user} />
       </SafeAreaView>
     </GestureHandlerRootView>
   );

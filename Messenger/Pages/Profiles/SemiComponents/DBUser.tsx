@@ -1,6 +1,6 @@
 export interface UserProps {
   ImagePath: string;
-  Nickname: string;
+  MembersName: Array<Nicknames>;
   selectedInterval: number;
   isMuted: boolean;
   isBlocked: boolean;
@@ -21,11 +21,16 @@ export interface UserProps {
 
 export const user: UserProps = {
   ImagePath: "https://picsum.photos/id/1084/536/354",
-  Nickname: "Aboba ABOBA aboba ABOBA AboBA BaoBAB",
+  MembersName: [
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
+    { name: "Aboba ABOBA aboba ABOBA AboBA" },
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB Abob" },
+    { name: "Viktor" },
+  ],
   selectedInterval: 0,
   isMuted: false,
   isBlocked: false,
-  profileName: "Олексій Док Док Док",
+  profileName: "Aboba boba abob bibob",
   lastTimeOnline: "Був online давно",
   MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,
@@ -427,5 +432,13 @@ export class Album {
     this.name = name;
     this.mainPhoto = mainPhoto;
     this.photosAndVideos = photosAndVideos;
+  }
+}
+
+export class Nicknames {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
   }
 }
