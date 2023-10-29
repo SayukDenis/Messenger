@@ -8,6 +8,10 @@ import {
   AppRegistry,
 } from "react-native";
 import ChatList from "./Pages/ChatList/ChatList";
+import Authorization from './Pages/Authorization/Authorization'; 
+import PhoneCodeRegistration from './Pages/Authorization/Pages/PhoneCodeRegistration';
+import Registration from './Pages/Authorization/Pages/Registration';
+import CodePassword from './Pages/CodePassword/CodePassword'; 
 import React from "react";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
