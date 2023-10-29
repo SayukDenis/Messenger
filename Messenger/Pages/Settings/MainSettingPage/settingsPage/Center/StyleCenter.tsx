@@ -11,21 +11,30 @@ const StyleCentre = StyleSheet.create({
     },
     
     imgStyle :{
-        marginTop:'5%',
         height:150,
         width:150,
         borderRadius:10000000
     },
 
     button:{
-        marginTop:"2%",
-        padding:0
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center',
+        marginTop:"4%",
+        borderLeftWidth:1,
+        borderRightWidth:1,
+        borderTopWidth:1,
+        borderColor:'#858585',
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10,
+        width:'30%',
+        height:'4%'
     },
 
     box:{
         width : '90%',
         height:1,
-        backgroundColor:'blue',
+        backgroundColor:'#858585',
     },
 
     text:{

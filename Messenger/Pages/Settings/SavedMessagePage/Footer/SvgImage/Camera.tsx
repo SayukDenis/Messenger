@@ -5,11 +5,13 @@ import Svg, { Rect, Circle, Path } from 'react-native-svg';
 const Camera = () => {
   return (
     <TouchableOpacity>
-      <Svg width={18} height={18} viewBox="0 0 18 18">
-        <Rect width={18} height={18} rx={2} fill="black" />
-        <Circle cx={5.5} cy={4.5} r={1.5} fill="#E7E6E4" />
-        <Path d="M12.125 6L16.3469 13.5H7.90313L12.125 6Z" fill="#E7E6E4" />
-        <Path d="M7.25 9L10.0646 13.5H4.43542L7.25 9Z" fill="#E7E6E4" />
+     <Svg width={24} height={24} viewBox="0 0 24 24">
+        <Circle cx={12} cy={12} r={12} fill="#423D3D" />
+        <Path
+          d="M13.6367 11.9996L18.9549 8.22063V15.7787L13.6367 11.9996Z"
+          fill="#B89191"
+        />
+        <Rect x={6.54492} y={7.63623} width={8.86364} height={8.72727} fill="#B89191" />
       </Svg>
     </TouchableOpacity>
   );

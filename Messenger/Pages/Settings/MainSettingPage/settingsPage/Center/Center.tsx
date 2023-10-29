@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import { View, Image, Button, Text,TouchableOpacity, Modal, StyleSheet  } from 'react-native';
 import StyleCentre from './StyleCenter';
-import StyleButtonList from './StyleButtonLIst';
-import SavedmessagePage from '../../../SavedMessagePage/SavedMessagePage';
+import StyleButtonList from './ButtonLIst/StyleButtonLIst';
 import { createStackNavigator } from '@react-navigation/stack';
-import Header from '../Header/Heder';
+import ButtonList from './ButtonLIst/Buttonlist';
 
 const Stack = createStackNavigator();
 
@@ -18,25 +17,10 @@ const Center: React.FC<any> = ({ navigation })=>{
         return <View style={StyleCentre.conteiner} >
                                 
                                 <Image style={StyleCentre.imgStyle} source={{uri:'https://www.meme-arsenal.com/memes/a297a80a2839282005e0a60135421919.jpg'}}></Image>
-                                <View style={StyleCentre.button}><Button title ="Edit"  onPress={() => navigation.navigate('Edit page')} ></Button></View>
+                                <View style={StyleCentre.button}><TouchableOpacity onPress={() => navigation.navigate('Edit page')} ><Text>Edit</Text></TouchableOpacity></View>
                                 <View style={StyleCentre.box}></View>
                                 <Text style= {StyleCentre.text}>Settings</Text>
-                                <View>
-                                    {items.map((item, index) => (
-                                    <View key={index} >
-                                        <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate(item)}>
-                                        <Text>{item}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    ))}
-                                            <Text style= {StyleCentre.text}>Help</Text>
-                                        <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Question page')}>
-                                                <Text>Question in Telintik</Text>
-                                        </TouchableOpacity>
-                                            <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Ask')}>
-                                                <Text>Ask a Question</Text>
-                                            </TouchableOpacity>
-                                 </View>
+                                <ButtonList navigation = {navigation}></ButtonList>
                                     <TouchableOpacity style ={StyleCentre.editButton} >
                                         <Text style={StyleCentre.editButtonText} onPress={toggleModal}>Exit</Text>
                                     </TouchableOpacity>           
@@ -56,7 +40,7 @@ const Center: React.FC<any> = ({ navigation })=>{
                                             </View>
                                 </Modal>
                         </View>
-  
+   
 }
 
 export default Center;

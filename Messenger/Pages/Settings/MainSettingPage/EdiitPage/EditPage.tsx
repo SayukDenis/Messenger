@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import EditHeader from './EditHeader/EditPageHeader';
-import EditCenter from './EditCenter/EditCenter';
+import EditHeader from './MainEditPage/EditHeader/EditPageHeader';
+import EditCenter from './MainEditPage/EditCenter/EditCenter';
 import StyleEditPage from './StyleEditPage';
 
 const EditPage: React.FC<any> = ({ navigation })=>{

@@ -8,4 +8,4 @@ const StylesSettings = StyleSheet.create({
     },
   });
 
-export default  StylesSettings;5
+export default  StylesSettings;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import StyleButtonList from '../StyleButtonLIst';
+import StyleButtonList from './StyleButtonLIst';
 import StyleCentre from '../StyleCenter';
 
 
@@ -10,7 +10,7 @@ const ButtonList: React.FC<any> = ({ navigation }) => {
     return <View>
     {items.map((item, index) => (
       <View key={index} >
-        <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Edit page')}>
+        <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate(item)}>
           <Text>{item}</Text>
         </TouchableOpacity>
       </View>
@@ -19,7 +19,7 @@ const ButtonList: React.FC<any> = ({ navigation }) => {
                                 <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Question page')}>
                                         <Text>Question in Telintik</Text>
                                 </TouchableOpacity>
-                                    <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Question page')}>
+                                    <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Ask a question')}>
                                         <Text>Ask a Question</Text>
                                     </TouchableOpacity>
     </View>

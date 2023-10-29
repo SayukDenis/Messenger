@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import Navigation from './Pages/Settings/MainSettingPage/settingsPage/Center/Navigation';
+import Navigation from './Pages/Settings/Navigation';
 export default function App() {
 
   const style = StyleSheet.create({
