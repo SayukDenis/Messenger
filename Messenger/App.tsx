@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+import React from "react";
+import { useFonts } from "expo-font";
+import DialogueProfile from "./Pages/Profiles/DialogueProfile/DialogueProfile";
+import StartPage from "./Pages/Profiles/SemiComponents/Navigation";
+export default function App() {
+  const [dataLoaded] = useFonts({
+    "JacquesFrancois-Regular": require("./Pages/Profiles/SemiComponents/Assets/JacquesFrancois-Regular.ttf"),
+  });
+
+  if (!dataLoaded) {
+    return null;
+  }
+  return <StartPage />;
+}
+=======
 import { registerRootComponent } from "expo";
 import {
   View,
@@ -35,3 +51,4 @@ const style = StyleSheet.create({
 registerRootComponent(App);
 AppRegistry.registerComponent("10", () => App);
 AppRegistry.registerComponent("10".toLowerCase(), () => App);
+>>>>>>> 0d1933275d2b5e2439887122b1bf0baa959acf95
