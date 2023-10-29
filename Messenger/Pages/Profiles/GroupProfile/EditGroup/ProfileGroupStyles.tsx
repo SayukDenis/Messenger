@@ -37,11 +37,14 @@ export const styles = StyleSheet.create({
     position: "absolute",
   },
   PersonMenu: {
-    width: 125,
-    height: 75,
+    left: "0%",
+    width: "30%",
+    height: "30%",
     borderRadius: 2,
     backgroundColor: "rgb(218, 182, 150)",
-    top: "100%",
+    top: "-100%",
+    zIndex: 2,
+    margin: 100,
     position: "absolute",
   },
   BioText: {

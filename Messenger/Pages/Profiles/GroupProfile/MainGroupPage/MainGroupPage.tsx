@@ -99,22 +99,37 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         }}
         text="Do you really want to delete a chat?"
       />
-      <Image
+      <ScrollView
         style={{
-          width: 100,
-          height: 100,
-          borderRadius: 100,
-          left: "38%",
-          top: "2%",
+          flex: 1,
+          zIndex: isPhotoAlbumSelectionVisible ? 2 : 0,
         }}
-        source={{ uri: user.ImagePath }}
-      />
-      <BioAndLink />
-      {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
-      <Multimedia
-        isLongPressed={isPhotoAlbumSelectionVisible}
-        onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
-      />
+        contentContainerStyle={{
+          zIndex: isPhotoAlbumSelectionVisible ? 2 : 0,
+        }}
+        overScrollMode="never"
+        showsVerticalScrollIndicator={false}
+        onScroll={() => {
+          setIsPhotoAlbumSelectionVisible(false);
+        }}
+      >
+        <Image
+          style={{
+            width: 100,
+            height: 100,
+            borderRadius: 100,
+            left: "38%",
+            top: "2%",
+          }}
+          source={{ uri: user.ImagePath }}
+        />
+        <BioAndLink />
+        {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
+        <Multimedia
+          isLongPressed={isPhotoAlbumSelectionVisible}
+          onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
+        />
+      </ScrollView>
     </View>
   );
 };

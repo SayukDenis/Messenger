@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import { styles } from "./ProfileGroupStyles";
-import { PersonMenu } from "./PersonMenu";
 import { UserProps } from "../../SemiComponents/DBUser";
+import { PersonMenu } from "./PersonMenu";
 
 export const User: React.FC<UserProps> = (props) => {
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [whatMenuVisible, setWhatMenuVisible] = useState(-1);
 
   return (
     <View>
@@ -13,11 +13,13 @@ export const User: React.FC<UserProps> = (props) => {
         <TouchableOpacity
           key={index}
           style={styles.PersonBg}
-          onLongPress={() => setMenuVisible(true)}
+          onLongPress={() => setWhatMenuVisible(index)}
         >
-          {menuVisible && <PersonMenu />}
           <Image style={styles.PersonIcon} source={{ uri: props.ImagePath }} />
           <Text style={styles.PersonNick}>{item.name}</Text>
+          {whatMenuVisible === index && (
+            <PersonMenu setWhatMenuVisible={setWhatMenuVisible} />
+          )}
         </TouchableOpacity>
       ))}
     </View>
