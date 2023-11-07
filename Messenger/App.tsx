@@ -8,22 +8,23 @@ import {
   AppRegistry,
 } from "react-native";
 import ChatList from "./Pages/ChatList/ChatList";
-import Authorization from './Pages/Authorization/Authorization'; 
-import PhoneCodeRegistration from './Pages/Authorization/Pages/PhoneCodeRegistration';
-import Registration from './Pages/Authorization/Pages/Registration';
-import CodePassword from './Pages/CodePassword/CodePassword'; 
+import Authorization from "./Pages/Authorization/Authorization";
+import PhoneCodeRegistration from "./Pages/Authorization/Pages/PhoneCodeRegistration";
+import Registration from "./Pages/Authorization/Pages/Registration";
+import CodePassword from "./Pages/CodePassword/CodePassword";
 import React from "react";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import { rootReducer} from "./ReducersAndActions/Reducers/ChatListActions/ChatListActions";
+import { rootReducer } from "./ReducersAndActions/Reducers/ChatListActions/ChatListActions";
 import Dialogue from "./Pages/Chats/Dialogue/Dialogue";
+import StartPage from "./Pages/Profiles/SemiComponents/Navigation";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-  const store=createStore(rootReducer)
+  const store = createStore(rootReducer);
   return (
     <Provider store={store}>
       <View style={style.container}>
-        <Dialogue />
+        <StartPage />
       </View>
     </Provider>
   );

@@ -9,9 +9,9 @@ import {
   Dimensions,
   Text,
 } from "react-native";
-import { user } from "../DBUser.tsx";
-import styles from "./Styles.tsx";
-import CrossIcon from "./Icons/CrossIcon.tsx";
+import { user } from "../DBUser";
+import styles from "./Styles";
+import CrossIcon from "./Icons/CrossIcon";
 
 interface AlbumsProps {}
 

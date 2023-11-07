@@ -2,38 +2,37 @@
 
 import React, { useState, useEffect } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
-import styles from "./Styles.tsx";
-import MultimediaBar from "./MultimediaBar.tsx";
-import Photos from "./Photos.tsx";
-import Files from "./Files.tsx";
-import Voice from "./Voice.tsx";
-import Links from "./Links.tsx";
-import Albums from "./Albums.tsx";
+import styles from "./Styles";
+import MultimediaBar from "./MultimediaBar";
+import Photos from "./Photos";
+import Files from "./Files";
+import Voice from "./Voice";
+import Links from "./Links";
+import Albums from "./Albums";
 
 interface MultimediaProps {
   isLongPressed: boolean;
   onLongPress: (value: boolean) => void;
+  pressedMultimediaButton: string;
+  setPressedMultimediaButton: (value: string) => void;
 }
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
-  const [pressedMultimediaButton, setPressedMultimediaButton] =
-    useState("Photos");
-
   return (
     <>
       <MultimediaBar
         isLongPressed={props.isLongPressed}
         onLongPress={(value) => props.onLongPress(value)}
         onPress={(value: string) => {
-          setPressedMultimediaButton(value);
+          props.setPressedMultimediaButton(value);
         }}
       />
 
-      {pressedMultimediaButton == "Photos" && <Photos />}
-      {pressedMultimediaButton == "Albums" && <Albums />}
-      {pressedMultimediaButton == "Files" && <Files />}
-      {pressedMultimediaButton == "Voice" && <Voice />}
-      {pressedMultimediaButton == "Links" && <Links />}
+      {props.pressedMultimediaButton == "Photos" && <Photos />}
+      {props.pressedMultimediaButton == "Albums" && <Albums />}
+      {props.pressedMultimediaButton == "Files" && <Files />}
+      {props.pressedMultimediaButton == "Voice" && <Voice />}
+      {props.pressedMultimediaButton == "Links" && <Links />}
     </>
   );
 };

@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     alignItems: "center",
-    height: 75 * figmaHeightPixelConverter,
+    height: 77 * figmaHeightPixelConverter,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 37,
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     color: "#808080",
     alignSelf: "center",
     fontFamily: "JacquesFrancois-Regular",
-    top: 28 * figmaHeightPixelConverter,
+    top: 29 * figmaHeightPixelConverter,
   },
   blockStatus: {
     fontSize: 14,
@@ -44,13 +44,13 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "JacquesFrancois-Regular",
     position: "absolute",
-    top: 46 * figmaHeightPixelConverter,
+    top: 50.5 * figmaHeightPixelConverter,
   },
   searchMessagesButton: {
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.155 * screenWidth,
-    top: 0.045 * screenHeight,
+    top: 0.05 * screenHeight,
     width: 25 * figmaWidthPixelConverter,
     height: 25 * figmaWidthPixelConverter,
   },
@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.03 * screenWidth,
-    top: 0.0225 * screenHeight,
+    top: 0.0275 * screenHeight,
     width: 40 * figmaWidthPixelConverter,
     height: 40 * figmaWidthPixelConverter,
   },
@@ -184,7 +184,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: 0.04 * screenHeight,
+    top: 0.05 * screenHeight,
     gap: 0.02 * screenWidth,
     width: screenWidth * 0.6,
   },
@@ -198,7 +198,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: 0.04 * screenHeight,
+    top: 0.05 * screenHeight,
     gap: 0.015 * screenWidth,
   },
   mutedIcon: {
@@ -274,7 +274,7 @@ export const styles = StyleSheet.create({
   },
   fileContainer: {
     width: "100%",
-    height: 0.0475 * screenHeight,
+    height: 0.05 * screenHeight,
     backgroundColor: "rgb(227, 192, 124)",
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
@@ -284,7 +284,7 @@ export const styles = StyleSheet.create({
   },
   fileFormatContainer: {
     width: "13%",
-    height: 0.0475 * screenHeight,
+    height: 0.05 * screenHeight,
     backgroundColor: "rgb(227, 192, 124)",
     borderWidth: 0.5,
     borderColor: "black",
@@ -328,7 +328,7 @@ export const styles = StyleSheet.create({
   },
   allAlbumsContainer: {
     backgroundColor: "rgb(174, 174, 174)",
-    paddingBottom: 0.08 * screenHeight,
+    paddingBottom: 0.5 * screenHeight,
     gap: 0.01 * screenHeight,
     height:
       (user.albums.length + 1) % 2 == 0

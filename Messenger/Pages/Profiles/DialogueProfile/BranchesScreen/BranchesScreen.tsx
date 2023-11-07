@@ -44,9 +44,12 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
         style={styles.blurEffect}
       />
 
-      <Header primaryTitle={branchesTitle} />
-
-      <GoBackButton onPress={() => navigation.goBack()} />
+      <Header
+        primaryTitle={branchesTitle}
+        onGoBackPress={() => {
+          navigation.goBack();
+        }}
+      />
 
       <RemovalApproval
         onAnyPress={() => {

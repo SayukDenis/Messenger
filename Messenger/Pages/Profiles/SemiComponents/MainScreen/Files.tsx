@@ -8,9 +8,9 @@ import {
   Text,
   Dimensions,
 } from "react-native";
-import { user } from "../DBUser.tsx";
-import styles from "./Styles.tsx";
-import DownArrowIcon from "./Icons/DownArrowIcon.tsx";
+import { user } from "../DBUser";
+import styles from "./Styles";
+import DownArrowIcon from "./Icons/DownArrowIcon";
 
 interface FilesProps {}
 
@@ -23,7 +23,7 @@ const Files: React.FC<FilesProps> = (props) => {
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{
-          paddingBottom: 0.09 * Dimensions.get("screen").height,
+          paddingBottom: 0.5 * Dimensions.get("screen").height,
         }}
         scrollEnabled={false}
         renderItem={({ item }) => {

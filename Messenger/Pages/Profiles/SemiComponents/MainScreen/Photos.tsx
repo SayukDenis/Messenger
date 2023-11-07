@@ -8,8 +8,8 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { user } from "../DBUser.tsx";
-import styles from "./Styles.tsx";
+import { user } from "../DBUser";
+import styles from "./Styles";
 
 interface PhotosProps {}
 
@@ -23,7 +23,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
         numColumns={3}
         contentContainerStyle={{
           gap: 0.005 * Dimensions.get("screen").width,
-          paddingBottom: 0.08 * Dimensions.get("screen").height,
+          paddingBottom: 0.5 * Dimensions.get("screen").height,
           backgroundColor: "rgb(174, 174, 174)",
         }}
         scrollEnabled={false}

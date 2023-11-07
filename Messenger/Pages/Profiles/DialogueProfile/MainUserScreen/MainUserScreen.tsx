@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -17,6 +17,8 @@ type MainUserScreenProps = {
 };
 
 const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
+  const [pressedMultimediaButton, setPressedMultimediaButton] =
+    useState("Photos");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
@@ -24,11 +26,6 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
     useState(false);
   const [isMuted, setIsMuted] = useState(user.isMuted);
   const [isBlocked, setIsBlocked] = useState(user.isBlocked);
-
-  useEffect(() => {
-    user.isBlocked = isBlocked;
-    user.isMuted = isMuted;
-  });
 
   return (
     <View style={styles.mainContainer}>
@@ -127,7 +124,13 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
           isLongPressed={isPhotoAlbumSelectionVisible}
-          onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
+          onLongPress={(value: boolean) =>
+            setIsPhotoAlbumSelectionVisible(value)
+          }
+          pressedMultimediaButton={pressedMultimediaButton}
+          setPressedMultimediaButton={(value: string) => {
+            setPressedMultimediaButton(value);
+          }}
         />
       </ScrollView>
     </View>

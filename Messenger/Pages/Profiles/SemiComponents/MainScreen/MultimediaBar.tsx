@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import { styles } from "./Styles.tsx";
-import Photos from "./Photos.tsx";
-import { user } from "../DBUser.tsx";
+import { styles } from "./Styles";
+import Photos from "./Photos";
+import { user } from "../DBUser";
 
 class Button {
   name: string;

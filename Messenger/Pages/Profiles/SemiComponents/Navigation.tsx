@@ -11,14 +11,18 @@ import Branches from "../GroupProfile/Branches/Branches";
 import Role from "../GroupProfile/Role/Role";
 import CreateRole from "../GroupProfile/Role/CreateRole/CreateRole";
 import RolePermission from "../GroupProfile/Role/CreateRole/RolePermission/RolePermission";
-import SettingsScreen from "../DialogueProfile/SettingsScreen/SettingsScreen.tsx";
-import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen.tsx";
-import BranchesScreen from "../DialogueProfile/BranchesScreen/BranchesScreen.tsx";
+import SettingsScreen from "../DialogueProfile/SettingsScreen/SettingsScreen";
+import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen";
+import BranchesScreen from "../DialogueProfile/BranchesScreen/BranchesScreen";
 import NewBranchScreen from "../DialogueProfile/BranchesScreen/NewBranchScreen/NewBranchScreen";
-import { user } from "./DBUser.tsx";
+import { useFonts } from "expo-font";
 
 const Stack = createStackNavigator();
 export default function StartPage() {
+  const [dataLoaded] = useFonts({
+    "JacquesFrancois-Regular": require("./Assets/JacquesFrancois-Regular.ttf"),
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator

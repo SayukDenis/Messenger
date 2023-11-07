@@ -2,9 +2,9 @@
 
 import React from "react";
 import { View, TouchableOpacity, Image } from "react-native";
-import { styles } from "./Styles.tsx";
-import PhoneIcon from "./Icons/PhoneIcon.tsx";
-import VideoCameraIcon from "./Icons/VideoCameraIcon.tsx";
+import { styles } from "./Styles";
+import PhoneIcon from "./Icons/PhoneIcon";
+import VideoCameraIcon from "./Icons/VideoCameraIcon";
 
 interface AvatarWithCallingButtonsProps {}
 

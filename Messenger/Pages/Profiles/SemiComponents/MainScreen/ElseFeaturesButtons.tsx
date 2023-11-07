@@ -2,18 +2,18 @@
 
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import { styles } from "./Styles.tsx";
+import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
-import OffNotificationIcon from "./Icons/OffNotificationIcon.tsx";
-import OnNotificationIcon from "./Icons/OnNotificationIcon.tsx";
-import BinIcon from "./Icons/BinIcon.tsx";
-import SettingsIcon from "./Icons/SettingsIcon.tsx";
-import ForwardContactIcon from "./Icons/ForwardContactIcon.tsx";
-import BlockIcon from "./Icons/BlockIcon.tsx";
-import UnblockIcon from "./Icons/UnblockIcon.tsx";
-import EyeIcon from "./Icons/EyeIcon.tsx";
-import ExitDoorIcon from "./Icons/ExitIcon.tsx";
-import ClearChatIcon from "./Icons/ClearChatIcon.tsx";
+import OffNotificationIcon from "./Icons/OffNotificationIcon";
+import OnNotificationIcon from "./Icons/OnNotificationIcon";
+import BinIcon from "./Icons/BinIcon";
+import SettingsIcon from "./Icons/SettingsIcon";
+import ForwardContactIcon from "./Icons/ForwardContactIcon";
+import BlockIcon from "./Icons/BlockIcon";
+import UnblockIcon from "./Icons/UnblockIcon";
+import EyeIcon from "./Icons/EyeIcon";
+import ExitDoorIcon from "./Icons/ExitIcon";
+import ClearChatIcon from "./Icons/ClearChatIcon";
 
 interface ElseFeaturesButtonsProps {
   setIsVisible: (value: boolean) => void;

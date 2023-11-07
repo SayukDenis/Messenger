@@ -56,9 +56,12 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
         style={styles.blurEffect}
       />
 
-      <Header primaryTitle={newBranchTitle} />
-
-      <GoBackButton onPress={() => navigation.goBack()} />
+      <Header
+        primaryTitle={newBranchTitle}
+        onGoBackPress={() => {
+          navigation.goBack();
+        }}
+      />
 
       <TouchableOpacity
         style={styles.doneButtonContainer}
