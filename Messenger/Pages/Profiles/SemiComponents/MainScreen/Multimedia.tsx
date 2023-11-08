@@ -15,6 +15,7 @@ interface MultimediaProps {
   onLongPress: (value: boolean) => void;
   pressedMultimediaButton: string;
   setPressedMultimediaButton: (value: string) => void;
+  onNewAlbumPress: () => void;
 }
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
@@ -28,8 +29,16 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
         }}
       />
 
-      {props.pressedMultimediaButton == "Photos" && <Photos />}
-      {props.pressedMultimediaButton == "Albums" && <Albums />}
+      {props.pressedMultimediaButton == "Photos" && (
+        <Photos isPhotoSelectionAlwaysVisible={false} />
+      )}
+      {props.pressedMultimediaButton == "Albums" && (
+        <Albums
+          onNewAlbumPress={() => {
+            props.onNewAlbumPress();
+          }}
+        />
+      )}
       {props.pressedMultimediaButton == "Files" && <Files />}
       {props.pressedMultimediaButton == "Voice" && <Voice />}
       {props.pressedMultimediaButton == "Links" && <Links />}

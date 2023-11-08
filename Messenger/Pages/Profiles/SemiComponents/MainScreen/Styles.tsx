@@ -270,7 +270,7 @@ export const styles = StyleSheet.create({
   },
   photo: {
     width: 0.33 * screenWidth,
-    height: 0.15 * screenHeight,
+    height: 0.16 * screenHeight,
   },
   fileContainer: {
     width: "100%",
@@ -330,20 +330,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(174, 174, 174)",
     paddingBottom: 0.5 * screenHeight,
     gap: 0.01 * screenHeight,
-    height:
-      (user.albums.length + 1) % 2 == 0
-        ? 0.15 * screenHeight +
-            Math.ceil(user.albums.length / 2) * 0.205 * screenHeight >
-          0.65 * screenHeight
-          ? 0.15 * screenHeight +
-            Math.ceil(user.albums.length / 2) * 0.205 * screenHeight
-          : 0.65 * screenHeight
-        : 0.15 * screenHeight +
-            (Math.ceil(user.albums.length / 2) - 1) * 0.205 * screenHeight >
-          0.65 * screenHeight
-        ? 0.15 * screenHeight +
-          (Math.ceil(user.albums.length / 2) - 1) * 0.205 * screenHeight
-        : 0.65 * screenHeight,
+    height: Math.ceil(user.albums.length / 2) * 0.305 * screenHeight,
   },
   albumContainer: {
     width: 0.5 * screenWidth,
@@ -364,6 +351,20 @@ export const styles = StyleSheet.create({
   albumNameText: { fontSize: 16, fontFamily: "JacquesFrancois-Regular" },
   albumPhotosAndVideosQuantityText: { fontSize: 13, color: "dimgrey" },
   plusAlbumIcon: { width: 0.12 * screenWidth, height: 0.12 * screenWidth },
+  checkmarkContainer: {
+    width: 0.055 * screenWidth,
+    height: 0.055 * screenWidth,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: "white",
+    backgroundColor: "rgb(102, 191, 255)",
+    position: "absolute",
+    right: 0.025 * screenWidth,
+    bottom: 0.025 * screenWidth,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkmarkIcon: { width: 0.037 * screenWidth, height: 0.037 * screenWidth },
 });
 
 export default styles;

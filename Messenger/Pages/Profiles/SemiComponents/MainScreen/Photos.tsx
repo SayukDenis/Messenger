@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
@@ -8,10 +8,15 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { user } from "../DBUser";
+import { user, PhotoOrVideo } from "../DBUser";
 import styles from "./Styles";
+import CheckmarkIcon from "./Icons/CheckmarkIcon";
 
-interface PhotosProps {}
+interface PhotosProps {
+  selectedPhotosAndVideos?: Array<PhotoOrVideo>;
+  setSelectedPhotosAndVideos?: (value: Array<PhotoOrVideo>) => void;
+  isPhotoSelectionAlwaysVisible: boolean;
+}
 
 const Photos: React.FC<PhotosProps> = (props) => {
   return (
@@ -31,7 +36,19 @@ const Photos: React.FC<PhotosProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                alert("Pressed");
+                if (props.selectedPhotosAndVideos) {
+                  if (!props.selectedPhotosAndVideos.includes(item)) {
+                    props.setSelectedPhotosAndVideos(
+                      props.selectedPhotosAndVideos.concat([item])
+                    );
+                  } else {
+                    props.setSelectedPhotosAndVideos(
+                      props.selectedPhotosAndVideos.filter(
+                        (photoOrVideo) => photoOrVideo !== item
+                      )
+                    );
+                  }
+                }
               }}
               style={[
                 styles.photo,
@@ -44,6 +61,13 @@ const Photos: React.FC<PhotosProps> = (props) => {
               ]}
             >
               <Image style={styles.photo} source={{ uri: item.url }} />
+              {props.isPhotoSelectionAlwaysVisible && (
+                <View style={styles.checkmarkContainer}>
+                  {props.selectedPhotosAndVideos.includes(item) && (
+                    <CheckmarkIcon style={styles.checkmarkIcon} />
+                  )}
+                </View>
+              )}
             </TouchableOpacity>
           );
         }}

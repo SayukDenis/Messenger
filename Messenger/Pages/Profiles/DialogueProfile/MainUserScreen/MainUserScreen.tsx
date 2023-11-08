@@ -1,9 +1,10 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia";
@@ -26,6 +27,10 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
     useState(false);
   const [isMuted, setIsMuted] = useState(user.isMuted);
   const [isBlocked, setIsBlocked] = useState(user.isBlocked);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {}, [isFocused]);
 
   return (
     <View style={styles.mainContainer}>
@@ -130,6 +135,9 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           pressedMultimediaButton={pressedMultimediaButton}
           setPressedMultimediaButton={(value: string) => {
             setPressedMultimediaButton(value);
+          }}
+          onNewAlbumPress={() => {
+            navigation.navigate("NewAlbumScreen" as never);
           }}
         />
       </ScrollView>

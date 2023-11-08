@@ -15,6 +15,8 @@ import SettingsScreen from "../DialogueProfile/SettingsScreen/SettingsScreen";
 import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen";
 import BranchesScreen from "../DialogueProfile/BranchesScreen/BranchesScreen";
 import NewBranchScreen from "../DialogueProfile/BranchesScreen/NewBranchScreen/NewBranchScreen";
+import NewAlbumScreen from "../DialogueProfile/NewAlbumScreen/NewAlbumScreen";
+import GalleryScreen from "../DialogueProfile/NewAlbumScreen/GalleryScreen";
 import { useFonts } from "expo-font";
 
 const Stack = createStackNavigator();
@@ -46,6 +48,8 @@ export default function StartPage() {
         <Stack.Screen name="EditGroup" component={EditGroup} />
         <Stack.Screen name="CreateRole" component={CreateRole} />
         <Stack.Screen name="RolePermission" component={RolePermission} />
+        <Stack.Screen name="NewAlbumScreen" component={NewAlbumScreen} />
+        <Stack.Screen name="GalleryScreen" component={GalleryScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

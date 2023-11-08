@@ -19,7 +19,6 @@ import Blur from "../../../SemiComponents/MainScreen/Blur";
 import BranchColorPicker from "./BranchColorPicker";
 import BranchAppearance from "./BranchAppearance";
 import { user, Branch } from "../../../SemiComponents/DBUser";
-import { update } from "../BranchesScreen";
 
 type BranchesProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -84,8 +83,6 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
             );
 
             user.branches.sort((a, b) => a.name.localeCompare(b.name));
-
-            update.digit += 1;
 
             navigation.goBack();
           }

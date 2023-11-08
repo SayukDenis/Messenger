@@ -12,8 +12,11 @@ import {
 import { user } from "../DBUser";
 import styles from "./Styles";
 import CrossIcon from "./Icons/CrossIcon";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-interface AlbumsProps {}
+interface AlbumsProps {
+  onNewAlbumPress: () => void;
+}
 
 const screenHeight: number = Dimensions.get("screen").height;
 const screenWidth: number = Dimensions.get("screen").width;
@@ -26,7 +29,10 @@ const Albums: React.FC<AlbumsProps> = (props) => {
         keyExtractor={(item) => user.albums.indexOf(item).toString()}
         horizontal={false}
         numColumns={2}
-        contentContainerStyle={styles.allAlbumsContainer}
+        contentContainerStyle={[
+          styles.allAlbumsContainer,
+          { height: Math.ceil(user.albums.length / 2) * 0.305 * screenHeight },
+        ]}
         scrollEnabled={false}
         renderItem={({ item }) => {
           return (
@@ -57,7 +63,7 @@ const Albums: React.FC<AlbumsProps> = (props) => {
       />
       <TouchableOpacity
         onPress={() => {
-          alert("Pressed");
+          props.onNewAlbumPress();
         }}
         style={[
           styles.albumContainer,
@@ -88,7 +94,7 @@ const Albums: React.FC<AlbumsProps> = (props) => {
         </View>
         <View style={styles.albumInfoContainer}>
           <Text numberOfLines={1} style={styles.albumNameText}>
-            New albums
+            New album
           </Text>
         </View>
       </TouchableOpacity>
