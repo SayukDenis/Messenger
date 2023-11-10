@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import { styles } from "./Styles";
+import { styles } from "../Styles";
 import Photos from "./Photos";
-import { user } from "../DBUser";
+import { user } from "../../DBUser";
 
 class Button {
   name: string;
@@ -53,7 +53,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
     {
       name: "Albums",
       title: albumsButtonTitle,
-      quantity: albumsQuantity,
+      quantity: user.albums.length,
     },
     {
       name: "Files",

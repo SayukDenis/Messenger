@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import { user } from "../DBUser";
-import styles from "./Styles";
+import { user } from "../../DBUser";
+import styles from "../Styles";
 
 interface LinksProps {}
 

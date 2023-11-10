@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import { styles } from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import ColorList from "./ColorList";
@@ -32,7 +32,12 @@ const ColorSelection: React.FC<ColorSelectionProps> = (props) => {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={styles.emojiSelectionContainer}>
+          <View
+            style={[
+              styles.emojiSelectionContainer,
+              { height: Dimensions.get("screen").height * 0.2 },
+            ]}
+          >
             <ColorList
               onSpecialColorPress={props.onSpecialColorPress}
               pickedColor={props.pickedColor}

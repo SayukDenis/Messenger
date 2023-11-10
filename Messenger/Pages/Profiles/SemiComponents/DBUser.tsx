@@ -9,7 +9,7 @@ export interface UserProps {
   MembersCount: string;
   isEmergencyMessagesEnabled: boolean;
   GroupBio: string;
-  branches: Array<Branch>;
+  branchParents: Array<BranchParent>;
   photosAndVideos: Array<PhotoOrVideo>;
   files: Array<File>;
   clearChatText: string;
@@ -17,6 +17,7 @@ export interface UserProps {
   voice: Array<Voice>;
   links: Array<Link>;
   albums: Array<Album>;
+  selectedBranch: BranchParent;
 }
 
 export const user: UserProps = {
@@ -35,9 +36,10 @@ export const user: UserProps = {
   MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,
   GroupBio: "Aboba - cool",
-  branches: new Array<Branch>(),
+  branchParents: new Array<BranchParent>(),
   clearChatText: "Do you really want to clear chat?",
   removalText: "Do you really want to delete",
+  selectedBranch: null,
   photosAndVideos: [
     { url: "https://picsum.photos/id/1/5000/3333" },
     { url: "https://picsum.photos/id/2/5000/3333" },
@@ -315,7 +317,26 @@ export const user: UserProps = {
   ],
 };
 
-export class Branch {
+export class BranchParent {
+  name: string;
+  emoji: string;
+  color: string;
+  children: Array<BranchChild>;
+
+  constructor(
+    name: string,
+    emoji: string,
+    color: string,
+    children: Array<BranchChild>
+  ) {
+    this.name = name;
+    this.emoji = emoji;
+    this.color = color;
+    this.children = children;
+  }
+}
+
+export class BranchChild {
   name: string;
   emoji: string;
   color: string;

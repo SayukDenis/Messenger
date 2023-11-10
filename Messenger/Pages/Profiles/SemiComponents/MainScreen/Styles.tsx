@@ -148,8 +148,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     right: 0.06 * screenWidth,
     top: 0.065 * screenHeight,
-    width: 200,
-    height: 200,
+    width: 0.51 * screenWidth,
     zIndex: 2,
   },
   additionalFeatureButton: {

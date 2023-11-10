@@ -8,9 +8,9 @@ import {
   Text,
   Dimensions,
 } from "react-native";
-import { user } from "../DBUser";
-import styles from "./Styles";
-import DownArrowIcon from "./Icons/DownArrowIcon";
+import { user } from "../../DBUser";
+import styles from "../Styles";
+import DownArrowIcon from "../Icons/DownArrowIcon";
 
 interface FilesProps {}
 

@@ -18,6 +18,7 @@ import NewBranchScreen from "../DialogueProfile/BranchesScreen/NewBranchScreen/N
 import NewAlbumScreen from "../DialogueProfile/NewAlbumScreen/NewAlbumScreen";
 import GalleryScreen from "../DialogueProfile/NewAlbumScreen/GalleryScreen";
 import { useFonts } from "expo-font";
+import ChangeBranchScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchScreen";
 
 const Stack = createStackNavigator();
 export default function StartPage() {
@@ -50,6 +51,10 @@ export default function StartPage() {
         <Stack.Screen name="RolePermission" component={RolePermission} />
         <Stack.Screen name="NewAlbumScreen" component={NewAlbumScreen} />
         <Stack.Screen name="GalleryScreen" component={GalleryScreen} />
+        <Stack.Screen
+          name="ChangeBranchScreen"
+          component={ChangeBranchScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

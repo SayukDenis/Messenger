@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import PhoneIcon from "./Icons/PhoneIcon";
 import VideoCameraIcon from "./Icons/VideoCameraIcon";

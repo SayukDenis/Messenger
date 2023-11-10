@@ -1,17 +1,18 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
-import Multimedia from "../../SemiComponents/MainScreen/Multimedia";
+import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
-import { user } from "../../SemiComponents/DBUser";
+import { Album, user } from "../../SemiComponents/DBUser";
+import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 
 type MainUserScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -27,6 +28,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
     useState(false);
   const [isMuted, setIsMuted] = useState(user.isMuted);
   const [isBlocked, setIsBlocked] = useState(user.isBlocked);
+  const [longPressedAlbum, setLongPressedAlbum] = useState(null);
 
   const isFocused = useIsFocused();
 
@@ -45,7 +47,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
       {/* Blur if else features button is pressed */}
       <Blur
-        visibleWhen={isElseFeaturesVisible === true}
+        visibleWhen={isElseFeaturesVisible}
         onPress={() => {
           setIsElseFeaturesVisible(false);
         }}
@@ -54,11 +56,20 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
       {/* Blur if clear chat is pressed */}
       <Blur
-        visibleWhen={isClearChatButtonClicked === true}
+        visibleWhen={isClearChatButtonClicked}
         onPress={() => {
           setIsClearChatButtonClicked(false);
         }}
         style={[styles.blurEffect, { zIndex: 3 }]}
+      />
+
+      {/* Blur if some album is long pressed */}
+      <Blur
+        visibleWhen={longPressedAlbum != null}
+        onPress={() => {
+          setLongPressedAlbum(null);
+        }}
+        style={styles.blurEffect}
       />
 
       {/* Top tool bar with buttons*/}
@@ -99,7 +110,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
       {/* Approval to clear chat if clear button is clicked via else features buttons */}
       <RemovalApproval
-        isPressed={isClearChatButtonClicked}
+        isVisible={isClearChatButtonClicked}
         onAnyPress={() => {
           setIsClearChatButtonClicked(false);
         }}
@@ -107,6 +118,11 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           alert("Agree");
         }}
         text={user.clearChatText}
+      />
+
+      <AlbumLongPressedMenu
+        isVisible={longPressedAlbum != null}
+        longPressedAlbum={longPressedAlbum}
       />
 
       <ScrollView
@@ -119,10 +135,17 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         }}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
-        onScroll={() => {
+        onScroll={(item) => {
           setIsPhotoAlbumSelectionVisible(false);
         }}
       >
+        <Blur
+          visibleWhen={isPhotoAlbumSelectionVisible}
+          onPress={() => {
+            setIsPhotoAlbumSelectionVisible(false);
+          }}
+          style={[styles.blurEffect, { zIndex: 3 }]}
+        />
         {/* Touchable avatar image with phone and videocamera buttons*/}
         <AvatarWithCallingButtons />
 
@@ -138,6 +161,9 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           }}
           onNewAlbumPress={() => {
             navigation.navigate("NewAlbumScreen" as never);
+          }}
+          setLongPressedAlbum={(value: Album) => {
+            setLongPressedAlbum(value);
           }}
         />
       </ScrollView>

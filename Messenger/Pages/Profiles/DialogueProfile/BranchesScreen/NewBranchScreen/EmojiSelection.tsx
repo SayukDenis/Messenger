@@ -188,9 +188,8 @@ const EmojiSelection: React.FC<EmojiSelectionProps> = (props) => {
             onEmojiPress={props.onEmojiClick}
             style={{
               height:
-                (lengthOfAllEmojisPlusSpaces / (screenWidth * 0.9)) *
-                Dimensions.get("screen").height *
-                0.027,
+                Math.floor(lengthOfAllEmojisPlusSpaces / (screenWidth * 0.9)) *
+                Math.floor(lengthOfAllEmojisPlusSpaces / emojis.length),
             }}
             numColumns={Math.floor(lengthOfAllEmojisPlusSpaces / screenWidth)}
           />

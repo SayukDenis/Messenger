@@ -8,9 +8,9 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { user } from "../DBUser";
-import styles from "./Styles";
-import MicrophoneIcon from "./Icons/MicrophoneIcon";
+import { user } from "../../DBUser";
+import styles from "../Styles";
+import MicrophoneIcon from "../Icons/MicrophoneIcon";
 
 interface VoiceProps {}
 

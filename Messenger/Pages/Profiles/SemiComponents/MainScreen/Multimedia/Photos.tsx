@@ -8,9 +8,9 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { user, PhotoOrVideo } from "../DBUser";
-import styles from "./Styles";
-import CheckmarkIcon from "./Icons/CheckmarkIcon";
+import { user, PhotoOrVideo } from "../../DBUser";
+import styles from "../Styles";
+import CheckmarkIcon from "../Icons/CheckmarkIcon";
 
 interface PhotosProps {
   selectedPhotosAndVideos?: Array<PhotoOrVideo>;
@@ -36,6 +36,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
+                alert("hel");
                 if (props.selectedPhotosAndVideos) {
                   if (!props.selectedPhotosAndVideos.includes(item)) {
                     props.setSelectedPhotosAndVideos(

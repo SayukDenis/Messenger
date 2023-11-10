@@ -9,13 +9,14 @@ import {
   Dimensions,
   Text,
 } from "react-native";
-import { user } from "../DBUser";
-import styles from "./Styles";
-import CrossIcon from "./Icons/CrossIcon";
+import { Album, user } from "../../DBUser";
+import styles from "../Styles";
+import CrossIcon from "../Icons/CrossIcon";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 interface AlbumsProps {
   onNewAlbumPress: () => void;
+  onAlbumPress: (value: Album) => void;
 }
 
 const screenHeight: number = Dimensions.get("screen").height;
@@ -38,7 +39,10 @@ const Albums: React.FC<AlbumsProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                alert("Pressed");
+                alert("Album is short pressed");
+              }}
+              onLongPress={() => {
+                props.onAlbumPress(item);
               }}
               style={[styles.albumContainer]}
             >

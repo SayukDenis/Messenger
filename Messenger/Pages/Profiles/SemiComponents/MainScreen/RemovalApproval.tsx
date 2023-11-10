@@ -6,7 +6,7 @@ import { styles } from "./Styles";
 
 interface RemovalApprovalProps {
   onAnyPress: () => void;
-  isPressed: boolean;
+  isVisible: boolean;
   onAgreePress: () => void;
   text: string;
 }
@@ -17,7 +17,7 @@ const RemovalApproval: React.FC<RemovalApprovalProps> = (props) => {
 
   return (
     <>
-      {props.isPressed && (
+      {props.isVisible && (
         <View style={styles.clearChatApproval}>
           <Text style={styles.clearChatApprovalText}>{props.text}</Text>
 

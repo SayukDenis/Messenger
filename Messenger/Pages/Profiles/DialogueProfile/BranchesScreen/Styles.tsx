@@ -45,15 +45,16 @@ export const styles = StyleSheet.create({
     fontFamily: "JacquesFrancois-Regular",
   },
   colorPickerOuterContainer: {
-    width: "75%",
-    height: "41%",
+    width: 0.75 * screenWidth,
+    height: 0.8 * screenWidth,
     zIndex: 2,
     alignSelf: "center",
-    bottom: 0.3 * screenHeight,
     borderRadius: 17,
     overflow: "hidden",
     borderWidth: 1,
     borderColor: "black",
+    position: "absolute",
+    top: 0.2 * screenHeight,
   },
   colorPickerTitleContainer: {
     width: "100%",
@@ -175,7 +176,7 @@ export const styles = StyleSheet.create({
   pickEmojiButtonText: { fontSize: 29 },
   emojiSelectionContainer: {
     width: "90%",
-    height: 0.2 * screenHeight,
+    height: 0.4 * screenHeight,
     top: 0.01 * screenHeight,
     alignSelf: "center",
     borderRadius: 9,
