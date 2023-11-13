@@ -36,7 +36,6 @@ const Photos: React.FC<PhotosProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                alert("hel");
                 if (props.selectedPhotosAndVideos) {
                   if (!props.selectedPhotosAndVideos.includes(item)) {
                     props.setSelectedPhotosAndVideos(

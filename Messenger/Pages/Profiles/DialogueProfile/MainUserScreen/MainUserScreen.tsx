@@ -24,11 +24,14 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
-  const [isClearChatButtonClicked, setIsClearChatButtonClicked] =
+  const [isClearChatButtonPressed, setIsClearChatButtonPressed] =
     useState(false);
   const [isMuted, setIsMuted] = useState(user.isMuted);
   const [isBlocked, setIsBlocked] = useState(user.isBlocked);
   const [longPressedAlbum, setLongPressedAlbum] = useState(null);
+  const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
+    useState(0);
+  const [isDeleteAlbumPressed, setIsDeleteAlbumPressed] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -56,9 +59,9 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
       {/* Blur if clear chat is pressed */}
       <Blur
-        visibleWhen={isClearChatButtonClicked}
+        visibleWhen={isClearChatButtonPressed}
         onPress={() => {
-          setIsClearChatButtonClicked(false);
+          setIsClearChatButtonPressed(false);
         }}
         style={[styles.blurEffect, { zIndex: 3 }]}
       />
@@ -70,6 +73,15 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           setLongPressedAlbum(null);
         }}
         style={styles.blurEffect}
+      />
+
+      {/* Blur if some album is long pressed */}
+      <Blur
+        visibleWhen={isDeleteAlbumPressed}
+        onPress={() => {
+          setIsDeleteAlbumPressed(false);
+        }}
+        style={[styles.blurEffect, { zIndex: 3 }]}
       />
 
       {/* Top tool bar with buttons*/}
@@ -99,20 +111,20 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         onBlockPress={(value: boolean) => {
           setIsBlocked(value);
         }}
-        isClearChatPressed={isClearChatButtonClicked}
+        isClearChatPressed={isClearChatButtonPressed}
         onClearChatPress={(value: boolean) => {
-          setIsClearChatButtonClicked(value);
+          setIsClearChatButtonPressed(value);
         }}
         navigation={navigation}
         settingsPress={() => navigation.navigate("SettingsScreen" as never)}
         mode="user"
       />
 
-      {/* Approval to clear chat if clear button is clicked via else features buttons */}
+      {/* Approval to clear chat if clear button is pressed via else features buttons */}
       <RemovalApproval
-        isVisible={isClearChatButtonClicked}
+        isVisible={isClearChatButtonPressed}
         onAnyPress={() => {
-          setIsClearChatButtonClicked(false);
+          setIsClearChatButtonPressed(false);
         }}
         onAgreePress={() => {
           alert("Agree");
@@ -120,9 +132,24 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         text={user.clearChatText}
       />
 
+      {/* Approval to delete an album */}
+      <RemovalApproval
+        isVisible={isDeleteAlbumPressed}
+        onAnyPress={() => {
+          setIsDeleteAlbumPressed(false);
+        }}
+        onAgreePress={() => {
+          user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
+          setLongPressedAlbum(null);
+        }}
+        text="Do you really want to delete an album?"
+      />
+
       <AlbumLongPressedMenu
         isVisible={longPressedAlbum != null}
         longPressedAlbum={longPressedAlbum}
+        positionYOfLongPressedAlbum={positionYOfLongPressedAlbum}
+        setIsDeleteAlbumPressed={setIsDeleteAlbumPressed}
       />
 
       <ScrollView
@@ -135,7 +162,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         }}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
-        onScroll={(item) => {
+        onScroll={() => {
           setIsPhotoAlbumSelectionVisible(false);
         }}
       >
@@ -165,6 +192,9 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           setLongPressedAlbum={(value: Album) => {
             setLongPressedAlbum(value);
           }}
+          setPositionYOfLongPressedAlbum={(value: number) =>
+            setPositionYOfLongPressedAlbum(value)
+          }
         />
       </ScrollView>
     </View>

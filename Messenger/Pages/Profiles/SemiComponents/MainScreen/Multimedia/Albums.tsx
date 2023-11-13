@@ -17,6 +17,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 interface AlbumsProps {
   onNewAlbumPress: () => void;
   onAlbumPress: (value: Album) => void;
+  setPositionYOfLongPressedAlbum: (value: number) => void;
 }
 
 const screenHeight: number = Dimensions.get("screen").height;
@@ -32,7 +33,14 @@ const Albums: React.FC<AlbumsProps> = (props) => {
         numColumns={2}
         contentContainerStyle={[
           styles.allAlbumsContainer,
-          { height: Math.ceil(user.albums.length / 2) * 0.305 * screenHeight },
+          {
+            height:
+              user.albums.length < 3
+                ? user.albums.length == 1
+                  ? 0.8 * screenHeight
+                  : 0.7 * screenHeight
+                : Math.ceil(user.albums.length / 2) * 0.455 * screenHeight,
+          },
         ]}
         scrollEnabled={false}
         renderItem={({ item }) => {
@@ -41,8 +49,11 @@ const Albums: React.FC<AlbumsProps> = (props) => {
               onPress={() => {
                 alert("Album is short pressed");
               }}
-              onLongPress={() => {
+              onLongPress={(event) => {
                 props.onAlbumPress(item);
+                props.setPositionYOfLongPressedAlbum(
+                  (event.nativeEvent.locationY + event.nativeEvent.pageY) * 0.7
+                );
               }}
               style={[styles.albumContainer]}
             >

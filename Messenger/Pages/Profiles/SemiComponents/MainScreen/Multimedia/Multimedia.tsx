@@ -18,6 +18,7 @@ interface MultimediaProps {
   setPressedMultimediaButton: (value: string) => void;
   onNewAlbumPress: () => void;
   setLongPressedAlbum: (value: Album) => void;
+  setPositionYOfLongPressedAlbum: (value: number) => void;
 }
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
@@ -42,6 +43,7 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
           onAlbumPress={(value: Album) => {
             props.setLongPressedAlbum(value);
           }}
+          setPositionYOfLongPressedAlbum={props.setPositionYOfLongPressedAlbum}
         />
       )}
       {props.pressedMultimediaButton == "Files" && <Files />}

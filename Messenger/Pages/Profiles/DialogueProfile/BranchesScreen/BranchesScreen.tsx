@@ -69,7 +69,7 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
 
           setBranchNameToRemove("");
         }}
-        isPressed={isDeleteBranchPressed}
+        isVisible={isDeleteBranchPressed}
         text={user.removalText + " " + branchNameToRemove + "?"}
       />
 
