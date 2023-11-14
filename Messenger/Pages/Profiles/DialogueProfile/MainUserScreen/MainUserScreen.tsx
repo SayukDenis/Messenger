@@ -13,6 +13,7 @@ import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesBut
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { Album, user } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
+import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
 
 type MainUserScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -32,6 +33,12 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
   const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
     useState(0);
   const [isDeleteAlbumPressed, setIsDeleteAlbumPressed] = useState(false);
+  const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
+  const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
+  const [isDeleteAllAlbumsPressed, setIsDeleteAllAlbumsPressed] =
+    useState(false);
+  const [isDeleteSelectedAlbumsPressed, setIsDeleteSelectedAlbumsPressed] =
+    useState(false);
 
   const isFocused = useIsFocused();
 
@@ -75,11 +82,29 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         style={styles.blurEffect}
       />
 
-      {/* Blur if some album is long pressed */}
+      {/* Blur if album removal pressed */}
       <Blur
         visibleWhen={isDeleteAlbumPressed}
         onPress={() => {
           setIsDeleteAlbumPressed(false);
+        }}
+        style={[styles.blurEffect, { zIndex: 3 }]}
+      />
+
+      {/* Blur if all albums removal pressed */}
+      <Blur
+        visibleWhen={isDeleteAllAlbumsPressed}
+        onPress={() => {
+          setIsDeleteAllAlbumsPressed(false);
+        }}
+        style={[styles.blurEffect, { zIndex: 3 }]}
+      />
+
+      {/* Blur if all albums removal pressed */}
+      <Blur
+        visibleWhen={isDeleteSelectedAlbumsPressed}
+        onPress={() => {
+          setIsDeleteSelectedAlbumsPressed(false);
         }}
         style={[styles.blurEffect, { zIndex: 3 }]}
       />
@@ -96,6 +121,15 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         isSearchButtonVisible={true}
         onGoBackPress={() => {
           navigation.goBack();
+        }}
+        isAlbumSelectionVisible={isAlbumSelectionVisible}
+        quantityOfSelectedItems={selectedAlbums.length}
+        onCancelPress={() => {
+          setSelectedAlbums([]);
+          setIsAlbumSelectionVisible(false);
+        }}
+        onDeleteAllPress={() => {
+          setIsDeleteAllAlbumsPressed(true);
         }}
       />
 
@@ -145,11 +179,58 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         text="Do you really want to delete an album?"
       />
 
+      {/* Approval to delete an album */}
+      <RemovalApproval
+        isVisible={isDeleteAllAlbumsPressed}
+        onAnyPress={() => {
+          setIsDeleteAllAlbumsPressed(false);
+        }}
+        onAgreePress={() => {
+          user.albums = Array<Album>();
+          setIsAlbumSelectionVisible(false);
+        }}
+        text="Do you really want to delete all albums?"
+      />
+
+      {/* Approval to delete selected albuma */}
+      <RemovalApproval
+        isVisible={isDeleteSelectedAlbumsPressed}
+        onAnyPress={() => {
+          setIsDeleteSelectedAlbumsPressed(false);
+        }}
+        onAgreePress={() => {
+          console.log(selectedAlbums.length);
+          selectedAlbums.forEach((album) => {
+            console.log(album.name);
+            user.albums.splice(user.albums.indexOf(album), 1);
+          });
+          setSelectedAlbums(Array<Album>());
+          setIsAlbumSelectionVisible(false);
+        }}
+        text="Do you really want to delete selected albums?"
+      />
+
       <AlbumLongPressedMenu
         isVisible={longPressedAlbum != null}
         longPressedAlbum={longPressedAlbum}
         positionYOfLongPressedAlbum={positionYOfLongPressedAlbum}
-        setIsDeleteAlbumPressed={setIsDeleteAlbumPressed}
+        onDeleteAlbumPress={() => {
+          setIsDeleteAlbumPressed(true);
+        }}
+        onSelectAlbumPress={() => {
+          setIsAlbumSelectionVisible(true);
+          setLongPressedAlbum(null);
+        }}
+      />
+
+      <BottomToolBar
+        isVisible={isAlbumSelectionVisible}
+        onDeletePress={() => {
+          setIsDeleteSelectedAlbumsPressed(true);
+        }}
+        onForwardPress={() => {
+          alert("Forward album...");
+        }}
       />
 
       <ScrollView
@@ -173,13 +254,14 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           }}
           style={[styles.blurEffect, { zIndex: 3 }]}
         />
+
         {/* Touchable avatar image with phone and videocamera buttons*/}
         <AvatarWithCallingButtons />
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
           isLongPressed={isPhotoAlbumSelectionVisible}
-          onLongPress={(value: boolean) =>
+          setIsPhotoAlbumSelectionVisible={(value: boolean) =>
             setIsPhotoAlbumSelectionVisible(value)
           }
           pressedMultimediaButton={pressedMultimediaButton}
@@ -195,6 +277,9 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           setPositionYOfLongPressedAlbum={(value: number) =>
             setPositionYOfLongPressedAlbum(value)
           }
+          isAlbumSelectionVisible={isAlbumSelectionVisible}
+          selectedAlbums={selectedAlbums}
+          setSelectedAlbums={(value: Array<Album>) => setSelectedAlbums(value)}
         />
       </ScrollView>
     </View>

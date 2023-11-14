@@ -37,13 +37,13 @@ const Photos: React.FC<PhotosProps> = (props) => {
             <TouchableOpacity
               onPress={() => {
                 if (props.selectedPhotosAndVideos) {
-                  if (!props.selectedPhotosAndVideos.includes(item)) {
+                  if (!props.selectedPhotosAndVideos?.includes(item)) {
                     props.setSelectedPhotosAndVideos(
-                      props.selectedPhotosAndVideos.concat([item])
+                      props.selectedPhotosAndVideos?.concat([item])
                     );
                   } else {
                     props.setSelectedPhotosAndVideos(
-                      props.selectedPhotosAndVideos.filter(
+                      props.selectedPhotosAndVideos?.filter(
                         (photoOrVideo) => photoOrVideo !== item
                       )
                     );
@@ -62,7 +62,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
             >
               <Image style={styles.photo} source={{ uri: item.url }} />
               {props.isPhotoSelectionAlwaysVisible && (
-                <View style={styles.checkmarkContainer}>
+                <View style={styles.checkmarkContainerForPhoto}>
                   {props.selectedPhotosAndVideos.includes(item) && (
                     <CheckmarkIcon style={styles.checkmarkIcon} />
                   )}

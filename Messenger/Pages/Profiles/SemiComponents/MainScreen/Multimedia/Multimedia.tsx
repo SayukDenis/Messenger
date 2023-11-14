@@ -10,23 +10,38 @@ import Voice from "./Voice";
 import Links from "./Links";
 import Albums from "./Albums";
 import { Album } from "../../DBUser";
+import Blur from "../Blur";
 
 interface MultimediaProps {
   isLongPressed: boolean;
-  onLongPress: (value: boolean) => void;
+  setIsPhotoAlbumSelectionVisible: (value: boolean) => void;
   pressedMultimediaButton: string;
   setPressedMultimediaButton: (value: string) => void;
   onNewAlbumPress: () => void;
   setLongPressedAlbum: (value: Album) => void;
   setPositionYOfLongPressedAlbum: (value: number) => void;
+  isAlbumSelectionVisible: boolean;
+  selectedAlbums: Array<Album>;
+  setSelectedAlbums: (value: Array<Album>) => void;
 }
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
   return (
     <View style={{ zIndex: props.isLongPressed ? 3 : 0 }}>
+      <Blur
+        visibleWhen={props.isLongPressed}
+        onPress={() => {
+          props.setIsPhotoAlbumSelectionVisible(false);
+        }}
+        style={[
+          styles.blurEffect,
+          { top: 0.05 * Dimensions.get("screen").height },
+        ]}
+      />
+
       <MultimediaBar
         isLongPressed={props.isLongPressed}
-        onLongPress={(value) => props.onLongPress(value)}
+        onLongPress={(value) => props.setIsPhotoAlbumSelectionVisible(value)}
         onPress={(value: string) => {
           props.setPressedMultimediaButton(value);
         }}
@@ -44,6 +59,9 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
             props.setLongPressedAlbum(value);
           }}
           setPositionYOfLongPressedAlbum={props.setPositionYOfLongPressedAlbum}
+          isAlbumSelectionVisible={props.isAlbumSelectionVisible}
+          selectedAlbums={props.selectedAlbums}
+          setSelectedAlbums={props.setSelectedAlbums}
         />
       )}
       {props.pressedMultimediaButton == "Files" && <Files />}

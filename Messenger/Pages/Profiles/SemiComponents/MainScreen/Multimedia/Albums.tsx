@@ -13,11 +13,15 @@ import { Album, user } from "../../DBUser";
 import styles from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import { StackNavigationProp } from "@react-navigation/stack";
+import CheckmarkIcon from "../Icons/CheckmarkIcon";
 
 interface AlbumsProps {
   onNewAlbumPress: () => void;
   onAlbumPress: (value: Album) => void;
   setPositionYOfLongPressedAlbum: (value: number) => void;
+  isAlbumSelectionVisible: boolean;
+  selectedAlbums: Array<Album>;
+  setSelectedAlbums: (value: Array<Album>) => void;
 }
 
 const screenHeight: number = Dimensions.get("screen").height;
@@ -39,7 +43,7 @@ const Albums: React.FC<AlbumsProps> = (props) => {
                 ? user.albums.length == 1
                   ? 0.8 * screenHeight
                   : 0.7 * screenHeight
-                : Math.ceil(user.albums.length / 2) * 0.455 * screenHeight,
+                : Math.ceil(user.albums.length / 2) * 0.355 * screenHeight,
           },
         ]}
         scrollEnabled={false}
@@ -47,13 +51,35 @@ const Albums: React.FC<AlbumsProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                alert("Album is short pressed");
+                if (!props.selectedAlbums?.includes(item)) {
+                  props.setSelectedAlbums(props.selectedAlbums?.concat([item]));
+                } else {
+                  props.setSelectedAlbums(
+                    props.selectedAlbums?.filter(
+                      (photoOrVideo) => photoOrVideo !== item
+                    )
+                  );
+                }
               }}
               onLongPress={(event) => {
-                props.onAlbumPress(item);
-                props.setPositionYOfLongPressedAlbum(
-                  (event.nativeEvent.locationY + event.nativeEvent.pageY) * 0.7
-                );
+                if (!props.isAlbumSelectionVisible) {
+                  props.onAlbumPress(item);
+                  props.setPositionYOfLongPressedAlbum(
+                    event.nativeEvent.pageY + 0.05 * screenHeight
+                  );
+                } else {
+                  if (!props.selectedAlbums?.includes(item)) {
+                    props.setSelectedAlbums(
+                      props.selectedAlbums?.concat([item])
+                    );
+                  } else {
+                    props.setSelectedAlbums(
+                      props.selectedAlbums?.filter(
+                        (photoOrVideo) => photoOrVideo !== item
+                      )
+                    );
+                  }
+                }
               }}
               style={[styles.albumContainer]}
             >
@@ -71,6 +97,13 @@ const Albums: React.FC<AlbumsProps> = (props) => {
                 >
                   {item.photosAndVideos.length}
                 </Text>
+                {props.isAlbumSelectionVisible && (
+                  <View style={styles.checkmarkContainerForAlbum}>
+                    {props.selectedAlbums?.includes(item) && (
+                      <CheckmarkIcon style={styles.checkmarkIcon} />
+                    )}
+                  </View>
+                )}
               </View>
             </TouchableOpacity>
           );

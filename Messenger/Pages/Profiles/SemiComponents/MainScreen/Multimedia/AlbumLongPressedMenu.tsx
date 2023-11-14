@@ -15,7 +15,8 @@ interface AlbumLongPressedMenuProps {
   isVisible: boolean;
   longPressedAlbum: Album;
   positionYOfLongPressedAlbum: number;
-  setIsDeleteAlbumPressed: (value: boolean) => void;
+  onDeleteAlbumPress: () => void;
+  onSelectAlbumPress: () => void;
 }
 
 const AlbumLongPressedMenu: React.FC<AlbumLongPressedMenuProps> = (props) => {
@@ -48,7 +49,9 @@ const AlbumLongPressedMenu: React.FC<AlbumLongPressedMenuProps> = (props) => {
 
           {/* Select button */}
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => {
+              props.onSelectAlbumPress();
+            }}
             style={styles.additionalFeatureButton}
           >
             <SelectIcon style={styles.additionalFeatureIcon} />
@@ -58,7 +61,7 @@ const AlbumLongPressedMenu: React.FC<AlbumLongPressedMenuProps> = (props) => {
           {/* Delete album button */}
           <TouchableOpacity
             onPress={() => {
-              props.setIsDeleteAlbumPressed(true);
+              props.onDeleteAlbumPress();
             }}
             style={styles.additionalFeatureButton}
           >

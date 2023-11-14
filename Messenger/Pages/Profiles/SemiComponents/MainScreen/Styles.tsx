@@ -27,6 +27,12 @@ export const styles = StyleSheet.create({
     borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
   },
+  blurEffect: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    zIndex: 1,
+  },
   profileTitle: {
     fontSize: 20,
     fontFamily: "JacquesFrancois-Regular",
@@ -350,7 +356,7 @@ export const styles = StyleSheet.create({
   albumNameText: { fontSize: 16, fontFamily: "JacquesFrancois-Regular" },
   albumPhotosAndVideosQuantityText: { fontSize: 13, color: "dimgrey" },
   plusAlbumIcon: { width: 0.12 * screenWidth, height: 0.12 * screenWidth },
-  checkmarkContainer: {
+  checkmarkContainerForPhoto: {
     width: 0.055 * screenWidth,
     height: 0.055 * screenWidth,
     borderRadius: 20,
@@ -364,6 +370,55 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   checkmarkIcon: { width: 0.037 * screenWidth, height: 0.037 * screenWidth },
+  checkmarkContainerForAlbum: {
+    width: 0.055 * screenWidth,
+    height: 0.055 * screenWidth,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: "white",
+    backgroundColor: "rgb(102, 191, 255)",
+    position: "absolute",
+    right: 0.01 * screenHeight,
+    bottom: 0.055 * screenHeight,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  doneButtonContainer: {
+    position: "absolute",
+    top: 0.058 * screenHeight,
+    right: 0,
+    width: 0.3 * screenWidth,
+  },
+  doneButtonTitle: {
+    fontSize: 21,
+    fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(92, 64, 129)",
+  },
+  bottomToolBar: {
+    backgroundColor: "rgb(231, 230,	228)",
+    width: "100%",
+    alignItems: "center",
+    height: 0.08 * screenHeight,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    borderWidth: 1.5,
+    borderColor: "rgb(161, 156, 145)",
+    justifyContent: "flex-start",
+    position: "absolute",
+    bottom: 0,
+    zIndex: 2,
+    flexDirection: "row",
+  },
+  binIcon: {
+    width: 0.06 * screenWidth,
+    height: 0.06 * screenHeight,
+  },
+  arrowEastIcon: {
+    width: 0.09 * screenWidth,
+    height: 0.04 * screenHeight,
+  },
 });
 
 export default styles;

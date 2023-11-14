@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import GoBackButton from "../GoBackButton";
 import SearchIcon from "./Icons/SearchIcon";
@@ -16,6 +16,10 @@ interface TopToolBarProps {
   isBlocked?: boolean;
   isSearchButtonVisible: boolean;
   onGoBackPress: () => void;
+  isAlbumSelectionVisible: boolean;
+  quantityOfSelectedItems: number;
+  onDeleteAllPress: () => void;
+  onCancelPress: () => void;
 }
 
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
@@ -23,48 +27,95 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   return (
     <>
       <View style={styles.topToolBar}>
-        {/* Main name */}
-        <Name
-          primaryTitle={props.primaryTitle}
-          isMuted={props.isMuted}
-          style={styles.profileTitle}
-        />
+        {!props.isAlbumSelectionVisible && (
+          <>
+            {/* Main name */}
+            <Name
+              primaryTitle={props.primaryTitle}
+              isMuted={props.isMuted}
+              style={styles.profileTitle}
+            />
 
-        {/* if blocked */}
-        {props.isBlocked && (
-          <Text style={styles.blockStatus}>
-            {props.isBlocked ? blockStatusTitle : ""}
-          </Text>
+            {/* if blocked */}
+            {props.isBlocked && (
+              <Text style={styles.blockStatus}>
+                {props.isBlocked ? blockStatusTitle : ""}
+              </Text>
+            )}
+
+            {/* Going back button */}
+            <GoBackButton onPress={() => props.onGoBackPress()} />
+
+            {/* Secondary title */}
+            <Text style={styles.secondaryTitle}>{props.secondaryTitle}</Text>
+
+            {/* Search message button */}
+            {props.isSearchButtonVisible && (
+              <TouchableOpacity
+                onPress={() => {
+                  alert("Searching...");
+                }}
+                style={styles.searchMessagesButton}
+              >
+                <SearchIcon />
+              </TouchableOpacity>
+            )}
+
+            {/* Else features button */}
+            <TouchableOpacity
+              onPress={() => {
+                if (props.setIsElseFeaturesVisible != undefined)
+                  props.setIsElseFeaturesVisible(true);
+              }}
+              style={styles.elseFeaturesButton}
+            >
+              <ElseFeaturesIcon />
+            </TouchableOpacity>
+          </>
         )}
+        {props.isAlbumSelectionVisible && (
+          <>
+            {/* Delete all button */}
+            <TouchableOpacity
+              style={[
+                styles.doneButtonContainer,
+                { left: 0.06 * Dimensions.get("screen").width },
+              ]}
+              onPress={() => {
+                props.onDeleteAllPress();
+              }}
+            >
+              <Text style={[styles.doneButtonTitle, { color: "red" }]}>
+                Delete all
+              </Text>
+            </TouchableOpacity>
 
-        {/* Going back button */}
-        <GoBackButton onPress={() => props.onGoBackPress()} />
+            {/* Number of selected albums */}
+            <View
+              style={[
+                styles.doneButtonContainer,
+                { left: 0.4 * Dimensions.get("screen").width },
+              ]}
+            >
+              <Text style={styles.doneButtonTitle}>
+                Select({props.quantityOfSelectedItems})
+              </Text>
+            </View>
 
-        {/* Secondary title */}
-        <Text style={styles.secondaryTitle}>{props.secondaryTitle}</Text>
-
-        {/* Search message button */}
-        {props.isSearchButtonVisible && (
-          <TouchableOpacity
-            onPress={() => {
-              alert("Searching...");
-            }}
-            style={styles.searchMessagesButton}
-          >
-            <SearchIcon />
-          </TouchableOpacity>
+            {/* Cancel button */}
+            <TouchableOpacity
+              style={[
+                styles.doneButtonContainer,
+                { right: -0.075 * Dimensions.get("screen").width },
+              ]}
+              onPress={() => {
+                props.onCancelPress();
+              }}
+            >
+              <Text style={styles.doneButtonTitle}>Cancel</Text>
+            </TouchableOpacity>
+          </>
         )}
-
-        {/* Else features button */}
-        <TouchableOpacity
-          onPress={() => {
-            if (props.setIsElseFeaturesVisible != undefined)
-              props.setIsElseFeaturesVisible(true);
-          }}
-          style={styles.elseFeaturesButton}
-        >
-          <ElseFeaturesIcon />
-        </TouchableOpacity>
       </View>
     </>
   );
