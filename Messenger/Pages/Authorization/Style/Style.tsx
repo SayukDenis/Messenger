@@ -92,4 +92,13 @@ export const styles = StyleSheet.create({
     color: '#1196B3',
     marginBottom: responsiveHeight(14), 
   },
+ 
+  backButton: {
+    marginBottom: responsiveHeight(1),
+    marginLeft: responsiveWidth(-20),
+  },
+  backButtonText: {
+    fontSize: responsiveWidth(20),
+    color: '#A19C91',
+  },
 });

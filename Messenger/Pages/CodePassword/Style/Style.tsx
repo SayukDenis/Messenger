@@ -51,13 +51,16 @@ export const styles = StyleSheet.create({
   codeCell: {
     borderRadius: responsiveWidth(35),
     width: responsiveWidth(63.3),
-    height: responsiveWidth(63.3),
-    fontSize: responsiveHeight(28),
+    height: responsiveWidth(63.3),  
     borderWidth: 1,
     borderColor: '#ccc',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     marginBottom: responsiveHeight(14),
-  }, 
+  },
+  codeCellText: 
+  {
+    fontSize: responsiveHeight(21),
+  }
 });

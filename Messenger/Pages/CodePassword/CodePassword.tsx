@@ -22,7 +22,7 @@ export default function CodePassword() {
           style={styles.codeCell}
           onPress={() => handleCodeCellPress(i.toString())}
         >
-          <Text>{i}</Text>
+          <Text style={styles.codeCellText}>{i}</Text>
         </TouchableOpacity>
       );
     }
@@ -32,7 +32,7 @@ export default function CodePassword() {
         style={styles.codeCell}
         onPress={() => handleCodeCellPress('0')}
       >
-        <Text>0</Text>
+        <Text style={styles.codeCellText}>0</Text>
       </TouchableOpacity>
     );
     return codeCells;
@@ -48,14 +48,14 @@ export default function CodePassword() {
   {Array.from({ length: PIN_LENGTH - pin.length }).map((_, index) => (
     <View key={index} style={styles.pinDot} />
   ))}
-</View>
+  </View>
 
       <View style={styles.codeInput}>
         <View style={styles.codeRow}>{renderCodeCells().slice(0, 3)}</View>
         <View style={styles.codeRow}>{renderCodeCells().slice(3, 6)}</View>
         <View style={styles.codeRow}>{renderCodeCells().slice(6, 9)}</View>
         {renderCodeCells().slice(9,10)}
- </View>
+        </View>
       </View>
       
   );}  
