@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
+import { setSelectedFolderForChatList } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import MySelfUser from "../1HelpFullFolder/MySelfUser";
 import { footerstyles } from "../Styles/FooterStyle";
 import ListOfFolder from "./ListOfFolder";
@@ -35,63 +36,51 @@ const Main: React.FC<MainProps> = ({
   isTouchableForHeader,
   onPressForTouchableHeader,
 }) => {
-  const [selectedFolder, setSelectedFolder] = useState<number>(0);
   const [selectedLongPressFolder, setSelectedLongPressFolder] =
     useState<number>(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const [currentPosition, setCurrentPosition] = useState(0);
   const [startTime, setStartTime] = useState(0);
+  const [endDragOfChatList,setEndDragOfChatList]=useState(true);
   const [endTime, setEndTime] = useState(0);
   const [isVisibleForModalFolder, setisVisibleForModalFolder] = useState(false);
   const [positionX, setPositionX] = useState<number>(0);
   const [positionXInContainer, setPositionXInContainer] = useState<number>(0);
-
   const dispatch = useDispatch();
   const animationState = useSelector((state: any) => {
-    return state.animationState;
+    
+    return state.animation.animationState;
   });
+  const selectFolder=useSelector((state:any)=>{return state.selectedFolder.selectedFolder});
 
-  const scrollViewRef = useRef<FlatList| null>(null);
+  const scrollViewRef = useRef<FlatList | null>(null);
   const scrollViewRefFooter = useRef<ScrollView | null>(null);
 
-  const [widths, setWidths] = useState<number[]>(
+  const widths = useRef<number[]>(
     user.folders.map(() => screenWidth * 0.1831)
   );
   const viewsRefs: any = [user.folders.forEach(() => useRef(null))];
-  const [positionsOfFolder, setPositionOfFolder] = useState<number[]>(
+  const positionsOfFolder = useRef<number[]>(
     user.folders.map(() => 0)
   );
 
-  useEffect(() => {
-    scrollX.addListener(({ value }) => {
-      setCurrentPosition(value);
-    });
-    return () => {
-      scrollX.removeAllListeners();
-    };
-  }, []);
+ 
 
-  const handleFolderPress = (index: number) => {
-    if (selectedFolder === index) {
-      return;
-    }
-    setSelectedFolder(index);
+  const handleFolderPress = useRef((index: number) => {
+    console.log("ABOBA")
+    
+    dispatch(setSelectedFolderForChatList(index))
     scrollToFolder(index);
-  };
+  });
 
-  const scrollToIcon = (index: number): void => {
+  const scrollToIcon = (index: number): void => { 
+    console.log(user.folders[index].name)
     scrollViewRefFooter?.current?.scrollTo({
       x:
-        positionsOfFolder[index] - (screenWidth * 0.92) / 2 + widths[index] / 2,
+        positionsOfFolder.current[index]  - (screenWidth * 0.92) / 2 + widths.current[index] / 2,
       animated: true,
     });
   };
 
-  const updateSelectedFolder = () => {
-    const newSelectedFolder = Math.round(currentPosition / screenWidth);
-    scrollToIcon(newSelectedFolder);
-    setSelectedFolder(newSelectedFolder);
-  };
+ 
 
   const handleHorizontalScroll = (event: any) => {
     let newHorizontalPosition = event.nativeEvent.contentOffset.x;
@@ -103,11 +92,14 @@ const Main: React.FC<MainProps> = ({
     ) {
       newHorizontalPosition = screenWidth * (user.folders.length - 1);
     }
-    setCurrentPosition(newHorizontalPosition);
+    const newFolder:number=Math.round(newHorizontalPosition / screenWidth);
+    if(newFolder!=selectFolder){
+      dispatch(setSelectedFolderForChatList(newFolder))
+    }
   };
 
-  const handleMomentumScrollEnd = () => {
-    updateSelectedFolder();
+  const handleMomentumScrollEnd = (event:any) => {
+    scrollToIcon(selectFolder)
   };
 
   const scrollToFolder = (folderId: number) => {
@@ -116,20 +108,20 @@ const Main: React.FC<MainProps> = ({
       animated: true,
     });
     scrollToIcon(folderId);
+    
   };
-
-  const handleLayout = (event: LayoutChangeEvent, index: number) => {
+  const handleLayout = useRef((event: LayoutChangeEvent, index: number) => {
     const { width } = event.nativeEvent.layout;
     const position = event.nativeEvent.layout.x;
-    const updatePosition = [...positionsOfFolder];
+    const updatePosition = [...positionsOfFolder.current];
     updatePosition[index] = position;
-    setPositionOfFolder(updatePosition);
-    const updatedWidths = [...widths];
+    positionsOfFolder.current=updatePosition;
+    const updatedWidths = [...widths.current];
     updatedWidths[index] = width;
-    setWidths(updatedWidths);
-  };
+    widths.current=updatedWidths;
+  });
 
-  const handleLongPress = (e: GestureResponderEvent, index: number) => {
+  const handleLongPress =useRef( (e: GestureResponderEvent, index: number) => {
     setSelectedLongPressFolder(index);
     const target = e.nativeEvent;
     setPositionX(target.pageX);
@@ -151,8 +143,7 @@ const Main: React.FC<MainProps> = ({
     }
     setisVisibleForModalFolder(true);
     dispatch(setAnimationState(true));
-  };
-
+  });
   const handlePress = () => {
     setStartTime(Date.now());
   };
@@ -177,11 +168,11 @@ const Main: React.FC<MainProps> = ({
         isVisibleForModalFolder={isVisibleForModalFolder}
         animationState={animationState}
         selectedLongPressFolder={selectedLongPressFolder}
-        selectedFolder={selectedFolder}
+        selectedFolder={selectFolder}
         user={user}
         positionX={positionX}
         positionXInContainer={positionXInContainer}
-        widths={widths}
+        widths={widths.current}
         setAnimation={setAnimation}
         handlePress={handlePress}
         handlePressOut={handlePressOut}
@@ -198,21 +189,38 @@ const Main: React.FC<MainProps> = ({
         style={{ marginTop: screenHeight * 0.05 }}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-        <View>
-          <ListOfFolder
-            key={index}
-            user={user}
-            currentFolder={index}
-            selectedFolder={selectedFolder}
-          />
+          <View>
+            <ListOfFolder
+              key={index}
+              user={user}
+              currentFolder={index}
+              selectedFolder={selectFolder}
+            />
           </View>
         )}
         onScroll={handleHorizontalScroll}
         onMomentumScrollEnd={handleMomentumScrollEnd}
+        onMomentumScrollBegin={()=>{setEndDragOfChatList(false)}}
+        onScrollEndDrag={handleMomentumScrollEnd}
         windowSize={3}
+        initialNumToRender={10}
+      />
+      <Footer
+        user={mySelfUser}
+        selectedFolder={selectFolder}
+        isTouchableForHeader={isTouchableForHeader}
+        scrollViewRefFooter={scrollViewRefFooter}
+        handleLayout={handleLayout}
+        isVisibleForModalFolder={isVisibleForModalFolder}
+        animationState={animationState}
+        handleFolderPress={handleFolderPress}
+        handleLongPress={handleLongPress}
+        positionsOfFolder={positionsOfFolder}
+        widths={widths}
+        endDrag={endDragOfChatList}
       />
 
-     
+      
       {isTouchableForHeader ? (
         <TouchableOpacity
           onPress={onPressForTouchableHeader}

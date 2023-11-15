@@ -26,8 +26,8 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
 }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
   useEffect(() => {
-    console.log(user.folders[currentFolder].name);
-    console.log("ABOBA")
+     // console.log("RERENDER ChatList");
+     // console.log(user.folders[currentFolder].name)
   });
   return (
     <>

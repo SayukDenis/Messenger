@@ -15,7 +15,7 @@ import CodePassword from './Pages/CodePassword/CodePassword';
 import React from "react";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import { rootReducer} from "./ReducersAndActions/Reducers/ChatListActions/ChatListActions";
+import rootReducer from "./ReducersAndActions/Reducers/ChatListActions/ChatListActions";
 import Dialogue from "./Pages/Chats/Dialogue/Dialogue";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
@@ -23,7 +23,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={style.container}>
-        <Dialogue />
+        <ChatList />
       </View>
     </Provider>
   );

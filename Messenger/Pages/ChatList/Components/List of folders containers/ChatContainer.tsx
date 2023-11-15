@@ -96,7 +96,9 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   const dragXPosition = useState(new Animated.Value(screenWidth))[0];
   const [stateForSwipeDirection, setStateForSwipeDirection] =
     useState<number>(null);
-
+  useEffect(()=>{
+   // console.log(chat.name)
+  })
   const scale1ForRight = dragXPosition.interpolate({
     inputRange: [
       screenWidth,
@@ -251,7 +253,8 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     Animated.timing(dragXPosition, {
       toValue: positionX,
       duration: 0,
-      useNativeDriver: false,
+
+      useNativeDriver: true,
     }).start();
   };
   const handleOnScrollFromLeft = (
@@ -261,8 +264,8 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     setPositionXForSwipeable(positionX);
     Animated.timing(dragXPosition, {
       toValue: positionX,
-      duration: 0,
-      useNativeDriver: false,
+      duration: 1,
+      useNativeDriver: true,
     }).start();
   };
   return (
@@ -286,7 +289,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
           zIndex: isSwiped ? 2 : 0,
         }}
         decelerationRate={0.1}
-        scrollEventThrottle={10}
+        scrollEventThrottle={5}
         contentOffset={{ x: screenWidth, y: 0 }}
         onScrollBeginDrag={(e: NativeSyntheticEvent<NativeScrollEvent>) => {
           setIsSwiped(true);

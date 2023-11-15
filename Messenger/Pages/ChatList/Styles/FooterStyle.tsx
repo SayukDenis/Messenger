@@ -23,6 +23,11 @@ export const footerstyles = StyleSheet.create({
   folderContainer: {
     marginTop: screenHeight * 0.01,
   },
+  selectedFolderContainer:{
+    //backgroundColor:"#9FBAEF",
+   // borderRadius:100,
+    
+  },
   folder: {
     fontSize: screenHeight * 0.017,
     padding: screenWidth * 0.017,

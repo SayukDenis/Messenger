@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -16,8 +16,9 @@ interface FolderProps {
   textStyle?: StyleProp<TextStyle>; // Стиль для тексту
   folder: Folder;
   isSelected: boolean; // Додаємо флаг для визначення, чи обрана папка
-  onPress: () => void;
-  handleLongPress: (e: GestureResponderEvent) => void;
+  onPress: any;
+  handleLongPress: any;
+  index:number;
 }
 
 const FolderContainer: React.FC<FolderProps> = React.memo(
@@ -27,18 +28,28 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
     folder,
     isSelected,
     onPress,
-    handleLongPress
+    handleLongPress,
+    index
   }) => {
-    const [isSelectedThis, setIsSelectedThis] = useState(false);
-    
+    useEffect(()=>{
+      //console.log(folder.name)
+    })
+    const OnPressRef=useRef((event:any)=>{
+      
+      //console.log(event)
+      onPress.current(event,index)
+    })
+    const OnLongPressRef=useRef((event:any)=>{
+      handleLongPress.current(event,index)
+    })
     return (
       <>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={onPress}
-          onLongPress={handleLongPress}
+          onPress={OnPressRef.current}
+          onLongPress={OnLongPressRef.current}
         >
-          <View style={[containerStyle]}>
+          <View style={[containerStyle,isSelected?footerstyles.selectedFolderContainer:null]}>
             <Text style={isSelected ? footerstyles.selectedText : textStyle}>
               {folder.name}
             </Text>

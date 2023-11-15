@@ -1,38 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Animated, View } from 'react-native';
 import { footerstyles } from '../../Styles/FooterStyle';
+import { useSelector } from 'react-redux';
 
 interface AnimatedFolderIndicatorProps {
-    currentPosition: number;
+    selectedFolder:number;
     screenWidth: number;
-    widths: number[];
-    positionsOfFolder: number[];
+    widths: any;
+    positionsOfFolder: any;
     isVisibleForModalFolder: boolean;
   }
   
 const FolderIndicator: React.FC<AnimatedFolderIndicatorProps> = ({
-  currentPosition,
-  screenWidth,
+  
   widths,
-  positionsOfFolder,
   isVisibleForModalFolder,
+  positionsOfFolder
 }) => {
-  const indicatorLeft =
-    (((currentPosition - screenWidth * Math.round(currentPosition / screenWidth)) %
-      screenWidth) /
-      screenWidth) *
-      widths[Math.round(currentPosition / screenWidth)] +
-    positionsOfFolder[Math.round(currentPosition / screenWidth)];
-
+  const timeForLineAnimation=200;
+  const animationTransformOfIndicator=useState(new Animated.Value(0))[0];
+  const selectedFolder=useSelector((state:any)=>{
+    
+    return state.selectedFolder.selectedFolder})
+  const AnimationTransformOfIndicator = Animated.timing(animationTransformOfIndicator, {
+    toValue: positionsOfFolder.current[selectedFolder],
+    duration: timeForLineAnimation,
+    useNativeDriver: true,
+  });
+  useEffect(()=>{
+    AnimationTransformOfIndicator.start();
+  },[selectedFolder])
+  useEffect(()=>{
+    console.log(selectedFolder)
+  })
   return (
-    <Animated.View style={{ left: indicatorLeft }}>
+    <Animated.View style={{transform: [{ translateX: animationTransformOfIndicator }]}}>
       {!isVisibleForModalFolder ? (
         <Animated.View
           style={[
             footerstyles.selectedFolder,
             {
-              width: widths[Math.round(currentPosition / screenWidth)] * 0.8,
-              marginLeft: widths[Math.round(currentPosition / screenWidth)] * 0.1,
+              width: widths.current[selectedFolder] * 0.8,
+              marginLeft: widths.current[selectedFolder] * 0.1,
             },
           ]}
         />

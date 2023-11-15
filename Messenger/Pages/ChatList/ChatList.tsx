@@ -14,6 +14,7 @@ import Main from "./Components/Main";
      <View style={styles.mainContainer}>
         <Header mySelfUser={mySelfUser} onPress={onPress} isTouchableHeader={touchable}/>
         <Main user={mySelfUser} onPressForTouchableHeader={onPress} isTouchableForHeader={touchable}/>
+        
     </View>);
 }
 
