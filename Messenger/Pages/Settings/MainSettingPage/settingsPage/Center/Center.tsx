@@ -16,7 +16,7 @@ const Center: React.FC<any> = ({ navigation })=>{
 
         return <View style={StyleCentre.conteiner} >
                                 
-                                <Image style={StyleCentre.imgStyle} source={{uri:'https://www.meme-arsenal.com/memes/a297a80a2839282005e0a60135421919.jpg'}}></Image>
+                                <Image style={StyleCentre.imgStyle} source={{uri:'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1'}}></Image>
                                 <View style={StyleCentre.button}><TouchableOpacity onPress={() => navigation.navigate('Edit page')} ><Text>Edit</Text></TouchableOpacity></View>
                                 <View style={StyleCentre.box}></View>
                                 <Text style= {StyleCentre.text}>Settings</Text>
