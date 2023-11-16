@@ -35,7 +35,7 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
               coordsY[message.id] = [event.nativeEvent.layout.y, event.nativeEvent.layout.height]; 
               setCoordsY(coordsY);
             }
-          } key={message.id} style={{flex:1, backgroundColor:'green', opacity:check(messageMenuVisisbleAppearence, message.id, messageID)}}>
+          } key={message.id} style={{flex:1, opacity:check(messageMenuVisisbleAppearence, message.id, messageID)}}>
             {messageViewHandle(listOfMessages, message, setMessageMenuVisible, message.id, scrollViewRef, coordsY)}
           </View>
         ))}
@@ -45,13 +45,10 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
 };
 
 const check = (isVisible:boolean, id:number, messageID:number) => {
-  if(isVisible && messageID!=-1 && id==messageID) {
-    return 1;
-  }
-  else if(isVisible && messageID!=-1) {
+  if(isVisible && messageID!==-1 && id!==messageID) {
     return 0.25;
   }
-  return 0.9;
+  return 1;
 };
 
 const messageViewHandle = (messages:Message[], message:Message, setMessageMenuVisible:{(arg0: {x:number, y:number, ID:number}):void}, messageID:number, scrollViewRef:MutableRefObject<any>, cordsY:any) => {

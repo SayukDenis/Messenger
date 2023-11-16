@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
-    paddingHorizontal: 10,
   },
   
   replyContainer: {
@@ -22,12 +21,12 @@ const styles = StyleSheet.create({
   replyMessageContainer: {
     display:'flex', 
     flexDirection:'row', 
-    maxHeight:'100%'
+    maxHeight:'100%',
+    alignSelf:'flex-end'
   },
 
   replyMessageLink: {
-    flex:1, 
-    alignSelf:'flex-end'
+    
   },
 
   replyMessageFont: {
@@ -38,8 +37,9 @@ const styles = StyleSheet.create({
   replyMessageLine: {
     marginBottom:-25, 
     width:1, 
-    height:'150%', 
-    backgroundColor:'blue'
+    height:'150%',
+    backgroundColor:'blue',
+    overflow:'visible'
   },
 
   replyMessagePos: {
@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
 
 
   messageContainer: {
-    backgroundColor:'purple',
     paddingVertical: 5,
     flex: 1,
     alignSelf: 'stretch',

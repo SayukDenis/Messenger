@@ -7,7 +7,7 @@ import { Svg, Path } from 'react-native-svg';
 
 const { height, width } = Dimensions.get('window');
 
-const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessage, isEdit, editMessage, messageID}:{messages:Message[], setMessages:(arg0: Message)=>void, isReply:boolean, replyMessage:Message, onSendMessage:()=>void, isEdit:boolean, editMessage:Message, messageID:number}) => {
+const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessage, isEdit, editMessage, messageID, setIsReply}:{messages:Message[], setMessages:(arg0: Message)=>void, isReply:boolean, replyMessage:Message, onSendMessage:()=>void, isEdit:boolean, editMessage:Message, messageID:number, setIsReply:()=>void}) => {
 
   const [text, setText] = useState('');
 
@@ -17,17 +17,16 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     <View style={{flex:6, backgroundColor:'rgba(0, 0, 0, 0)'}}>
       {
         isReply?
-        <View style={{ height:0, top: -(height*0.0488)}}>
-          <View style={{flex:1}}>
-            <View style={{height:height*0.0488, width:width*0.96, backgroundColor:'rgb(231, 230, 228)', borderRadius:20, alignItems:'center',
-            marginHorizontal:width*0.02, paddingVertical:10, paddingHorizontal:20, display:'flex', flexDirection:'row'}}>
+        <View style={{ height:0, top: -(height*0.052)}}>
+          <View className='flex-1'>
+            <View className='bg-[#E7E6E4] items-center rounded-2xl py-3 px-3 flex flex-row' style={{height:height*0.052, width:width*0.96, marginHorizontal:width*0.02}}>
               <Text>Reply Icon</Text>
-              <View style={{flex: 1, justifyContent:'space-between', display:'flex', flexDirection:'row', alignItems:'center'}}>
-                <View style={{marginLeft:10}}>
-                  <Text style={{color:'rgb(183, 158, 255)'}}>user name</Text>
-                  <Text style={{color:'rgb(121, 121, 121)'}}>{replyMessage.text!.length>40?replyMessage.text.slice(0,40)+'...':replyMessage.text}</Text>
+              <View className='flex-1 justify-between flex flex-row items-center'>
+                <View className='ml-3'>
+                  <Text className='text-[#B79EFF]'>user name</Text>
+                  <Text className='text-[#797979]'>{replyMessage.text!.length>40?replyMessage.text.slice(0,40)+'...':replyMessage.text}</Text>
                 </View>
-                <TouchableOpacity onPress={() => console.log('close')} style={{backgroundColor:'red', width:width*0.03, alignItems:'center'}}>
+                <TouchableOpacity onPress={setIsReply} className='bg-red-500 items-center' style={{width:width*0.03}}>
                   <Text>x</Text>
                 </TouchableOpacity>
               </View>
@@ -36,9 +35,9 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
         </View>
         :
         isEdit?
-        <View style={{ height:0, top: -(height*0.0488)}}>
+        <View style={{ height:0, top: -(height*0.052)}}>
           <View style={{flex:1}}>
-            <View style={{height:height*0.0488, width:width*0.96, backgroundColor:'rgb(231, 230, 228)', borderRadius:20, alignItems:'center',
+            <View style={{height:height*0.052, width:width*0.96, backgroundColor:'rgb(231, 230, 228)', borderRadius:20, alignItems:'center',
             marginHorizontal:width*0.02, paddingVertical:10, paddingHorizontal:20, display:'flex', flexDirection:'row'}}>
               <Text>Edit Icon</Text>
               <View style={{flex: 1, justifyContent:'space-between', display:'flex', flexDirection:'row', alignItems:'center'}}>
