@@ -19,6 +19,8 @@ import NewAlbumScreen from "../DialogueProfile/NewAlbumScreen/NewAlbumScreen";
 import GalleryScreen from "../DialogueProfile/NewAlbumScreen/GalleryScreen";
 import { useFonts } from "expo-font";
 import ChangeBranchScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchScreen";
+import AlbumFilling from "../DialogueProfile/MainUserScreen/Album/AlbumFilling";
+import GalleryWhileAddingNewPhoto from "../DialogueProfile/MainUserScreen/Album/GalleryWhileAddingNewPhoto";
 
 const Stack = createStackNavigator();
 export default function StartPage() {
@@ -54,6 +56,11 @@ export default function StartPage() {
         <Stack.Screen
           name="ChangeBranchScreen"
           component={ChangeBranchScreen}
+        />
+        <Stack.Screen name="AlbumFilling" component={AlbumFilling} />
+        <Stack.Screen
+          name="GalleryWhileAddingNewPhoto"
+          component={GalleryWhileAddingNewPhoto}
         />
       </Stack.Navigator>
     </NavigationContainer>

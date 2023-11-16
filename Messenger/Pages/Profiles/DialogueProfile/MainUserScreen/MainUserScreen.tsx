@@ -14,6 +14,15 @@ import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { Album, user } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
+import AlbumFilling from "./Album/AlbumFilling";
+
+interface tempUserProps {
+  selectedAlbum: Album;
+}
+
+export const tempUser: tempUserProps = {
+  selectedAlbum: user.albums[0],
+};
 
 type MainUserScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -44,70 +53,57 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
   useEffect(() => {}, [isFocused]);
 
+  var blursConditions: boolean[] = [
+    isPhotoAlbumSelectionVisible,
+    isElseFeaturesVisible,
+    isClearChatButtonPressed,
+    longPressedAlbum != null,
+    isDeleteAlbumPressed,
+    isDeleteAllAlbumsPressed,
+    isDeleteSelectedAlbumsPressed,
+  ];
+  var blursOnPress: (() => void)[] = [
+    () => {
+      setIsPhotoAlbumSelectionVisible(false);
+    },
+    () => {
+      setIsElseFeaturesVisible(false);
+    },
+    () => {
+      setIsClearChatButtonPressed(false);
+    },
+    () => {
+      setLongPressedAlbum(null);
+    },
+    () => {
+      setIsDeleteAlbumPressed(false);
+    },
+    () => {
+      setIsDeleteAllAlbumsPressed(false);
+    },
+    () => {
+      setIsDeleteSelectedAlbumsPressed(false);
+    },
+  ];
+
   return (
     <View style={styles.mainContainer}>
-      {/* Blur if photo or album button is on long press */}
-      <Blur
-        visibleWhen={isPhotoAlbumSelectionVisible}
-        onPress={() => {
-          setIsPhotoAlbumSelectionVisible(false);
-        }}
-        style={styles.blurEffect}
-      />
-
-      {/* Blur if else features button is pressed */}
-      <Blur
-        visibleWhen={isElseFeaturesVisible}
-        onPress={() => {
-          setIsElseFeaturesVisible(false);
-        }}
-        style={styles.blurEffect}
-      />
-
-      {/* Blur if clear chat is pressed */}
-      <Blur
-        visibleWhen={isClearChatButtonPressed}
-        onPress={() => {
-          setIsClearChatButtonPressed(false);
-        }}
-        style={[styles.blurEffect, { zIndex: 3 }]}
-      />
-
-      {/* Blur if some album is long pressed */}
-      <Blur
-        visibleWhen={longPressedAlbum != null}
-        onPress={() => {
-          setLongPressedAlbum(null);
-        }}
-        style={styles.blurEffect}
-      />
-
-      {/* Blur if album removal pressed */}
-      <Blur
-        visibleWhen={isDeleteAlbumPressed}
-        onPress={() => {
-          setIsDeleteAlbumPressed(false);
-        }}
-        style={[styles.blurEffect, { zIndex: 3 }]}
-      />
-
-      {/* Blur if all albums removal pressed */}
-      <Blur
-        visibleWhen={isDeleteAllAlbumsPressed}
-        onPress={() => {
-          setIsDeleteAllAlbumsPressed(false);
-        }}
-        style={[styles.blurEffect, { zIndex: 3 }]}
-      />
-
-      {/* Blur if all albums removal pressed */}
-      <Blur
-        visibleWhen={isDeleteSelectedAlbumsPressed}
-        onPress={() => {
-          setIsDeleteSelectedAlbumsPressed(false);
-        }}
-        style={[styles.blurEffect, { zIndex: 3 }]}
-      />
+      {blursConditions.map((item, index) => (
+        <Blur
+          key={index}
+          visibleWhen={item}
+          onPress={() => {
+            blursOnPress[index]();
+          }}
+          style={[
+            styles.blurEffect,
+            {
+              zIndex:
+                index == 2 || index == 4 || index == 5 || index == 6 ? 3 : 1,
+            },
+          ]}
+        />
+      ))}
 
       {/* Top tool bar with buttons*/}
       <TopToolBar
@@ -149,7 +145,6 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         onClearChatPress={(value: boolean) => {
           setIsClearChatButtonPressed(value);
         }}
-        navigation={navigation}
         settingsPress={() => navigation.navigate("SettingsScreen" as never)}
         mode="user"
       />
@@ -267,6 +262,10 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           pressedMultimediaButton={pressedMultimediaButton}
           setPressedMultimediaButton={(value: string) => {
             setPressedMultimediaButton(value);
+          }}
+          onAlbumPress={(value: Album) => {
+            tempUser.selectedAlbum = value;
+            navigation.navigate("AlbumFilling" as never);
           }}
           onNewAlbumPress={() => {
             navigation.navigate("NewAlbumScreen" as never);

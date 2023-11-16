@@ -17,7 +17,6 @@ export interface UserProps {
   voice: Array<Voice>;
   links: Array<Link>;
   albums: Array<Album>;
-  selectedBranch: BranchParent;
 }
 
 export const user: UserProps = {
@@ -39,7 +38,6 @@ export const user: UserProps = {
   branchParents: new Array<BranchParent>(),
   clearChatText: "Do you really want to clear chat?",
   removalText: "Do you really want to delete",
-  selectedBranch: null,
   photosAndVideos: [
     { url: "https://picsum.photos/id/1/5000/3333" },
     { url: "https://picsum.photos/id/2/5000/3333" },

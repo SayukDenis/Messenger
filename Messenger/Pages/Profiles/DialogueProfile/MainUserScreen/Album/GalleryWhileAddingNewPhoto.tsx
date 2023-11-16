@@ -10,23 +10,25 @@ import {
   ScrollView,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { styles } from "./Styles";
-import Header from "../../SemiComponents/Header";
-import { user, Album, PhotoOrVideo } from "../../SemiComponents/DBUser";
-import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
-import { tempUser } from "./NewAlbumScreen";
+import { tempUser } from "../MainUserScreen";
+import { user, PhotoOrVideo } from "../../../SemiComponents/DBUser";
+import { styles } from "../Styles";
+import Photos from "../../../SemiComponents/MainScreen/Multimedia/Photos";
+import Header from "../../../SemiComponents/Header";
 
-interface GalleryScreenProps {
+interface GalleryWhileAddingNewPhotoProps {
   navigation: StackNavigationProp<{}>;
 }
 
-const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
+const GalleryWhileAddingNewPhoto: React.FC<GalleryWhileAddingNewPhotoProps> = (
+  props
+) => {
   const [selectedPhotosAndVideos, setSelectedPhotosAndVideos] = useState<
     Array<PhotoOrVideo>
-  >(tempUser.selectedPhotosAndVideos);
+  >(tempUser.selectedAlbum.photosAndVideos);
 
   useEffect(() => {
-    tempUser.selectedPhotosAndVideos = selectedPhotosAndVideos;
+    tempUser.selectedAlbum.photosAndVideos = selectedPhotosAndVideos;
   });
 
   return (
@@ -62,4 +64,4 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
   );
 };
 
-export default GalleryScreen;
+export default GalleryWhileAddingNewPhoto;

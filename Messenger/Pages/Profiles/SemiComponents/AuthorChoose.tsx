@@ -17,19 +17,19 @@ export default function ChooseAuthor() {
   return (
     <View>
       <TouchableOpacity
-        style={{ height: "50%", backgroundColor: "yellow" }}
+        style={{ height: "50%", backgroundColor: "blue" }}
         onPress={Viktor}
       >
-        <Text style={{ top: "50%", left: "35%", fontSize: 40 }}>Viktor</Text>
+        <Text style={{ top: "50%", left: "35%", fontSize: 40, color: "white" }}>
+          Viktor
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={{ height: "50%", backgroundColor: "blue" }}
+        style={{ height: "50%", backgroundColor: "yellow" }}
         onPress={Oleksii}
       >
-        <Text style={{ top: "50%", left: "35%", fontSize: 40, color: "white" }}>
-          Oleksii
-        </Text>
+        <Text style={{ top: "50%", left: "35%", fontSize: 40 }}>Oleksii</Text>
       </TouchableOpacity>
     </View>
   );

@@ -9,7 +9,7 @@ import Files from "./Files";
 import Voice from "./Voice";
 import Links from "./Links";
 import Albums from "./Albums";
-import { Album } from "../../DBUser";
+import { Album, user } from "../../DBUser";
 import Blur from "../Blur";
 
 interface MultimediaProps {
@@ -23,6 +23,7 @@ interface MultimediaProps {
   isAlbumSelectionVisible: boolean;
   selectedAlbums: Array<Album>;
   setSelectedAlbums: (value: Array<Album>) => void;
+  onAlbumPress: (value: Album) => void;
 }
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
@@ -48,15 +49,21 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
       />
 
       {props.pressedMultimediaButton == "Photos" && (
-        <Photos isPhotoSelectionAlwaysVisible={false} />
+        <Photos
+          isPhotoSelectionAlwaysVisible={false}
+          data={user.photosAndVideos}
+        />
       )}
       {props.pressedMultimediaButton == "Albums" && (
         <Albums
           onNewAlbumPress={() => {
             props.onNewAlbumPress();
           }}
-          onAlbumPress={(value: Album) => {
+          onAlbumLongPress={(value: Album) => {
             props.setLongPressedAlbum(value);
+          }}
+          onAlbumPress={(value: Album) => {
+            props.onAlbumPress(value);
           }}
           setPositionYOfLongPressedAlbum={props.setPositionYOfLongPressedAlbum}
           isAlbumSelectionVisible={props.isAlbumSelectionVisible}

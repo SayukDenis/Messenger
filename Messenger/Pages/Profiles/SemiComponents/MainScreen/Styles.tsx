@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.155 * screenWidth,
-    top: 0.05 * screenHeight,
+    top: 0.055 * screenHeight,
     width: 25 * figmaWidthPixelConverter,
     height: 25 * figmaWidthPixelConverter,
   },
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.03 * screenWidth,
-    top: 0.0275 * screenHeight,
+    top: 0.033 * screenHeight,
     width: 40 * figmaWidthPixelConverter,
     height: 40 * figmaWidthPixelConverter,
   },
@@ -320,8 +320,8 @@ export const styles = StyleSheet.create({
   },
   downloadFileIcon: { width: 0.04 * screenWidth, height: 0.04 * screenHeight },
   microphoneIcon: {
-    width: 0.04 * screenWidth,
-    height: 0.04 * screenHeight,
+    width: 0.09 * screenWidth,
+    height: 0.09 * screenHeight,
   },
   voiceTimeAndDateContainer: {
     width: "50%",

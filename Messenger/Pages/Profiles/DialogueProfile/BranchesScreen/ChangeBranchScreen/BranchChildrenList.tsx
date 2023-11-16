@@ -16,6 +16,7 @@ import RemovalApproval from "../../../SemiComponents/MainScreen/RemovalApproval"
 import { user, BranchParent } from "../../../SemiComponents/DBUser";
 import PlusIcon from "../Icons/PlusIcon";
 import BinIcon from "../../../SemiComponents/MainScreen/Icons/BinIcon";
+import { tempUser } from "../BranchesScreen";
 
 interface BranchChildrenListProps {
   onPlusBranchPress: () => void;
@@ -59,9 +60,9 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
       </View>
 
       <FlatList
-        data={user.selectedBranch.children}
+        data={tempUser.selectedBranch.children}
         keyExtractor={(item) =>
-          user.selectedBranch.children.indexOf(item).toString()
+          tempUser.selectedBranch.children.indexOf(item).toString()
         }
         horizontal={false}
         numColumns={1}

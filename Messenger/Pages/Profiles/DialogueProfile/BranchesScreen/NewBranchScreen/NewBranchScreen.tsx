@@ -24,6 +24,7 @@ import {
   BranchParent,
   BranchChild,
 } from "../../../SemiComponents/DBUser";
+import { tempUser } from "../BranchesScreen";
 
 type BranchesProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -90,7 +91,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
           });
 
           if (isValid) {
-            if (user.selectedBranch == null) {
+            if (tempUser.selectedBranch == null) {
               user.branchParents.push(
                 new BranchParent(
                   branchName,
@@ -102,11 +103,11 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
 
               user.branchParents.sort((a, b) => a.name.localeCompare(b.name));
             } else {
-              user.selectedBranch.children.push(
+              tempUser.selectedBranch.children.push(
                 new BranchChild(branchName, pickedEmoji, pickedColor)
               );
 
-              user.selectedBranch.children.sort((a, b) =>
+              tempUser.selectedBranch.children.sort((a, b) =>
                 a.name.localeCompare(b.name)
               );
             }

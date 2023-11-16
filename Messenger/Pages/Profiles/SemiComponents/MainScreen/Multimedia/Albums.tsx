@@ -17,6 +17,7 @@ import CheckmarkIcon from "../Icons/CheckmarkIcon";
 
 interface AlbumsProps {
   onNewAlbumPress: () => void;
+  onAlbumLongPress: (value: Album) => void;
   onAlbumPress: (value: Album) => void;
   setPositionYOfLongPressedAlbum: (value: number) => void;
   isAlbumSelectionVisible: boolean;
@@ -51,19 +52,25 @@ const Albums: React.FC<AlbumsProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                if (!props.selectedAlbums?.includes(item)) {
-                  props.setSelectedAlbums(props.selectedAlbums?.concat([item]));
+                if (props.isAlbumSelectionVisible) {
+                  if (!props.selectedAlbums?.includes(item)) {
+                    props.setSelectedAlbums(
+                      props.selectedAlbums?.concat([item])
+                    );
+                  } else {
+                    props.setSelectedAlbums(
+                      props.selectedAlbums?.filter(
+                        (photoOrVideo) => photoOrVideo !== item
+                      )
+                    );
+                  }
                 } else {
-                  props.setSelectedAlbums(
-                    props.selectedAlbums?.filter(
-                      (photoOrVideo) => photoOrVideo !== item
-                    )
-                  );
+                  props.onAlbumPress(item);
                 }
               }}
               onLongPress={(event) => {
                 if (!props.isAlbumSelectionVisible) {
-                  props.onAlbumPress(item);
+                  props.onAlbumLongPress(item);
                   props.setPositionYOfLongPressedAlbum(
                     event.nativeEvent.pageY + 0.05 * screenHeight
                   );

@@ -21,6 +21,7 @@ import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
 import BranchChildrenList from "./BranchChildrenList";
 import RemovalApproval from "../../../SemiComponents/MainScreen/RemovalApproval";
+import { tempUser } from "../BranchesScreen";
 
 interface ChangeBranchScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -39,11 +40,11 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
   const nameIsBusyTitle: string = "This name is already taken";
   var isValid: boolean = true;
 
-  const [branchName, setBranchName] = useState(user.selectedBranch.name);
-  const [pickedEmoji, setPickedEmoji] = useState(user.selectedBranch.emoji);
+  const [branchName, setBranchName] = useState(tempUser.selectedBranch.name);
+  const [pickedEmoji, setPickedEmoji] = useState(tempUser.selectedBranch.emoji);
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
-  const [pickedColor, setPickedColor] = useState(user.selectedBranch.color);
+  const [pickedColor, setPickedColor] = useState(tempUser.selectedBranch.color);
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
 
@@ -71,7 +72,7 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
       <Header
         primaryTitle={newBranchTitle}
         onGoBackPress={() => {
-          user.selectedBranch = null;
+          tempUser.selectedBranch = null;
           props.navigation.goBack();
         }}
       />
@@ -87,7 +88,7 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
           user.branchParents.map((branch) => {
             if (
               branch.name == branchName &&
-              branch.name != user.selectedBranch.name
+              branch.name != tempUser.selectedBranch.name
             ) {
               isValid = false;
               alert(nameIsBusyTitle);
@@ -96,7 +97,7 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
             branch.children.map((child) => {
               if (
                 child.name == branchName &&
-                child.name != user.selectedBranch.name
+                child.name != tempUser.selectedBranch.name
               ) {
                 isValid = false;
                 alert(nameIsBusyTitle);
@@ -106,7 +107,7 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
 
           if (isValid) {
             const branchToRemove = user.branchParents.find(
-              (branch) => branch.name === user.selectedBranch.name
+              (branch) => branch.name === tempUser.selectedBranch.name
             );
 
             if (branchToRemove) {
@@ -121,7 +122,7 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
                 branchName,
                 pickedEmoji,
                 pickedColor,
-                user.selectedBranch.children
+                tempUser.selectedBranch.children
               )
             );
 
@@ -139,13 +140,13 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
           setIsDeleteBranchPressed(false);
         }}
         onAgreePress={() => {
-          const branchToRemoveNow = user.selectedBranch.children.find(
+          const branchToRemoveNow = tempUser.selectedBranch.children.find(
             (branch) => branch.name === branchNameToRemove
           );
 
           if (branchToRemoveNow) {
-            user.selectedBranch.children.splice(
-              user.selectedBranch.children.indexOf(branchToRemoveNow),
+            tempUser.selectedBranch.children.splice(
+              tempUser.selectedBranch.children.indexOf(branchToRemoveNow),
               1
             );
           }
@@ -167,7 +168,7 @@ const ChangeBranchScreen: React.FC<ChangeBranchScreenProps> = (props) => {
       <ScrollView showsVerticalScrollIndicator={false} overScrollMode="never">
         <View
           style={{
-            top: -0.06 * screenWidth,
+            top: -0.04 * screenWidth,
           }}
         >
           {/* Title for name input */}

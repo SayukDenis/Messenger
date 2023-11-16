@@ -20,6 +20,14 @@ import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 
+interface tempUserProps {
+  selectedBranch: BranchParent;
+}
+
+export const tempUser: tempUserProps = {
+  selectedBranch: null,
+};
+
 type BranchesScreenProps = {
   navigation: StackNavigationProp<{}>;
 };
@@ -97,7 +105,7 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                user.selectedBranch = item;
+                tempUser.selectedBranch = item;
                 navigation.navigate("ChangeBranchScreen" as never);
               }}
               style={styles.settingOption}

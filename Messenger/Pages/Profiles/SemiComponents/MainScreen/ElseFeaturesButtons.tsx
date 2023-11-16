@@ -24,7 +24,6 @@ interface ElseFeaturesButtonsProps {
   isBlocked?: boolean;
   onClearChatPress: (value: boolean) => void;
   isClearChatPressed: boolean;
-  navigation: StackNavigationProp<{}>;
   settingsPress: () => void;
   mode: string;
 }

@@ -11,23 +11,31 @@ import {
 import { user, PhotoOrVideo } from "../../DBUser";
 import styles from "../Styles";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
+import CrossIcon from "../Icons/CrossIcon";
+
+const screenWidth = Dimensions.get("screen").width;
+const screenHeight = Dimensions.get("screen").height;
 
 interface PhotosProps {
   selectedPhotosAndVideos?: Array<PhotoOrVideo>;
   setSelectedPhotosAndVideos?: (value: Array<PhotoOrVideo>) => void;
   isPhotoSelectionAlwaysVisible: boolean;
+  data: Array<PhotoOrVideo>;
+  onPress?: (value: PhotoOrVideo) => void;
+  hasAddNewPhotoFeature?: boolean;
+  onAddNewPhotoPress?: () => void;
 }
 
 const Photos: React.FC<PhotosProps> = (props) => {
   return (
     <View style={styles.mediaContainer}>
       <FlatList
-        data={user.photosAndVideos}
-        keyExtractor={(item) => user.photosAndVideos.indexOf(item).toString()}
+        data={props.data}
+        keyExtractor={(item) => props.data.indexOf(item).toString()}
         horizontal={false}
         numColumns={3}
         contentContainerStyle={{
-          gap: 0.005 * Dimensions.get("screen").width,
+          gap: 0.002 * Dimensions.get("screen").height,
           paddingBottom: 0.5 * Dimensions.get("screen").height,
           backgroundColor: "rgb(174, 174, 174)",
         }}
@@ -48,6 +56,8 @@ const Photos: React.FC<PhotosProps> = (props) => {
                       )
                     );
                   }
+                } else {
+                  props.onPress(item);
                 }
               }}
               style={[
@@ -56,7 +66,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
                   left:
                     0.005 *
                     Dimensions.get("screen").width *
-                    (user.photosAndVideos.indexOf(item) % 3),
+                    (props.data.indexOf(item) % 3),
                 },
               ]}
             >
@@ -72,6 +82,39 @@ const Photos: React.FC<PhotosProps> = (props) => {
           );
         }}
       />
+      {props.hasAddNewPhotoFeature && (
+        <TouchableOpacity
+          onPress={() => {
+            props.onAddNewPhotoPress();
+          }}
+          style={[
+            styles.photo,
+            {
+              position: "absolute",
+              top: Math.floor(props.data.length / 3) * 0.162 * screenHeight,
+              left:
+                props.data.length % 3 == 0
+                  ? 0
+                  : props.data.length % 3 == 1
+                  ? 0.335 * screenWidth
+                  : 0.67 * screenWidth,
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.photo,
+              {
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgb(32, 32, 32)",
+              },
+            ]}
+          >
+            <CrossIcon style={styles.plusAlbumIcon} />
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

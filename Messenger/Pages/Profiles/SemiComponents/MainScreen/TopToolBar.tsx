@@ -64,8 +64,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
             {/* Else features button */}
             <TouchableOpacity
               onPress={() => {
-                if (props.setIsElseFeaturesVisible != undefined)
-                  props.setIsElseFeaturesVisible(true);
+                props?.setIsElseFeaturesVisible(true);
               }}
               style={styles.elseFeaturesButton}
             >
