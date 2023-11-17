@@ -10,6 +10,7 @@ import MySelfUser from "../1HelpFullFolder/MySelfUser";
 import { footerstyles } from "../Styles/FooterStyle";
 import FolderContainer from "./Footer containers/FolderContainer";
 import FolderIndicator from "./Footer containers/FolderIndicator";
+import { connect, useSelector } from "react-redux";
 
 interface FooterProps {
   user: MySelfUser;
@@ -17,13 +18,12 @@ interface FooterProps {
   scrollViewRefFooter: Ref<ScrollView | null>;
   handleLayout: any;
   isVisibleForModalFolder: boolean;
-  animationState: boolean;
   handleFolderPress: any;
   handleLongPress: any;
   positionsOfFolder: any;
   widths: any;
-  selectedFolder: number;
-  endDrag: boolean;
+
+ 
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -33,18 +33,19 @@ const Footer: React.FC<FooterProps> = ({
   scrollViewRefFooter,
   handleLayout,
   isVisibleForModalFolder,
-  animationState,
   handleFolderPress,
   handleLongPress,
-  selectedFolder,
+
   widths,
   positionsOfFolder,
+  
 }) => {
+  
   useEffect(() => {
-    //console.log("RERENDER");
+    console.log("RERENDER");
+
   });
   const OnPressRef = useRef((event: any, index) => {
-    //console.log(10)
     handleFolderPress.current(index);
   });
   const LongPressRef = useRef((e: any, index) => {
@@ -67,13 +68,7 @@ const Footer: React.FC<FooterProps> = ({
           <View>
             <View style={{ flexDirection: "row" }}>
               {user.folders.map((folder, index) => (
-                <View
-                  key={index}
-                  onLayout={(event: LayoutChangeEvent) =>
-                    handleLayout.current(event, index)
-                  }
-                  style={[isVisibleForModalFolder ? { zIndex: 10 } : null]}
-                >
+              
                   <FolderContainer
                     key={index}
                     index={index}
@@ -81,18 +76,16 @@ const Footer: React.FC<FooterProps> = ({
                     containerStyle={footerstyles.folderContainer}
                     textStyle={footerstyles.folder}
                     isSelected={
-                      !isVisibleForModalFolder && index === selectedFolder
+                      !isVisibleForModalFolder 
                     }
+                    onLayout={handleLayout}
                     onPress={OnPressRef}
                     handleLongPress={LongPressRef}
                   />
-                </View>
+                
               ))}
             </View>
-
             <FolderIndicator
-              selectedFolder={0}
-  
               screenWidth={screenWidth}
               widths={widths}
               positionsOfFolder={positionsOfFolder}
@@ -104,5 +97,8 @@ const Footer: React.FC<FooterProps> = ({
     </>
   );
 };
+const mapToState = (state) => ({
+  selectedFolder: state.selectedFolder.selectedFolder,
+});
 
-export default Footer;
+export default connect(null)(Footer);

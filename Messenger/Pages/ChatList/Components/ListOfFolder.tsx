@@ -11,7 +11,7 @@ import {
 import MySelfUser from "../1HelpFullFolder/MySelfUser";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
 interface ListOfFolderProps {
   user: MySelfUser;
@@ -21,14 +21,11 @@ interface ListOfFolderProps {
 
 const ListOfFolder: React.FC<ListOfFolderProps> = ({
   user,
-  selectedFolder,
   currentFolder,
+  selectedFolder
 }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-  useEffect(() => {
-     // console.log("RERENDER ChatList");
-     // console.log(user.folders[currentFolder].name)
-  });
+  
   return (
     <>
       <FlatList
@@ -51,4 +48,4 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
   );
 };
 
-export default ListOfFolder;
+export default connect(null)(ListOfFolder);

@@ -10,15 +10,17 @@ import {
 } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
 import Folder from "../../1HelpFullFolder/Folder";
+import { connect, useSelector } from "react-redux";
 
 interface FolderProps {
   containerStyle?: StyleProp<ViewStyle>; // Стиль для контейнера
   textStyle?: StyleProp<TextStyle>; // Стиль для тексту
   folder: Folder;
-  isSelected: boolean; // Додаємо флаг для визначення, чи обрана папка
+  isSelected: boolean; 
   onPress: any;
   handleLongPress: any;
   index:number;
+  onLayout:any
 }
 
 const FolderContainer: React.FC<FolderProps> = React.memo(
@@ -29,18 +31,28 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
     isSelected,
     onPress,
     handleLongPress,
-    index
+    index,
+    onLayout
   }) => {
-    useEffect(()=>{
-      //console.log(folder.name)
-    })
+    
     const OnPressRef=useRef((event:any)=>{
-      
-      //console.log(event)
       onPress.current(event,index)
+    })
+    const isSelectedThere=useSelector((state:any)=>{
+   //  console.log(folder.name+":"+state.folderSelectedArray.folderSelectedArray[index])
+      return state.folderSelectedArray.folderSelectedArray[index]
     })
     const OnLongPressRef=useRef((event:any)=>{
       handleLongPress.current(event,index)
+    })
+    const OnLayoutRef=useRef((event:any)=>{
+        console.log(event.nativeEvent.layout)
+        onLayout?.current(event, index)
+      
+    })
+    
+    useEffect(()=>{
+      //console.log(folder.name)
     })
     return (
       <>
@@ -48,9 +60,10 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
           activeOpacity={1}
           onPress={OnPressRef.current}
           onLongPress={OnLongPressRef.current}
+          onLayout={OnLayoutRef.current}
         >
           <View style={[containerStyle,isSelected?footerstyles.selectedFolderContainer:null]}>
-            <Text style={isSelected ? footerstyles.selectedText : textStyle}>
+            <Text style={isSelected &&isSelectedThere? footerstyles.selectedText : textStyle}>
               {folder.name}
             </Text>
           </View>
@@ -60,4 +73,4 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
   }
 );
 
-export default FolderContainer;
+export default connect(null)(FolderContainer);

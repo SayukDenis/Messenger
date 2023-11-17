@@ -1,40 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Animated, View } from 'react-native';
 import { footerstyles } from '../../Styles/FooterStyle';
 import { useSelector } from 'react-redux';
+import { Easing } from 'react-native-reanimated';
 
 interface AnimatedFolderIndicatorProps {
-    selectedFolder:number;
-    screenWidth: number;
-    widths: any;
-    positionsOfFolder: any;
-    isVisibleForModalFolder: boolean;
-  }
-  
+  screenWidth: number;
+  widths: any;
+  positionsOfFolder: any;
+  isVisibleForModalFolder: boolean;
+}
+
 const FolderIndicator: React.FC<AnimatedFolderIndicatorProps> = ({
-  
   widths,
   isVisibleForModalFolder,
-  positionsOfFolder
+  positionsOfFolder,
+  screenWidth,
 }) => {
-  const timeForLineAnimation=200;
-  const animationTransformOfIndicator=useState(new Animated.Value(0))[0];
-  const selectedFolder=useSelector((state:any)=>{
-    
-    return state.selectedFolder.selectedFolder})
-  const AnimationTransformOfIndicator = Animated.timing(animationTransformOfIndicator, {
-    toValue: positionsOfFolder.current[selectedFolder],
-    duration: timeForLineAnimation,
-    useNativeDriver: true,
-  });
-  useEffect(()=>{
-    AnimationTransformOfIndicator.start();
-  },[selectedFolder])
-  useEffect(()=>{
-    console.log(selectedFolder)
-  })
+  const selectedFolder = useSelector((state: any) => state?.selectedFolder.selectedFolder);
+  const currentPosition = useSelector((state: any) => state.currentPosition.currentPosition);
+
+  const indicatorLeft = new Animated.Value(
+    (((currentPosition - screenWidth * Math.round(currentPosition / screenWidth)) %
+      screenWidth) /
+      screenWidth) *
+      widths.current[Math.round(currentPosition / screenWidth)] +
+      positionsOfFolder.current[Math.round(currentPosition / screenWidth)]
+  );
+
+  Animated.timing(indicatorLeft, {
+    toValue:
+      (((currentPosition - screenWidth * Math.round(currentPosition / screenWidth)) %
+        screenWidth) /
+        screenWidth) *
+        widths.current[Math.round(currentPosition / screenWidth)] +
+      positionsOfFolder.current[Math.round(currentPosition / screenWidth)],
+    duration:0,
+    useNativeDriver: true, 
+  }).start();
+
   return (
-    <Animated.View style={{transform: [{ translateX: animationTransformOfIndicator }]}}>
+    <Animated.View style={{ transform: [{translateX:indicatorLeft}] }}>
       {!isVisibleForModalFolder ? (
         <Animated.View
           style={[
