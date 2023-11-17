@@ -10,6 +10,7 @@ import ConfidentialityPage from './ConfidentialityPage/MainConfidentiality/Confi
 import BlockUser from './ConfidentialityPage/BlockedUser/BlockUser';
 import PasswordPage from './ConfidentialityPage/Password/Password';
 import EditBioPage from './MainSettingPage/EdiitPage/EditBioPage/EditBioPage';
+import EditUsernamePage from './MainSettingPage/EdiitPage/EditUserNamePage/EditUserName';
 
 const Stack = createStackNavigator();
 
@@ -58,7 +59,7 @@ const EditPageNavigator=()=> {
   >
       <Stack.Screen name="EditPage" component={EditPage} />
       <Stack.Screen name="EditBioPage" component={EditBioPage} />
-      <Stack.Screen name="PasswordPage" component={PasswordPage} />
+      <Stack.Screen name="EditUsernamePage" component={EditUsernamePage} />
     </Stack.Navigator>
   );
 }

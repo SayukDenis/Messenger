@@ -13,7 +13,7 @@ const EditCenter: React.FC<any> = ({ navigation })=>{
         <Text style ={StyleEditCenter.paragTextStyle}>Bio</Text>
         <TouchableOpacity style ={StyleEditCenter.buttonConteiner} onPress={() => navigation.navigate('EditBioPage')} ><Text>Your bio</Text></TouchableOpacity>
         <Text style ={StyleEditCenter.paragTextStyle}>Edit info</Text>
-        <TouchableOpacity style ={StyleEditCenter.buttonConteiner} ><Text>@yourname</Text></TouchableOpacity>
+        <TouchableOpacity style ={StyleEditCenter.buttonConteiner} onPress={() => navigation.navigate('EditUsernamePage')} ><Text>@yourname</Text></TouchableOpacity>
         <TouchableOpacity style ={StyleEditCenter.buttonConteiner} ><Text>Edit your number</Text></TouchableOpacity>
     </View>
 }

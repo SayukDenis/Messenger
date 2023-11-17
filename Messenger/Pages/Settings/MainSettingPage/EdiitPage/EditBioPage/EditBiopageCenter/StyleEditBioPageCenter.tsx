@@ -9,13 +9,31 @@ const  StyleEditBioPageCenter = StyleSheet.create({
         marginTop:'3%',
         marginBottom:'3%'
     },
+
+    textInputConteiner:{
+        display:'flex',
+        height:windowHeight*0.07,
+        width:windowWidth*0.95,
+        marginLeft:'2.5%',
+        borderRadius:10,
+        backgroundColor:"#DAB671",
+        justifyContent:'center',
+        alignItems:'center',
+        flexDirection:'row'
+    },
+
+    counterConteinter:{
+        display:'flex',
+        width:windowWidth*0.15,
+        alignItems:'center',
+    },
+    
     textInput:{
-        width:'90%',
+        display:'flex',
+        width:windowWidth*0.8,
         marginLeft:'3%',
         padding:'3%',
-        borderWidth:1,
-        borderRadius:10,
-        height:windowHeight*0.07,
+        height:windowHeight*0.05,
     }
 });
 
