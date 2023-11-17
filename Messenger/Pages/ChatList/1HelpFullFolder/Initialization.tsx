@@ -72,7 +72,7 @@ let folder1:Folder=new Folder("All Chats",chats)
 
 let folders:Folder[]=[];
 folders.push(folder1);
-for (let i = 1; i <= 75; i++) {
+for (let i = 1; i <= 10; i++) {
   const randomChatCount = Math.floor(Math.random() * (chats.length + 1));
   const randomChats = chats.slice(0, randomChatCount); 
   for (let j = randomChats.length - 1; j > 0; j--) {

@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleProp, ViewStyle, Dimensions, Animated } from "react-native";
-import Svg, { Rect } from "react-native-svg";
 
 interface LineProps {
   screenWidth: number;
