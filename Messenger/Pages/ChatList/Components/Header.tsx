@@ -19,14 +19,16 @@ import ContactsSvg from "./SVG/ContactsSvg";
 import AddFolderSvg from "./SVG/AddFolderSvg";
 import WriteMessageSvg from "./SVG/WriteMessageSvg";
 import UserIconSvg from "./SVG/UserIconSvg";
+import { connect } from "react-redux";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export default function Header({ mySelfUser,isTouchableHeader,onPress }: { mySelfUser: MySelfUser,isTouchableHeader:boolean,onPress:()=>void}) {
-  const timeForLineAnimation: number = 150 * 1;
+ function Header({ mySelfUser,isTouchableHeader,onPress }: { mySelfUser: MySelfUser,isTouchableHeader:boolean,onPress:()=>void}) {
+  const timeForLineAnimation: number = 150 * 26;
   const rotateGradusOfLines: number = 45;
   const kefOfTransform: number = 0.6;
   const kefOfTransformHeight: number = 0.8;
   const kefForSizeOfSvg: number = 0.073;
+  const kefOfTransition:number=0.01;
   const topLineValue = useState(new Animated.Value(0))[0];
   const middleLineValue = useState(new Animated.Value(1))[0];
   const bottomLineValue = useState(new Animated.Value(0))[0];
@@ -52,9 +54,13 @@ export default function Header({ mySelfUser,isTouchableHeader,onPress }: { mySel
       `${180}deg`,
     ],
   });
-  const positionXOfTopLine = topLineValue.interpolate({
+  const positionYOfTopLine = topLineValue.interpolate({
     inputRange: [0, 1, 2, 3],
-    outputRange: [0, screenWidth * 0.015, screenWidth * 0.015, 0],
+    outputRange: [0, screenHeight*kefOfTransition, screenHeight *kefOfTransition, 0],
+  });
+  const positionYOfBottomLine = topLineValue.interpolate({
+    inputRange: [0, 1, 2, 3],
+    outputRange: [0, -screenHeight*kefOfTransition, -screenHeight *kefOfTransition, 0],
   });
   const scrollXPosition = scrollX.interpolate({
     inputRange: [0, 1],
@@ -179,7 +185,7 @@ export default function Header({ mySelfUser,isTouchableHeader,onPress }: { mySel
                   style={{
                     transform: [
                       { rotate: topLineRotation },
-                      { translateX: positionXOfTopLine },
+                      { translateY: positionYOfTopLine },
                     ],
                   }}
                 >
@@ -203,7 +209,7 @@ export default function Header({ mySelfUser,isTouchableHeader,onPress }: { mySel
                   style={{
                     transform: [
                       { rotate: bottomLineRotation },
-                      { translateX: positionXOfTopLine },
+                      { translateY: positionYOfBottomLine },
                     ],
                   }}
                 >
@@ -278,3 +284,4 @@ export default function Header({ mySelfUser,isTouchableHeader,onPress }: { mySel
     </View>
   );
 }
+export default connect(null)(Header);

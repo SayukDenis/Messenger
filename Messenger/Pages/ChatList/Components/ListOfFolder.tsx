@@ -15,14 +15,13 @@ import { connect, useSelector } from "react-redux";
 
 interface ListOfFolderProps {
   user: MySelfUser;
-  selectedFolder: number;
   currentFolder: number;
 }
 
 const ListOfFolder: React.FC<ListOfFolderProps> = ({
   user,
   currentFolder,
-  selectedFolder
+
 }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
   

@@ -22,8 +22,6 @@ interface FooterProps {
   handleLongPress: any;
   positionsOfFolder: any;
   widths: any;
-
- 
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -38,12 +36,9 @@ const Footer: React.FC<FooterProps> = ({
 
   widths,
   positionsOfFolder,
-  
 }) => {
-  
   useEffect(() => {
     console.log("RERENDER");
-
   });
   const OnPressRef = useRef((event: any, index) => {
     handleFolderPress.current(index);
@@ -66,24 +61,24 @@ const Footer: React.FC<FooterProps> = ({
           ref={scrollViewRefFooter}
         >
           <View>
-            <View style={{ flexDirection: "row" }}>
-              {user.folders.map((folder, index) => (
-              
+            
+              <View style={{ flexDirection: "row" }}>
+                {user.folders.map((folder, index) => (
+                  <View key={index} onLayout={(event)=>handleLayout.current(event,index)}>
                   <FolderContainer
                     key={index}
                     index={index}
                     folder={folder}
                     containerStyle={footerstyles.folderContainer}
                     textStyle={footerstyles.folder}
-                    isSelected={
-                      !isVisibleForModalFolder 
-                    }
-                    onLayout={handleLayout}
+                    isSelected={!isVisibleForModalFolder}
+                    
                     onPress={OnPressRef}
                     handleLongPress={LongPressRef}
                   />
-                
-              ))}
+                  </View>
+                ))}
+              
             </View>
             <FolderIndicator
               screenWidth={screenWidth}

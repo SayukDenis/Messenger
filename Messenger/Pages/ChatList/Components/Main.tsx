@@ -68,7 +68,12 @@ const Main: React.FC<MainProps> = ({
  
   const handleFolderPress = useRef((index: number) => {
     dispatch(setSelectedFolderForChatList(index));
+    let bufferFolderSelectedArray=[...folderSelectedArray];
+      bufferFolderSelectedArray[selectFolder]=false;
+      bufferFolderSelectedArray[index]=true;
+      dispatch(setFolderSelectedArray(bufferFolderSelectedArray))
     scrollToFolder(index);
+
   });
 
 
@@ -100,7 +105,7 @@ const Main: React.FC<MainProps> = ({
   const scrollToFolder = (folderId: number) => {
     scrollViewRef.current?.scrollToIndex({
       index: folderId,
-      animated: false,
+      animated: true,
     });
     //scrollToIconOnTouch(folderId)
     
@@ -113,7 +118,6 @@ const Main: React.FC<MainProps> = ({
       widths.current[Math.round(currentPosition / screenWidth)] +
       positionsOfFolder.current[Math.round(currentPosition / screenWidth)]),
       animated:false,
-      
     });
   }
   
@@ -172,7 +176,19 @@ const Main: React.FC<MainProps> = ({
   return (
     <>
      
-
+     <ModalWindowFolderState
+        isVisibleForModalFolder={isVisibleForModalFolder}
+        animationState={animationState}
+        selectedLongPressFolder={selectedLongPressFolder}
+        selectedFolder={selectFolder}
+        user={user}
+        positionX={positionX}
+        positionXInContainer={positionXInContainer}
+        widths={widths.current}
+        setAnimation={setAnimation}
+        handlePress={handlePress}
+        handlePressOut={handlePressOut}
+      />
       <FlatList
         data={user.folders}
         horizontal
@@ -189,12 +205,11 @@ const Main: React.FC<MainProps> = ({
               key={index}
               user={user}
               currentFolder={index}
-              selectedFolder={0}
             />
           </View>
         )}
         onScroll={handleHorizontalScroll}
-        onMomentumScrollBegin={()=>{setEndDragOfChatList(false)}}
+       // onMomentumScrollBegin={()=>{}}
         windowSize={3}
         //initialNumToRender={3}
       

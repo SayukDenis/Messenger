@@ -20,7 +20,7 @@ interface FolderProps {
   onPress: any;
   handleLongPress: any;
   index:number;
-  onLayout:any
+
 }
 
 const FolderContainer: React.FC<FolderProps> = React.memo(
@@ -32,7 +32,7 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
     onPress,
     handleLongPress,
     index,
-    onLayout
+
   }) => {
     
     const OnPressRef=useRef((event:any)=>{
@@ -45,11 +45,7 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
     const OnLongPressRef=useRef((event:any)=>{
       handleLongPress.current(event,index)
     })
-    const OnLayoutRef=useRef((event:any)=>{
-        console.log(event.nativeEvent.layout)
-        onLayout?.current(event, index)
-      
-    })
+
     
     useEffect(()=>{
       //console.log(folder.name)
@@ -60,7 +56,7 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
           activeOpacity={1}
           onPress={OnPressRef.current}
           onLongPress={OnLongPressRef.current}
-          onLayout={OnLayoutRef.current}
+
         >
           <View style={[containerStyle,isSelected?footerstyles.selectedFolderContainer:null]}>
             <Text style={isSelected &&isSelectedThere? footerstyles.selectedText : textStyle}>
