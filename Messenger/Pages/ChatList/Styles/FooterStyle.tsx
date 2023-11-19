@@ -1,6 +1,7 @@
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Dimensions, Platform } from "react-native";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
 export const footerstyles = StyleSheet.create({
   container: {
     position: "absolute",
@@ -9,19 +10,25 @@ export const footerstyles = StyleSheet.create({
     right: 0,
     backgroundColor: "#E7E6E4",
     flex: 1,
-    height: screenHeight * 0.08,
+    height: screenHeight*0.08,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderWidth: 1.8,
+    borderBottomWidth:0,
     flexDirection: "column",
     zIndex: 5,
+    justifyContent:"center"
   },
   scrollView: {
     marginLeft: screenWidth * 0.04,
     width: screenWidth * 0.92,
+    //backgroundColor:"red",
+    
+  
+    
   },
   folderContainer: {
-    marginTop: screenHeight * 0.01,
+    //marginTop: screenHeight * 0.01,
   },
   selectedFolderContainer:{
     //backgroundColor:"#9FBAEF",

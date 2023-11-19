@@ -5,17 +5,14 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  Animated,
-  GestureResponderEvent,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  ScrollView,
+  Platform
 } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import Message from "../../1HelpFullFolder/Message";
 import Chat from "../../1HelpFullFolder/Chat";
 import LastMessageStatus from "./LastMessageStatus";
 import ModeActivity from "../Status Content/ModeActivity";
+import { BlurView } from "expo-blur";
 
 interface CentralChatContainerProps {
   chat: Chat;
@@ -23,7 +20,7 @@ interface CentralChatContainerProps {
   onLongPressChat: any;
 }
 
-const { width: screenWidth } = Dimensions.get("window");
+const { width: screenWidth,height:screenHeight } = Dimensions.get("window");
 
 const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
   chat,
@@ -80,7 +77,10 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
           pressRetentionOffset={{ top: 0, left: 0, right: 0, bottom: 0 }}
           activeOpacity={1}
         >
-          <View style={listOfChatsStyle.chatcontainer}>
+
+          
+          <View style={[listOfChatsStyle.chatcontainer,{}]}>
+          
             <View style={[listOfChatsStyle.imageContainer]}>
               <Image
                 source={{ uri: chat.url }}
@@ -117,8 +117,11 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
                 >
                   {lastMessage?.content}
                 </Text>
+                
               </View>
+              
             </View>
+         
           </View>
         </TouchableOpacity>
   );

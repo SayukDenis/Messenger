@@ -9,7 +9,8 @@ import {
   GestureResponderEvent,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  ScrollView
+  ScrollView,
+  Platform,
 } from "react-native";
 import { mySelfUser } from "../../1HelpFullFolder/Initialization";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
@@ -19,6 +20,7 @@ import RightContainersForSwipe from "./RightContainersForSwipe";
 import LeftContainerForSwipe from "./LeftContainerForSwipe";
 import CentralChatContainer from "./CentralChatContainer";
 import { connect } from "react-redux";
+import { BlurView } from "expo-blur";
 
 interface ChatProps {
   chat: Chat;
@@ -27,7 +29,6 @@ interface ChatProps {
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
- 
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
     useState<number>(null);
   let randomBoolean = useRef(null);
@@ -37,7 +38,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
   const [positionXForSwipeable, setPositionXForSwipeable] =
     useState<number>(screenWidth);
-  
+
   const haveUnreadMessages = (chat) => {
     const lastMessage: Message =
       chat.listOfMessages.length > 0
@@ -56,8 +57,8 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     randomBoolean.current = Math.random() < 0.5;
     haveUnreadMessagesBoolf.current = haveUnreadMessages(chat);
   }, []);
-  const rightDragXposition= useState(new Animated.Value(screenWidth))[0];
-  const leftDragXposition= useState(new Animated.Value(0))[0];
+  const rightDragXposition = useState(new Animated.Value(screenWidth))[0];
+  const leftDragXposition = useState(new Animated.Value(0))[0];
   const [stateForSwipeDirection, setStateForSwipeDirection] =
     useState<number>(null);
   useEffect(() => {
@@ -65,7 +66,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   });
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
-  
+
   const haveUnreadMessagesBoolf = useRef(null);
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
@@ -209,9 +210,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     <Animated.View>
       <TouchableOpacity
         style={listOfChatsStyle.helpContainer}
-        onPress={
-          handlePress.current
-        }
+        onPress={handlePress.current}
         onLongPress={onLongPressChat.current}
         activeOpacity={0.1}
       />
@@ -235,18 +234,28 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
         onScroll={handleScroll}
         onScrollEndDrag={handleScrollEnd}
       >
-        
         <LeftContainerForSwipe
           leftDragXposition={leftDragXposition}
-        haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
-      />
-        
-        <CentralChatContainer chat={chat} handlePress={handlePress} onLongPressChat={onLongPressChat}/>
+          haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
+        />
+        <CentralChatContainer
+          chat={chat}
+          handlePress={handlePress}
+          onLongPressChat={onLongPressChat}
+        />
         <RightContainersForSwipe
           randomBoolean={randomBoolean}
           rightDragXposition={rightDragXposition}
         />
       </Animated.ScrollView>
+      <View
+        style={{
+          width: screenWidth,
+          height: 2,
+          opacity: 0.1,
+          backgroundColor: "gray",
+        }}
+      />
     </Animated.View>
   );
 };
