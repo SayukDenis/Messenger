@@ -1,15 +1,17 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { ImageBackground,Image, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { styles } from '../Style/Style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function Registration() {
   return (
-    <View style={styles.container}>
+    <ImageBackground source={require('../Image/Background.png')} style={styles.backgroundImage}>
       <Text style={styles.header}>Welcome to Telintik</Text>
-
+       <Image source={require('../Image/RegistrationImage.png')}
+            style={styles.imageStyle}/>
+       <Text style={styles.header}>First name</Text>
       <View style={styles.contentContainer}>
-        <Text style={styles.label}>First name</Text>
+       
         <TextInput
           style={styles.input}
           placeholder="Denis"
@@ -33,6 +35,6 @@ export default function Registration() {
         </Text>
       </TouchableOpacity>
       </View> 
-    </View>
+      </ImageBackground>
 );
 }

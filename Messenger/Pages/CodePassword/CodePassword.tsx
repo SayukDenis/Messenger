@@ -1,45 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { ImageBackground, Image, View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './Style/Style';
-
-const PIN_LENGTH = 6;
+import { PIN_LENGTH, renderCodeCells, handleDeletePress } from './Script/ScriptCodePassword';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function CodePassword() {
   const [pin, setPin] = useState('');
 
-  const handleCodeCellPress = (value: string) => {
-    if (pin.length < PIN_LENGTH) {
-      setPin(pin + value);
-    }
-  };
-
-  const renderCodeCells = () => {
-    const codeCells = [];
-    for (let i = 1; i <= 9; i++) {
-      codeCells.push(
-        <TouchableOpacity
-          key={i}
-          style={styles.codeCell}
-          onPress={() => handleCodeCellPress(i.toString())}
-        >
-          <Text style={styles.codeCellText}>{i}</Text>
-        </TouchableOpacity>
-      );
-    }
-    codeCells.push(
-      <TouchableOpacity
-        key={0}
-        style={styles.codeCell}
-        onPress={() => handleCodeCellPress('0')}
-      >
-        <Text style={styles.codeCellText}>0</Text>
-      </TouchableOpacity>
-    );
-    return codeCells;
-  };
-
-  return (
-    <View style={styles.container}>
+  return (  
+    <ImageBackground source={require('./Image/Background.png')} style={styles.backgroundImage}>
+    
+            <Image source={require('./Image/Vector.png')}
+            style={styles.imageStyle}/>
       <Text style={styles.header}>Enter the telentic lock code</Text>
       <View style={styles.pinContainer}>
   {pin.split('').map((_, index) => (
@@ -51,11 +23,12 @@ export default function CodePassword() {
   </View>
 
       <View style={styles.codeInput}>
-        <View style={styles.codeRow}>{renderCodeCells().slice(0, 3)}</View>
-        <View style={styles.codeRow}>{renderCodeCells().slice(3, 6)}</View>
-        <View style={styles.codeRow}>{renderCodeCells().slice(6, 9)}</View>
-        {renderCodeCells().slice(9,10)}
+        <View style={styles.codeRow}>{renderCodeCells(pin, setPin).slice(0, 3)}</View>
+        <View style={styles.codeRow}>{renderCodeCells(pin, setPin).slice(3, 6)}</View>
+        <View style={styles.codeRow}>{renderCodeCells(pin, setPin).slice(6, 9)}</View>
+        {renderCodeCells(pin, setPin).slice(9,10)}
         </View>
-      </View>
-      
+        <Text style={styles.header} onPress={(event) => handleDeletePress(pin, setPin)}>Delete</Text>
+    
+    </ImageBackground>
   );}  

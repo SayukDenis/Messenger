@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { Image, StyleSheet, View, Text, Dimensions } from 'react-native';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const widthRatio = screenWidth / 356; 
@@ -13,32 +13,33 @@ function responsiveHeight(baseHeight: number) {
 }
 
 export const styles = StyleSheet.create({
-  container: {
+  backgroundImage: {
     flex: 1,
-    backgroundColor: '#e3c07c',
+    resizeMode: 'cover', 
     justifyContent: 'center',
     alignItems: 'center',
     padding: responsiveWidth(20),
   },
   header: {
     fontSize: responsiveHeight(20),
-    color: '#333',
+    color: '#FFF',
+    marginTop: 25,
     marginBottom: responsiveHeight(14),
   },
   pinContainer: {
     flexDirection: 'row',
-    marginBottom: responsiveHeight(14),
+    marginBottom: responsiveHeight(46),
   },
   pinDot: {
     width: responsiveWidth(10),
     height: responsiveWidth(10),
     borderRadius: responsiveWidth(5),
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#fff',
     marginHorizontal: responsiveWidth(2.8),
   },
   activeDot: {
-    backgroundColor: '#333',
+    backgroundColor: '#FFFFFF75',
   },
   codeInput: {
     flexDirection: 'column',
@@ -53,14 +54,21 @@ export const styles = StyleSheet.create({
     width: responsiveWidth(63.3),
     height: responsiveWidth(63.3),  
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#FFFFFF75',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
-    marginBottom: responsiveHeight(14),
+    backgroundColor: '#FFFFFF75',
+    marginBottom: responsiveHeight(20),
   },
   codeCellText: 
   {
     fontSize: responsiveHeight(21),
-  }
+  },
+  imageStyle: {
+    width: responsiveWidth(36),  
+    height: responsiveHeight(33), 
+    marginBottom: responsiveHeight(5),
+    resizeMode: 'contain', 
+    marginTop: responsiveHeight(20),  
+  },
 });

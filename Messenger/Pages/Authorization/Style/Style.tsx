@@ -13,12 +13,19 @@ function responsiveHeight(baseHeight: number) {
 }
 
 export const styles = StyleSheet.create({
-  container: {
+  backgroundImage: {
     flex: 1,
+    resizeMode: 'cover', 
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e3c07c',
-    paddingHorizontal: responsiveWidth(35),
+    padding: responsiveWidth(20),
+  },
+  imageStyle: {
+    width: responsiveWidth(106),  
+    height: responsiveHeight(83), 
+    marginBottom: responsiveHeight(5),
+    resizeMode: 'contain', 
+    marginTop: responsiveHeight(20),  
   },
   contentContainer: {
     backgroundColor: '#FFFFFF',
@@ -34,8 +41,8 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   header: {
-    fontSize: responsiveHeight(15),
-    color: '#000000',
+    fontSize: responsiveHeight(18),
+    color: '#FFFFFF',
   },
   label: {
     fontSize: responsiveHeight(11),
@@ -45,29 +52,29 @@ export const styles = StyleSheet.create({
   input: {
     width: '100%',
     padding: responsiveHeight(12),
-    fontSize: responsiveHeight(10),
+    fontSize: responsiveHeight(17),
     borderWidth: 1,
     borderColor: '#D99B9B',
-    color: '#9B8D8D',
+    color: '#ffffff',
     borderRadius: responsiveHeight(4),
-    marginBottom: responsiveHeight(15),
+    marginBottom: responsiveHeight(15),    
   },
   signInButton: {
-    width: responsiveWidth(92),
-    paddingHorizontal: responsiveWidth(7),
-    paddingVertical: responsiveHeight(9),
-    backgroundColor: '#EE4D47',
+    width: '100%',
+    paddingHorizontal: responsiveWidth(0),
+    paddingVertical: responsiveHeight(10),
+    backgroundColor: '#61B7F580',
     borderWidth: 0,
     transition: 'background-color 0.3s',
-    borderRadius: responsiveHeight(10),
-    
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
+    alignItems: 'center',
+    borderRadius: responsiveHeight(5),
   },
   signInLaber: {
-    fontSize: responsiveHeight(9), 
+    fontSize: responsiveHeight(14), 
     color: '#fff',
   },
 
@@ -79,13 +86,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: responsiveWidth(27),
   },
   createButton: {
+    
     marginLeft: responsiveWidth(10),
     paddingHorizontal: responsiveWidth(2),
     paddingVertical: responsiveHeight(4),
   },
   createButtonText: {
-    fontSize: responsiveWidth(8),
-    color: '#1196B3',
+    fontSize: responsiveWidth(13),
+    color: '#6E23CD83',
   },
   sentCodeAgainButtonText: {
     fontSize: responsiveWidth(11),

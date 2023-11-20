@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
+import { ImageBackground, View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import { styles } from '../Style/Style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default function PhoneCodeRegistration() {
   return (
-    <View style={styles.container}>
-     
-      <Text style={styles.header}>Code for phone</Text>
+    <ImageBackground source={require('../Image/Background.png')} style={styles.backgroundImage}>
+       <Text style={styles.header}>Code for phone</Text>
+       <Image source={require('../Image/PhoneCodeRegistrationImage.png')}
+            style={styles.imageStyle}/>
+     <Text style={styles.header}>Write code</Text>
 
       <View style={styles.contentContainer}>
       <TouchableOpacity
@@ -20,7 +22,7 @@ export default function PhoneCodeRegistration() {
       >
         <Icon name="chevron-left" style={styles.backButtonText} />
       </TouchableOpacity>
-        <Text style={styles.label}>Write code</Text>
+        
         <TextInput
           style={styles.input}
           placeholder="7788"
@@ -35,6 +37,6 @@ export default function PhoneCodeRegistration() {
         </Text>
         </TouchableOpacity>
       </View> 
-    </View>
+      </ImageBackground>
   );
 }

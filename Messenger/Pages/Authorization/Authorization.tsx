@@ -1,40 +1,31 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import {ImageBackground,Image, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { styles } from './Style/Style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function Authorization() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Sign in to Telintik</Text>
-
-      <View style={styles.contentContainer}>
-        <Text style={styles.label}>Your phone Number</Text>
+    <ImageBackground source={require('./Image/Background.png')} style={styles.backgroundImage}>
+       <Text style={styles.header}>Sign in to Telintik</Text>
+       <Image source={require('./Image/AuthorizationImage.png')}
+            style={styles.imageStyle}/>
+      <Text style={styles.header}>Your phone Number</Text>
+  
         <TextInput
           style={styles.input}
           placeholder="+123 00 000 00 00"
         />
-
-      <TouchableOpacity
-        style={styles.signInButton}
-      >
-      <Text style={styles.signInLaber}>SIGN IN {' '} <Icon name="arrow-right" /></Text>
-      </TouchableOpacity>
-      </View> 
-
-      <View style={styles.containerCreat}>
-      <View style={styles.contentContainer}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text style={styles.createAccount}>Do you want to create an account?</Text>
       <TouchableOpacity
         style={styles.createButton}
         onPress={() => alert('Create button clicked')}
       >
-      <Text style={styles.createButtonText}>Create</Text>
+      <Text style={styles.createButtonText}>Create account</Text>
       </TouchableOpacity>
-      </View>
-     </View>
-    </View>
-    </View>
+      <TouchableOpacity
+        style={styles.signInButton}
+      >
+      <Text style={styles.signInLaber}>Continue</Text>
+      </TouchableOpacity>
+    </ImageBackground>
 );
 }
