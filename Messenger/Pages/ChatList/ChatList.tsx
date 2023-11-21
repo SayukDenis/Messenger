@@ -1,13 +1,15 @@
 import { Platform, StatusBar, View } from "react-native";
 import { Text, StyleSheet, Dimensions } from "react-native";
 import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+
 import { mySelfUser } from "./1HelpFullFolder/Initialization";
 import React, { useState } from "react";
 import Main from "./Components/Main";
 import { LinearGradient } from "expo-linear-gradient";
-
-export default function ChatList() {
+interface ChatListProps{
+  navigation:any
+}
+ const ChatList:React.FC<ChatListProps>=({navigation})=> {
   const [touchable, setTouchable] = useState<boolean>(false);
   const onPress = () => {
     setTouchable(!touchable);
@@ -25,6 +27,7 @@ export default function ChatList() {
           mySelfUser={mySelfUser}
           onPress={onPress}
           isTouchableHeader={touchable}
+          navigation={navigation}
         />
         <Main
           user={mySelfUser}
@@ -35,5 +38,6 @@ export default function ChatList() {
     </>
   );
 }
+export default ChatList
 
 

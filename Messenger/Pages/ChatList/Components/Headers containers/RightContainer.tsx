@@ -1,18 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View,Animated, Dimensions } from 'react-native';
 import ContactsSvg from '../SVG/ContactsSvg';
 import AddChatSvg from '../SVG/AddChatSvg';
 import AddFolderSvg from '../SVG/AddFolderSvg';
 import WriteMessageSvg from '../SVG/WriteMessageSvg';
 import UserIconSvg from '../SVG/UserIconSvg';
-import RightContainersForSwipe from '../List of folders containers/RightContainersForSwipe';
 import { connect } from 'react-redux';
-
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import NavigationForSettings from '../../../Settings/NavigationForSettings';
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const RightContainer = () => {
+const RightContainer = ({navigation}) => {
    const kefForSizeOfSvg: number = 0.073;
    useEffect(()=>{
     console.log("Rerender Right Container")
+   })
+   const PressOnUserIcon=useRef(()=>{
+    console.log(10)
+    navigation.navigate("NavigationForSettings");
    })
   return (
     <Animated.View
@@ -55,7 +59,8 @@ const RightContainer = () => {
           />
         </View>
       </View>
-      <View
+      <TouchableOpacity
+      onPress={PressOnUserIcon.current}
         style={{
           alignSelf: "center",
         }}
@@ -64,7 +69,7 @@ const RightContainer = () => {
           width={screenWidth * kefForSizeOfSvg}
           height={screenHeight * kefForSizeOfSvg}
         />
-      </View>
+      </TouchableOpacity>
     </Animated.View>
   );
 };

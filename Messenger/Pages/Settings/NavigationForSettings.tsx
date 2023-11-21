@@ -11,12 +11,11 @@ import BlockUser from './ConfidentialityPage/BlockedUser/BlockUser';
 import PasswordPage from './ConfidentialityPage/Password/Password';
 import EditBioPage from './MainSettingPage/EdiitPage/EditBioPage/EditBioPage';
 import EditUsernamePage from './MainSettingPage/EdiitPage/EditUserNamePage/EditUserName';
+import { Stack } from '../../Navigation/Navigation';
 
-const Stack = createStackNavigator();
-
-const Navigation = () => {
+const NavigationForSettings = () => {
   return (
-    <NavigationContainer>
+    <>
       <Stack.Navigator
         initialRouteName="Settings"
         screenOptions={{
@@ -31,7 +30,7 @@ const Navigation = () => {
         <Stack.Screen name="Chat folders" component={ChatFolderPage} />
         <Stack.Screen name="Confidentiality" component={ConfidentialityPageNavigator} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </>
   );
 };
 
@@ -64,4 +63,4 @@ const EditPageNavigator=()=> {
   );
 }
 
-export default Navigation;
+export default NavigationForSettings;

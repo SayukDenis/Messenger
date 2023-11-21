@@ -21,6 +21,7 @@ import Dialogue from "./Pages/Chats/Dialogue/Dialogue";
 import Chat from "./Pages/ChatList/1HelpFullFolder/Chat";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Navigation from "./Navigation/Navigation"
 export default function App() {
   StatusBar.setBarStyle("dark-content");
   const store = createStore(rootReducer);
@@ -28,7 +29,7 @@ export default function App() {
     <SafeAreaProvider>
       <StatusBar translucent backgroundColor="transparent" />
       <Provider store={store}>
-        <ChatList />
+        <Navigation/>
       </Provider>
     </SafeAreaProvider>
   );

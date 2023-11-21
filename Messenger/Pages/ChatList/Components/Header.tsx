@@ -20,7 +20,6 @@ import AddFolderSvg from "./SVG/AddFolderSvg";
 import WriteMessageSvg from "./SVG/WriteMessageSvg";
 import UserIconSvg from "./SVG/UserIconSvg";
 import { connect } from "react-redux";
-import RightContainersForSwipe from "./List of folders containers/RightContainersForSwipe";
 import RightContainer from "./Headers containers/RightContainer";
 import HamburgerSVG from "./SVG/HamburgerSVG";
 import BackButtonForHeaderChatListSVG from "./SVG/BackButtonForHeaderChatListSVG";
@@ -30,10 +29,12 @@ function Header({
   mySelfUser,
   isTouchableHeader,
   onPress,
+  navigation
 }: {
   mySelfUser: MySelfUser;
   isTouchableHeader: boolean;
   onPress: () => void;
+  navigation:any
 }) {
   const HamburgerAnimationDuration = 150;
   const [animationStateForTouchHamburger, setAnimationStateForTouchHamburger] =
@@ -108,7 +109,7 @@ function Header({
               { transform: [{ translateX: HamburgerAnimationPosition }] },
             ]}
           >
-            <RightContainer />
+            <RightContainer navigation={navigation} />
           </Animated.View>
         </Animated.View>
       </View>

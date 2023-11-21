@@ -206,6 +206,13 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
       useNativeDriver: true,
     }).start();
   };
+  if(Platform.OS=="android"){
+    return <CentralChatContainer
+    chat={chat}
+    handlePress={handlePress}
+    onLongPressChat={onLongPressChat}
+  />
+  }
   return (
     <Animated.View>
       <TouchableOpacity
