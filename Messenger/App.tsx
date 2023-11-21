@@ -17,9 +17,6 @@ import React from "react";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import rootReducer from "./ReducersAndActions/Reducers/ChatListActions/ChatListActions";
-import Dialogue from "./Pages/Chats/Dialogue/Dialogue";
-import Chat from "./Pages/ChatList/1HelpFullFolder/Chat";
-import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./Navigation/Navigation"
 export default function App() {
