@@ -57,7 +57,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     randomBoolean.current = Math.random() < 0.5;
     haveUnreadMessagesBoolf.current = haveUnreadMessages(chat);
   }, []);
-  const rightDragXposition = useState(new Animated.Value(screenWidth))[0];
+  const rightDragXposition = useState(new Animated.Value(screenWidth));
   const leftDragXposition = useState(new Animated.Value(0))[0];
   const [stateForSwipeDirection, setStateForSwipeDirection] =
     useState<number>(null);
@@ -188,11 +188,11 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   ) => {
     const positionX = e.nativeEvent.contentOffset.x;
     setPositionXForSwipeable(positionX);
-    Animated.timing(rightDragXposition, {
+    Animated.timing(rightDragXposition[0], {
       toValue: positionX,
       duration: 0,
 
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   };
   const handleOnScrollFromLeft = (
@@ -203,15 +203,27 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     Animated.timing(leftDragXposition, {
       toValue: positionX,
       duration: 0,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   };
-  if(Platform.OS=="android"){
-    return <CentralChatContainer
-    chat={chat}
-    handlePress={handlePress}
-    onLongPressChat={onLongPressChat}
-  />
+  if (Platform.OS == "android") {
+    return (
+      <>
+        <CentralChatContainer
+          chat={chat}
+          handlePress={handlePress}
+          onLongPressChat={onLongPressChat}
+        />
+        <View
+          style={{
+            width: screenWidth,
+            height: 2,
+            opacity: 0.1,
+            backgroundColor: "gray",
+          }}
+        />
+      </>
+    );
   }
   return (
     <Animated.View>

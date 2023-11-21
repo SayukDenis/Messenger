@@ -1,21 +1,15 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
-import Svg, { Rect } from 'react-native-svg';
+import Svg, { Rect, Path } from 'react-native-svg';
 import { connect } from 'react-redux';
-
-const screenWidth = Dimensions.get('window').width; // Ширина екрану
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const HamburgerSVG = () => {
-  // Розрахунок ширини та висоти у відсотках від ширини екрану
-  const width = screenWidth * 0.12; // 10% від ширини екрану
-  const height = width * (13 / 30); // Зберегти пропорції
-  const rectHeight = height * (2.6 / 13); // Висота однієї смужки
-
   return (
-    <Svg width={width} height={height} viewBox="0 0 30 13" fill="none">
-      <Rect width="30" height="2.6" rx="1.3" fill="#A19C91"/>
-      <Rect y="5" width="30" height="2.6" rx="1.3" fill="#A19C91"/>
-      <Rect y="10" width="30" height="2.6" rx="1.3" fill="#A19C91"/>
+    <Svg width={screenWidth * 0.15} height={screenHeight * 0.026} viewBox="0 0 32 14" fill="none">
+      <Path d="M2 12H30" stroke="#A19C91" strokeWidth="2.3" strokeLinecap="round" />
+      <Path d="M2 7H30" stroke="#A19C91" strokeWidth="2.3" strokeLinecap="round" />
+      <Path d="M2 2H30" stroke="#A19C91" strokeWidth="2.3" strokeLinecap="round" />
     </Svg>
   );
 };

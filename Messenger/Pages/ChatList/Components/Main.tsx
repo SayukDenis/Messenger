@@ -50,16 +50,16 @@ const Main: React.FC<MainProps> = ({
 
   const dispatch = useDispatch();
   const animationState = useSelector((state: any) => {
-    return state.animation.animationState;
+    return state.chatListReducer.animation.animationState;
   });
   const folderSelectedArray = useSelector((state: any) => {
-    return state.folderSelectedArray.folderSelectedArray;
+    return state.chatListReducer.folderSelectedArray.folderSelectedArray;
   });
   useEffect(() => {
     //console.log(folderSelectedArray)
   });
   const selectFolder = useSelector((state: any) => {
-    return state.selectedFolder.selectedFolder;
+    return state.chatListReducer.selectedFolder.selectedFolder;
   });
 
   const scrollViewRef = useRef<FlatList | null>(null);

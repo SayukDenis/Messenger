@@ -40,7 +40,7 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
     })
     const isSelectedThere=useSelector((state:any)=>{
    //  console.log(folder.name+":"+state.folderSelectedArray.folderSelectedArray[index])
-      return state.folderSelectedArray.folderSelectedArray[index]
+      return state.chatListReducer.folderSelectedArray.folderSelectedArray[index]
     })
     const OnLongPressRef=useRef((event:any)=>{
       handleLongPress.current(event,index)
@@ -48,17 +48,19 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
 
     
     useEffect(()=>{
-      //console.log(folder.name)
-    })
+      console.log(folder.name)
+    },[
+
+
+      isSelected])
     return (
       <>
         <TouchableOpacity
           activeOpacity={1}
           onPress={OnPressRef.current}
           onLongPress={OnLongPressRef.current}
-
         >
-          <View style={[containerStyle,isSelected?footerstyles.selectedFolderContainer:null]}>
+          <View style={[containerStyle,isSelected?footerstyles.selectedFolderContainer:null,]}>
             <Text style={isSelected &&isSelectedThere? footerstyles.selectedText : textStyle}>
               {folder.name}
             </Text>

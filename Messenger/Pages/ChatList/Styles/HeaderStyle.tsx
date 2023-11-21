@@ -5,11 +5,13 @@ export const headerstyles = StyleSheet.create({
 
   container: {
     height: Platform.OS=="android"?screenHeight * 0.08+StatusBar.currentHeight:screenHeight * 0.08+Constants.statusBarHeight,
-    backgroundColor: "#E7E6E4",
+   // backgroundColor: "#E7E6E4",
+   backgroundColor:"white",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     zIndex: 5,
     justifyContent:"flex-end",
+    //overflow:'hidden'
   
   },
 

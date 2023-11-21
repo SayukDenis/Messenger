@@ -1,97 +1,135 @@
 // RightContainersForSwipe.tsx
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { View, Text, Animated, Dimensions } from "react-native";
 import MuteForSwipeableSvg from "../SVG/MuteForSwipeableSvg";
 import UnMuteForSwipeableSvg from "../SVG/UnMuteForSwipeableSvg";
 import DeleteForSwipeableSvg from "../SVG/DeleteForSwipeableSvg";
 import { connect } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface RightContainersForSwipeProps {
-  rightDragXposition:any;
+  rightDragXposition: any;
   randomBoolean: React.MutableRefObject<boolean>;
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
   randomBoolean,
-  rightDragXposition
+  rightDragXposition,
 }) => {
-    const scale1ForRight = rightDragXposition.interpolate({
-        inputRange: [
-          0,
-          screenWidth,
-          screenWidth * 1.4,
-          screenWidth * 1.6,
-          screenWidth * 2,
-        ],
-        outputRange: [-screenWidth * 0.2,
-          -screenWidth * 0.2,
-          0,
-          -screenWidth * 0.2,
-          -screenWidth * 0.2,
-        ],
-        extrapolateLeft: "clamp",
-      });
+  const scale1ForRight = rightDragXposition[0].interpolate({
+    inputRange: [
+      0,
+      screenWidth,
+      screenWidth * 1.4,
+      screenWidth * 1.6,
+      screenWidth * 2,
+    ],
+    outputRange: [0, 0, screenWidth * 0.2, 0, 0],
+    extrapolateLeft: "clamp",
+  });
+  const [scaleForNotRenderState, setScaleForNotRenderState] = useState(0);
+  const scaleForNotRender = rightDragXposition[0].interpolate({
+    inputRange: [
+      screenWidth,
+      screenWidth * 1.4,
+      screenWidth * 1.6,
+      screenWidth * 2,
+    ],
+    outputRange: [0, 1, 0, 0],
+    //extrapolateLeft: "clamp",
+  });
+  useEffect(() => {
+    //console.log(scaleForNotRender.__getValue())
+    //console.log(rightDragXposition)
+    //console.log(Number.parseInt(JSON.stringify(scaleForNotRender)))
+  });
   useEffect(() => {
     randomBoolean.current = Math.random() < 0.5;
   }, []);
-  
+
   return (
     <View
       style={{
         height: screenHeight * 0.08,
         width: screenWidth,
-        backgroundColor: "#F79747",
+
         flexDirection: "row",
       }}
     >
       <Animated.View
         style={{
-          width: screenWidth * 0.2,
-          height: screenHeight * 0.08,
-          justifyContent: "center",
+          position: "absolute",
+          width: screenWidth * 0.2 * scaleForNotRender.__getValue(),
+          overflow: "hidden",
+          zIndex: 0,
+          top: 0,
+          bottom: 0,
+          left: 0,
         }}
       >
         <Animated.View
-          style={{ justifyContent: "center", flexDirection: "row" }}
+          style={{
+            backgroundColor: "#F79747",
+            width: screenWidth * 0.2,
+            height: screenHeight * 0.08,
+            justifyContent: "center",
+            position: "absolute",
+          }}
         >
-          <Animated.View style={{ justifyContent: "center" }}>
-            <Animated.View
-              style={{ flexDirection: "row", justifyContent: "center" }}
-            >
-              {randomBoolean.current ? (
-                <MuteForSwipeableSvg
-                  width={screenWidth * 0.085}
-                  height={screenHeight * 0.05}
-                  color="white"
-                />
-              ) : (
-                <UnMuteForSwipeableSvg
-                  width={screenWidth * 0.085}
-                  height={screenHeight * 0.05}
-                  color="white"
-                />
-              )}
+          <Animated.View
+            style={{ justifyContent: "center", flexDirection: "row" }}
+          >
+            <Animated.View style={{ justifyContent: "center" }}>
+              <Animated.View
+                style={{ flexDirection: "row", justifyContent: "center" }}
+              >
+                {randomBoolean.current ? (
+                  <MuteForSwipeableSvg
+                    width={screenWidth * 0.085}
+                    height={screenHeight * 0.05}
+                    color="white"
+                  />
+                ) : (
+                  <UnMuteForSwipeableSvg
+                    width={screenWidth * 0.085}
+                    height={screenHeight * 0.05}
+                    color="white"
+                  />
+                )}
+              </Animated.View>
+              <Animated.Text style={{ color: "white", alignSelf: "center" }}>
+                Notification
+              </Animated.Text>
             </Animated.View>
-            <Animated.Text style={{ color: "white", alignSelf: "center" }}>
-              Notification
-            </Animated.Text>
           </Animated.View>
         </Animated.View>
       </Animated.View>
       <Animated.View
         style={{
           width: screenWidth,
-          backgroundColor: "red",
           justifyContent: "center",
+
           transform: [{ translateX: scale1ForRight }],
         }}
       >
+        <LinearGradient
+          colors={["rgba(255, 34, 27, 1)", "rgba(255, 34, 27, 0)"]}
+          //locations={[0.5, 0.5]}
+          end={{ x: 0, y: 0.3 }}
+          start={{ x: 0.7, y: 0 }}
+          style={{
+            position: "absolute",
+            width: screenWidth,
+            height: screenHeight * 0.08,
+          }}
+        />
         <Animated.View
           style={{
             width: screenWidth * 0.2,
             height: screenHeight * 0.08,
             justifyContent: "center",
             flexDirection: "row",
+            //backgroundColor: "red",
           }}
         >
           <Animated.View style={{ justifyContent: "center" }}>
@@ -110,4 +148,4 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
   );
 };
 
-export default connect(null)( RightContainersForSwipe);
+export default connect(null)(RightContainersForSwipe);
