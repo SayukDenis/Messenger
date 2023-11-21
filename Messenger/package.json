@@ -19,7 +19,6 @@
     "@react-navigation/stack": "^6.3.20",
     "expo": "^49.0.20",
     "expo-blur": "~12.4.1",
-    "expo-cli": "^6.3.10",
     "expo-clipboard": "~4.3.1",
     "expo-linear-gradient": "~12.3.0",
     "expo-navigation-bar": "~2.3.0",
@@ -57,6 +56,8 @@
     "@babel/core": "^7.23.3",
     "@types/react": "~18.2.14",
     "@types/react-native": "^0.72.7",
+    "@types/redux": "^3.6.0",
+    "expo-cli": "^6.3.10",
     "typescript": "^5.3.2"
   },
   "private": true
