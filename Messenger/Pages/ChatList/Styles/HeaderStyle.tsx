@@ -1,33 +1,26 @@
-import { StyleSheet, View, Text, Dimensions } from "react-native";
-
+import { StyleSheet,Platform, Dimensions,StatusBar } from "react-native";
+import Constants from 'expo-constants';
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const headerstyles = StyleSheet.create({
-  gapContainer: {
-    height: screenHeight * 0.05,
-    backgroundColor: "#E7E6E4",
-    borderRightWidth: 1.8,
-    borderLeftWidth: 1.8,
-    borderColor: "#434343",
-  },
+
   container: {
-    height: screenHeight * 0.08,
+    height: Platform.OS=="android"?screenHeight * 0.08+StatusBar.currentHeight:screenHeight * 0.08+Constants.statusBarHeight,
     backgroundColor: "#E7E6E4",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    borderBottomWidth: 1.8,
-    borderRightWidth: 1.8,
-    borderLeftWidth: 1.8,
-    borderColor: "#434343",
     zIndex: 5,
+    justifyContent:"flex-end",
+  
   },
 
   header: {
     display: "flex",
     flexDirection: "row",
-    flex: 1,
+    
     marginHorizontal: screenWidth * 0.02,
     overflow:"hidden",
-    justifyContent:"space-between"
+    justifyContent:"space-between",
+   // backgroundColor:"black"
   },
 
   magnifyingglass: {
