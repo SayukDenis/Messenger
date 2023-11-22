@@ -71,35 +71,21 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
         activeOpacity={1} 
         onPress={(event) => {setMessageMenuVisible(handlePress(event))}}
       >
-        {message.isUser?
-          <View className='justify-end' style={[styles.messageContainer, {width:width}]}>
-            <View style={{maxWidth:width*0.65, marginRight:10}}>
-              <View style={message.text.length>40?[styles.messageTypeTextUser, styles.longMessage]:styles.messageTypeTextUser}>
-                <Text>{wrapText(message.text, 40)}</Text>
-                <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                  {message.edited?'edited ':''}
-                  {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                  {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
-                </Text>
-              </View>
+        <View style={[styles.messageContainer, message.isUser?{ justifyContent:'flex-end' }:null]}>
+          <View style={[{maxWidth:width*0.65}, message.isUser?{ marginRight:10 }:{ marginLeft:10 }]}>
+            <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.text.length>40?styles.longMessage:null]}>
+              <Text>{wrapText(message.text, 40)}</Text>
+              <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+                {message.edited?'edited ':''}
+                {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
+                {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
+              </Text>
             </View>
           </View>
-        :
-          <View style={[styles.messageContainer, {width:width}]}>
-            <View style={{maxWidth: width*0.65, marginLeft:10}}>
-              <View style={message.text.length>40?[styles.messageTypeTextNotUser, styles.longMessage]:styles.messageTypeTextNotUser}>
-                <Text>{wrapText(message.text, 40)}</Text>
-                <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                  {message.edited?'edited ':''}
-                  {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                  {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
-                </Text>
-              </View>
-            </View>
-          </View>}
-          <View style={{width:50, backgroundColor:'pink'}}>
-            <Text>Reply</Text>
-          </View>
+        </View>
+        <View style={{width:50, backgroundColor:'pink'}}>
+          <Text>Reply</Text>
+        </View>
       </TouchableOpacity>
     </ScrollView>
   );

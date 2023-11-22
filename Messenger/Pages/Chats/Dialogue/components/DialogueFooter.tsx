@@ -5,9 +5,6 @@ import { Message } from '../tmpdata';
 import { Svg, Path } from 'react-native-svg';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
 
-
-const { height, width } = Dimensions.get('window');
-
 interface DialogueFooterProps {
   messages:Message[], 
   setMessages:(arg0: Message)=>void, 

@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+const { width, height } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   dialogueChat: {
@@ -9,7 +10,8 @@ const styles = StyleSheet.create({
   
   replyContainer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width:width
   },
 
   replyNickName: {
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
+    width: width
   },
   
   messageTypeTextUser: {

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { MutableRefObject, useState, memo, useCallback, useRef } from 'react'
 import {Message, messages} from '../tmpdata';
 import styles from '../components/Styles/DialogueMessagesStyle';
@@ -17,11 +17,6 @@ interface ReplyTextType {
   cordsY:any;
 }
 
-  const arr = new Array(messages.length);
-  for (let i = 0; i < messages.length; i++) {
-    arr[i] = [undefined, undefined, undefined];
-  }
-
 const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrollView, cordsY}:ReplyTextType) => {
   const handlePress = useCallback((event:{ nativeEvent: { pageX: number; pageY: number } }) => {
     const { nativeEvent } = event;
@@ -36,106 +31,51 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
   }, []);
   
   const replyMessage = messages.find(m => m.id === message.replyMessageID);
-  
-  // ___________________To close swipes for messages______________________
-  const swipeableRef = useRef<Array<Array<Swipeable>>>(arr);
-  swipeableRef.current[id] = [null, null, null];
-  // _____________________________________________________________________
 
   return (
-    <GestureHandlerRootView>
-      <Swipeable overshootRight={false} 
-        ref={(swipeable) => {
-            if(swipeable != null && swipeable != undefined)
-              swipeableRef.current[id][0]=swipeable;
-          }
-        } 
-        friction={2} 
-        renderRightActions={()=><View className='h-11 w-11 bg-blue-400'></View>} 
-        onSwipeableRightOpen={()=>swipeableRef.current[id][0].close()}
-      >
-      {message.isUser?
-        <View className='flex flex-col mr-3'>
-          <View className='self-end' style={{maxWidth:'65%'}}>
-            <Swipeable 
-            dragOffsetFromLeftEdge={100}
-            dragOffsetFromRightEdge={100}
-              ref={(swipeable) => {
-                  if(swipeable != null && swipeable != undefined)
-                    swipeableRef.current[id][1]=swipeable
-                }
-              } 
-              onSwipeableRightOpen={()=>swipeableRef.current[id][1].close()} 
-              overshootRight={false} 
-              containerStyle={{overflow:'visible'}} 
-              friction={2} 
-              renderRightActions={()=><View className='w-6 h-6 bg-yellow-400'></View>}
-            >
-              <View className='flex-1 overflow-visible'>
-                <Text className='self-end text-xs text-blue-700'>Denis</Text>
-                <View className='flex flex-row max-h-full self-end'>
-                  <TouchableOpacity activeOpacity={1} onPress={() => {handleLinkTo(message!.replyMessageID)}}>
-                    <View style={[styles.messageTypeTextUser, styles.replyMessagePos]}>
-                      <Text className='flex italic text-xs'>{replyMessage!.text.length>=20?replyMessage!.text.replace('\n', '').slice(0,20)+'...':replyMessage!.text}</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.replyMessageLine}/>
-                </View>
-                <TouchableOpacity activeOpacity={1} onPress={(event) => {setMessageMenuVisible(handlePress(event));}}>
-                  <View style={[styles.messageTypeTextUser, {marginVertical:5}]}>
-                    <Text>{message.text}</Text>
-                    <Text style={styles.messageTimeStamp}>
-                      {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                      {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </Swipeable>
-          </View>
-        </View>
-        :
-        <View style={[styles.replyContainer, {marginLeft:10}]}>
-          <Swipeable 
-            dragOffsetFromLeftEdge={100}
-            dragOffsetFromRightEdge={100}
-            ref={(swipeable) => {
-                if(swipeable != null && swipeable != undefined)
-                  swipeableRef.current[id][1]=swipeable
-              }
-            } 
-            onSwipeableRightOpen={()=>swipeableRef.current[id][1].close()} 
-            overshootRight={false} 
-            containerStyle={{overflow:'visible', alignSelf:'flex-start', maxHeight:'100%'}} 
-            friction={2} 
-            renderRightActions={()=><View className='w-6 h-6 bg-yellow-400'></View>}
-          >
-            <Text className='self-start text-xs text-blue-700'>You</Text>
-            <View style={styles.replyMessageContainer}>
-              <View style={styles.replyMessageLine}/>
-              <TouchableOpacity style={{flex:1}} activeOpacity={1}>
-                <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos]}>
-                  <Text style={styles.replyMessageFont}>{replyMessage!.text.length>=20?
-                  replyMessage!.text.slice(0,20)+'...':replyMessage!.text}</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity activeOpacity={1} onPress={(event) => {setMessageMenuVisible(handlePress(event));}}>
-              <View style={styles.messageContainer}>
-                <View style={message.text.length>40?[styles.messageTypeTextNotUser, styles.longMessage]:styles.messageTypeTextNotUser}>
-                  <Text>{message.text}</Text>
-                  <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                    {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                    {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
-                  </Text>
-                </View>
+    <ScrollView 
+      horizontal={true} 
+      alwaysBounceHorizontal={false} 
+      pagingEnabled 
+      showsHorizontalScrollIndicator={false}
+      style={{width:width, alignSelf:'stretch', overflow:'visible'}}
+    >
+      <View style={styles.replyContainer}>
+        <View style={[{maxWidth:message.isUser?'65%':'100%', alignSelf:'flex-end'}, message.isUser?{marginRight:10}:{marginLeft:10}]}>
+          <Text style={{alignSelf:message.isUser?'flex-end':'flex-start', fontSize:10, color:'rgb(29,78,216)'}}>{message.isUser?'You':'Denis'}</Text>
+          {message.isUser?
+          <View style={styles.replyMessageContainer}>
+            <TouchableOpacity activeOpacity={1} onPress={() => {handleLinkTo(message!.replyMessageID)}}>
+              <View style={[styles.messageTypeTextUser, styles.replyMessagePos]}>
+                <Text style={styles.replyMessageFont}>{replyMessage!.text.length>=20?replyMessage!.text.replace('\n', '').slice(0,20)+'...':replyMessage!.text}</Text>
               </View>
             </TouchableOpacity>
-          </Swipeable>
+            <View style={styles.replyMessageLine}/>
+          </View>
+          :
+          <View style={styles.replyMessageContainer}>
+            <View style={styles.replyMessageLine}/>
+            <TouchableOpacity style={{flex:1}} activeOpacity={1}>
+              <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos]}>
+                <Text style={styles.replyMessageFont}>{replyMessage!.text.length>=20?replyMessage!.text.replace('\n', '').slice(0,20)+'...':replyMessage!.text}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>}
+          <TouchableOpacity activeOpacity={1} onPress={(event) => {setMessageMenuVisible(handlePress(event));}}>
+              <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}]}>
+                <Text>{message.text}</Text>
+                <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+                  {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
+                  {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
+                </Text>
+              </View>
+            </TouchableOpacity>
         </View>
-      }
-      </Swipeable>
-    </GestureHandlerRootView>
+      </View>
+      <View style={{width:50, backgroundColor:'pink'}}>
+        <Text>Reply</Text>
+      </View>
+    </ScrollView>
 )});
 
 export default replyTextType;
