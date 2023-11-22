@@ -9,6 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 interface RightContainersForSwipeProps {
   rightDragXposition: any;
+  rightDragXpositionForRerender:number;
   randomBoolean: React.MutableRefObject<boolean>;
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -16,7 +17,7 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
   randomBoolean,
   rightDragXposition,
 }) => {
-  const scale1ForRight = rightDragXposition[0].interpolate({
+  const scale1ForRight = rightDragXposition.interpolate({
     inputRange: [
       0,
       screenWidth,
@@ -27,8 +28,7 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
     outputRange: [0, 0, screenWidth * 0.2, 0, 0],
     extrapolateLeft: "clamp",
   });
-  const [scaleForNotRenderState, setScaleForNotRenderState] = useState(0);
-  const scaleForNotRender = rightDragXposition[0].interpolate({
+  const scaleForNotRender = rightDragXposition.interpolate({
     inputRange: [
       screenWidth,
       screenWidth * 1.4,
@@ -39,9 +39,10 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
     //extrapolateLeft: "clamp",
   });
   useEffect(() => {
-    //console.log(scaleForNotRender.__getValue())
-    //console.log(rightDragXposition)
+   // console.log(scaleForNotRender.__getValue())
+    //console.log(rightDragXposition.__getValue())
     //console.log(Number.parseInt(JSON.stringify(scaleForNotRender)))
+    //console.log(10)
   });
   useEffect(() => {
     randomBoolean.current = Math.random() < 0.5;
@@ -67,9 +68,20 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
           left: 0,
         }}
       >
+        <LinearGradient
+           colors={["rgba(255, 135, 35, 1)", "rgba(255, 135, 35, 0)"]}
+          //locations={[0.5, 0.5]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{
+            position: "absolute",
+            width: screenWidth,
+            height: screenHeight * 0.08,
+          }}
+        />
         <Animated.View
           style={{
-            backgroundColor: "#F79747",
+           // backgroundColor: "#F79747",
             width: screenWidth * 0.2,
             height: screenHeight * 0.08,
             justifyContent: "center",
