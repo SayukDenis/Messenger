@@ -10,13 +10,13 @@ import Name from "./Name";
 
 interface TopToolBarProps {
   setIsElseFeaturesVisible?: (value: boolean) => void;
-  primaryTitle: string;
+  primaryTitle?: string;
   secondaryTitle?: string;
   isMuted?: boolean;
   isBlocked?: boolean;
-  isSearchButtonVisible: boolean;
-  onGoBackPress: () => void;
-  isAlbumSelectionVisible: boolean;
+  isSearchButtonVisible?: boolean;
+  onGoBackPress?: () => void;
+  isMediaSelectionVisible: boolean;
   quantityOfSelectedItems: number;
   onDeleteAllPress: () => void;
   onCancelPress: () => void;
@@ -27,7 +27,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   return (
     <>
       <View style={styles.topToolBar}>
-        {!props.isAlbumSelectionVisible && (
+        {!props.isMediaSelectionVisible && (
           <>
             {/* Main name */}
             <Name
@@ -72,7 +72,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
             </TouchableOpacity>
           </>
         )}
-        {props.isAlbumSelectionVisible && (
+        {props.isMediaSelectionVisible && (
           <>
             {/* Delete all button */}
             <TouchableOpacity

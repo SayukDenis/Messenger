@@ -3,27 +3,40 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "../Styles";
-import { StackNavigationProp } from "@react-navigation/stack";
 import ForwardContactIcon from "../../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
-import AddNewImageIcon from "../Icons/AddNewImageIcon";
-import SortIcon from "../Icons/SortIcon";
 import BinIcon from "../../../SemiComponents/MainScreen/Icons/BinIcon";
+import SelectIcon from "../../../SemiComponents/MainScreen/Icons/SelectIcon";
+import CopyIcon from "../Icons/CopyIcon";
+import StarIcon from "../Icons/StarIcon";
 
-interface AlbumElseFeaturesButtonsProps {
+interface PhotoElseFeaturesButtonsProps {
   isVisible: boolean;
+  setIsNotVisible: () => void;
+  onCopyPress: () => void;
   onForwardPress: () => void;
-  onAddPhotoPress: () => void;
-  onSortPress: () => void;
-  onDeleteAlbumPress: () => void;
+  onSelectPress: () => void;
+  onMakeMainPhotoPress: () => void;
+  onDeletePress: () => void;
 }
 
-const AlbumElseFeaturesButtons: React.FC<AlbumElseFeaturesButtonsProps> = (
+const PhotoElseFeaturesButtons: React.FC<PhotoElseFeaturesButtonsProps> = (
   props
 ) => {
   return (
     <>
       {props.isVisible && (
-        <View style={styles.elseFeaturesButtonsContainer}>
+        <View style={styles.photoElseFeaturesButtonsContainer}>
+          {/* Copy button */}
+          <TouchableOpacity
+            onPress={() => {
+              props.onCopyPress();
+            }}
+            style={styles.additionalFeatureButton}
+          >
+            <CopyIcon style={styles.additionalFeatureIcon} />
+            <Text style={styles.additionalFeatureTitle}>Copy</Text>
+          </TouchableOpacity>
+
           {/* Forward button */}
           <TouchableOpacity
             onPress={() => {
@@ -35,38 +48,43 @@ const AlbumElseFeaturesButtons: React.FC<AlbumElseFeaturesButtonsProps> = (
             <Text style={styles.additionalFeatureTitle}>Forward</Text>
           </TouchableOpacity>
 
-          {/* Add photo button */}
+          {/* Select button */}
           <TouchableOpacity
             onPress={() => {
-              props.onAddPhotoPress();
+              props.setIsNotVisible();
+              props.onSelectPress();
             }}
             style={styles.additionalFeatureButton}
           >
-            <AddNewImageIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Add photo</Text>
+            <SelectIcon style={styles.additionalFeatureIcon} />
+            <Text style={styles.additionalFeatureTitle}>Select</Text>
           </TouchableOpacity>
 
-          {/* Sort button */}
+          {/* Make main photo button */}
           <TouchableOpacity
             onPress={() => {
-              props.onSortPress();
+              props.setIsNotVisible();
+              props.onMakeMainPhotoPress();
             }}
             style={styles.additionalFeatureButton}
           >
-            <SortIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Sort</Text>
+            <StarIcon style={styles.additionalFeatureIcon} />
+            <Text style={styles.additionalFeatureTitle}>
+              Make the main photo
+            </Text>
           </TouchableOpacity>
 
           {/* Delete button */}
           <TouchableOpacity
             onPress={() => {
-              props.onDeleteAlbumPress();
+              props.setIsNotVisible();
+              props.onDeletePress();
             }}
             style={styles.additionalFeatureButton}
           >
             <BinIcon style={styles.additionalFeatureIcon} />
             <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
-              Delete an album
+              Delete in album
             </Text>
           </TouchableOpacity>
         </View>
@@ -75,4 +93,4 @@ const AlbumElseFeaturesButtons: React.FC<AlbumElseFeaturesButtonsProps> = (
   );
 };
 
-export default AlbumElseFeaturesButtons;
+export default PhotoElseFeaturesButtons;

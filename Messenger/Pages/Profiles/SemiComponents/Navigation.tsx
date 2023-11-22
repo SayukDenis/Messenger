@@ -21,6 +21,7 @@ import { useFonts } from "expo-font";
 import ChangeBranchScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchScreen";
 import AlbumFilling from "../DialogueProfile/MainUserScreen/Album/AlbumFilling";
 import GalleryWhileAddingNewPhoto from "../DialogueProfile/MainUserScreen/Album/GalleryWhileAddingNewPhoto";
+import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
 
 const Stack = createStackNavigator();
 export default function StartPage() {
@@ -61,6 +62,10 @@ export default function StartPage() {
         <Stack.Screen
           name="GalleryWhileAddingNewPhoto"
           component={GalleryWhileAddingNewPhoto}
+        />
+        <Stack.Screen
+          name="AvatarsAndInfoScreen"
+          component={AvatarsAndInfoScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -13,14 +13,7 @@ import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import { user, Album, PhotoOrVideo } from "../../SemiComponents/DBUser";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
-
-interface tempUserProps {
-  selectedPhotosAndVideos: Array<PhotoOrVideo>;
-}
-
-export const tempUser: tempUserProps = {
-  selectedPhotosAndVideos: new Array<PhotoOrVideo>(),
-};
+import { tempUser } from "../../SemiComponents/DBUser";
 
 interface NewAlbumScreenProps {
   navigation: StackNavigationProp<{}>;

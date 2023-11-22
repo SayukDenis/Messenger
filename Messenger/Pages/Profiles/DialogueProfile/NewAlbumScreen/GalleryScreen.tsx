@@ -14,7 +14,7 @@ import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import { user, Album, PhotoOrVideo } from "../../SemiComponents/DBUser";
 import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
-import { tempUser } from "./NewAlbumScreen";
+import { tempUser } from "../../SemiComponents/DBUser";
 
 interface GalleryScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -54,7 +54,7 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
           setSelectedPhotosAndVideos={(value: Array<PhotoOrVideo>) => {
             setSelectedPhotosAndVideos(value);
           }}
-          isPhotoSelectionAlwaysVisible={true}
+          isPhotoSelectionVisible={true}
           data={user.photosAndVideos}
         />
       </ScrollView>

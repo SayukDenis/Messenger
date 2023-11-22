@@ -19,14 +19,7 @@ import Blur from "../../SemiComponents/MainScreen/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-
-interface tempUserProps {
-  selectedBranch: BranchParent;
-}
-
-export const tempUser: tempUserProps = {
-  selectedBranch: null,
-};
+import { tempUser } from "../../SemiComponents/DBUser";
 
 type BranchesScreenProps = {
   navigation: StackNavigationProp<{}>;

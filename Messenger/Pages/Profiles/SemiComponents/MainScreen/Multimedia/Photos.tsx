@@ -18,8 +18,7 @@ const screenHeight = Dimensions.get("screen").height;
 
 interface PhotosProps {
   selectedPhotosAndVideos?: Array<PhotoOrVideo>;
-  setSelectedPhotosAndVideos?: (value: Array<PhotoOrVideo>) => void;
-  isPhotoSelectionAlwaysVisible: boolean;
+  isPhotoSelectionVisible: boolean;
   data: Array<PhotoOrVideo>;
   onPress?: (value: PhotoOrVideo) => void;
   hasAddNewPhotoFeature?: boolean;
@@ -44,21 +43,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                if (props.selectedPhotosAndVideos) {
-                  if (!props.selectedPhotosAndVideos?.includes(item)) {
-                    props.setSelectedPhotosAndVideos(
-                      props.selectedPhotosAndVideos?.concat([item])
-                    );
-                  } else {
-                    props.setSelectedPhotosAndVideos(
-                      props.selectedPhotosAndVideos?.filter(
-                        (photoOrVideo) => photoOrVideo !== item
-                      )
-                    );
-                  }
-                } else {
-                  props.onPress(item);
-                }
+                props.onPress(item);
               }}
               style={[
                 styles.photo,
@@ -71,9 +56,9 @@ const Photos: React.FC<PhotosProps> = (props) => {
               ]}
             >
               <Image style={styles.photo} source={{ uri: item.url }} />
-              {props.isPhotoSelectionAlwaysVisible && (
+              {props.isPhotoSelectionVisible && (
                 <View style={styles.checkmarkContainerForPhoto}>
-                  {props.selectedPhotosAndVideos.includes(item) && (
+                  {props.selectedPhotosAndVideos?.includes(item) && (
                     <CheckmarkIcon style={styles.checkmarkIcon} />
                   )}
                 </View>

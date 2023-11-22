@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { tempUser } from "../MainUserScreen";
+import { tempUser } from "../../../SemiComponents/DBUser";
 import { user, PhotoOrVideo } from "../../../SemiComponents/DBUser";
 import { styles } from "../Styles";
 import Photos from "../../../SemiComponents/MainScreen/Multimedia/Photos";
@@ -53,10 +53,18 @@ const GalleryWhileAddingNewPhoto: React.FC<GalleryWhileAddingNewPhotoProps> = (
       >
         <Photos
           selectedPhotosAndVideos={selectedPhotosAndVideos}
-          setSelectedPhotosAndVideos={(value: Array<PhotoOrVideo>) => {
-            setSelectedPhotosAndVideos(value);
+          onPress={(photo: PhotoOrVideo) => {
+            if (!selectedPhotosAndVideos?.includes(photo)) {
+              setSelectedPhotosAndVideos(selectedPhotosAndVideos?.concat([]));
+            } else {
+              setSelectedPhotosAndVideos(
+                selectedPhotosAndVideos?.filter(
+                  (photoOrVideo) => photoOrVideo !== photo
+                )
+              );
+            }
           }}
-          isPhotoSelectionAlwaysVisible={true}
+          isPhotoSelectionVisible={true}
           data={user.photosAndVideos}
         />
       </ScrollView>

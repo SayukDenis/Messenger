@@ -24,7 +24,7 @@ import {
   BranchParent,
   BranchChild,
 } from "../../../SemiComponents/DBUser";
-import { tempUser } from "../BranchesScreen";
+import { tempUser } from "../../../SemiComponents/DBUser";
 
 type BranchesProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation

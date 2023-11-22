@@ -6,7 +6,6 @@ import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
-import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
@@ -15,11 +14,13 @@ import { Album, tempUser, user } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
 
-type MainUserScreenProps = {
+type AvatarsAndInfoScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
 
-const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
+const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
+  navigation,
+}) => {
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
@@ -95,62 +96,6 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           ]}
         />
       ))}
-
-      {/* Top tool bar with buttons*/}
-      <TopToolBar
-        primaryTitle={user.profileName}
-        secondaryTitle={user.lastTimeOnline}
-        setIsElseFeaturesVisible={(value: boolean) =>
-          setIsElseFeaturesVisible(value)
-        }
-        isMuted={isMuted}
-        isBlocked={isBlocked}
-        isSearchButtonVisible={true}
-        onGoBackPress={() => {
-          navigation.goBack();
-        }}
-        isMediaSelectionVisible={isAlbumSelectionVisible}
-        quantityOfSelectedItems={selectedAlbums.length}
-        onCancelPress={() => {
-          setSelectedAlbums([]);
-          setIsAlbumSelectionVisible(false);
-        }}
-        onDeleteAllPress={() => {
-          setIsDeleteAllAlbumsPressed(true);
-        }}
-      />
-
-      {/* Else features which appear when else features button is pressed*/}
-      <ElseFeaturesButtons
-        isVisible={isElseFeaturesVisible}
-        setIsVisible={(value: boolean) => setIsElseFeaturesVisible(value)}
-        isMuted={isMuted}
-        onMutePress={(value: boolean) => {
-          setIsMuted(value);
-        }}
-        isBlocked={isBlocked}
-        onBlockPress={(value: boolean) => {
-          setIsBlocked(value);
-        }}
-        isClearChatPressed={isClearChatButtonPressed}
-        onClearChatPress={(value: boolean) => {
-          setIsClearChatButtonPressed(value);
-        }}
-        settingsPress={() => navigation.navigate("SettingsScreen" as never)}
-        mode="user"
-      />
-
-      {/* Approval to clear chat if clear button is pressed via else features buttons */}
-      <RemovalApproval
-        isVisible={isClearChatButtonPressed}
-        onAnyPress={() => {
-          setIsClearChatButtonPressed(false);
-        }}
-        onAgreePress={() => {
-          alert("Agree");
-        }}
-        text={user.clearChatText}
-      />
 
       {/* Approval to delete an album */}
       <RemovalApproval
@@ -239,13 +184,6 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           style={[styles.blurEffect, { zIndex: 3 }]}
         />
 
-        {/* Touchable avatar image with phone and videocamera buttons*/}
-        <AvatarWithCallingButtons
-          onAvatarPress={() => {
-            navigation.navigate("AvatarsAndInfoScreen" as never);
-          }}
-        />
-
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
           isLongPressed={isPhotoAlbumSelectionVisible}
@@ -278,4 +216,4 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
   );
 };
 
-export default MainUserScreen;
+export default AvatarsAndInfoScreen;

@@ -6,7 +6,9 @@ import { styles } from "./Styles";
 import PhoneIcon from "./Icons/PhoneIcon";
 import VideoCameraIcon from "./Icons/VideoCameraIcon";
 
-interface AvatarWithCallingButtonsProps {}
+interface AvatarWithCallingButtonsProps {
+  onAvatarPress: () => void;
+}
 
 const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
   props
@@ -18,7 +20,7 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
       {/* Touchable avatar image */}
       <TouchableOpacity
         onPress={() => {
-          alert("avatar press");
+          props.onAvatarPress();
         }}
         style={styles.mainAvatarImage}
       >

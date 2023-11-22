@@ -1,3 +1,15 @@
+interface tempUserProps {
+  selectedAlbum: Album;
+  selectedPhotosAndVideos: Array<PhotoOrVideo>;
+  selectedBranch: BranchParent;
+}
+
+export const tempUser: tempUserProps = {
+  selectedAlbum: null,
+  selectedPhotosAndVideos: new Array<PhotoOrVideo>(),
+  selectedBranch: null,
+};
+
 export interface UserProps {
   ImagePath: string;
   MembersName: Array<Nicknames>;
