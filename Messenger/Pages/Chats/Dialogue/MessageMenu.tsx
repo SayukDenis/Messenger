@@ -51,7 +51,7 @@ const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
   ]
 
   return (
-    <TouchableOpacity activeOpacity={1} style={{...StyleSheet.absoluteFillObject, backgroundColor:'rgba(0,0,0,0.15)', flex:1, zIndex:2,}} onPress={onOverlayPress}>
+    <TouchableOpacity activeOpacity={1} style={{...StyleSheet.absoluteFillObject, backgroundColor:'transparent', flex:1, zIndex:5,}} onPress={onOverlayPress}>
       <View style={{position:'absolute', top:(coord?coord.y:0), left:(coord?coord.x:0)}}>
         {buttons.map((button, index) => 
          button.text=='Edit'&&!isUser? null: 

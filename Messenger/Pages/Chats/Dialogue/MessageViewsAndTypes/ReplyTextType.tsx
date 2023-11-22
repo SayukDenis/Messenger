@@ -58,6 +58,8 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
         <View className='flex flex-col mr-3'>
           <View className='self-end' style={{maxWidth:'65%'}}>
             <Swipeable 
+            dragOffsetFromLeftEdge={100}
+            dragOffsetFromRightEdge={100}
               ref={(swipeable) => {
                   if(swipeable != null && swipeable != undefined)
                     swipeableRef.current[id][1]=swipeable
@@ -95,6 +97,8 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
         :
         <View style={[styles.replyContainer, {marginLeft:10}]}>
           <Swipeable 
+            dragOffsetFromLeftEdge={100}
+            dragOffsetFromRightEdge={100}
             ref={(swipeable) => {
                 if(swipeable != null && swipeable != undefined)
                   swipeableRef.current[id][1]=swipeable

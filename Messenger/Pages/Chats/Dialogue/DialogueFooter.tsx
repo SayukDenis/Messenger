@@ -7,11 +7,20 @@ import { Svg, Path } from 'react-native-svg';
 
 const { height, width } = Dimensions.get('window');
 
-const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessage, isEdit, editMessage, messageID, setIsReply}:{messages:Message[], setMessages:(arg0: Message)=>void, isReply:boolean, replyMessage:Message, onSendMessage:()=>void, isEdit:boolean, editMessage:Message, messageID:number, setIsReply:()=>void}) => {
+interface DialogueFooterProps {
+  messages:Message[], 
+  setMessages:(arg0: Message)=>void, 
+  isReply:boolean, 
+  replyMessage:Message, 
+  onSendMessageOrCancelReplyAndEdit:()=>void, 
+  isEdit:boolean, 
+  editMessage:Message, 
+  messageID:number,
+}
 
-  const [text, setText] = useState('');
+const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, messageID}:DialogueFooterProps) => {
 
-  console.log('DialogueFooter-editMessage:', editMessage);
+  const [text, setText] = useState(isEdit?editMessage.text:'');
 
   return(
     <View style={{flex:6, backgroundColor:'rgba(0, 0, 0, 0)'}}>
@@ -26,7 +35,7 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
                   <Text className='text-[#B79EFF]'>user name</Text>
                   <Text className='text-[#797979]'>{replyMessage.text!.length>40?replyMessage.text.slice(0,40)+'...':replyMessage.text}</Text>
                 </View>
-                <TouchableOpacity onPress={setIsReply} className='bg-red-500 items-center' style={{width:width*0.03}}>
+                <TouchableOpacity onPress={onSendMessageOrCancelReplyAndEdit} className='bg-red-500 items-center' style={{width:width*0.03}}>
                   <Text>x</Text>
                 </TouchableOpacity>
               </View>
@@ -45,7 +54,7 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
                   <Text style={{color:'rgb(183, 158, 255)'}}>Edit</Text>
                   <Text style={{color:'rgb(121, 121, 121)'}}>{editMessage.text!.length>40?editMessage.text.slice(0,40)+'...':editMessage.text}</Text>
                 </View>
-                <TouchableOpacity onPress={() => console.log('close')} style={{backgroundColor:'red', width:width*0.03, alignItems:'center'}}>
+                <TouchableOpacity onPress={onSendMessageOrCancelReplyAndEdit} style={{backgroundColor:'red', width:width*0.03, alignItems:'center'}}>
                   <Text>x</Text>
                 </TouchableOpacity>
               </View>
@@ -58,7 +67,7 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
         <View style={styles.footer}>
           <Button title='audio'/>
           <TextInput value={text} onChangeText={setText} placeholderTextColor={'rgb(137, 130, 130)'} style={styles.messageInput} 
-          placeholder='Льоша блядюга)' onSubmitEditing={() => sendMessage(text, setText, messages, setMessages, replyMessage, onSendMessage, editMessage, messageID)} />
+          placeholder='Льоша блядюга)' onSubmitEditing={() => sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID})} />
           <Button title='gallery' />
         </View>
       </View>
@@ -66,11 +75,27 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
   );
 })
 
-const sendMessage = (text:string, setText:(arg0: string)=>void, messages:Message[], setMessages:(arg0: Message)=>void, replyMessage:Message, onSendMessage:()=>void, editMessage:Message, messageID:number) => {
+interface sendMessageProps {
+  text:string, 
+  setText:(arg0: string)=>void,
+  messages:Message[], 
+  setMessages:(arg0: Message)=>void, 
+  replyMessage:Message, 
+  onSendMessageOrCancelReplyAndEdit:()=>void, 
+  editMessage:Message, 
+  messageID:number,
+}
+
+const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID}:sendMessageProps) => {
   setText('');
   text = text.trim();
+
+  const messageToEdit = messages.find(m => m.id == messageID);
+
   if(text == '') {
     Alert.alert('Ти підарас');
+    onSendMessageOrCancelReplyAndEdit();
+    return;
   }
   if(replyMessage.text) {
     setMessages({
@@ -83,9 +108,9 @@ const sendMessage = (text:string, setText:(arg0: string)=>void, messages:Message
       replyMessageID: replyMessage.id,
       edited: false,
     });
-  } else if(editMessage.text&&text!=messages.find(m => m.id == messageID+1)?.text) {
-    messages.find(m => m.id == messageID+1)!.text = text;
-    messages.find(m => m.id == messageID+1)!.edited = true;
+  } else if(editMessage.text&&text!=messageToEdit?.text) {
+    messageToEdit!.text = text;
+    messageToEdit!.edited = true;
     setMessages({} as Message);
   } else {
     setMessages({
@@ -98,7 +123,7 @@ const sendMessage = (text:string, setText:(arg0: string)=>void, messages:Message
       edited: false,
     });
   }
-  onSendMessage();
+  onSendMessageOrCancelReplyAndEdit();
 }; 
 
 export default DialogueFooter;

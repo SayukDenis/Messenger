@@ -35,10 +35,6 @@ const Dialogue = () => {
     setReplyMessageHandler();
   },[]);
 
-  const pressCloseReplyButton = () => {
-    setIsReply(!isReply);
-  }
-
   const setReplyMessageHandler = () => {
     if(!isReply) {
       setReplyMessage(messages.find(m => m.id==messageID)!);
@@ -48,7 +44,7 @@ const Dialogue = () => {
       setReplyMessage({} as Message);
   }
 
-  const sendMessageHandler = useCallback(() => {
+  const sendMessageOrCancelReplyAndEditHandler = useCallback(() => {
     setIsEdit(false);
     setIsReply(false);
   },[]);
@@ -101,8 +97,6 @@ const Dialogue = () => {
   }, []);
   
   const mes = listOfMessages.find(m => m.id==messageID);
-  console.log(listOfMessages);
-  console.log(messageID)
   return  (
     <LinearGradient style={{flex:1}} start={{x: 1, y: 0}} end={{x: 0, y: 1}} colors={['#D7B168', '#D783FF']}>
       <View className='' style={{flex:1, alignSelf:'stretch', position:'relative'}}>
@@ -111,8 +105,8 @@ const Dialogue = () => {
           <MessageMenu isUser={mes!=undefined?mes.isUser:false} isVisible={messageMenuVisible} onOverlayPress={handleMessageMenuPress} coord={coord} onReplyPress={pressReplyButton} onEditPress={pressEditButton} onDeletePress={setDeletingHandler} />
           <DialogueHeader />
           <DialogueMessages setMessageMenuVisible={handleMessagePress} messageMenuVisisbleAppearence={messageMenuVisisbleAppearence} 
-            messageID={messageID} listOfMessages={listOfMessages} />
-          <DialogueFooter messages={listOfMessages} setMessages={setMessages} isReply={isReply} setIsReply={pressCloseReplyButton} messageID={messageID} isEdit={isEdit} editMessage={editMessage} replyMessage={replyMessage} onSendMessage={sendMessageHandler} />
+            messageID={messageID} listOfMessages={listOfMessages} isReply={isReply} isEdit={isEdit} />
+          <DialogueFooter messages={listOfMessages} setMessages={setMessages} isReply={isReply} messageID={messageID} isEdit={isEdit} editMessage={editMessage} replyMessage={replyMessage} onSendMessageOrCancelReplyAndEdit={sendMessageOrCancelReplyAndEditHandler} />
           <Modal style={{flex:1}} visible={deleting} transparent={true} onRequestClose={setDeletingHandler} statusBarTranslucent={true} >
             <TouchableOpacity activeOpacity={1} style={{flex:1, backgroundColor:'rgba(0, 0, 0, 0.15)', alignItems:'center', justifyContent:'center'}}onPress={setDeletingHandler}>
               <View className='bg-[#dcdcdc] justify-center rounded-3xl' style={[{width:width*0.6, height:height*0.15, borderWidth:0.4}]}>
