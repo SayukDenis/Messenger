@@ -1,9 +1,9 @@
 import { View, Dimensions, ScrollView, Alert } from 'react-native';
 import { useRef, MutableRefObject, useState, useEffect, memo, useCallback } from 'react';
-import {Message} from './tmpdata';
-import styles from './DialogueMessagesStyle'
-import DefaultTextType from './MessageViewsAndTypes/DefaultTextType'
-import ReplyTextType from './MessageViewsAndTypes/ReplyTextType';
+import {Message} from '../tmpdata';
+import styles from './Styles/DialogueMessagesStyle'
+import DefaultTextType from '../MessageViewsAndTypes/DefaultTextType'
+import ReplyTextType from '../MessageViewsAndTypes/ReplyTextType';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';

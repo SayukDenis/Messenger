@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text, Button, Image, Dimensions } from 'react-native';
-import styles from './DialogueHeaderStyle';
+import styles from './Styles/DialogueHeaderStyle';
 import React from 'react';
 
 let userName = 'Denis';

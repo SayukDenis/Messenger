@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, memo } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, memo } from "react";
 import { TouchableOpacity, View, StyleSheet, Text, Dimensions } from "react-native";
 import React from 'react';
 
@@ -42,20 +42,51 @@ const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
     {
       text: 'Delete',
       color: 'darkred',
-      action: onDeletePress,
+      action: onDeletePress
     },
     {
       text: 'Select',
       action: () => {},
     },
-  ]
+  ];
+
+  const styles = StyleSheet.create({
+    container: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor:'transparent', 
+      flex:1, 
+      zIndex:5,
+    },
+    buttonsContainer: {
+      position:'absolute', 
+      top:(coord?coord.y:0), 
+      left:(coord?coord.x:0),
+    },
+    button: {
+      backgroundColor:'rgb(231,230,228)',
+      paddingHorizontal:10, 
+      paddingVertical:5, 
+      borderRadius:15, 
+      borderWidth:0.2, 
+      borderColor:'rgb(83,83,83)', 
+      width:width*0.2
+    }
+  })
 
   return (
-    <TouchableOpacity activeOpacity={1} style={{...StyleSheet.absoluteFillObject, backgroundColor:'transparent', flex:1, zIndex:5,}} onPress={onOverlayPress}>
-      <View style={{position:'absolute', top:(coord?coord.y:0), left:(coord?coord.x:0)}}>
-        {buttons.map((button, index) => 
-         button.text=='Edit'&&!isUser? null: 
-          <TouchableOpacity key={index} onPress={() => {button.action(); onOverlayPress()}} activeOpacity={1} style={{backgroundColor:'rgb(231,230,228)', paddingHorizontal:10, paddingVertical:5, borderRadius:15, borderWidth:0.2, borderColor:'rgb(83,83,83)', width:width*0.2}}>
+    <TouchableOpacity 
+      activeOpacity={1} 
+      style={styles.container} 
+      onPress={onOverlayPress}
+    >
+      <View style={styles.buttonsContainer}>
+        {buttons.map((button, index) => button.text=='Edit'&&!isUser? null: 
+          <TouchableOpacity 
+            key={index} 
+            onPress={() => {button.action(); onOverlayPress()}} 
+            activeOpacity={1} 
+            style={styles.button}
+          >
             <Text style={{color:button.color}}>{button.text}</Text>
           </TouchableOpacity>
         )}

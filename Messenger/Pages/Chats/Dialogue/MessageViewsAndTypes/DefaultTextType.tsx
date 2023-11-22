@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView } from 'react-native';
 import { memo, useCallback, useRef, useState } from 'react';
 import {Message, messages} from '../tmpdata';
-import styles from '../DialogueMessagesStyle';
+import styles from '../components/Styles/DialogueMessagesStyle';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
