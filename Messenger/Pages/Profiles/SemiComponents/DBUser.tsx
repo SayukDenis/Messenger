@@ -21,6 +21,7 @@ export interface UserProps {
   MembersCount: string;
   isEmergencyMessagesEnabled: boolean;
   GroupBio: string;
+  avatars: Array<PhotoOrVideo>;
   branchParents: Array<BranchParent>;
   photosAndVideos: Array<PhotoOrVideo>;
   files: Array<File>;
@@ -50,6 +51,17 @@ export const user: UserProps = {
   branchParents: new Array<BranchParent>(),
   clearChatText: "Do you really want to clear chat?",
   removalText: "Do you really want to delete",
+  avatars: [
+    {
+      url: "https://fastly.picsum.photos/id/866/400/400.jpg?hmac=oHJBlOQwtaF75oX43dFtPf4At_GRLEx9FQqkkfpLR5U",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/1027/200/300.jpg?hmac=WCxdERZ7sgk4jhwpfIZT0M48pctaaDcidOi3dKSHJYY",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/221/400/400.jpg?hmac=inxjrW3lVI716UFQqWe0R7u-0YXiXoD5LraYwPvV51c",
+    },
+  ],
   photosAndVideos: [
     { url: "https://picsum.photos/id/1/5000/3333" },
     { url: "https://picsum.photos/id/2/5000/3333" },

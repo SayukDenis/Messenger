@@ -5,14 +5,14 @@ import { View, ScrollView } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
-import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
-import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { Album, tempUser, user } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
+import Avatars from "./Avatars";
+import TopMenuWhenSelection from "../../SemiComponents/TopMenuWhenSelection";
 
 type AvatarsAndInfoScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -23,13 +23,8 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
 }) => {
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
-  const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
-  const [isClearChatButtonPressed, setIsClearChatButtonPressed] =
-    useState(false);
-  const [isMuted, setIsMuted] = useState(user.isMuted);
-  const [isBlocked, setIsBlocked] = useState(user.isBlocked);
   const [longPressedAlbum, setLongPressedAlbum] = useState(null);
   const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
     useState(0);
@@ -47,8 +42,6 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
 
   var blursConditions: boolean[] = [
     isPhotoAlbumSelectionVisible,
-    isElseFeaturesVisible,
-    isClearChatButtonPressed,
     longPressedAlbum != null,
     isDeleteAlbumPressed,
     isDeleteAllAlbumsPressed,
@@ -57,12 +50,6 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
   var blursOnPress: (() => void)[] = [
     () => {
       setIsPhotoAlbumSelectionVisible(false);
-    },
-    () => {
-      setIsElseFeaturesVisible(false);
-    },
-    () => {
-      setIsClearChatButtonPressed(false);
     },
     () => {
       setLongPressedAlbum(null);
@@ -90,8 +77,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           style={[
             styles.blurEffect,
             {
-              zIndex:
-                index == 2 || index == 4 || index == 5 || index == 6 ? 3 : 1,
+              zIndex: index == 2 || index == 3 || index == 4 ? 3 : 1,
             },
           ]}
         />
@@ -139,6 +125,18 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         text="Do you really want to delete selected albums?"
       />
 
+      <TopMenuWhenSelection
+        isVisible={isAlbumSelectionVisible}
+        quantityOfSelectedItems={selectedAlbums.length}
+        onCancelPress={() => {
+          setSelectedAlbums([]);
+          setIsAlbumSelectionVisible(false);
+        }}
+        onDeleteAllPress={() => {
+          setIsDeleteAllAlbumsPressed(true);
+        }}
+      />
+
       <AlbumLongPressedMenu
         isVisible={longPressedAlbum != null}
         longPressedAlbum={longPressedAlbum}
@@ -184,9 +182,15 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           style={[styles.blurEffect, { zIndex: 3 }]}
         />
 
+        <Avatars
+          onGoBackPress={() => {
+            navigation.goBack();
+          }}
+        />
+
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
-          isLongPressed={isPhotoAlbumSelectionVisible}
+          isPhotoAlbumSelectionVisible={isPhotoAlbumSelectionVisible}
           setIsPhotoAlbumSelectionVisible={(value: boolean) =>
             setIsPhotoAlbumSelectionVisible(value)
           }

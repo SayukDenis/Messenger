@@ -16,7 +16,7 @@ import RemovalApproval from "../../../SemiComponents/MainScreen/RemovalApproval"
 import { user, BranchParent } from "../../../SemiComponents/DBUser";
 import PlusIcon from "../Icons/PlusIcon";
 import BinIcon from "../../../SemiComponents/MainScreen/Icons/BinIcon";
-import { tempUser } from "../BranchesScreen";
+import { tempUser } from "../../../SemiComponents/DBUser";
 
 interface BranchChildrenListProps {
   onPlusBranchPress: () => void;

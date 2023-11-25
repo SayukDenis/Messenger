@@ -10,6 +10,7 @@ interface UsernameProps {
   primaryTitle: string;
   isMuted?: boolean;
   style: TextStyle;
+  isBottomLineAbsent?: boolean;
 }
 
 const Name: React.FC<UsernameProps> = (props) => {
@@ -45,6 +46,7 @@ const Name: React.FC<UsernameProps> = (props) => {
               styles.innerContainerForLongProfileTitle,
               {
                 width: props.isMuted ? screenWidth * 0.412 : screenWidth * 0.5,
+                borderBottomWidth: props.isBottomLineAbsent ? 0 : 0.2,
               },
             ]}
           >

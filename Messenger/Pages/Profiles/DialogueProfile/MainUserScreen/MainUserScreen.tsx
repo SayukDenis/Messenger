@@ -203,6 +203,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         }}
         onSelectAlbumPress={() => {
           setIsAlbumSelectionVisible(true);
+          setSelectedAlbums(selectedAlbums?.concat([longPressedAlbum]));
           setLongPressedAlbum(null);
         }}
       />
@@ -248,7 +249,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
-          isLongPressed={isPhotoAlbumSelectionVisible}
+          isPhotoAlbumSelectionVisible={isPhotoAlbumSelectionVisible}
           setIsPhotoAlbumSelectionVisible={(value: boolean) =>
             setIsPhotoAlbumSelectionVisible(value)
           }
@@ -256,9 +257,21 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           setPressedMultimediaButton={(value: string) => {
             setPressedMultimediaButton(value);
           }}
-          onAlbumPress={(value: Album) => {
-            tempUser.selectedAlbum = value;
-            navigation.navigate("AlbumFilling" as never);
+          onAlbumPress={(item: Album) => {
+            if (isAlbumSelectionVisible) {
+              if (selectedAlbums?.includes(item)) {
+                setSelectedAlbums(selectedAlbums?.concat([item]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums?.filter(
+                    (photoOrVideo) => photoOrVideo !== item
+                  )
+                );
+              }
+            } else {
+              tempUser.selectedAlbum = item;
+              navigation.navigate("AlbumFilling" as never);
+            }
           }}
           onNewAlbumPress={() => {
             navigation.navigate("NewAlbumScreen" as never);

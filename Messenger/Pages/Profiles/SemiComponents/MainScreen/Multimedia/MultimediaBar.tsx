@@ -18,7 +18,7 @@ class Button {
 }
 
 interface MultimediaBarProps {
-  isLongPressed: boolean;
+  isPhotoAlbumSelectionVisible: boolean;
   onLongPress: (value: boolean) => void;
   onPress: (value: string) => void;
 }
@@ -111,7 +111,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
     <View
       style={[
         styles.multimediaBar,
-        { zIndex: props.isLongPressed === true ? 2 : 0 },
+        { zIndex: props.isPhotoAlbumSelectionVisible === true ? 2 : 0 },
       ]}
     >
       <CalculateMaxQuantitiesTitleWidth />
@@ -150,7 +150,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
           props.onLongPress(true);
         }}
       >
-        {props.isLongPressed === true && (
+        {props.isPhotoAlbumSelectionVisible === true && (
           <TouchableOpacity
             onPress={() => {
               props.onLongPress(false);

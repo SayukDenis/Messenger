@@ -20,7 +20,7 @@ interface PhotosProps {
   selectedPhotosAndVideos?: Array<PhotoOrVideo>;
   isPhotoSelectionVisible: boolean;
   data: Array<PhotoOrVideo>;
-  onPress?: (value: PhotoOrVideo) => void;
+  onPress: (value: PhotoOrVideo) => void;
   hasAddNewPhotoFeature?: boolean;
   onAddNewPhotoPress?: () => void;
 }

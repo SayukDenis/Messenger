@@ -12,7 +12,6 @@ import {
 import { Album, user } from "../../DBUser";
 import styles from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
-import { StackNavigationProp } from "@react-navigation/stack";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
 
 interface AlbumsProps {
@@ -52,21 +51,7 @@ const Albums: React.FC<AlbumsProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                if (props.isAlbumSelectionVisible) {
-                  if (!props.selectedAlbums?.includes(item)) {
-                    props.setSelectedAlbums(
-                      props.selectedAlbums?.concat([item])
-                    );
-                  } else {
-                    props.setSelectedAlbums(
-                      props.selectedAlbums?.filter(
-                        (photoOrVideo) => photoOrVideo !== item
-                      )
-                    );
-                  }
-                } else {
-                  props.onAlbumPress(item);
-                }
+                props.onAlbumPress(item);
               }}
               onLongPress={(event) => {
                 if (!props.isAlbumSelectionVisible) {

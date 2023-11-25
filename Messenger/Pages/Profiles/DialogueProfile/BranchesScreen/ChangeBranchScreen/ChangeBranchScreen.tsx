@@ -21,7 +21,7 @@ import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
 import BranchChildrenList from "./BranchChildrenList";
 import RemovalApproval from "../../../SemiComponents/MainScreen/RemovalApproval";
-import { tempUser } from "../BranchesScreen";
+import { tempUser } from "../../../SemiComponents/DBUser";
 
 interface ChangeBranchScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation

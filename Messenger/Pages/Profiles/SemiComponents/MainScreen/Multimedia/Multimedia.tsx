@@ -9,11 +9,11 @@ import Files from "./Files";
 import Voice from "./Voice";
 import Links from "./Links";
 import Albums from "./Albums";
-import { Album, user } from "../../DBUser";
+import { Album, PhotoOrVideo, user } from "../../DBUser";
 import Blur from "../Blur";
 
 interface MultimediaProps {
-  isLongPressed: boolean;
+  isPhotoAlbumSelectionVisible: boolean;
   setIsPhotoAlbumSelectionVisible: (value: boolean) => void;
   pressedMultimediaButton: string;
   setPressedMultimediaButton: (value: string) => void;
@@ -28,9 +28,9 @@ interface MultimediaProps {
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
   return (
-    <View style={{ zIndex: props.isLongPressed ? 3 : 0 }}>
+    <View style={{ zIndex: props.isPhotoAlbumSelectionVisible ? 3 : 0 }}>
       <Blur
-        visibleWhen={props.isLongPressed}
+        visibleWhen={props.isPhotoAlbumSelectionVisible}
         onPress={() => {
           props.setIsPhotoAlbumSelectionVisible(false);
         }}
@@ -41,7 +41,7 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
       />
 
       <MultimediaBar
-        isLongPressed={props.isLongPressed}
+        isPhotoAlbumSelectionVisible={props.isPhotoAlbumSelectionVisible}
         onLongPress={(value) => props.setIsPhotoAlbumSelectionVisible(value)}
         onPress={(value: string) => {
           props.setPressedMultimediaButton(value);
@@ -50,8 +50,11 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
 
       {props.pressedMultimediaButton == "Photos" && (
         <Photos
-          isPhotoSelectionAlwaysVisible={false}
+          isPhotoSelectionVisible={false}
           data={user.photosAndVideos}
+          onPress={(photo: PhotoOrVideo) => {
+            alert("Photo is pressed:" + photo.url);
+          }}
         />
       )}
       {props.pressedMultimediaButton == "Albums" && (

@@ -51,11 +51,21 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
       >
         <Photos
           selectedPhotosAndVideos={selectedPhotosAndVideos}
-          setSelectedPhotosAndVideos={(value: Array<PhotoOrVideo>) => {
-            setSelectedPhotosAndVideos(value);
-          }}
           isPhotoSelectionVisible={true}
           data={user.photosAndVideos}
+          onPress={(photo: PhotoOrVideo) => {
+            if (!selectedPhotosAndVideos?.includes(photo)) {
+              setSelectedPhotosAndVideos(
+                selectedPhotosAndVideos?.concat([photo])
+              );
+            } else {
+              setSelectedPhotosAndVideos(
+                selectedPhotosAndVideos?.filter(
+                  (photoOrVideo) => photoOrVideo !== photo
+                )
+              );
+            }
+          }}
         />
       </ScrollView>
     </View>
