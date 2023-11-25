@@ -3,8 +3,15 @@ import { EMessageType } from './EMessageType';
 import IUserReaction from './IUserReaction ';
 import Model from './Model';
 
-export default class Message extends Model{
-    messageId!:number;
+export default class Message extends Model {
+    constructor(author: User, content: string, sendingTime: Date, massegeType: EMessageType) {
+        super();
+        this.author = author;
+        this.content = content;
+        this.sendingTime = sendingTime;
+        this.messageType = massegeType;
+    }
+    messageId?: number;
     author!: User;
     //Indormation about message
     content!: string;
@@ -15,21 +22,20 @@ export default class Message extends Model{
     messageForwardId?: number;
     isEdited: boolean = false;
     isDeleted: boolean = false;
-    reactionOnMessage: Array<IUserReaction>;
-
+    reactionOnMessage: Array<IUserReaction> = new Array;
     //scheme
-    static schema= {
+    static schema = {
         name: 'messages',
         properties: {
-            messageId: {type: 'integer',  indexed: true},
-            author: User,
+            messageId: 'integer',
+            author: { type: 'class', objectType: User },
             sendingTime: 'date',
-            messageType: EMessageType,
+            messageType: { type: 'enum', objectType: EMessageType },
             messaeResponseId: { type: 'integer', optional: true },
             messageForwardId: { type: 'integer', optional: true },
             isEdited: { type: 'bool', default: false },
             isDeleted: { type: 'bool', default: false },
-            reactionOnMessage: { type: 'list', objectType: 'IUserReaction' },
+            reactionOnMessage: { type: 'list', objectType: {} as IUserReaction },
         },
         primaryKey: 'messageId',
     }

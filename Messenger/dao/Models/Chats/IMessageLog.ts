@@ -1,4 +1,4 @@
-export default interface IMessageLog{
+export default interface IMessageLog {
     sendTime: Date;
     message: string;
 }

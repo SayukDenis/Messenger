@@ -2,14 +2,18 @@ import Model from './Model';
 import Chat from './Chats/Chat';
 
 export default class Folder extends Model {
-    folderId!: number;
+    constructor(folderName: string) {
+        super();
+        this.folderName = folderName;
+    }
+    folderId?: number;
     folderName!: string;
-    chats: Array<Chat>;
+    chats: Array<Chat> = new Array;
     //schema
     static schema = {
         name: 'folders',
         properties: {
-            folderId: { type: 'integer', indexed: true },
+            folderId: 'integer',
             folderName: 'text',
             chats: { type: 'list', objectType: Chat }
         },

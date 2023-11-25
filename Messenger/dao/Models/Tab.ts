@@ -7,22 +7,26 @@ import Message from './Message';
 import Model from './Model';
 
 
-export default class Tab extends Model{
-    tabId!: number;
+export default class Tab extends Model {
+    constructor(title: string) {
+        super();
+        this.title = title;
+    }
+    tabId?: number;
     title!: string;
     //Notifications
     isDialogueMessageOn: boolean = true;
     isgroupsMessageOn: boolean = true;
     isChannelMessageOn: boolean = true;
     //Exceptions "MessageOn"
-    exceptionsDialogues: Array<Dialogue>;
-    exceptionsgroups: Array<Group>;
-    exceptionsChannels: Array<Channel>;
+    exceptionsDialogues: Array<Dialogue> = new Array;
+    exceptionsgroups: Array<Group> = new Array;
+    exceptionsChannels: Array<Channel> = new Array;
     //Blocked chats
-    blockedChats: Array<Chat>;
+    blockedChats: Array<Chat> = new Array;
     //Information about user
-    folders: Array<Folder>;
-    messages: Array<Message>;
+    folders: Array<Folder> = new Array;
+    messages: Array<Message> = new Array;
 
     static schema = {
         name: 'tabs',

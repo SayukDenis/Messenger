@@ -1,24 +1,28 @@
 import Model from './Model';
 
 
-export default class User extends Model{
-  userId!: number;
+export default class User extends Model {
+  constructor(name: string) {
+    super();
+    this.name = name;
+  }
+  userI?: number;
   name!: string;
   numberPhone?: string;
   nickname?: string;
   description?: string;
-  linkToPhoto?: string; 
+  linkToPhoto?: string;
   //schema
-  static schema ={
+  static schema = {
     name: 'users',
     properties: {
-      userId: {type: 'integer', indexed: true},
+      userId: { type: 'integer', indexed: true },
       name: 'string',
-      numberPhone: { type: 'text', optional: true },
-      nickname:    { type: 'text', optional: true },
-      description: { type: 'text', optional: true },
-      linkToPhoto: { type: 'text', optional: true },      
+      numberPhone: 'text?',
+      nickname: 'text?',
+      description: 'text?',
+      linkToPhoto: 'text?',
     },
-    primaryKey: 'userId',  
+    primaryKey: 'userId',
   };
 };

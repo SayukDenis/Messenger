@@ -4,10 +4,8 @@
     "slug": "Messenger",
     "version": "1.0.0",
     "orientation": "portrait",
-    
     "userInterfaceStyle": "light",
     "splash": {
-      
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,11 +17,10 @@
     },
     "android": {
       "adaptiveIcon": {
-                "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.anonymous.Messenger"
     },
-    "web": {
-      
-    }
+    "web": {}
   }
 }

@@ -1,11 +1,17 @@
 import Model from './Model';
 
 
-export default class SelfProfile extends Model{
+export default class SelfProfile extends Model {
+    constructor(name: string, password: string, numberPhone: string) {
+        super();
+        this.name = name;
+        this.password = password;
+        this.numberPhone = numberPhone;
+    }
     // Necessary
-    userId!: number;
+    userId?: number;
     name!: string;
-    hashPassword!: string;
+    password!: string;
     numberPhone!: string;
     //Additional
     email?: string;
@@ -16,19 +22,19 @@ export default class SelfProfile extends Model{
     timeLastEntry?: Date;
 
     static schema = {
-        name: 'SelfProfile',
+        name: 'selfProfiles',
         properties: {
-            userId: {type: 'integer' , indexed: true},
+            userId: { type: 'integer', indexed: true },
             name: 'text',
-            hashPassword: 'text',
+            password: 'text',
             numberPhone: 'text',
             //Additional
-            email: { type: 'text', optional: true },
-            nickname: { type: 'text', optional: true },
-            description: { type: 'text', optional: true },
-            linkToPhoto: { type: 'text', optional: true },            
+            email: 'text?',
+            nickname: 'text?',
+            description: 'text?',
+            linkToPhoto: 'text?',
             //Information about user
-            timeLastEntry: { type: 'date', optional: true },
+            timeLastEntry: 'date?',
         },
         primaryKey: 'userId',
     };

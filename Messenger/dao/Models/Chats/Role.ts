@@ -1,9 +1,14 @@
 import Model from '../Model';
 
-export default class Role extends Model{
+export default class Role extends Model {
+    constructor(name: string, emoji: string) {
+        super();
+        this.name = name;
+        this.emoji = emoji;
+    }
+    roleId?: number;
     name!: string;
     emoji!: string;
-
     //permissions basic
     removeMembers: boolean = false;
     blockMembers: boolean = false;
@@ -20,6 +25,7 @@ export default class Role extends Model{
     static schema = {
         name: 'roles',
         properties: {
+            roleId: 'integer',
             name: { type: 'text', indexed: true },
             emoji: 'text',
             removeMembers: { type: 'bool', default: false },
@@ -33,6 +39,6 @@ export default class Role extends Model{
             sendMessage: { type: 'bool', default: true, },
             sendVoiceMessage: { type: 'bool', default: true, },
         },
-        primaryKey: 'name',
+        primaryKey: 'roleId',
     }
 }

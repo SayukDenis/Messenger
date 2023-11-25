@@ -1,3 +1,4 @@
-App.tsx
-%ProgramData%
-node_modules
+**/App.tsx
+**/%ProgramData%
+**/node_modules
+**/android
