@@ -17,14 +17,13 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "./ReducersAndActions/Reducers/ChatListActions/ChatListActions";
 import Dialogue from "./Pages/Chats/Dialogue/Dialogue";
-import StartPage from "./Pages/Profiles/SemiComponents/Navigation";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
   const store = createStore(rootReducer);
   return (
     <Provider store={store}>
       <View style={style.container}>
-        <StartPage />
+        <Dialogue />
       </View>
     </Provider>
   );
@@ -37,7 +36,6 @@ const style = StyleSheet.create({
     backgroundColor: "#E3C07C",
   },
 });
-
 registerRootComponent(App);
 AppRegistry.registerComponent("10", () => App);
 AppRegistry.registerComponent("10".toLowerCase(), () => App);

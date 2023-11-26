@@ -433,3 +433,30 @@ export class Nicknames {
     this.name = name;
   }
 }
+
+export interface AuditLogProps {
+  MembersName: Array<Nicknames>;
+  Descriptions: Array<Nicknames>;
+  Photo: Array<PhotoOrVideo>;
+}
+
+export const AuditLog: AuditLogProps = {
+  MembersName: [
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
+    { name: "Aboba ABOBA aboba ABOBA AboBA" },
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB Abob" },
+    { name: "Viktor" },
+  ],
+  Descriptions: [
+    { name: " A Deleted b" },
+    { name: " A Deleted b" },
+    { name: " A Deleted b" },
+    { name: " A Deleted b" },
+  ],
+  Photo: [
+    { url: "https://picsum.photos/id/2/5000/3333" },
+    { url: "https://picsum.photos/id/2/5000/3333" },
+    { url: "https://picsum.photos/id/2/5000/3333" },
+    { url: "https://picsum.photos/id/2/5000/3333" },
+  ],
+};
