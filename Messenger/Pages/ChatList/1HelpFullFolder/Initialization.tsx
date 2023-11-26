@@ -48,7 +48,7 @@ for (let i = 0; i < 14; i++) {
     
     let messages:Message[]=[];
     const now = new Date(); 
-    now.setDate(now.getDate()-1111);
+    now.setDate(now.getDate());
     const numberOfMessages:number = Math.floor(Math.random() * (dialog.length + 1)); 
     for(let j:number=0;j<numberOfMessages;j++){
         messages.push(

@@ -57,8 +57,10 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     randomBoolean.current = Math.random() < 0.5;
     haveUnreadMessagesBoolf.current = haveUnreadMessages(chat);
   }, []);
-  const rightDragXposition = useState(new Animated.Value(screenWidth))[0];
-  const leftDragXposition = useState(new Animated.Value(0))[0];
+  const rightDragXposition = useState(new Animated.Value(screenWidth));
+  const leftDragXposition = useState(new Animated.Value(0));
+  const [rightDragXpositionForRerender,setRightDragXpositionForRerender] = useState(screenWidth);
+  const [leftDragXpositionForRerender,setLeftDragXpositionForRerender] = useState(0);
   const [stateForSwipeDirection, setStateForSwipeDirection] =
     useState<number>(null);
   useEffect(() => {
@@ -188,11 +190,12 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   ) => {
     const positionX = e.nativeEvent.contentOffset.x;
     setPositionXForSwipeable(positionX);
-    Animated.timing(rightDragXposition, {
+    setRightDragXpositionForRerender(positionX)
+    Animated.timing(rightDragXposition[0], {
       toValue: positionX,
       duration: 0,
 
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   };
   const handleOnScrollFromLeft = (
@@ -200,27 +203,47 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   ) => {
     const positionX = e.nativeEvent.contentOffset.x;
     setPositionXForSwipeable(positionX);
-    Animated.timing(leftDragXposition, {
+    setLeftDragXpositionForRerender(positionX);
+    Animated.timing(leftDragXposition[0], {
       toValue: positionX,
       duration: 0,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   };
-  if(Platform.OS=="android"){
-    return <CentralChatContainer
-    chat={chat}
-    handlePress={handlePress}
-    onLongPressChat={onLongPressChat}
-  />
+  if (Platform.OS == "android") {
+    return (
+      <>
+        <CentralChatContainer
+          chat={chat}
+          handlePress={handlePress}
+          onLongPressChat={onLongPressChat}
+        />
+        <View
+          style={{
+            width: screenWidth,
+            height: 2,
+            opacity: 0.1,
+            backgroundColor: "gray",
+          }}
+        />
+      </>
+    );
   }
+  useEffect(()=>{
+    
+   // console.log(((leftDragXpositionForRerender)/screenWidth))
+  })
   return (
     <Animated.View>
+      <View style={{backgroundColor:null,position:"absolute",height:screenHeight*0.08,width:!isSwipedFromLeft?0:screenWidth*(1-(leftDragXpositionForRerender)/screenWidth),top:0,left:0,bottom:0,zIndex:10}}/>
+      <View style={{backgroundColor:null,position:"absolute",direction:"rtl",height:screenHeight*0.08,width:!isSwipedFromRight?0:screenWidth*(rightDragXpositionForRerender-screenWidth)/screenWidth,top:0,right:0,bottom:0,zIndex:10}}/>
       <TouchableOpacity
         style={listOfChatsStyle.helpContainer}
         onPress={handlePress.current}
         onLongPress={onLongPressChat.current}
         activeOpacity={0.1}
       />
+      
       <Animated.ScrollView
         ref={scrollViewRef}
         pagingEnabled={true}
@@ -238,13 +261,18 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
           setIsSwiped(true);
           setPositionXForStartOfSwipeable(e.nativeEvent.contentOffset.x);
         }}
+        onMomentumScrollBegin={handleScrollEnd}
         onScroll={handleScroll}
         onScrollEndDrag={handleScrollEnd}
       >
+        
         <LeftContainerForSwipe
-          leftDragXposition={leftDragXposition}
+          leftDragXposition={leftDragXposition[0]}
+          leftDragXpositionForRerender={leftDragXpositionForRerender}
           haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
         />
+        
+        
         <CentralChatContainer
           chat={chat}
           handlePress={handlePress}
@@ -252,7 +280,8 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
         />
         <RightContainersForSwipe
           randomBoolean={randomBoolean}
-          rightDragXposition={rightDragXposition}
+          rightDragXposition={rightDragXposition[0]}
+          rightDragXpositionForRerender={rightDragXpositionForRerender}
         />
       </Animated.ScrollView>
       <View

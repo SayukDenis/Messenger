@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Animated, View } from 'react-native';
 import { footerstyles } from '../../Styles/FooterStyle';
 import { useSelector } from 'react-redux';
@@ -17,9 +17,9 @@ const FolderIndicator: React.FC<AnimatedFolderIndicatorProps> = ({
   positionsOfFolder,
   screenWidth,
 }) => {
-  const selectedFolder = useSelector((state: any) => state?.selectedFolder.selectedFolder);
-  const currentPosition = useSelector((state: any) => state.currentPosition.currentPosition);
-
+  const selectedFolder = useSelector((state: any) => state?.chatListReducer.selectedFolder.selectedFolder);
+  const currentPosition = useSelector((state: any) => state.chatListReducer.currentPosition.currentPosition);
+  
   const indicatorLeft = new Animated.Value(
     (((currentPosition - screenWidth * Math.round(currentPosition / screenWidth)) %
       screenWidth) /
@@ -41,17 +41,18 @@ const FolderIndicator: React.FC<AnimatedFolderIndicatorProps> = ({
 
   return (
     <Animated.View style={{ transform: [{translateX:indicatorLeft}] }}>
-      {!isVisibleForModalFolder ? (
+      
         <Animated.View
           style={[
             footerstyles.selectedFolder,
             {
               width: widths.current[selectedFolder] * 0.8,
               marginLeft: widths.current[selectedFolder] * 0.1,
+              opacity:!isVisibleForModalFolder ?1:0
             },
           ]}
         />
-      ) : null}
+      
     </Animated.View>
   );
 };

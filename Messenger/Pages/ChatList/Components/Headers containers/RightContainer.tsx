@@ -35,7 +35,7 @@ const RightContainer = ({navigation}) => {
         }}
       >
         <View
-          style={{ alignSelf: "center", marginLeft: screenWidth * 0.025 }}
+          style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}
         >
           <ContactsSvg
             width={screenWidth * kefForSizeOfSvg}

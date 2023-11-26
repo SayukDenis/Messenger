@@ -5,7 +5,8 @@ import MySelfUser from "../1HelpFullFolder/MySelfUser";
 import { footerstyles } from "../Styles/FooterStyle";
 import FolderContainer from "./Footer containers/FolderContainer";
 import FolderIndicator from "./Footer containers/FolderIndicator";
-import { connect, useSelector } from "react-redux";
+import { connect} from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface FooterProps {
   user: MySelfUser;
@@ -51,14 +52,33 @@ const Footer: React.FC<FooterProps> = ({
             Platform.OS == "ios"&& useSafeAreaInsets().bottom!=0
               ? screenHeight * 0.05 + useSafeAreaInsets().bottom
               : screenHeight * 0.06,
+              overflow:"hidden"
         },
       ]}
     >
+      <LinearGradient
+        colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+        locations={[0.25, 0.5, 0.75]}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={{
+          opacity:0.7,
+          bottom: 0,
+          position:"absolute",
+          left: 0,
+          right: 0,
+          height: screenHeight,
+          width: screenWidth,
+
+        
+        }}
+      />
       <View
         style={{
-          marginBottom: Platform.OS == "ios" ? useSafeAreaInsets().bottom : 0,flex:1
+          marginBottom: Platform.OS == "ios" ? useSafeAreaInsets().bottom : 0,flex:1,
         }}
       >
+        
         <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal
