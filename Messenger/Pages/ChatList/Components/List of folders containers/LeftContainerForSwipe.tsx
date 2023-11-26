@@ -1,7 +1,7 @@
 // LeftContainerForSwipe.tsx
 import React, { useEffect, useRef } from "react";
 import { View, Animated } from "react-native";
-
+import { deg } from 'react-native-linear-gradient-degree';
 import ReadForSwipeableSvg from "../SVG/ReadForSwipeableSvg";
 import UnReadMessageSvg from "../SVG/UnReadMessageSvg";
 import SelectForSwipeableSvg from "../SVG/SelectForSwipeableSvg";
@@ -18,7 +18,9 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const LeftContainerForSwipe: React.FC<LeftContainerForSwipeProps> = ({
   leftDragXposition,
   haveUnreadMessagesBoolf,
+  leftDragXpositionForRerender
 }) => {
+  const procentOfSwipe= 1-(leftDragXpositionForRerender)/screenWidth;
   const scale1ForLeft = useRef(
     leftDragXposition.interpolate({
       inputRange: [0, screenWidth * 0.4, screenWidth * 0.6, screenWidth],
@@ -61,10 +63,9 @@ const LeftContainerForSwipe: React.FC<LeftContainerForSwipeProps> = ({
         }}
       >
         <LinearGradient
-          colors={["rgba(15, 255, 197, 1)", "rgba(15, 255, 197, 0)"]}
-          //locations={[0.5, 0.5]}
-          start={{ x: 0, y: 0.3 }}
-          end={{ x: 0.7, y: 0 }}
+          colors={["rgba(15, 255, 197, 1)", "rgba(15, 255, 197, 0.1)"]}
+          start={{ x: 1 - 0.2, y: -2*procentOfSwipe }} 
+          end={{ x: 1, y: 1.2*procentOfSwipe}}
           style={{
             position: "absolute",
             width: screenWidth,
@@ -116,16 +117,16 @@ const LeftContainerForSwipe: React.FC<LeftContainerForSwipeProps> = ({
         }}
       >
         <LinearGradient
-          colors={["rgba(46, 117, 255, 1)", "rgba(46, 117, 255, 0)"]}
-          //locations={[0.5, 0.5]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
+          colors={["rgba(46, 117, 255, 1)", "rgba(46, 117, 255, 0.1)"]}
+          start={{ x: 1 - 0.2, y: -2*procentOfSwipe }} 
+          end={{ x: 1, y: 1.2*procentOfSwipe}}
           style={{
             position: "absolute",
             width: screenWidth,
             height: screenHeight * 0.08,
           }}
         />
+    
         <Animated.View style={{
             
             width: screenWidth * 0.2,

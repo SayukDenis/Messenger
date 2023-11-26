@@ -39,13 +39,13 @@ export const footerstyles = StyleSheet.create({
     padding: screenWidth * 0.017,
   },
   selectedText: {
-    color: "#7C4F91",
+    color: "#5A0085",
     fontSize: screenHeight * 0.017,
     padding: screenWidth * 0.017,
   },
   selectedFolder: {
     height: screenHeight * 0.005,
-    backgroundColor: "#7C4F91",
+    backgroundColor: "#5A0085",
     borderRadius: 10,
   },
   modalWindowContainerStyle: {

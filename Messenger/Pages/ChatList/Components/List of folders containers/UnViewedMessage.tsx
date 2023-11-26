@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Svg, { Line, Path } from 'react-native-svg';
+import { Svg, Path } from 'react-native-svg';
 import { listOfChatsStyle } from '../../Styles/ListOfChatsStyle';
 
-const ViewedMessageIcon: React.FC<{ stylePosition?: any }> = ({ stylePosition }) => {
+const UnViewedMessage = () => {
   return (
     <Svg width={14} height={14} viewBox="0 0 11 8" fill="none" style={listOfChatsStyle.positionOfFirstCheckMarkStyle}>
       <Path
@@ -16,7 +16,15 @@ const ViewedMessageIcon: React.FC<{ stylePosition?: any }> = ({ stylePosition })
         stroke="white"
         strokeOpacity={0.95}
       />
-    </Svg>);
+      <Path
+        d="M5.0022 6.69995L10.4936 0.780894"
+        stroke="white"
+        strokeOpacity={0.95}
+      />
+    </Svg>
+  );
 };
 
-export default ViewedMessageIcon;
+
+
+export default UnViewedMessage;

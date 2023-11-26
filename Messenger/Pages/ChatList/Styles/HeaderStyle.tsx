@@ -28,7 +28,7 @@ export const headerstyles = StyleSheet.create({
   magnifyingglass: {
     height: screenHeight * 0.08 * 0.45,
     aspectRatio: 1,
-    color: "#434343",
+   
     flexDirection: "column",
     alignSelf: "center",
     //alignSelf:"center",
@@ -47,7 +47,7 @@ export const headerstyles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 1000,
     borderWidth: 1,
-    borderColor: "#434343",
+    borderColor: "#2B1D1D",
   },
   modeactivity: {
     height: screenHeight * 0.015,
@@ -71,14 +71,14 @@ export const headerstyles = StyleSheet.create({
   },
 
   textOfModeOfEmployment: {
-    color: "#434343",
+    color: "#2B1D1D",
     fontSize: screenHeight * 0.018,
     flexDirection: "column",
     alignSelf: "center",
   },
 
   arrowModeOfEmployment: {
-    color: "#434343",
+    
     width: screenWidth * 0.031,
     height: screenHeight * 0.03,
     aspectRatio: 1,
@@ -95,5 +95,4 @@ export const headerstyles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
-  lineForHamburger: {},
 });

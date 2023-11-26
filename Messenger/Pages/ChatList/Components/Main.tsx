@@ -47,7 +47,6 @@ const Main: React.FC<MainProps> = ({
   const [isVisibleForModalFolder, setisVisibleForModalFolder] = useState(false);
   const [positionX, setPositionX] = useState<number>(0);
   const [positionXInContainer, setPositionXInContainer] = useState<number>(0);
-
   const dispatch = useDispatch();
   const animationState = useSelector((state: any) => {
     return state.chatListReducer.animation.animationState;
@@ -70,11 +69,8 @@ const Main: React.FC<MainProps> = ({
   const positionsOfFolder = useRef<number[]>(user.folders.map(() => 0));
 
   const handleFolderPress = useRef((index: number) => {
-    dispatch(setSelectedFolderForChatList(index));
-    let bufferFolderSelectedArray = [...folderSelectedArray];
-    bufferFolderSelectedArray[selectFolder] = false;
-    bufferFolderSelectedArray[index] = true;
-    dispatch(setFolderSelectedArray(bufferFolderSelectedArray));
+    setEndDragOfChatList(false);
+    NewFolderSelect(index);
     scrollToFolder(index);
   });
 
@@ -90,21 +86,28 @@ const Main: React.FC<MainProps> = ({
     }
     dispatch(setCurrentPositionForChatList(newHorizontalPosition));
     const newFolder: number = Math.round(newHorizontalPosition / screenWidth);
+    //console.log(mySelfUser.folders[newFolder].name)
     scrollToPosition(newHorizontalPosition);
     if (newFolder != selectFolder) {
-      dispatch(setSelectedFolderForChatList(newFolder));
-      let bufferFolderSelectedArray = [...folderSelectedArray];
-      bufferFolderSelectedArray[selectFolder] = false;
-      bufferFolderSelectedArray[newFolder] = true;
-      dispatch(setFolderSelectedArray(bufferFolderSelectedArray));
+      if(!endDragOfChatList){
+          return
+      }
+      NewFolderSelect(newFolder);
     }
   };
-
-  const scrollToFolder = (folderId: number) => {
-    scrollViewRef.current?.scrollToIndex({
+  const NewFolderSelect = (newFolder: number) => {
+    dispatch(setSelectedFolderForChatList(newFolder));
+    let bufferFolderSelectedArray = [...folderSelectedArray];
+    bufferFolderSelectedArray[selectFolder] = false;
+    bufferFolderSelectedArray[newFolder] = true;
+    dispatch(setFolderSelectedArray(bufferFolderSelectedArray));
+  };
+  const scrollToFolder =  async (folderId: number) => {
+    await scrollViewRef.current?.scrollToIndex({
       index: folderId,
       animated: true,
     });
+
     //scrollToIconOnTouch(folderId)
   };
   const scrollToPosition = (currentPosition: number) => {
@@ -195,6 +198,7 @@ const Main: React.FC<MainProps> = ({
         pagingEnabled
         ref={scrollViewRef}
         showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={()=>{setEndDragOfChatList(true)}}
         scrollEventThrottle={1}
         nestedScrollEnabled={true}
         keyExtractor={(item, index) => index.toString()}

@@ -6,7 +6,7 @@ import UnMuteForSwipeableSvg from "../SVG/UnMuteForSwipeableSvg";
 import DeleteForSwipeableSvg from "../SVG/DeleteForSwipeableSvg";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-
+import { deg } from 'react-native-linear-gradient-degree';
 interface RightContainersForSwipeProps {
   rightDragXposition: any;
   rightDragXpositionForRerender:number;
@@ -16,6 +16,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
   randomBoolean,
   rightDragXposition,
+  rightDragXpositionForRerender
 }) => {
   const scale1ForRight = rightDragXposition.interpolate({
     inputRange: [
@@ -38,7 +39,10 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
     outputRange: [0, 1, 0, 0],
     //extrapolateLeft: "clamp",
   });
+  const procentOfSwipe=(rightDragXpositionForRerender-screenWidth)/screenWidth;
   useEffect(() => {
+    //console.log(rightDragXposition)
+    //console.log(procentOfSwipe)
    // console.log(scaleForNotRender.__getValue())
     //console.log(rightDragXposition.__getValue())
     //console.log(Number.parseInt(JSON.stringify(scaleForNotRender)))
@@ -69,13 +73,12 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
         }}
       >
         <LinearGradient
-           colors={["rgba(255, 135, 35, 1)", "rgba(255, 135, 35, 0)"]}
-          //locations={[0.5, 0.5]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
+           colors={["rgba(255, 135, 35, 1)", "rgba(255, 135, 35, 0.1)"]}
+           start={{ x: 0.2, y: -2*procentOfSwipe }}
+           end={{ x: 0, y: 1.2*procentOfSwipe}}
           style={{
             position: "absolute",
-            width: screenWidth,
+            width: screenWidth*0.2,
             height: screenHeight * 0.08,
           }}
         />
@@ -125,10 +128,9 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
         }}
       >
         <LinearGradient
-          colors={["rgba(255, 34, 27, 1)", "rgba(255, 34, 27, 0)"]}
-          //locations={[0.5, 0.5]}
-          end={{ x: 0, y: 0.3 }}
-          start={{ x: 0.7, y: 0 }}
+          colors={["rgba(255, 34, 27, 1)", "rgba(255, 34, 27, 0.1)"]}
+          start={{ x: 0.2, y: -2*procentOfSwipe }}
+          end={{ x: 0, y: 1.2*procentOfSwipe}}
           style={{
             position: "absolute",
             width: screenWidth,

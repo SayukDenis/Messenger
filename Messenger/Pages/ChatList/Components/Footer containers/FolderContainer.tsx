@@ -45,14 +45,7 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
     const OnLongPressRef=useRef((event:any)=>{
       handleLongPress.current(event,index)
     })
-
     
-    useEffect(()=>{
-      console.log(folder.name)
-    },[
-
-
-      isSelected])
     return (
       <>
         <TouchableOpacity

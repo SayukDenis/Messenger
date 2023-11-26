@@ -229,14 +229,21 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
       </>
     );
   }
+  useEffect(()=>{
+    
+   // console.log(((leftDragXpositionForRerender)/screenWidth))
+  })
   return (
     <Animated.View>
+      <View style={{backgroundColor:null,position:"absolute",height:screenHeight*0.08,width:!isSwipedFromLeft?0:screenWidth*(1-(leftDragXpositionForRerender)/screenWidth),top:0,left:0,bottom:0,zIndex:10}}/>
+      <View style={{backgroundColor:null,position:"absolute",direction:"rtl",height:screenHeight*0.08,width:!isSwipedFromRight?0:screenWidth*(rightDragXpositionForRerender-screenWidth)/screenWidth,top:0,right:0,bottom:0,zIndex:10}}/>
       <TouchableOpacity
         style={listOfChatsStyle.helpContainer}
         onPress={handlePress.current}
         onLongPress={onLongPressChat.current}
         activeOpacity={0.1}
       />
+      
       <Animated.ScrollView
         ref={scrollViewRef}
         pagingEnabled={true}
@@ -254,14 +261,18 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
           setIsSwiped(true);
           setPositionXForStartOfSwipeable(e.nativeEvent.contentOffset.x);
         }}
+        onMomentumScrollBegin={handleScrollEnd}
         onScroll={handleScroll}
         onScrollEndDrag={handleScrollEnd}
       >
+        
         <LeftContainerForSwipe
           leftDragXposition={leftDragXposition[0]}
           leftDragXpositionForRerender={leftDragXpositionForRerender}
           haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
         />
+        
+        
         <CentralChatContainer
           chat={chat}
           handlePress={handlePress}

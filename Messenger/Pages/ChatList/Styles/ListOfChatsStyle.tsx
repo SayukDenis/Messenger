@@ -22,10 +22,7 @@ export const listOfChatsStyle = StyleSheet.create({
     height: screenHeight * 0.08,    
     width: screenWidth,
   },
-  lineStyle: {
-    borderBottomColor: "#C4A56899",
-    borderBottomWidth: screenWidth * 0.02,
-  },
+
   imageContainer: {
     height: screenHeight * 0.075,
     flexDirection: "row",
@@ -39,7 +36,7 @@ export const listOfChatsStyle = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 1000,
     borderWidth: 1,
-    borderColor: "#434343",
+    borderColor: "#493A3A",
   },
   modeOfActivity: {
     height: screenHeight * 0.015,
@@ -87,9 +84,11 @@ export const listOfChatsStyle = StyleSheet.create({
   nameStyle: {
     fontWeight: "600",
     fontSize: screenHeight * 0.017,
+  color:"#2B1D1D"
   },
   contentStyle: {
     fontSize: screenHeight * 0.015,
+    color:"#493A3A"
   },
   timeContainer: {
     justifyContent: "flex-end",
@@ -101,7 +100,7 @@ export const listOfChatsStyle = StyleSheet.create({
   timeStyle: {
     alignSelf: "flex-end",
     fontSize: screenHeight * 0.014,
-    color: "#222222",
+    color: "#2B1D1D",
     marginRight: screenWidth * 0.01,
     fontWeight: "500",
   },
@@ -113,15 +112,21 @@ export const listOfChatsStyle = StyleSheet.create({
     marginRight: screenWidth * 0.01,
   },
   countOfUnreadMessagescontainer: {
-    backgroundColor: "#339EDA",
+    //backgroundColor: "#FFFFFF",
     textAlign: "center",
-    borderRadius: 50,
-    fontSize: screenWidth * 0.025,
+    borderRadius: 100,
+    
     maxWidth: "100%",
     justifyContent: "center",
+    overflow:"hidden"
+    //opacity:0.95
   },
   oneCharcontainer: {
-    width: screenHeight * 0.02,
+    width: screenHeight * 0.018,
+    aspectRatio:1,
+    //alignSelf:"flex-end"
+    paddingTop:0,
+    
   },
   twoCharcontainer: {
     width: screenHeight * 0.03,
@@ -133,9 +138,10 @@ export const listOfChatsStyle = StyleSheet.create({
     width: screenHeight * 0.05,
   },
   countOfUnReadMessagesContent: {
-    fontSize: screenHeight * 0.014,
-    color: "#FFFFFF",
+    fontSize: screenHeight * 0.013,
+    color: "#2B1D1D",
     alignSelf: "center",
+    //opacity:0.95
   },
   checkMarkercontainerStyle: {
     height: screenHeight * 0.03,
@@ -158,29 +164,5 @@ export const listOfChatsStyle = StyleSheet.create({
     position: "absolute",
     right: screenWidth * 0.01,
     alignSelf: "flex-end",
-  },
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#e4e4e4",
-    marginLeft: 10,
-  },
-  leftAction: {
-    backgroundColor: "#388e3c",
-    justifyContent: "center",
-    flex: 1,
-  },
-  actionText: {
-    color: "#fff",
-    fontWeight: "600",
-    padding: 20,
-  },
-  rightAction: {
-    justifyContent: "center",
-    flex: 1,
-    alignItems: "center",
-  },
-  chatScrollView: {
-    width: screenWidth,
   },
 });
