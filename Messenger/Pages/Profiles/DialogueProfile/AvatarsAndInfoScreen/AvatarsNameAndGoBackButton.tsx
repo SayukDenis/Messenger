@@ -1,22 +1,20 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, Image, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { View, Image } from "react-native";
 import { styles } from "./Styles";
-import { user } from "../../SemiComponents/DBUser";
+import { PhotoOrVideo, user } from "../../SemiComponents/DBUser";
 import Name from "../../SemiComponents/MainScreen/Name";
 import GoBackButton from "../../SemiComponents/GoBackButton";
 
-interface AvatarsProps {
+interface AvatarsNameAndGoBackButtonProps {
   onGoBackPress: () => void;
+  currentAvatar: PhotoOrVideo;
 }
 
-const Avatars: React.FC<AvatarsProps> = (props) => {
-  const [currentImage, setCurrentImage] = useState(user.avatars[0]);
-
-  useEffect(() => {
-    console.log(currentImage.url);
-  });
+const AvatarsNameAndGoBackButton: React.FC<AvatarsNameAndGoBackButtonProps> = (
+  props
+) => {
   return (
     <View style={styles.avatarMainContainer}>
       <View style={{ zIndex: 2 }}>
@@ -31,9 +29,12 @@ const Avatars: React.FC<AvatarsProps> = (props) => {
         </View>
       </View>
 
-      <Image source={{ uri: currentImage.url }} style={styles.avatarImage} />
+      <Image
+        source={{ uri: props.currentAvatar.url }}
+        style={styles.avatarImage}
+      />
     </View>
   );
 };
 
-export default Avatars;
+export default AvatarsNameAndGoBackButton;

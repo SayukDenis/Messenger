@@ -60,13 +60,13 @@ const Albums: React.FC<AlbumsProps> = (props) => {
                     event.nativeEvent.pageY + 0.05 * screenHeight
                   );
                 } else {
-                  if (!props.selectedAlbums?.includes(item)) {
+                  if (!props.selectedAlbums.includes(item)) {
                     props.setSelectedAlbums(
-                      props.selectedAlbums?.concat([item])
+                      props.selectedAlbums.concat([item])
                     );
                   } else {
                     props.setSelectedAlbums(
-                      props.selectedAlbums?.filter(
+                      props.selectedAlbums.filter(
                         (photoOrVideo) => photoOrVideo !== item
                       )
                     );

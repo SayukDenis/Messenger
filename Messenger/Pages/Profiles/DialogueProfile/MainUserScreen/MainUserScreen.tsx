@@ -259,13 +259,11 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           }}
           onAlbumPress={(item: Album) => {
             if (isAlbumSelectionVisible) {
-              if (selectedAlbums?.includes(item)) {
-                setSelectedAlbums(selectedAlbums?.concat([item]));
+              if (!selectedAlbums.includes(item)) {
+                setSelectedAlbums(selectedAlbums.concat([item]));
               } else {
                 setSelectedAlbums(
-                  selectedAlbums?.filter(
-                    (photoOrVideo) => photoOrVideo !== item
-                  )
+                  selectedAlbums.filter((photoOrVideo) => photoOrVideo !== item)
                 );
               }
             } else {

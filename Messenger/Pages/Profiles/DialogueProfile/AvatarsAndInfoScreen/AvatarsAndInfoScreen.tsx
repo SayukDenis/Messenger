@@ -11,8 +11,10 @@ import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { Album, tempUser, user } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
-import Avatars from "./Avatars";
+import AvatarsNameAndGoBackButton from "./AvatarsNameAndGoBackButton";
 import TopMenuWhenSelection from "../../SemiComponents/TopMenuWhenSelection";
+import NumberUsernameAndBio from "./NumberUsernameAndBio";
+import CurrentAvatarBar from "./CurrentAvatarBar";
 
 type AvatarsAndInfoScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -35,6 +37,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
     useState(false);
   const [isDeleteSelectedAlbumsPressed, setIsDeleteSelectedAlbumsPressed] =
     useState(false);
+  const [currentAvatar, setCurrentAvatar] = useState(user.avatars[0]);
 
   const isFocused = useIsFocused();
 
@@ -125,6 +128,8 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         text="Do you really want to delete selected albums?"
       />
 
+      <CurrentAvatarBar currentAvatar={currentAvatar} />
+
       <TopMenuWhenSelection
         isVisible={isAlbumSelectionVisible}
         quantityOfSelectedItems={selectedAlbums.length}
@@ -182,11 +187,14 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           style={[styles.blurEffect, { zIndex: 3 }]}
         />
 
-        <Avatars
+        <AvatarsNameAndGoBackButton
           onGoBackPress={() => {
             navigation.goBack();
           }}
+          currentAvatar={currentAvatar}
         />
+
+        <NumberUsernameAndBio />
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
@@ -198,9 +206,19 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           setPressedMultimediaButton={(value: string) => {
             setPressedMultimediaButton(value);
           }}
-          onAlbumPress={(value: Album) => {
-            tempUser.selectedAlbum = value;
-            navigation.navigate("AlbumFilling" as never);
+          onAlbumPress={(item: Album) => {
+            if (isAlbumSelectionVisible) {
+              if (!selectedAlbums.includes(item)) {
+                setSelectedAlbums(selectedAlbums.concat([item]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums.filter((photoOrVideo) => photoOrVideo !== item)
+                );
+              }
+            } else {
+              tempUser.selectedAlbum = item;
+              navigation.navigate("AlbumFilling" as never);
+            }
           }}
           onNewAlbumPress={() => {
             navigation.navigate("NewAlbumScreen" as never);

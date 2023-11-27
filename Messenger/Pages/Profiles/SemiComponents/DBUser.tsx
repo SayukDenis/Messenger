@@ -12,6 +12,9 @@ export const tempUser: tempUserProps = {
 
 export interface UserProps {
   ImagePath: string;
+  phoneNumber: string;
+  username: string;
+  bio: string;
   MembersName: Array<Nicknames>;
   selectedInterval: number;
   isMuted: boolean;
@@ -34,6 +37,9 @@ export interface UserProps {
 
 export const user: UserProps = {
   ImagePath: "https://picsum.photos/id/1084/536/354",
+  phoneNumber: "+380 12 345 67 89",
+  username: "myUsername",
+  bio: "Lorem ipsum dolor sit amet",
   MembersName: [
     { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
     { name: "Aboba ABOBA aboba ABOBA AboBA" },
@@ -52,6 +58,15 @@ export const user: UserProps = {
   clearChatText: "Do you really want to clear chat?",
   removalText: "Do you really want to delete",
   avatars: [
+    {
+      url: "https://fastly.picsum.photos/id/866/400/400.jpg?hmac=oHJBlOQwtaF75oX43dFtPf4At_GRLEx9FQqkkfpLR5U",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/1027/200/300.jpg?hmac=WCxdERZ7sgk4jhwpfIZT0M48pctaaDcidOi3dKSHJYY",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/221/400/400.jpg?hmac=inxjrW3lVI716UFQqWe0R7u-0YXiXoD5LraYwPvV51c",
+    },
     {
       url: "https://fastly.picsum.photos/id/866/400/400.jpg?hmac=oHJBlOQwtaF75oX43dFtPf4At_GRLEx9FQqkkfpLR5U",
     },
