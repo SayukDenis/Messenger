@@ -15,6 +15,7 @@ import AvatarsNameAndGoBackButton from "./AvatarsNameAndGoBackButton";
 import TopMenuWhenSelection from "../../SemiComponents/TopMenuWhenSelection";
 import NumberUsernameAndBio from "./NumberUsernameAndBio";
 import CurrentAvatarBar from "./CurrentAvatarBar";
+import AnimatedMessageAboutCopying from "./AnimatedMessageAboutCopying";
 
 type AvatarsAndInfoScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -38,10 +39,16 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
   const [isDeleteSelectedAlbumsPressed, setIsDeleteSelectedAlbumsPressed] =
     useState(false);
   const [currentAvatar, setCurrentAvatar] = useState(user.avatars[0]);
+  const [isAnyTextCopied, setIsAnyTextCopied] = useState(false);
+  const [phoneUsernameOrBioCopied, setPhoneUsernameOrBioCopied] = useState("");
 
   const isFocused = useIsFocused();
 
   useEffect(() => {}, [isFocused]);
+
+  useEffect(() => {
+    console.log(isAnyTextCopied);
+  });
 
   var blursConditions: boolean[] = [
     isPhotoAlbumSelectionVisible,
@@ -128,8 +135,6 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         text="Do you really want to delete selected albums?"
       />
 
-      <CurrentAvatarBar currentAvatar={currentAvatar} />
-
       <TopMenuWhenSelection
         isVisible={isAlbumSelectionVisible}
         quantityOfSelectedItems={selectedAlbums.length}
@@ -192,9 +197,32 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
             navigation.goBack();
           }}
           currentAvatar={currentAvatar}
+          onRightPress={() => {
+            setCurrentAvatar(
+              user.avatars[
+                (user.avatars.indexOf(currentAvatar) + 1) % user.avatars.length
+              ]
+            );
+          }}
+          onLeftPress={() => {
+            setCurrentAvatar(
+              user.avatars[
+                user.avatars.indexOf(currentAvatar) - 1 > -1
+                  ? user.avatars.indexOf(currentAvatar) - 1
+                  : user.avatars.length - 1
+              ]
+            );
+          }}
         />
 
-        <NumberUsernameAndBio />
+        <CurrentAvatarBar currentAvatar={currentAvatar} />
+
+        <NumberUsernameAndBio
+          onUsernameAndBioPress={(text: string) => {
+            setIsAnyTextCopied(true);
+            setPhoneUsernameOrBioCopied(text);
+          }}
+        />
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
@@ -234,6 +262,14 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           setSelectedAlbums={(value: Array<Album>) => setSelectedAlbums(value)}
         />
       </ScrollView>
+
+      <AnimatedMessageAboutCopying
+        isVisible={isAnyTextCopied}
+        onEnd={() => {
+          setIsAnyTextCopied(false);
+        }}
+        text={phoneUsernameOrBioCopied + " is copied"}
+      />
     </View>
   );
 };

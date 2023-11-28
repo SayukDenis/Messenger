@@ -38,8 +38,8 @@ export interface UserProps {
 export const user: UserProps = {
   ImagePath: "https://picsum.photos/id/1084/536/354",
   phoneNumber: "+380 12 345 67 89",
-  username: "myUsername",
-  bio: "Lorem ipsum dolor sit amet",
+  username: "@myUsername",
+  bio: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
   MembersName: [
     { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
     { name: "Aboba ABOBA aboba ABOBA AboBA" },
@@ -49,7 +49,7 @@ export const user: UserProps = {
   selectedInterval: 0,
   isMuted: false,
   isBlocked: false,
-  profileName: "Aboba boba abob bibob",
+  profileName: "Longjj profile namejjjjj",
   lastTimeOnline: "Був online давно",
   MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,

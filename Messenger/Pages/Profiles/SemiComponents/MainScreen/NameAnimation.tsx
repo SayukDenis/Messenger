@@ -97,7 +97,7 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
       >
         <Text
           numberOfLines={1}
-          style={[props.style, { height: props.style.fontSize * 1.23 }]}
+          style={[props.style, { height: props.style.fontSize * 1.3 }]}
         >
           {props.primaryTitle}
         </Text>
@@ -117,7 +117,7 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
             props.style,
             {
               position: "absolute",
-              top: -props.style.fontSize * 1.23,
+              top: -props.style.fontSize * 1.3,
             },
           ]}
         >

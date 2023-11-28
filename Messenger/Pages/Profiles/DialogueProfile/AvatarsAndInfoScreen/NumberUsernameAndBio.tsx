@@ -4,11 +4,15 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { user } from "../../SemiComponents/DBUser";
+import * as Clipboard from "expo-clipboard";
+import Modal from "react-native-modal";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
 
-interface NumberUsernameAndBioProps {}
+interface NumberUsernameAndBioProps {
+  onUsernameAndBioPress: (text: string) => void;
+}
 
 const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
   const [bioTextHeight, setBioTextHeight] = useState(0);
@@ -25,6 +29,10 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
     userInfoMainContainerHeight += bioTextHeight;
   }
 
+  const copyToClipboard = (text: string) => {
+    Clipboard.setString(text);
+  };
+
   return (
     <>
       {(user.username || user.phoneNumber || user.bio) && (
@@ -40,7 +48,7 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
               onLayout={(event) => {
                 setBioTextHeight(
                   Math.max(
-                    event.nativeEvent.layout.height * 1.5,
+                    event.nativeEvent.layout.height * 1.75,
                     0.05 * screenHeight
                   )
                 );
@@ -79,10 +87,16 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
             {user.username && (
               <>
                 {/* Username */}
-                <TouchableOpacity style={styles.infoView}>
+                <TouchableOpacity
+                  onPress={() => {
+                    copyToClipboard(user.username);
+                    props.onUsernameAndBioPress("Username");
+                  }}
+                  style={styles.infoView}
+                >
                   <Text style={styles.infoTitle}>Username: </Text>
                   <Text style={[styles.infoTitle, { color: "black" }]}>
-                    @{user.username}
+                    {user.username}
                   </Text>
                 </TouchableOpacity>
 
@@ -94,6 +108,10 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
               <>
                 {/* Bio */}
                 <TouchableOpacity
+                  onPress={() => {
+                    copyToClipboard(user.bio);
+                    props.onUsernameAndBioPress("Bio");
+                  }}
                   style={[styles.bioInfoView, { height: bioTextHeight }]}
                 >
                   <Text style={[styles.infoTitle, { color: "black" }]}>

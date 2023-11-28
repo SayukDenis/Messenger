@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   avatarMainContainer: {
     width: screenWidth,
-    height: 0.4 * screenHeight,
+    height: 0.5 * screenHeight,
   },
   profileTitle: {
     fontSize: 27,
@@ -99,4 +99,48 @@ export const styles = StyleSheet.create({
     borderRadius: 17,
   },
   avatarBarElement: { height: "100%", position: "absolute", borderRadius: 17 },
+  opacityToSeeNextPhoto: {
+    width: 0.65 * screenWidth,
+    height: 0.5 * screenHeight,
+    zIndex: 2,
+    position: "absolute",
+    alignSelf: "flex-end",
+  },
+  opacityToSeePreviousPhoto: {
+    width: 0.35 * screenWidth,
+    height: 0.4 * screenHeight,
+    top: 0.1 * screenHeight,
+    zIndex: 2,
+    position: "absolute",
+    alignSelf: "flex-start",
+  },
+  additionalOpacityToSeePreviousPhoto: {
+    width: 0.2 * screenWidth,
+    height: 0.1 * screenHeight,
+    left: 0.15 * screenWidth,
+    zIndex: 2,
+    position: "absolute",
+    alignSelf: "flex-start",
+  },
+  containerForAnimatedMessage: {
+    backgroundColor: "rgb(231, 230, 228)",
+    width: 0.6 * screenWidth,
+    height: 0.05 * screenHeight,
+    left: 0.2 * screenWidth,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 25,
+    borderWidth: 0.5,
+    borderColor: "rgb(161, 156, 145)",
+    flexDirection: "row",
+  },
+  animatedMessageText: {
+    fontSize: 17,
+    fontFamily: "JacquesFrancois-Regular",
+  },
+  copyIcon: {
+    width: 20 * figmaWidthPixelConverter,
+    height: 20 * figmaWidthPixelConverter,
+    color: "black",
+  },
 });
