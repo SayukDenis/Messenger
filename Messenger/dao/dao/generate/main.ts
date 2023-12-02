@@ -14,7 +14,6 @@ import Creator from './Creator';
 import { generateSqlTableFields } from './generateSQL';
 import * as FileSystem from 'expo-file-system';
 
-
 async function readConfigFileAsync() {
   try {
     const configContent = await FileSystem.readAsStringAsync(FileSystem.documentDirectory + './detail_conection.json', {
@@ -28,7 +27,6 @@ async function readConfigFileAsync() {
     console.error(error);
   }
 }
-
 // Call the function in your component or wherever needed
 export function main() {
 
@@ -42,7 +40,10 @@ export function main() {
   const database = SQLite.openDatabase(databaseName, databaseVersion);
   //add schemes of all classesF
   addClasses();
-  createTable();
+  const models: Map<string, string> = createTable();
+  for (const model of models)
+    console.log(`Name table: ${model[0]} have sql code:\n${model[1]}\n\n`)
+  console.log("\nBlayt2\n");
 }
 
 function addClasses() {
@@ -59,7 +60,7 @@ function addClasses() {
   creator.addClass(AuditLog);
 }
 
-function createTable() {
+function createTable(): Map<string, string> {
   //get out classes
   const creator = Creator.getInstance();
   // Create object for each model and add into models array 
@@ -72,18 +73,36 @@ function createTable() {
       },
     ])
   );
+  console.log("\nBlayt212 "+modelsMap.keys.length);
   //add sql code and priority
   generateSqlTableFields(creator.outClass(), modelsMap);
-  console.log("\nExit\n");
-  for (let model of modelsMap) {
-    console.log(model[1].sqlCodes);
-  }
-  //TODO 
-  //to create from sqlCodes one string
-  //const createTableQuery = `CREATE TABLE ${schema.name} (${fields.join(', ')})`;
+  console.log("\nExit\n"+modelsMap.keys.length);
 
+  //create from sqlCodes one string
+  const modelsSqlMap = new Map<string, string>;
+  for (let modelName in modelsMap) {
+    const fields = modelsMap.get(modelName)?.sqlCodes;
+    if (!fields || fields.length === 0) {
+      throw Error("Dao (main.ts): sqlCodes is empty.")
+    }
+    console.log("\nBlayt\n");
+    fields.sort(sortRows);
+
+    modelsSqlMap.set(modelName, `CREATE TABLE ${modelName} (${fields?.join(', ')})`);
+  }
+  return modelsSqlMap;
   //sort by priority and excecute code for each table:
   //for (const model of models.values()) {
   //TODO
   //}
 }
+// A function for sorting an array of strings
+const sortRows = (a: string, b: string): number => {
+  if (a.includes("FOREIGN KEY")) {
+    return -1;
+  } else if (a.includes("PRIMARY KEY")) {
+    return 1;
+  } else {
+    return 0;
+  }
+};

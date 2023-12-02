@@ -11,7 +11,7 @@ export default class Dialogue extends Model {
         this.secondUser = secondUser;
         this.chat = chat;
     }
-    chatId?: number;
+    dialogueId?: number;
     firstUser!: User;
     secondUser!: User;
     messages: Array<Message> = new Array;

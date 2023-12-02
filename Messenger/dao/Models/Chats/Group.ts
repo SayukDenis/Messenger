@@ -10,7 +10,7 @@ export default class Group extends Model {
         this.title = title;
         this.chat = chat;
     }
-    chatId?: number;
+    groupId?: number;
     title!: string;
     adminUser: Array<User> = new Array;
     users: Array<User> = new Array;

@@ -9,7 +9,7 @@ export default class Channel extends Model {
         this.title = title;
         this.chat = chat;
     }
-    chatId?: number;
+    channelId?: number;
     title!: string;
     adminUser: Array<User> = new Array;
     users: Array<User> = new Array;

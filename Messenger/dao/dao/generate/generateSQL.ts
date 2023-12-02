@@ -43,6 +43,7 @@ export function generateSqlTableFields(
             sqlCodes.push(fieldDeclaration);
         }
     }
+    console.log("fuck" +modelsMap.values.length);
 }
 function mapTypeToSQL(modelsMap: Map<string, { sqlCodes: string[]; priority: number }>,
     schema: {
