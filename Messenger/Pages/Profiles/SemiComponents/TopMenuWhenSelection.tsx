@@ -22,7 +22,7 @@ const TopMenuWhenSelection: React.FC<TopMenuWhenSelectionProps> = (props) => {
       {props.isVisible && (
         <>
           <View
-            style={[styles.topToolBar, { position: "absolute", zIndex: 3 }]}
+            style={[styles.topToolBar, { position: "absolute", zIndex: 1 }]}
           >
             {/* Delete all button */}
             <TouchableOpacity

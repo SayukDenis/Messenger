@@ -108,7 +108,8 @@ export const styles = StyleSheet.create({
   },
   circleAroundColorPicker: {
     borderRadius: 100,
-    height: "90%",
+    height: 0.22 * screenHeight,
+    width: 0.22 * screenHeight,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -148,7 +149,7 @@ export const styles = StyleSheet.create({
   },
   basicColorsContainer: {
     width: "100%",
-    height: "40%",
+    height: "43%",
     flexWrap: "wrap",
     gap: 0.013 * screenWidth,
     flexDirection: "row",

@@ -5,13 +5,13 @@ import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { user } from "../../SemiComponents/DBUser";
 import * as Clipboard from "expo-clipboard";
-import Modal from "react-native-modal";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
 
 interface NumberUsernameAndBioProps {
   onUsernameAndBioPress: (text: string) => void;
+  onNumberPress: () => void;
 }
 
 const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
@@ -37,6 +37,7 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
     <>
       {(user.username || user.phoneNumber || user.bio) && (
         <>
+          {/* Finding user's bio height */}
           <View
             style={[
               styles.infoView,
@@ -68,7 +69,12 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
             {user.phoneNumber && (
               <>
                 {/* Number */}
-                <TouchableOpacity style={styles.infoView}>
+                <TouchableOpacity
+                  style={styles.infoView}
+                  onPress={() => {
+                    props.onNumberPress();
+                  }}
+                >
                   <Text style={styles.infoTitle}>Number: </Text>
                   <Text
                     style={[

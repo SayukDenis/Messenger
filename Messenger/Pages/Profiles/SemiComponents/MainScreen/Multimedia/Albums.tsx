@@ -13,15 +13,14 @@ import { Album, user } from "../../DBUser";
 import styles from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
+import { GestureResponderEvent } from "react-native-modal";
 
 interface AlbumsProps {
   onNewAlbumPress: () => void;
-  onAlbumLongPress: (value: Album) => void;
+  onAlbumLongPress: (value: Album, event: GestureResponderEvent) => void;
   onAlbumPress: (value: Album) => void;
-  setPositionYOfLongPressedAlbum: (value: number) => void;
-  isAlbumSelectionVisible: boolean;
-  selectedAlbums: Array<Album>;
-  setSelectedAlbums: (value: Array<Album>) => void;
+  areCheckMarksVisible: boolean;
+  isCheckmarkVisible: (value: Album) => boolean;
 }
 
 const screenHeight: number = Dimensions.get("screen").height;
@@ -54,24 +53,7 @@ const Albums: React.FC<AlbumsProps> = (props) => {
                 props.onAlbumPress(item);
               }}
               onLongPress={(event) => {
-                if (!props.isAlbumSelectionVisible) {
-                  props.onAlbumLongPress(item);
-                  props.setPositionYOfLongPressedAlbum(
-                    event.nativeEvent.pageY + 0.05 * screenHeight
-                  );
-                } else {
-                  if (!props.selectedAlbums.includes(item)) {
-                    props.setSelectedAlbums(
-                      props.selectedAlbums.concat([item])
-                    );
-                  } else {
-                    props.setSelectedAlbums(
-                      props.selectedAlbums.filter(
-                        (photoOrVideo) => photoOrVideo !== item
-                      )
-                    );
-                  }
-                }
+                props.onAlbumLongPress(item, event);
               }}
               style={[styles.albumContainer]}
             >
@@ -89,9 +71,9 @@ const Albums: React.FC<AlbumsProps> = (props) => {
                 >
                   {item.photosAndVideos.length}
                 </Text>
-                {props.isAlbumSelectionVisible && (
+                {props.areCheckMarksVisible && (
                   <View style={styles.checkmarkContainerForAlbum}>
-                    {props.selectedAlbums?.includes(item) && (
+                    {props.isCheckmarkVisible(item) && (
                       <CheckmarkIcon style={styles.checkmarkIcon} />
                     )}
                   </View>

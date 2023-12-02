@@ -26,7 +26,7 @@ const AnimatedMessageAboutCopying: React.FC<
 
       Animated.timing(animatedValue, {
         toValue: 1,
-        duration: 300,
+        duration: 150,
         useNativeDriver: false,
       }).start(() => {
         setTimeout(() => {
@@ -55,7 +55,7 @@ const AnimatedMessageAboutCopying: React.FC<
 
   const margin = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [screenHeight, 0.93 * screenHeight],
+    outputRange: [screenHeight, 0.9 * screenHeight],
   });
 
   return (
@@ -68,6 +68,7 @@ const AnimatedMessageAboutCopying: React.FC<
             },
           ],
           position: "absolute",
+          zIndex: 2,
         }}
       >
         <View style={styles.containerForAnimatedMessage}>

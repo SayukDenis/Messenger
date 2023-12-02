@@ -11,6 +11,7 @@ import Links from "./Links";
 import Albums from "./Albums";
 import { Album, PhotoOrVideo, user } from "../../DBUser";
 import Blur from "../Blur";
+import { GestureResponderEvent } from "react-native-modal";
 
 interface MultimediaProps {
   isPhotoAlbumSelectionVisible: boolean;
@@ -18,12 +19,10 @@ interface MultimediaProps {
   pressedMultimediaButton: string;
   setPressedMultimediaButton: (value: string) => void;
   onNewAlbumPress: () => void;
-  setLongPressedAlbum: (value: Album) => void;
-  setPositionYOfLongPressedAlbum: (value: number) => void;
+  onAlbumLongPress: (value: Album, event: GestureResponderEvent) => void;
   isAlbumSelectionVisible: boolean;
-  selectedAlbums: Array<Album>;
-  setSelectedAlbums: (value: Array<Album>) => void;
   onAlbumPress: (value: Album) => void;
+  isAlbumCheckMarkVisible: (value: Album) => boolean;
 }
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
@@ -62,16 +61,16 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
           onNewAlbumPress={() => {
             props.onNewAlbumPress();
           }}
-          onAlbumLongPress={(value: Album) => {
-            props.setLongPressedAlbum(value);
+          onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
+            props.onAlbumLongPress(value, event);
           }}
           onAlbumPress={(value: Album) => {
             props.onAlbumPress(value);
           }}
-          setPositionYOfLongPressedAlbum={props.setPositionYOfLongPressedAlbum}
-          isAlbumSelectionVisible={props.isAlbumSelectionVisible}
-          selectedAlbums={props.selectedAlbums}
-          setSelectedAlbums={props.setSelectedAlbums}
+          areCheckMarksVisible={props.isAlbumSelectionVisible}
+          isCheckmarkVisible={(value: Album) =>
+            props.isAlbumCheckMarkVisible(value)
+          }
         />
       )}
       {props.pressedMultimediaButton == "Files" && <Files />}

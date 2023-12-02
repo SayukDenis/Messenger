@@ -98,8 +98,8 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                tempUser.selectedBranch = item;
-                navigation.navigate("ChangeBranchScreen" as never);
+                tempUser.selectedBranchParent = item;
+                navigation.navigate("ChangeBranchParentScreen" as never);
               }}
               style={styles.settingOption}
             >

@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   TouchableOpacity,
@@ -10,18 +10,15 @@ import {
 } from "react-native";
 import { styles } from "../Styles";
 import { useIsFocused } from "@react-navigation/native";
-import { ScrollView } from "react-native-gesture-handler";
-import Blur from "../../../SemiComponents/MainScreen/Blur";
-import RemovalApproval from "../../../SemiComponents/MainScreen/RemovalApproval";
-import { user, BranchParent } from "../../../SemiComponents/DBUser";
 import PlusIcon from "../Icons/PlusIcon";
 import BinIcon from "../../../SemiComponents/MainScreen/Icons/BinIcon";
-import { tempUser } from "../../../SemiComponents/DBUser";
+import { BranchChild, tempUser } from "../../../SemiComponents/DBUser";
 
 interface BranchChildrenListProps {
   onPlusBranchPress: () => void;
   isSomeSelectionVisible: boolean;
   onBinPress: (value: string) => void;
+  onChildBranchPress: (child: BranchChild) => void;
 }
 
 const screenHeight: number = Dimensions.get("screen").height;
@@ -60,9 +57,9 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
       </View>
 
       <FlatList
-        data={tempUser.selectedBranch.children}
+        data={tempUser.selectedBranchParent.children}
         keyExtractor={(item) =>
-          tempUser.selectedBranch.children.indexOf(item).toString()
+          tempUser.selectedBranchParent.children.indexOf(item).toString()
         }
         horizontal={false}
         numColumns={1}
@@ -73,7 +70,12 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
           zIndex: 0,
         }}
         renderItem={({ item }) => (
-          <View style={styles.settingOption}>
+          <TouchableOpacity
+            style={styles.settingOption}
+            onPress={() => {
+              props.onChildBranchPress(item);
+            }}
+          >
             <View
               style={[
                 styles.branchAvatarInList,
@@ -97,7 +99,7 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
             >
               <BinIcon style={styles.binIcon} />
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

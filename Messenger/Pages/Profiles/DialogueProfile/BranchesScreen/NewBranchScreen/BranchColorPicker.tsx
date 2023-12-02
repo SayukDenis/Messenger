@@ -10,8 +10,8 @@ import {
   Dimensions,
 } from "react-native";
 import { styles } from "../Styles";
-import ColorPicker from "react-native-wheel-color-picker";
 import tinycolor from "tinycolor2";
+import ColorPicker from "react-native-wheel-color-picker";
 
 interface BranchColorPickerProps {
   isVisible: boolean;
@@ -21,24 +21,8 @@ interface BranchColorPickerProps {
 
 const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
   const colorPickerTitle: string = "Custom";
-  const [color, setColor] = useState("#7c4f91");
+  const [color, setColor] = useState(props.pickedColor);
   const [inputText, setInputText] = useState("");
-  const [isKeyboardOpened, setIsKeyboardOpened] = useState(false);
-
-  // To adjust circle sizes when keyboard is opened or closed
-  const [circleWidth, setcircleWidth] = useState(
-    0.225 * Dimensions.get("screen").height
-  );
-
-  Keyboard.addListener("keyboardDidShow", (event: KeyboardEvent) => {
-    setcircleWidth(0.2 * Dimensions.get("screen").height);
-    setIsKeyboardOpened(true);
-  });
-
-  Keyboard.addListener("keyboardDidHide", (event: KeyboardEvent) => {
-    setcircleWidth(0.225 * Dimensions.get("screen").height);
-    setIsKeyboardOpened(false);
-  });
 
   useEffect(() => {
     if (inputText.length === 6 && tinycolor(inputText).isValid()) {
@@ -64,16 +48,12 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
               { backgroundColor: color },
             ]}
           >
-            <View
-              style={[styles.circleAroundColorPicker, { width: circleWidth }]}
-            >
+            <View style={styles.circleAroundColorPicker}>
               <View
                 style={[
                   styles.colorPickerElement,
                   {
-                    right: isKeyboardOpened
-                      ? 0.032 * Dimensions.get("screen").width
-                      : 0.005 * Dimensions.get("screen").width,
+                    right: 0.005 * Dimensions.get("screen").width,
                   },
                 ]}
               >
@@ -81,12 +61,8 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
                   onColorChange={(color) => {
                     setColor(color);
                   }}
-                  thumbSize={
-                    isKeyboardOpened
-                      ? 0.17 * Dimensions.get("screen").width
-                      : 0.11 * Dimensions.get("screen").width
-                  }
-                  sliderSize={isKeyboardOpened ? 25 : 27}
+                  thumbSize={0.11 * Dimensions.get("screen").width}
+                  sliderSize={27}
                   row={true}
                   gapSize={0.015 * Dimensions.get("screen").width}
                   swatches={false}

@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
@@ -14,6 +14,9 @@ import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { Album, tempUser, user } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
+import { GestureResponderEvent } from "react-native-modal";
+
+const screenHeight = Dimensions.get("screen").height;
 
 type MainUserScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -268,21 +271,35 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
               }
             } else {
               tempUser.selectedAlbum = item;
-              navigation.navigate("AlbumFilling" as never);
+              navigation.navigate("Album" as never);
             }
           }}
           onNewAlbumPress={() => {
             navigation.navigate("NewAlbumScreen" as never);
           }}
-          setLongPressedAlbum={(value: Album) => {
+          onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
             setLongPressedAlbum(value);
+            if (!isAlbumSelectionVisible) {
+              setLongPressedAlbum(value);
+              setPositionYOfLongPressedAlbum(
+                event.nativeEvent.pageY + 0.05 * screenHeight
+              );
+            } else {
+              if (!selectedAlbums.includes(value)) {
+                setSelectedAlbums(selectedAlbums.concat([value]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums.filter(
+                    (photoOrVideo) => photoOrVideo !== value
+                  )
+                );
+              }
+            }
           }}
-          setPositionYOfLongPressedAlbum={(value: number) =>
-            setPositionYOfLongPressedAlbum(value)
-          }
           isAlbumSelectionVisible={isAlbumSelectionVisible}
-          selectedAlbums={selectedAlbums}
-          setSelectedAlbums={(value: Array<Album>) => setSelectedAlbums(value)}
+          isAlbumCheckMarkVisible={(value: Album) => {
+            return selectedAlbums.includes(value);
+          }}
         />
       </ScrollView>
     </View>

@@ -8,10 +8,10 @@ export default function ChooseAuthor() {
   const navigation = useNavigation();
 
   const Viktor = () => {
-    navigation.navigate("MainGroupPage" as never);
+    navigation.navigate("GroupNavigation" as never);
   };
   const Oleksii = () => {
-    navigation.navigate("MainUserScreen" as never);
+    navigation.navigate("UserNavigation" as never);
   };
 
   return (

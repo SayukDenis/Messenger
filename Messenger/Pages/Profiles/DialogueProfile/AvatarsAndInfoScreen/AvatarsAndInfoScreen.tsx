@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
@@ -16,6 +16,10 @@ import TopMenuWhenSelection from "../../SemiComponents/TopMenuWhenSelection";
 import NumberUsernameAndBio from "./NumberUsernameAndBio";
 import CurrentAvatarBar from "./CurrentAvatarBar";
 import AnimatedMessageAboutCopying from "./AnimatedMessageAboutCopying";
+import CallingMenu from "./CallingMenu";
+import { GestureResponderEvent } from "react-native-modal";
+
+const screenHeight = Dimensions.get("screen").height;
 
 type AvatarsAndInfoScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -41,6 +45,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
   const [currentAvatar, setCurrentAvatar] = useState(user.avatars[0]);
   const [isAnyTextCopied, setIsAnyTextCopied] = useState(false);
   const [phoneUsernameOrBioCopied, setPhoneUsernameOrBioCopied] = useState("");
+  const [isNumberPressed, setIsNumberPressed] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -50,14 +55,15 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
     console.log(isAnyTextCopied);
   });
 
-  var blursConditions: boolean[] = [
+  const blursConditions: boolean[] = [
     isPhotoAlbumSelectionVisible,
     longPressedAlbum != null,
     isDeleteAlbumPressed,
     isDeleteAllAlbumsPressed,
     isDeleteSelectedAlbumsPressed,
+    isNumberPressed,
   ];
-  var blursOnPress: (() => void)[] = [
+  const blursOnPress: (() => void)[] = [
     () => {
       setIsPhotoAlbumSelectionVisible(false);
     },
@@ -72,6 +78,9 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
     },
     () => {
       setIsDeleteSelectedAlbumsPressed(false);
+    },
+    () => {
+      setIsNumberPressed(false);
     },
   ];
 
@@ -156,6 +165,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         }}
         onSelectAlbumPress={() => {
           setIsAlbumSelectionVisible(true);
+          setSelectedAlbums(selectedAlbums?.concat([longPressedAlbum]));
           setLongPressedAlbum(null);
         }}
       />
@@ -167,6 +177,17 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         }}
         onForwardPress={() => {
           alert("Forward album...");
+        }}
+      />
+
+      <CallingMenu
+        isVisible={isNumberPressed}
+        onCopyPress={() => {
+          setIsAnyTextCopied(true);
+          setPhoneUsernameOrBioCopied("Number");
+        }}
+        onCancelPress={() => {
+          setIsNumberPressed(false);
         }}
       />
 
@@ -222,6 +243,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
             setIsAnyTextCopied(true);
             setPhoneUsernameOrBioCopied(text);
           }}
+          onNumberPress={() => setIsNumberPressed(true)}
         />
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
@@ -245,21 +267,35 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
               }
             } else {
               tempUser.selectedAlbum = item;
-              navigation.navigate("AlbumFilling" as never);
+              navigation.navigate("Album" as never);
             }
           }}
           onNewAlbumPress={() => {
             navigation.navigate("NewAlbumScreen" as never);
           }}
-          setLongPressedAlbum={(value: Album) => {
-            setLongPressedAlbum(value);
-          }}
-          setPositionYOfLongPressedAlbum={(value: number) =>
-            setPositionYOfLongPressedAlbum(value)
-          }
           isAlbumSelectionVisible={isAlbumSelectionVisible}
-          selectedAlbums={selectedAlbums}
-          setSelectedAlbums={(value: Array<Album>) => setSelectedAlbums(value)}
+          onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
+            setLongPressedAlbum(value);
+            if (!isAlbumSelectionVisible) {
+              setLongPressedAlbum(value);
+              setPositionYOfLongPressedAlbum(
+                event.nativeEvent.pageY + 0.05 * screenHeight
+              );
+            } else {
+              if (!selectedAlbums.includes(value)) {
+                setSelectedAlbums(selectedAlbums.concat([value]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums.filter(
+                    (photoOrVideo) => photoOrVideo !== value
+                  )
+                );
+              }
+            }
+          }}
+          isAlbumCheckMarkVisible={(value: Album) => {
+            return selectedAlbums.includes(value);
+          }}
         />
       </ScrollView>
 

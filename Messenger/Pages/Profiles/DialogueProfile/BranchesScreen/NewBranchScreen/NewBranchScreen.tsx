@@ -47,7 +47,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
   const [pickedEmoji, setPickedEmoji] = useState("");
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
-  const [pickedColor, setPickedColor] = useState("rgb(62, 62, 62)");
+  const [pickedColor, setPickedColor] = useState("rgb(124, 79, 145)");
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
 
@@ -91,7 +91,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
           });
 
           if (isValid) {
-            if (tempUser.selectedBranch == null) {
+            if (tempUser.selectedBranchParent == null) {
               user.branchParents.push(
                 new BranchParent(
                   branchName,
@@ -103,11 +103,11 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
 
               user.branchParents.sort((a, b) => a.name.localeCompare(b.name));
             } else {
-              tempUser.selectedBranch.children.push(
+              tempUser.selectedBranchParent.children.push(
                 new BranchChild(branchName, pickedEmoji, pickedColor)
               );
 
-              tempUser.selectedBranch.children.sort((a, b) =>
+              tempUser.selectedBranchParent.children.sort((a, b) =>
                 a.name.localeCompare(b.name)
               );
             }

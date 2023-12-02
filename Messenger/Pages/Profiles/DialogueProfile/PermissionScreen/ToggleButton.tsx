@@ -1,25 +1,18 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  ViewStyle,
-  TouchableOpacity,
-  Animated,
-  Dimensions,
-} from "react-native";
+import { View, TouchableOpacity, Animated, Dimensions } from "react-native";
 import { styles } from "./Styles";
 
+const screenWidth: number = Dimensions.get("screen").width;
+const screenHeight: number = Dimensions.get("screen").height;
+
 interface ToggleButtonProps {
-  containerStyle?: ViewStyle;
-  circleStyle?: ViewStyle;
   isEnabled: boolean;
   Toggle: (value: boolean) => void;
 }
 
 const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
-  const screenWidth: number = Dimensions.get("screen").width;
-
   const [currentPosition, setCurrentPosition] = useState(
     props.isEnabled ? "Right" : "Left"
   );
@@ -48,12 +41,12 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
 
     const marginFromRightToLeft = animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0.075 * screenWidth, 0],
+      outputRange: [0.16 * screenWidth - 0.033 * screenHeight, 0],
     });
 
     const marginFromLeftToRight = animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 0.075 * screenWidth],
+      outputRange: [0, 0.16 * screenWidth - 0.033 * screenHeight],
     });
 
     return (
@@ -71,7 +64,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
                 ? "rgb(42, 223, 71)"
                 : "rgb(161, 156, 145)",
             },
-            props.containerStyle,
           ]}
         >
           <Animated.View
@@ -86,7 +78,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
               ],
             }}
           >
-            <View style={[styles.toggleButtonCircle, props.circleStyle]} />
+            <View style={styles.toggleButtonCircle} />
           </Animated.View>
         </View>
       </TouchableOpacity>
