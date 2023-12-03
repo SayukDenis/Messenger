@@ -15,7 +15,7 @@ const ButtonList: React.FC<any> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     ))}
-     <Text style= {StyleCentre.text}>Help</Text>
+     <Text style= {StyleButtonList.styleButListText}>Help</Text>
                                 <TouchableOpacity style={StyleButtonList.button} onPress={() => navigation.navigate('Question page')}>
                                         <Text>Question in Telintik</Text>
                                 </TouchableOpacity>

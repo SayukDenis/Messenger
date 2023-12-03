@@ -41,17 +41,14 @@ for (let i = 1; i <= 14; i++) {
     const user = new User(`User ${i.toString()}`,images[i-1] , i,(Math.floor(Math.random() * 3) + 0) as StatusEnum);
     users.push(user);
   }
- for (let i = 15; i <= 28; i++) {
-    const user = new User(`User ${i.toString()}`,images[i-15] , i,(Math.floor(Math.random() * 3) + 0) as StatusEnum);
-    users.push(user);
-  }
+
 let chats: Chat[] = [];
-for (let i = 0; i < 28; i++) {
+for (let i = 0; i < 14; i++) {
     let map:Map<number,number>=new Map<number,number>();
     
     let messages:Message[]=[];
     const now = new Date(); 
-    now.setDate(now.getDate()-1111);
+    now.setDate(now.getDate());
     const numberOfMessages:number = Math.floor(Math.random() * (dialog.length + 1)); 
     for(let j:number=0;j<numberOfMessages;j++){
         messages.push(
@@ -72,7 +69,7 @@ let folder1:Folder=new Folder("All Chats",chats)
 
 let folders:Folder[]=[];
 folders.push(folder1);
-for (let i = 1; i <= 75; i++) {
+for (let i = 1; i <= 2; i++) {
   const randomChatCount = Math.floor(Math.random() * (chats.length + 1));
   const randomChats = chats.slice(0, randomChatCount); 
   for (let j = randomChats.length - 1; j > 0; j--) {

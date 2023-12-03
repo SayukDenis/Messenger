@@ -1,4 +1,5 @@
 import { View, StatusBar } from 'react-native';
+import React from 'react';
 import StylesSettings from './StyleSetting';
 import Header from './Header/Heder';
 import Center from './Center/Center';

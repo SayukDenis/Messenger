@@ -15,6 +15,11 @@ const StyleButtonList = StyleSheet.create({
         borderWidth:1,
         borderColor:'black',
         borderRadius:10
+    },
+    
+    styleButListText:{
+        marginBottom:"2%",
+        marginTop:'2%'
     }
 });
 
