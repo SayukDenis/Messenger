@@ -45,15 +45,16 @@ export const styles = StyleSheet.create({
     fontFamily: "JacquesFrancois-Regular",
   },
   colorPickerOuterContainer: {
-    width: "75%",
-    height: "41%",
+    width: 0.75 * screenWidth,
+    height: 0.8 * screenWidth,
     zIndex: 2,
     alignSelf: "center",
-    bottom: 0.3 * screenHeight,
     borderRadius: 17,
     overflow: "hidden",
     borderWidth: 1,
     borderColor: "black",
+    position: "absolute",
+    top: 0.2 * screenHeight,
   },
   colorPickerTitleContainer: {
     width: "100%",
@@ -107,7 +108,8 @@ export const styles = StyleSheet.create({
   },
   circleAroundColorPicker: {
     borderRadius: 100,
-    height: "90%",
+    height: 0.22 * screenHeight,
+    width: 0.22 * screenHeight,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -147,7 +149,7 @@ export const styles = StyleSheet.create({
   },
   basicColorsContainer: {
     width: "100%",
-    height: "40%",
+    height: "43%",
     flexWrap: "wrap",
     gap: 0.013 * screenWidth,
     flexDirection: "row",
@@ -175,7 +177,7 @@ export const styles = StyleSheet.create({
   pickEmojiButtonText: { fontSize: 29 },
   emojiSelectionContainer: {
     width: "90%",
-    height: 0.2 * screenHeight,
+    height: 0.4 * screenHeight,
     top: 0.01 * screenHeight,
     alignSelf: "center",
     borderRadius: 9,
@@ -262,7 +264,7 @@ export const styles = StyleSheet.create({
   },
   doneButtonContainer: {
     position: "absolute",
-    top: 0.0579 * screenHeight - 7.09,
+    top: 0.064 * screenHeight - 7.09,
     right: 0,
     width: 0.2 * screenWidth,
   },

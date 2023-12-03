@@ -1,5 +1,22 @@
+interface tempUserProps {
+  selectedAlbum: Album;
+  selectedPhotosAndVideos: Array<PhotoOrVideo>;
+  selectedBranchParent: BranchParent;
+  selectedBranchChild: BranchChild;
+}
+
+export const tempUser: tempUserProps = {
+  selectedAlbum: null,
+  selectedPhotosAndVideos: new Array<PhotoOrVideo>(),
+  selectedBranchParent: null,
+  selectedBranchChild: null,
+};
+
 export interface UserProps {
   ImagePath: string;
+  phoneNumber: string;
+  username: string;
+  bio: string;
   MembersName: Array<Nicknames>;
   selectedInterval: number;
   isMuted: boolean;
@@ -9,7 +26,8 @@ export interface UserProps {
   MembersCount: string;
   isEmergencyMessagesEnabled: boolean;
   GroupBio: string;
-  branches: Array<Branch>;
+  avatars: Array<PhotoOrVideo>;
+  branchParents: Array<BranchParent>;
   photosAndVideos: Array<PhotoOrVideo>;
   files: Array<File>;
   clearChatText: string;
@@ -21,6 +39,9 @@ export interface UserProps {
 
 export const user: UserProps = {
   ImagePath: "https://picsum.photos/id/1084/536/354",
+  phoneNumber: "+380 12 345 67 89",
+  username: "@myUsername",
+  bio: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
   MembersName: [
     { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
     { name: "Aboba ABOBA aboba ABOBA AboBA" },
@@ -30,14 +51,34 @@ export const user: UserProps = {
   selectedInterval: 0,
   isMuted: false,
   isBlocked: false,
-  profileName: "Aboba boba abob bibob",
+  profileName: "Longjj profile namejjjjj",
   lastTimeOnline: "Був online давно",
   MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,
   GroupBio: "Aboba - cool",
-  branches: new Array<Branch>(),
+  branchParents: new Array<BranchParent>(),
   clearChatText: "Do you really want to clear chat?",
   removalText: "Do you really want to delete",
+  avatars: [
+    {
+      url: "https://fastly.picsum.photos/id/866/400/400.jpg?hmac=oHJBlOQwtaF75oX43dFtPf4At_GRLEx9FQqkkfpLR5U",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/1027/200/300.jpg?hmac=WCxdERZ7sgk4jhwpfIZT0M48pctaaDcidOi3dKSHJYY",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/221/400/400.jpg?hmac=inxjrW3lVI716UFQqWe0R7u-0YXiXoD5LraYwPvV51c",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/866/400/400.jpg?hmac=oHJBlOQwtaF75oX43dFtPf4At_GRLEx9FQqkkfpLR5U",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/1027/200/300.jpg?hmac=WCxdERZ7sgk4jhwpfIZT0M48pctaaDcidOi3dKSHJYY",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/221/400/400.jpg?hmac=inxjrW3lVI716UFQqWe0R7u-0YXiXoD5LraYwPvV51c",
+    },
+  ],
   photosAndVideos: [
     { url: "https://picsum.photos/id/1/5000/3333" },
     { url: "https://picsum.photos/id/2/5000/3333" },
@@ -209,59 +250,7 @@ export const user: UserProps = {
   ],
   albums: [
     {
-      name: "Aboba",
-      mainPhoto: { url: "https://picsum.photos/id/2/5000/3333" },
-      photosAndVideos: [
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1084/536/354" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-        { url: "https://picsum.photos/id/1/5000/3333" },
-      ],
-    },
-    {
       name: "Name",
-      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
-      photosAndVideos: [
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/1084/536/354" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-      ],
-    },
-    {
-      name: "Name",
-      mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
-      photosAndVideos: [
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/1084/536/354" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-        { url: "https://picsum.photos/id/2/5000/3333" },
-      ],
-    },
-    {
-      name: "Aboba",
       mainPhoto: { url: "https://picsum.photos/id/1/5000/3333" },
       photosAndVideos: [
         { url: "https://picsum.photos/id/2/5000/3333" },
@@ -367,7 +356,26 @@ export const user: UserProps = {
   ],
 };
 
-export class Branch {
+export class BranchParent {
+  name: string;
+  emoji: string;
+  color: string;
+  children: Array<BranchChild>;
+
+  constructor(
+    name: string,
+    emoji: string,
+    color: string,
+    children: Array<BranchChild>
+  ) {
+    this.name = name;
+    this.emoji = emoji;
+    this.color = color;
+    this.children = children;
+  }
+}
+
+export class BranchChild {
   name: string;
   emoji: string;
   color: string;
@@ -442,3 +450,30 @@ export class Nicknames {
     this.name = name;
   }
 }
+
+export interface AuditLogProps {
+  MembersName: Array<Nicknames>;
+  Descriptions: Array<Nicknames>;
+  Photo: Array<PhotoOrVideo>;
+}
+
+export const AuditLog: AuditLogProps = {
+  MembersName: [
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
+    { name: "Aboba ABOBA aboba ABOBA AboBA" },
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB Abob" },
+    { name: "Viktor" },
+  ],
+  Descriptions: [
+    { name: " A Deleted b" },
+    { name: " A Deleted b" },
+    { name: " A Deleted b" },
+    { name: " A Deleted b" },
+  ],
+  Photo: [
+    { url: "https://picsum.photos/id/2/5000/3333" },
+    { url: "https://picsum.photos/id/2/5000/3333" },
+    { url: "https://picsum.photos/id/2/5000/3333" },
+    { url: "https://picsum.photos/id/2/5000/3333" },
+  ],
+};

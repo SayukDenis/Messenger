@@ -1,12 +1,11 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, Text, Dimensions } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
-import GoBackButton from "../../SemiComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-import CheckMark from "../../SemiComponents/Assets/Icons/CheckMark";
+import CheckmarkIcon from "./Icons/CheckMarkIcon";
 import { user } from "../../SemiComponents/DBUser";
 import ToggleButton from "./ToggleButton";
 
@@ -42,10 +41,12 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Header primaryTitle={permissionTitle} />
-
-      {/* Going back button */}
-      <GoBackButton onPress={() => navigation.goBack()} />
+      <Header
+        primaryTitle={permissionTitle}
+        onGoBackPress={() => {
+          navigation.goBack();
+        }}
+      />
 
       {/* Emergency message toggle button */}
       <TouchableOpacity
@@ -76,14 +77,12 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
           onPress={() => {
             setSelectedInterval(interval.value);
           }}
-          hitSlop={{ top: -0.03 * Dimensions.get("screen").height }}
+          style={styles.settingOption}
         >
-          <View style={styles.settingOption}>
-            <Text style={styles.settingOptionTitle}>{interval.title}</Text>
-            {selectedInverval === interval.value && (
-              <CheckMark style={styles.checkMark} />
-            )}
-          </View>
+          <Text style={styles.settingOptionTitle}>{interval.title}</Text>
+          {selectedInverval === interval.value && (
+            <CheckmarkIcon style={styles.checkMark} />
+          )}
         </TouchableOpacity>
       ))}
     </View>

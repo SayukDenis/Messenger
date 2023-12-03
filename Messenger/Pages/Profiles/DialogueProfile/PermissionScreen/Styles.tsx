@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     right: 0.05 * screenWidth,
   },
   toggleButtonBackground: {
-    width: 0.15 * screenWidth,
+    width: 0.16 * screenWidth,
     height: 0.034 * screenHeight,
     backgroundColor: "rgb(161, 156, 145)",
     borderRadius: 20,
