@@ -1,21 +1,23 @@
 import { registerRootComponent } from "expo";
-import {
-  StatusBar,
-  AppRegistry,
-} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { globalStyles } from "./Resources/styles";
+import { StatusBar, AppRegistry, View } from "react-native";
 import React from "react";
 import { Provider } from "react-redux";
 import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import Navigation from "./Navigation/Navigation"
+import Navigation from "./Navigation/Navigation";
+import Test from "./Resources/Test";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-  
+
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ backgroundColor: "red", flex: 1 }}>
       <StatusBar translucent backgroundColor="transparent" />
       <Provider store={store}>
-        <Navigation/>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "blue" }}>
+          <Test />
+        </SafeAreaView>
       </Provider>
     </SafeAreaProvider>
   );
