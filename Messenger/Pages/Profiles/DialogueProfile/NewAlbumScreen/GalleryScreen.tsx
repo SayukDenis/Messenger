@@ -1,18 +1,11 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-  Dimensions,
-  ScrollView,
-} from "react-native";
+import { View, Dimensions, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
-import { user, Album, PhotoOrVideo } from "../../SemiComponents/DBUser";
+import { user, PhotoOrVideo } from "../../SemiComponents/DBUser";
 import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
 import { tempUser } from "../../SemiComponents/DBUser";
 

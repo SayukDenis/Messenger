@@ -4,7 +4,6 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
-import GoBackButton from "../../SemiComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 

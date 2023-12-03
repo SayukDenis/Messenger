@@ -56,9 +56,6 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
 
-  const [isDeleteBranchPressed, setIsDeleteBranchPressed] = useState(false);
-  const [branchNameToRemove, setBranchNameToRemove] = useState("");
-
   return (
     <View style={styles.mainContainer}>
       <Blur

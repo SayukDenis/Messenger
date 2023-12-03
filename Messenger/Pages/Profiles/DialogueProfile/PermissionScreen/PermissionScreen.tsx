@@ -1,10 +1,9 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, Text, Dimensions } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
-import GoBackButton from "../../SemiComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CheckmarkIcon from "./Icons/CheckMarkIcon";
 import { user } from "../../SemiComponents/DBUser";

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { styles } from "./ProfileStyles";
-import { TouchableOpacity, ViewStyle } from "react-native";
+import { TouchableOpacity } from "react-native";
 import GoBackIcon from "./Assets/Icons/GoBackIcon";
 
 interface GoBackButtonProps {

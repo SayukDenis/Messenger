@@ -3,10 +3,6 @@
 import React from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./MainScreen/Styles";
-import GoBackButton from "./GoBackButton";
-import SearchIcon from "./MainScreen/Icons/SearchIcon";
-import ElseFeaturesIcon from "./MainScreen/Icons/ElseFeaturesIcon";
-import Name from "./MainScreen/Name";
 
 interface TopMenuWhenSelectionProps {
   isVisible: boolean;
@@ -16,7 +12,6 @@ interface TopMenuWhenSelectionProps {
 }
 
 const TopMenuWhenSelection: React.FC<TopMenuWhenSelectionProps> = (props) => {
-  const blockStatusTitle: string = "Blocked";
   return (
     <>
       {props.isVisible && (

@@ -18,6 +18,8 @@ import { createStore } from "redux";
 import { rootReducer } from "./ReducersAndActions/Reducers/ChatListActions/ChatListActions";
 import Dialogue from "./Pages/Chats/Dialogue/Dialogue";
 import StartPage from "./Pages/Profiles/SemiComponents/Navigation";
+import Navigation from "./Pages/Settings/Navigation";
+
 export default function App() {
   StatusBar.setBarStyle("dark-content");
   const store = createStore(rootReducer);
