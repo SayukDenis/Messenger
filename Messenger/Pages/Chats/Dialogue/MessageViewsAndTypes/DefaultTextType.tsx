@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView } from 'react-native';
 import { memo, useCallback, useRef, useState } from 'react';
 import {Message, messages} from '../tmpdata';
-import styles from '../DialogueMessagesStyle';
+import styles from '../components/Styles/DialogueMessagesStyle';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
+import tw from 'tailwind-react-native-classnames';
 
 const {width, height} = Dimensions.get('window');
 
@@ -15,62 +16,77 @@ interface DefaultTextMessageProps {
   id:number;
 }
 
+const arr = new Array(messages.length);
+for(let i = 0; i < messages.length; i++)
+  arr[i] = [0];
+
 const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:DefaultTextMessageProps) => {
+
   const handlePress = useCallback((event:{ nativeEvent: { pageX: number; pageY: number } }) => {
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
-    // Alert.alert('Aboba', `x:${pageX}\nphoneX:${width}\n\ny:${pageY}\nphoneY:${height}`)
     return { x:(pageX<(width/8)?(width/8):pageX)>(width*0.6)?(width*0.6):pageX,
              y:(pageY<(height/12)?(height/12):pageY)>(height*5/7)?(height*5/7):pageY,
              ID: id };
   }, [])
 
-  const arr = new Array(messages.length);
-  for(let i = 0; i < messages.length; i++)
-    arr[i] = [0];
+  //console.log('DefaultTextType-arr:', arr);
 
-  const swipeableRef = useRef<Array<Swipeable[]>>(arr);
+  const wrapText = (text, maxLength) => {
+    const words = text.split(' ');
+    const maxLengthForLongWord = maxLength-10;
+    let currentLine = '';
+    const lines = [];
+  
+    words.forEach((word) => {
+      if (word.length > maxLength) {
+        // Break the long word into chunks of maxLength characters
+        for (let i = 0; i < word.length; i += maxLengthForLongWord) {
+          lines.push(word.slice(i, i + maxLengthForLongWord));
+        }
+      } else if ((currentLine + word).length > maxLength) {
+        lines.push(currentLine);
+        currentLine = word + ' ';
+      } else {
+        currentLine += word + ' ';
+      }
+    });
+  
+    lines.push(currentLine.trim()); // Add the last line
+    
+    return lines.join('\n').trim();
+  };
 
   return (
-    <GestureHandlerRootView>
-      <Swipeable ref={(swipeable) => {swipeableRef.current[id][0]=swipeable!}}  friction={5} onSwipeableOpen={()=>swipeableRef.current[id][0].close()} renderLeftActions={()=><View style={{width:50, height:50, backgroundColor:'blue'}}></View>}>
-        <TouchableOpacity style={{backgroundColor:'red'}} activeOpacity={1} onPress={(event) => {setMessageMenuVisible(handlePress(event));}}>
-          {message.isUser?
-            <View style={[styles.messageContainer, {justifyContent:'flex-end'}]}>
-              <View style={{maxWidth:'65%', alignSelf:'flex-end'}}>
-                <Swipeable ref={(swipeable) => {swipeableRef.current[id][1]=swipeable!}} friction={5} onSwipeableOpen={()=>swipeableRef.current[id][1].close()} renderLeftActions={()=><View style={{width:25, height:25, backgroundColor:'yellow'}}></View>}>
-                  <View style={{display:'flex', flexDirection:'row'}}>
-                    <View style={message.text.length>40?[styles.messageTypeTextUser, styles.longMessage]:styles.messageTypeTextUser}>
-                      <Text>{message.text}</Text>
-                      <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                        {message.edited?'edited ':''}
-                        {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                        {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
-                      </Text>
-                    </View>
-                    <Text style={{alignSelf:'center'}}> -</Text>
-                  </View>
-                </Swipeable>
-              </View>
-            </View> //Денис лох і вонючка
-          :
-          <View style={styles.messageContainer}>
-            <View style={{maxWidth:'65%', alignSelf:'stretch'}}>
-              <Swipeable ref={(swipeable) => {swipeableRef.current[id][2]=swipeable!}} friction={5} onSwipeableOpen={()=>swipeableRef.current[id][2].close()} renderLeftActions={()=><View style={{width:25, backgroundColor:'yellow'}}></View>}>
-                <View style={message.text.length>40?[styles.messageTypeTextNotUser, styles.longMessage]:styles.messageTypeTextNotUser}>
-                  <Text>{message.text}</Text>
-                  <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                    {message.edited?'edited ':''}
-                    {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                    {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
-                  </Text>
-                </View>
-              </Swipeable>
+    <ScrollView 
+      horizontal={true} 
+      alwaysBounceHorizontal={false} 
+      pagingEnabled 
+      showsHorizontalScrollIndicator={false}
+      style={{width:width, alignSelf:'stretch', overflow:'visible'}}
+    >
+      <TouchableOpacity 
+        style={{width:width+50, flexDirection:'row', overflow:'visible'}}
+        activeOpacity={1} 
+        onPress={(event) => {setMessageMenuVisible(handlePress(event))}}
+      >
+        <View style={[styles.messageContainer, message.isUser?{ justifyContent:'flex-end' }:null]}>
+          <View style={[{maxWidth:width*0.65}, message.isUser?{ marginRight:10 }:{ marginLeft:10 }]}>
+            <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.text.length>40?styles.longMessage:null]}>
+              <Text>{wrapText(message.text, 40)}</Text>
+              <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+                {message.edited?'edited ':''}
+                {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
+                {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
+              </Text>
             </View>
-          </View>}
-        </TouchableOpacity>
-      </Swipeable>
-    </GestureHandlerRootView>
+          </View>
+        </View>
+        <View style={{width:50, backgroundColor:'pink'}}>
+          <Text>Reply</Text>
+        </View>
+      </TouchableOpacity>
+    </ScrollView>
   );
 });
 

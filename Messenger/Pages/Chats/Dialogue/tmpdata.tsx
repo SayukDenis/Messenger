@@ -123,7 +123,7 @@ let messages:Message[] = [
   {
     id: 13,
     type: 'text',
-    text: '13. Hello aboba',
+    text: '13. Aboba Balibop',
     timeStamp: Date.now(),
     isUser: false,
     isReply: false,
@@ -308,7 +308,22 @@ let messages:Message[] = [
     isReply: true,
     edited: false,
     replyMessageID: 17
-  }
+  },
+  {
+    id: 33,
+    type: 'text',
+    text: '33. PisyaPisyaPisyaPisyaPisya PisyaPisyaPisyaPisyaPisyaPisyaPisya'
+    +'PisyaPisyaPisya PisyaPisyaPisyaPisyaPisyaPisyaPisyaPisyaPisyaPisya'
+    +'PisyaPisyaPisyaPisyaPisya PisyaPisyaPisyaPisyaPisyaPisyaPisyaPisya'
+    +'PisyaPisyaPisyaPisyaPisyaPisyaPisyaPisyaPisyaPisyaPisyaPisyaPisya'
+    +'PisyaPisyaPisya PisyaPisyaPisya PisyaPisyaPisyaPisyaPisya PisyaPisya'
+    +'PisyaPisyaPisya PisyaPisyaPisyaPisyaPisya PisyaPisyaPisyaPisyaPisya'
+    +'PisyaPisyaPisyaPisyaPisyaPisya PisyaPisyaPisyaPisyaPisyaPisyaPisya',
+    timeStamp: Date.now(),
+    isUser: true,
+    isReply: false,
+    edited: false,
+  },
 ];
 
 export {Message, messages};
