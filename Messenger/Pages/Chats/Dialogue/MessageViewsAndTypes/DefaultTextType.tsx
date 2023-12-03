@@ -66,8 +66,7 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
       style={{width:width, alignSelf:'stretch', overflow:'visible'}}
     >
       <TouchableOpacity 
-        style={{width:width+50, flexDirection:'row', overflow:'visible'}} 
-        className='overflow-visible' 
+        style={{width:width+50, flexDirection:'row', overflow:'visible'}}
         activeOpacity={1} 
         onPress={(event) => {setMessageMenuVisible(handlePress(event))}}
       >
