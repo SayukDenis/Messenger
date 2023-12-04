@@ -3,7 +3,10 @@ import { ImageBackground,Image, View, Text, TextInput, TouchableOpacity } from '
 import { styles } from '../Style/Style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function Registration() {
+export default function Registration({ navigation }) {
+  const navigateToPhoneCodeRegistration = () => {
+    navigation.navigate('PhoneCodeRegistration');
+  };
   return (
     <ImageBackground source={require('../Image/Background.png')} style={styles.backgroundImage}>
       <View style={styles.containerCenter}>
@@ -35,7 +38,7 @@ export default function Registration() {
       
       <TouchableOpacity
         style={styles.Button}
-        onPress={() => alert('Continue')}
+        onPress={navigateToPhoneCodeRegistration}
       >
         <Text style={styles.ButtonLaber}>
          Continue

@@ -5,12 +5,18 @@ import { stylesPhoneCodeRegistration } from '../Style/StylePhoneCodeRegistration
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-export default function PhoneCodeRegistration() {
+export default function PhoneCodeRegistration({navigation}) {
+  const handleBack = () => {
+    navigation.goBack();
+  };
+  const navigateToCodePassword = () => {
+    navigation.navigate('CodePassword');
+  };
   return (
     <ImageBackground source={require('../Image/Background.png')} style={styles.backgroundImage}>
       <TouchableOpacity
         style={stylesPhoneCodeRegistration.backButton}
-        onPress={() => alert('Back Button')}
+        onPress={handleBack}
       >
         <Icon name="chevron-left" style={stylesPhoneCodeRegistration.backButtonText} />
       </TouchableOpacity>
@@ -43,7 +49,7 @@ export default function PhoneCodeRegistration() {
         <View style={styles.containerCenter}>
         <TouchableOpacity
           style={styles.Button}
-          onPress={() => alert('Finish')}
+          onPress={navigateToCodePassword}
         >
         <Text style={styles.ButtonLaber}>
           Finish
