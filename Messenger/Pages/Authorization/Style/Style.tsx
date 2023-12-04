@@ -17,15 +17,23 @@ export const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover', 
     justifyContent: 'center',
+    padding: responsiveWidth(0),
+  },
+  containerCenter: {
+    paddingLeft: responsiveWidth(45), 
     alignItems: 'center',
-    padding: responsiveWidth(20),
+    paddingRight: responsiveWidth(45), 
+  },
+  containerStart: {
+    paddingLeft: responsiveWidth(45), 
+    paddingRight: responsiveWidth(45), 
+    alignItems: 'flex-start',
   },
   imageStyle: {
     width: responsiveWidth(106),  
     height: responsiveHeight(83), 
     marginBottom: responsiveHeight(5),
     resizeMode: 'contain', 
-    marginTop: responsiveHeight(20),  
   },
   contentContainer: {
     backgroundColor: '#FFFFFF',
@@ -49,17 +57,7 @@ export const styles = StyleSheet.create({
     marginBottom: responsiveHeight(10),
     color: '#402B2B',
   },
-  input: {
-    width: '100%',
-    padding: responsiveHeight(12),
-    fontSize: responsiveHeight(17),
-    borderWidth: 1,
-    borderColor: '#D99B9B',
-    color: '#ffffff',
-    borderRadius: responsiveHeight(4),
-    marginBottom: responsiveHeight(15),    
-  },
-  signInButton: {
+  Button: {
     width: '100%',
     paddingHorizontal: responsiveWidth(0),
     paddingVertical: responsiveHeight(10),
@@ -73,40 +71,48 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: responsiveHeight(5),
   },
-  signInLaber: {
-    fontSize: responsiveHeight(14), 
+  ButtonLaber: {
+    fontSize: responsiveHeight(16), 
     color: '#fff',
   },
 
-  createAccount: {  
-    fontSize: responsiveWidth(8),
-    color: '#555',
-  },
-  containerCreat: { 
-    paddingHorizontal: responsiveWidth(27),
-  },
-  createButton: {
-    
-    marginLeft: responsiveWidth(10),
+  linkButton: {
     paddingHorizontal: responsiveWidth(2),
     paddingVertical: responsiveHeight(4),
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
-  createButtonText: {
-    fontSize: responsiveWidth(13),
+  linkButtonText: {
+    fontSize: responsiveWidth(16),
     color: '#6E23CD83',
   },
-  sentCodeAgainButtonText: {
-    fontSize: responsiveWidth(11),
-    color: '#1196B3',
-    marginBottom: responsiveHeight(14), 
+
+
+  containerLine: {
+    padding: responsiveWidth(20),
   },
- 
-  backButton: {
-    marginBottom: responsiveHeight(1),
-    marginLeft: responsiveWidth(-20),
+  line: {
+    borderBottomColor: '#fff',
+    borderBottomWidth: responsiveWidth(1),
   },
-  backButtonText: {
-    fontSize: responsiveWidth(20),
-    color: '#A19C91',
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: responsiveWidth(10),
+  },
+  headerText: {
+    fontSize: responsiveWidth(18),
+    color: '#fff',
+  },
+  verticalLine: {
+    height: '100%',
+    width: responsiveWidth(1),
+    backgroundColor: '#fff',
+    marginHorizontal: responsiveWidth(10),
+  },
+  input: {
+    flex: responsiveWidth(1),
+    fontSize: responsiveWidth(18),
+    color: '#fff',
   },
 });

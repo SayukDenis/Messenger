@@ -1,42 +1,56 @@
 import React from 'react';
 import { ImageBackground, View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import { styles } from '../Style/Style';
+import { stylesPhoneCodeRegistration } from '../Style/StylePhoneCodeRegistration';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default function PhoneCodeRegistration() {
   return (
     <ImageBackground source={require('../Image/Background.png')} style={styles.backgroundImage}>
-       <Text style={styles.header}>Code for phone</Text>
+      <TouchableOpacity
+        style={stylesPhoneCodeRegistration.backButton}
+        onPress={() => alert('Back Button')}
+      >
+        <Icon name="chevron-left" style={stylesPhoneCodeRegistration.backButtonText} />
+      </TouchableOpacity>
+      <View style={stylesPhoneCodeRegistration.container}>
+      <View style={styles.containerCenter}>
        <Image source={require('../Image/PhoneCodeRegistrationImage.png')}
             style={styles.imageStyle}/>
-     <Text style={styles.header}>Write code</Text>
+     <Text style={styles.header}>Code for phone</Text>
 
-      <View style={styles.contentContainer}>
-      <TouchableOpacity
-        style={styles.backButton}
+     <View style={styles.containerLine}>
+      <View style={styles.line} />
 
-        onPress={() => {
-          // обробка події для кнопки "назад" тут
-        }}
-      >
-        <Icon name="chevron-left" style={styles.backButtonText} />
-      </TouchableOpacity>
-        
-        <TextInput
-          style={styles.input}
-          placeholder="7788"
-        />
-        
-        <Text style={styles.sentCodeAgainButtonText}>Sent code again</Text>
+      <View style={styles.row}>
+        <Text style={styles.headerText}>Code</Text>
+        <View style={styles.verticalLine} />
+        <TextInput style={styles.input} placeholder="1111" />
+      </View>
+
+      <View style={styles.line} />
+    </View>
+    </View>
+ <View style={styles.containerStart}>
+         <TouchableOpacity
+        style={styles.linkButton}
+        onPress={() => alert('Sent code again')}
+         >
+        <Text style={styles.linkButtonText}>Sent code again</Text>
+        </TouchableOpacity>
+        </View>
+        <View style={styles.containerCenter}>
         <TouchableOpacity
-          style={styles.signInButton}
+          style={styles.Button}
+          onPress={() => alert('Finish')}
         >
-        <Text style={styles.signInLaber}>
-          Finish {' '} <Icon name="arrow-right" />
+        <Text style={styles.ButtonLaber}>
+          Finish
         </Text>
         </TouchableOpacity>
-      </View> 
-      </ImageBackground>
+        </View>
+      </View>
+    </ImageBackground>
   );
 }

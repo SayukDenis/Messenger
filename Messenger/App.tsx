@@ -22,7 +22,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={style.container}>
-        <ChatList />
+        <Authorization />
       </View>
     </Provider>
   );
