@@ -6,8 +6,7 @@ import Center from './Center/Center';
 
 const Settingspage: React.FC<any> = ({ navigation })=>{
   return <View style = {StylesSettings.container}>
-    <StatusBar hidden={true}/>
-    <Header></Header>
+    <Header navigation= {navigation}></Header>
    <Center navigation= {navigation}></Center>
   </View>
 }
