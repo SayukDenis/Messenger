@@ -22,13 +22,13 @@ export default class Dialogue extends Model {
     static schema = {
         name: 'dialogues',
         properties: {
-            chatId: { type: 'integer', indexed: true },
+            dialogueId: { type: 'integer', indexed: true },
             firstUser: { type: 'class', objectType: User },
             secondUser: { type: 'class', objectType: User },
             messages: { type: 'list', objectType: Message },
             chat: { type: 'class', objectType: Chat },
             lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
         },
-        primaryKey: 'chatId',
+        primaryKey: 'dialogueId',
     }
 }

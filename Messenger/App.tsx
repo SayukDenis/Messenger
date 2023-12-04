@@ -32,11 +32,5 @@ const style = StyleSheet.create({
 
 function testk() {
   const obj: IMessageLog = { sendTime: new Date(), message: 'hello world ' };
-  const reaction: IUserReaction = { user: new User(), value: 'happy' };
-  //const list = {
-  //numbers: 
-  //}
-  //console.log(JSON.stringify());
-  //console.log(typeof ({} as ILastWathedMessage));
-  //console.log(({} as ILastWathedMessage).constructor);
+  const reaction: IUserReaction = { user: new User("Jack"), value: 'happy' };
 }

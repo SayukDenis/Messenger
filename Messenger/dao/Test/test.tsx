@@ -4,7 +4,7 @@ import Channel from '../Models/Chats/Channel';
 import Group from '../Models/Chats/Group';
 import Chat from '../Models/Chats/Chat';
 import Folder from '../Models/Folder';
-import Message from '../Models/Message.ts';
+import Message from '../Models/Message';
 import SelfProfile from '../Models/SelfProfile';
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
@@ -13,8 +13,7 @@ export const test = () => {
   console.log(FileSystem.documentDirectory);
   const db:SQLite.Database = SQLite.openDatabase("database.db");
 
-  const user1 = new User();
-  user1.name = "Vlad";
+  const user1 = new User("Vlad");
   db.transaction((tx) => {
     // Створення таблиці User з автоінкрементним полем userId
     tx.executeSql(
@@ -38,7 +37,7 @@ export const test = () => {
         // Вставка користувача у таблицю
         tx.executeSql(
           'INSERT INTO User (name, numberPhone, nickname, description, linkToPhoto) VALUES (?, ?, ?, ?, ?)',
-          [user1.name, user1.numberPhone, user1.nickname, user1.description, user1.linkToPhoto],
+          [user1.name, user1.numberPhone!, user1.nickname!, user1.description!, user1.linkToPhoto!],
           (_, insertResult) => {
             if (insertResult.rowsAffected > 0) {
               console.log('Користувач успішно доданий до таблиці User');

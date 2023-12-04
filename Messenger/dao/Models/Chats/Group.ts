@@ -22,7 +22,7 @@ export default class Group extends Model {
     static schema = {
         name: 'groups',
         properties: {
-            chatId: { type: 'integer', indexed: true },
+            groupId: { type: 'integer', indexed: true },
             title: 'text',
             adminUser: { type: 'list', objectType: User },
             users: { type: 'list', objectType: User },
@@ -30,6 +30,6 @@ export default class Group extends Model {
             chat: { type: 'class', objectType: Chat },
             lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
         },
-        primaryKey: 'chatId',
+        primaryKey: 'groupId',
     }
 }

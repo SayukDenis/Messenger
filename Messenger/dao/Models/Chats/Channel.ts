@@ -19,13 +19,13 @@ export default class Channel extends Model {
     static schema = {
         name: 'channels',
         properties: {
-            chatId: { type: 'integer', indexed: true },
+            channelId: { type: 'integer', indexed: true },
             title: 'text',
             adminUser: { type: 'list', objectType: User },
             users: { type: 'list', objectType: User },
             messages: { type: 'list', objectType: Message },
             chat: { type: 'class', objectType: Chat },
         },
-        primaryKey: 'chatId',
+        primaryKey: 'channelId',
     }
 }

@@ -15,7 +15,9 @@ export default class Chat extends Model {
             pinnedMessage: { type: 'list', objectType: Message },
             pinnedMessageForAll: { type: 'list', objectType: Message },
             branches: { type: 'list', objectType: Branch },
+            roles: { type: 'list', objectType: Role },
         },
+        primaryKey: 'chatId',
         embedded: true,
     }
 };

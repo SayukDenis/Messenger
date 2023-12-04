@@ -16,7 +16,7 @@ export default class User extends Model {
   static schema = {
     name: 'users',
     properties: {
-      userId: { type: 'integer', indexed: true },
+      userId: 'integer',
       name: 'string',
       numberPhone: 'text?',
       nickname: 'text?',

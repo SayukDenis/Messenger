@@ -19,4 +19,7 @@ export default class Creator {
   public outClass(): Array<Model> {
     return this.classes;
   }
+  public clean() {
+    this.classes = [];
+  }
 }
