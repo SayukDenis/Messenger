@@ -3,14 +3,12 @@ import { View, Image, ScrollView } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
-import Multimedia from "../../SemiComponents/MainScreen/Multimedia";
+import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import BioAndLink from "./BioAndLink";
 import { user } from "../../SemiComponents/DBUser";
-
-// Data from user
 
 type MainUserPageProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -67,6 +65,9 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         isBlocked={isBlocked}
         isSearchButtonVisible={true}
         onGoBackPress={() => navigation.goBack()}
+        onCancelPress={() => {}}
+        onDeleteAllPress={() => {}}
+        quantityOfSelectedItems={2}
       />
       {/* Else features which appear when else features button is pressed*/}
       <ElseFeaturesButtons
@@ -84,13 +85,13 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         onClearChatPress={(value: boolean) => {
           setIsClearChatButtonClicked(value);
         }}
-        navigation={navigation}
         settingsPress={() => navigation.navigate("SettingsMenu" as never)}
         mode="group"
       />
+
       {/* Approval to clear chat if clear button is clicked via else features buttons */}
       <RemovalApproval
-        isPressed={isClearChatButtonClicked}
+        isVisible={isClearChatButtonClicked}
         onAnyPress={() => {
           setIsClearChatButtonClicked(false);
         }}

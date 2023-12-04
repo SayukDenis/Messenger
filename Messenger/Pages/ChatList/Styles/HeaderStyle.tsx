@@ -1,39 +1,34 @@
-import { StyleSheet, View, Text, Dimensions } from "react-native";
-
+import { StyleSheet,Platform, Dimensions,StatusBar } from "react-native";
+import Constants from 'expo-constants';
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const headerstyles = StyleSheet.create({
-  gapContainer: {
-    height: screenHeight * 0.05,
-    backgroundColor: "#E7E6E4",
-    borderRightWidth: 1.8,
-    borderLeftWidth: 1.8,
-    borderColor: "#434343",
-  },
+
   container: {
-    height: screenHeight * 0.08,
-    backgroundColor: "#E7E6E4",
+    height: Platform.OS=="android"?screenHeight * 0.08+StatusBar.currentHeight:screenHeight * 0.08+Constants.statusBarHeight,
+   // backgroundColor: "#E7E6E4",
+   backgroundColor:"white",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    borderBottomWidth: 1.8,
-    borderRightWidth: 1.8,
-    borderLeftWidth: 1.8,
-    borderColor: "#434343",
     zIndex: 5,
+    justifyContent:"flex-end",
+    //overflow:'hidden'
+  
   },
 
   header: {
     display: "flex",
     flexDirection: "row",
-    flex: 1,
+    
     marginHorizontal: screenWidth * 0.02,
     overflow:"hidden",
-    justifyContent:"space-between"
+    justifyContent:"space-between",
+   // backgroundColor:"black"
   },
 
   magnifyingglass: {
     height: screenHeight * 0.08 * 0.45,
     aspectRatio: 1,
-    color: "#434343",
+   
     flexDirection: "column",
     alignSelf: "center",
     //alignSelf:"center",
@@ -52,7 +47,7 @@ export const headerstyles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 1000,
     borderWidth: 1,
-    borderColor: "#434343",
+    borderColor: "#2B1D1D",
   },
   modeactivity: {
     height: screenHeight * 0.015,
@@ -76,14 +71,14 @@ export const headerstyles = StyleSheet.create({
   },
 
   textOfModeOfEmployment: {
-    color: "#434343",
+    color: "#2B1D1D",
     fontSize: screenHeight * 0.018,
     flexDirection: "column",
     alignSelf: "center",
   },
 
   arrowModeOfEmployment: {
-    color: "#434343",
+    
     width: screenWidth * 0.031,
     height: screenHeight * 0.03,
     aspectRatio: 1,
@@ -100,5 +95,4 @@ export const headerstyles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
-  lineForHamburger: {},
 });

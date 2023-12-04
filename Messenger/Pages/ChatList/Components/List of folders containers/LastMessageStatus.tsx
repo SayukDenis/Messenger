@@ -5,6 +5,7 @@ import Message from "../../1HelpFullFolder/Message";
 import { mySelfUser } from "../../1HelpFullFolder/Initialization";
 import ViewedMessageIcon from "./ViewedMessageIcon";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
+import UnViewedMessage from "./UnViewedMessage";
 interface LastMessageStatusProps {
   chat: Chat;
 }
@@ -21,12 +22,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
     if (id && lastMessage.id < id) {
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
-          <ViewedMessageIcon
-            stylePosition={listOfChatsStyle.positionOfFirstCheckMarkStyle}
-          />
-          <ViewedMessageIcon
-            stylePosition={listOfChatsStyle.positionOfSecondCheckMarkStyle}
-          />
+          <UnViewedMessage/>
         </View>
       );
     } else {
@@ -62,6 +58,7 @@ function CountOfMessages(countOfMessage: number): ReactNode {
     <View
       style={[listOfChatsStyle.countOfUnreadMessagescontainer, containerStyle]}
     >
+      <View style={{position:"absolute",backgroundColor:"#FFFFFF",opacity:0.6,height:screenHeight,width:screenWidth}}/>
       <Text style={listOfChatsStyle.countOfUnReadMessagesContent}>
         {formatText}
       </Text>

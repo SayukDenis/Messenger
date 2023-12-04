@@ -4,10 +4,13 @@ import {
   StatusBar,
   Text,
   Dimensions,
+  Platform,
+  View,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { footerstyles } from "../../Styles/FooterStyle";
 import FolderModalWindow from "../Footer containers/FolderModalWindow";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 const { height: screenHeight } = Dimensions.get("window");
 
 interface ModalWindowProps {
@@ -59,16 +62,28 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
       activeOpacity={1}
     >
       <StatusBar hidden />
-      <BlurView
-        style={{
-          position: "absolute",
+      {Platform.OS === 'android' ? (
+        <View style={{
+          position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-        }}
-        intensity={40}
-      />
+          backgroundColor:"black",
+          opacity:0.3
+        }}/>
+      ) : (
+        <BlurView
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+          intensity={0}
+        />
+      )}
       <FolderModalWindow
         folder={user.folders[selectedLongPressFolder]}
         positionX={positionX}
@@ -85,21 +100,24 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
             zIndex: 10,
             position: "absolute",
             left: positionX - positionXInContainer,
-            bottom: screenHeight * 0.032,
+            bottom: Platform.OS == "ios"&& useSafeAreaInsets().bottom!=0
+            ? screenHeight * 0.0048 + useSafeAreaInsets().bottom
+            : screenHeight * 0.0165,
             borderRadius: 100,
             height: screenHeight * 0.036,
-            backgroundColor: "#E7E6E4",
+           // backgroundColor: "#E7E6E4",
             shadowColor: "black",
             shadowOffset: { width: 1, height: 1 },
             shadowOpacity: 0.3,
           },
         ]}
       >
+
         <Text
           style={[
             selectedLongPressFolder == selectedFolder
               ? footerstyles.selectedText
-              : footerstyles.folder,
+              : footerstyles.folder
           ]}
         >
           {user.folders[selectedLongPressFolder].name}

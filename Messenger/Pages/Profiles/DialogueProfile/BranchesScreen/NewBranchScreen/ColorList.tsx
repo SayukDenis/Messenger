@@ -3,7 +3,7 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "../Styles";
-import SpecialSelectedColorIcon from "../Icons/SpecialSelectedColorIcon.tsx";
+import SpecialSelectedColorIcon from "../Icons/SpecialSelectedColorIcon";
 
 interface ColorListProps {
   pickedColor: string;

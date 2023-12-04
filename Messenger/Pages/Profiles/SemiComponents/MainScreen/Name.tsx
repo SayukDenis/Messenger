@@ -2,14 +2,15 @@
 
 import React, { useState } from "react";
 import { View, Dimensions, Text, TextStyle } from "react-native";
-import { styles } from "./Styles.tsx";
-import MutedIcon from "./Icons/MutedIcon.tsx";
-import NameAnimation from "./NameAnimation.tsx";
+import { styles } from "./Styles";
+import MutedIcon from "./Icons/MutedIcon";
+import NameAnimation from "./NameAnimation";
 
 interface UsernameProps {
   primaryTitle: string;
   isMuted?: boolean;
   style: TextStyle;
+  isBottomLineAbsent?: boolean;
 }
 
 const Name: React.FC<UsernameProps> = (props) => {
@@ -45,6 +46,7 @@ const Name: React.FC<UsernameProps> = (props) => {
               styles.innerContainerForLongProfileTitle,
               {
                 width: props.isMuted ? screenWidth * 0.412 : screenWidth * 0.5,
+                borderBottomWidth: props.isBottomLineAbsent ? 0 : 0.2,
               },
             ]}
           >

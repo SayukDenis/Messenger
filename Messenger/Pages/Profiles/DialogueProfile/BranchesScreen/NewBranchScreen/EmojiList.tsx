@@ -29,6 +29,7 @@ const EmojiList: React.FC<EmojiListProps> = (props) => {
         horizontal={false}
         numColumns={props.numColumns}
         contentContainerStyle={{ width: "100%", padding: 15 }}
+        scrollEnabled={false}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {

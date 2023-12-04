@@ -1,63 +1,103 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
-import Multimedia from "../../SemiComponents/MainScreen/Multimedia";
+import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
-import { user } from "../../SemiComponents/DBUser";
+import { Album, tempUser, user } from "../../SemiComponents/DBUser";
+import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
+import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
+import { GestureResponderEvent } from "react-native-modal";
+
+const screenHeight = Dimensions.get("screen").height;
 
 type MainUserScreenProps = {
-  navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
+  navigation: StackNavigationProp<{}>;
 };
 
 const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
+  const [pressedMultimediaButton, setPressedMultimediaButton] =
+    useState("Photos");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
-  const [isClearChatButtonClicked, setIsClearChatButtonClicked] =
+  const [isClearChatButtonPressed, setIsClearChatButtonPressed] =
     useState(false);
   const [isMuted, setIsMuted] = useState(user.isMuted);
   const [isBlocked, setIsBlocked] = useState(user.isBlocked);
+  const [longPressedAlbum, setLongPressedAlbum] = useState(null);
+  const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
+    useState(0);
+  const [isDeleteAlbumPressed, setIsDeleteAlbumPressed] = useState(false);
+  const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
+  const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
+  const [isDeleteAllAlbumsPressed, setIsDeleteAllAlbumsPressed] =
+    useState(false);
+  const [isDeleteSelectedAlbumsPressed, setIsDeleteSelectedAlbumsPressed] =
+    useState(false);
 
-  useEffect(() => {
-    user.isBlocked = isBlocked;
-    user.isMuted = isMuted;
-  });
+  const isFocused = useIsFocused();
+
+  useEffect(() => {}, [isFocused]);
+
+  var blursConditions: boolean[] = [
+    isPhotoAlbumSelectionVisible,
+    isElseFeaturesVisible,
+    isClearChatButtonPressed,
+    longPressedAlbum != null,
+    isDeleteAlbumPressed,
+    isDeleteAllAlbumsPressed,
+    isDeleteSelectedAlbumsPressed,
+  ];
+  var blursOnPress: (() => void)[] = [
+    () => {
+      setIsPhotoAlbumSelectionVisible(false);
+    },
+    () => {
+      setIsElseFeaturesVisible(false);
+    },
+    () => {
+      setIsClearChatButtonPressed(false);
+    },
+    () => {
+      setLongPressedAlbum(null);
+    },
+    () => {
+      setIsDeleteAlbumPressed(false);
+    },
+    () => {
+      setIsDeleteAllAlbumsPressed(false);
+    },
+    () => {
+      setIsDeleteSelectedAlbumsPressed(false);
+    },
+  ];
 
   return (
     <View style={styles.mainContainer}>
-      {/* Blur if photo or album button is on long press */}
-      <Blur
-        visibleWhen={isPhotoAlbumSelectionVisible}
-        onPress={() => {
-          setIsPhotoAlbumSelectionVisible(false);
-        }}
-        style={styles.blurEffect}
-      />
-
-      {/* Blur if else features button is pressed */}
-      <Blur
-        visibleWhen={isElseFeaturesVisible === true}
-        onPress={() => {
-          setIsElseFeaturesVisible(false);
-        }}
-        style={styles.blurEffect}
-      />
-
-      {/* Blur if clear chat is pressed */}
-      <Blur
-        visibleWhen={isClearChatButtonClicked === true}
-        onPress={() => {
-          setIsClearChatButtonClicked(false);
-        }}
-        style={[styles.blurEffect, { zIndex: 3 }]}
-      />
+      {blursConditions.map((item, index) => (
+        <Blur
+          key={index}
+          visibleWhen={item}
+          onPress={() => {
+            blursOnPress[index]();
+          }}
+          style={[
+            styles.blurEffect,
+            {
+              zIndex:
+                index == 2 || index == 4 || index == 5 || index == 6 ? 3 : 1,
+            },
+          ]}
+        />
+      ))}
 
       {/* Top tool bar with buttons*/}
       <TopToolBar
@@ -71,6 +111,15 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         isSearchButtonVisible={true}
         onGoBackPress={() => {
           navigation.goBack();
+        }}
+        isMediaSelectionVisible={isAlbumSelectionVisible}
+        quantityOfSelectedItems={selectedAlbums.length}
+        onCancelPress={() => {
+          setSelectedAlbums([]);
+          setIsAlbumSelectionVisible(false);
+        }}
+        onDeleteAllPress={() => {
+          setIsDeleteAllAlbumsPressed(true);
         }}
       />
 
@@ -86,25 +135,90 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         onBlockPress={(value: boolean) => {
           setIsBlocked(value);
         }}
-        isClearChatPressed={isClearChatButtonClicked}
+        isClearChatPressed={isClearChatButtonPressed}
         onClearChatPress={(value: boolean) => {
-          setIsClearChatButtonClicked(value);
+          setIsClearChatButtonPressed(value);
         }}
-        navigation={navigation}
         settingsPress={() => navigation.navigate("SettingsScreen" as never)}
         mode="user"
       />
 
-      {/* Approval to clear chat if clear button is clicked via else features buttons */}
+      {/* Approval to clear chat if clear button is pressed via else features buttons */}
       <RemovalApproval
-        isPressed={isClearChatButtonClicked}
+        isVisible={isClearChatButtonPressed}
         onAnyPress={() => {
-          setIsClearChatButtonClicked(false);
+          setIsClearChatButtonPressed(false);
         }}
         onAgreePress={() => {
           alert("Agree");
         }}
         text={user.clearChatText}
+      />
+
+      {/* Approval to delete an album */}
+      <RemovalApproval
+        isVisible={isDeleteAlbumPressed}
+        onAnyPress={() => {
+          setIsDeleteAlbumPressed(false);
+        }}
+        onAgreePress={() => {
+          user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
+          setLongPressedAlbum(null);
+        }}
+        text="Do you really want to delete an album?"
+      />
+
+      {/* Approval to delete all albums */}
+      <RemovalApproval
+        isVisible={isDeleteAllAlbumsPressed}
+        onAnyPress={() => {
+          setIsDeleteAllAlbumsPressed(false);
+        }}
+        onAgreePress={() => {
+          user.albums = Array<Album>();
+          setIsAlbumSelectionVisible(false);
+        }}
+        text="Do you really want to delete all albums?"
+      />
+
+      {/* Approval to delete selected albums */}
+      <RemovalApproval
+        isVisible={isDeleteSelectedAlbumsPressed}
+        onAnyPress={() => {
+          setIsDeleteSelectedAlbumsPressed(false);
+        }}
+        onAgreePress={() => {
+          selectedAlbums.forEach((album) => {
+            user.albums.splice(user.albums.indexOf(album), 1);
+          });
+          setSelectedAlbums(Array<Album>());
+          setIsAlbumSelectionVisible(false);
+        }}
+        text="Do you really want to delete selected albums?"
+      />
+
+      <AlbumLongPressedMenu
+        isVisible={longPressedAlbum != null}
+        longPressedAlbum={longPressedAlbum}
+        positionYOfLongPressedAlbum={positionYOfLongPressedAlbum}
+        onDeleteAlbumPress={() => {
+          setIsDeleteAlbumPressed(true);
+        }}
+        onSelectAlbumPress={() => {
+          setIsAlbumSelectionVisible(true);
+          setSelectedAlbums(selectedAlbums?.concat([longPressedAlbum]));
+          setLongPressedAlbum(null);
+        }}
+      />
+
+      <BottomToolBar
+        isVisible={isAlbumSelectionVisible}
+        onDeletePress={() => {
+          setIsDeleteSelectedAlbumsPressed(true);
+        }}
+        onForwardPress={() => {
+          alert("Forward album...");
+        }}
       />
 
       <ScrollView
@@ -121,13 +235,71 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           setIsPhotoAlbumSelectionVisible(false);
         }}
       >
+        <Blur
+          visibleWhen={isPhotoAlbumSelectionVisible}
+          onPress={() => {
+            setIsPhotoAlbumSelectionVisible(false);
+          }}
+          style={[styles.blurEffect, { zIndex: 3 }]}
+        />
+
         {/* Touchable avatar image with phone and videocamera buttons*/}
-        <AvatarWithCallingButtons />
+        <AvatarWithCallingButtons
+          onAvatarPress={() => {
+            navigation.navigate("AvatarsAndInfoScreen" as never);
+          }}
+        />
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
-          isLongPressed={isPhotoAlbumSelectionVisible}
-          onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
+          isPhotoAlbumSelectionVisible={isPhotoAlbumSelectionVisible}
+          setIsPhotoAlbumSelectionVisible={(value: boolean) =>
+            setIsPhotoAlbumSelectionVisible(value)
+          }
+          pressedMultimediaButton={pressedMultimediaButton}
+          setPressedMultimediaButton={(value: string) => {
+            setPressedMultimediaButton(value);
+          }}
+          onAlbumPress={(item: Album) => {
+            if (isAlbumSelectionVisible) {
+              if (!selectedAlbums.includes(item)) {
+                setSelectedAlbums(selectedAlbums.concat([item]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums.filter((photoOrVideo) => photoOrVideo !== item)
+                );
+              }
+            } else {
+              tempUser.selectedAlbum = item;
+              navigation.navigate("Album" as never);
+            }
+          }}
+          onNewAlbumPress={() => {
+            navigation.navigate("NewAlbumScreen" as never);
+          }}
+          onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
+            setLongPressedAlbum(value);
+            if (!isAlbumSelectionVisible) {
+              setLongPressedAlbum(value);
+              setPositionYOfLongPressedAlbum(
+                event.nativeEvent.pageY + 0.05 * screenHeight
+              );
+            } else {
+              if (!selectedAlbums.includes(value)) {
+                setSelectedAlbums(selectedAlbums.concat([value]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums.filter(
+                    (photoOrVideo) => photoOrVideo !== value
+                  )
+                );
+              }
+            }
+          }}
+          isAlbumSelectionVisible={isAlbumSelectionVisible}
+          isAlbumCheckMarkVisible={(value: Album) => {
+            return selectedAlbums.includes(value);
+          }}
         />
       </ScrollView>
     </View>

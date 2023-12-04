@@ -1,0 +1,46 @@
+import React, {useState} from 'react';
+import { View, Image, Button, Text,TouchableOpacity, Modal, StyleSheet  } from 'react-native';
+import StyleCentre from './StyleCenter';
+import StyleButtonList from './ButtonLIst/StyleButtonLIst';
+import { createStackNavigator } from '@react-navigation/stack';
+import ButtonList from './ButtonLIst/Buttonlist';
+
+const Stack = createStackNavigator();
+
+const Center: React.FC<any> = ({ navigation })=>{
+         let items: string[] =["Saved message","Look","Notification","Chat folders","Confidentiality","Language",];
+        const [isModalVisible, setModalVisible] = useState(false);
+        const toggleModal = () => {
+            setModalVisible(!isModalVisible);
+        };
+
+        return <View style={StyleCentre.conteiner} >
+                                
+                                <Image style={StyleCentre.imgStyle} source={{uri:'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1'}}></Image>
+                                <TouchableOpacity onPress={() => navigation.navigate('Edit page')}  style={StyleCentre.button}><Text>Edit</Text></TouchableOpacity>
+                                <View style={StyleCentre.box}></View>
+                                <Text style= {StyleCentre.text}>Settings</Text>
+                                <ButtonList navigation = {navigation}></ButtonList>
+                                    <TouchableOpacity style ={StyleCentre.editButton}  onPress={toggleModal} >
+                                        <Text style={StyleCentre.editButtonText}>Exit</Text>
+                                    </TouchableOpacity>           
+                                <Modal 
+                                            animationType="none"
+                                            transparent={true}
+                                            visible={isModalVisible}
+                                            onRequestClose={toggleModal}>
+                                            <View style={StyleCentre.conteinreModalwindow} >
+                                                <View style={StyleCentre.modalWindow} >  
+                                                    <View style={StyleCentre.modalTextConteiner} ><Text>Do you really want to log out?</Text></View>             
+                                                    <View style={StyleCentre.modalButtonsConteiner}>
+                                                            <TouchableOpacity style={StyleCentre.modalButtonAgree}  onPress={toggleModal} ><Text style={StyleCentre.agreeButtonText}>Agree</Text></TouchableOpacity>
+                                                            <TouchableOpacity style={StyleCentre.modalButtonDisagree}  onPress={toggleModal} ><Text style={StyleCentre.disagreeButtonText}>Disagree</Text></TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                </Modal>
+                        </View>
+   
+}
+
+export default Center;
