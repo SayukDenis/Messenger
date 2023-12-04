@@ -28,7 +28,9 @@ const StyleEditCenter = StyleSheet.create({
         backgroundColor:'#DAB671',
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
-        borderWidth:1,
+        borderTopWidth:1,
+        borderLeftWidth:1,
+        borderRightWidth:1,
     },
 
     box:{

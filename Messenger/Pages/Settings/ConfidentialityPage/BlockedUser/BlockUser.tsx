@@ -7,7 +7,7 @@ import BlockUserCenter from './BlockUserCenter/BlockuserCenter';
 const BlockUser : React.FC<any> = ({ navigation })=>{
     return<View style= {StyleBlockUser.BlockUserConteiner}>
         <BlocUserHeader navigation = {navigation}></BlocUserHeader>
-        <BlockUserCenter navigation = {navigation}></BlockUserCenter>
+        <BlockUserCenter></BlockUserCenter>
     </View>
 }
 
