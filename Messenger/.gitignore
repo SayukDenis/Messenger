@@ -1,1 +1,4 @@
-
+**/App.tsx
+**/%ProgramData%
+**/node_modules
+**/android
