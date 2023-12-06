@@ -13,6 +13,7 @@ import * as SQLite from 'expo-sqlite';
 import Creator from './Creator';
 import { generateSqlTableFields } from './generateSQL';
 import * as FileSystem from 'expo-file-system';
+import Branch from '../../Models/Chats/Branch';
 
 const isEnableLog = true;
 
@@ -62,6 +63,7 @@ function addClasses() {
   creator.addClass(SelfProfile);
   creator.addClass(Tab);
   creator.addClass(AuditLog);
+  creator.addClass(Branch);
 
   isEnableLog && console.log("dao_generate_addClasses: Number of class: " + creator.outClass().length);
 }

@@ -1,4 +1,5 @@
 import Model from './Model';
+import Tab from './Tab';
 
 
 export default class SelfProfile extends Model {
@@ -20,6 +21,7 @@ export default class SelfProfile extends Model {
     linkToPhoto?: string;
     //Information about user
     timeLastEntry?: Date;
+    tabs: Array<Tab> = new Array();
 
     static schema = {
         name: 'selfProfiles',
@@ -35,6 +37,7 @@ export default class SelfProfile extends Model {
             linkToPhoto: 'text?',
             //Information about user
             timeLastEntry: 'date?',
+            tabs: {type: 'list', objectType: Tab},
         },
         primaryKey: 'userId',
     };
