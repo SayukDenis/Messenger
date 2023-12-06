@@ -10,7 +10,7 @@ import User from "../dao/Models/User";
 import { EMessageType } from "../dao/Models/EMessageType";
 
 
-function Initialization(): SelfProfile {
+export function initialization(): SelfProfile {
   const selfProfile = new SelfProfile(' Гена', 'password123', '1234567890');
   selfProfile.email = 'john.doe@example.com';
   selfProfile.nickname = 'johndoe';
@@ -19,7 +19,7 @@ function Initialization(): SelfProfile {
   selfProfile.timeLastEntry = new Date();
   selfProfile.tabs = [];
 
-  // Usage example: create 5 users
+  // Usage example: create 20 users
   const numberOfUsersToCreate = 20;
   const users = createUsers(numberOfUsersToCreate);
 
@@ -30,6 +30,9 @@ function Initialization(): SelfProfile {
   const dialogue1 = new Dialogue(users[getRandomNumber()], users[getRandomNumber()], chat1);
   const dialogue2 = new Dialogue(users[getRandomNumber()], users[getRandomNumber()], chat2);
   const dialogue3 = new Dialogue(users[getRandomNumber()], users[getRandomNumber()], chat3);
+  dialogue1.messages.push(...createMessage(100))
+  dialogue2.messages.push(...createMessage(100))
+  dialogue3.messages.push(...createMessage(100))
 
   const chat4 = new Chat();
   const chat5 = new Chat();
@@ -38,6 +41,9 @@ function Initialization(): SelfProfile {
   const group1 = new Group("Group 1", chat4);
   const group2 = new Group("Group 2", chat5);
   const group3 = new Group("Group 3", chat6);
+  group1.messages.push(...createMessage(100))
+  group2.messages.push(...createMessage(100))
+  group3.messages.push(...createMessage(100))
 
   const chat7 = new Chat();
   const chat8 = new Chat();
@@ -46,16 +52,14 @@ function Initialization(): SelfProfile {
   const channel1 = new Channel("Channel 1", chat7);
   const channel2 = new Channel("Channel 2", chat8);
   const channel3 = new Channel("Channel 3", chat9);
+  channel1.messages.push(...createMessage(100))
+  channel2.messages.push(...createMessage(100))
+  channel3.messages.push(...createMessage(100))
 
   // Create instances of Folders
   const folder1 = new Folder("Folder 1");
   const folder2 = new Folder("Folder 2");
   const folder3 = new Folder("Folder 3");
-
-  // Create instances of Messages
-  const message1 = new Message(users[getRandomNumber()], "Hello, World!", new Date(), EMessageType.text);
-  const message2 = new Message(users[getRandomNumber()], "How are you?", new Date(), EMessageType.text);
-  const message3 = new Message(users[getRandomNumber()], "Nice to meet you!", new Date(), EMessageType.text);
 
   // Create instances of Tabs
   const tab1 = new Tab("Tab 1");
@@ -73,7 +77,7 @@ function Initialization(): SelfProfile {
   tab1.exceptionsChannels.push(channel1);
   tab1.blockedChats.push(chat1);
   tab1.folders.push(folder1);
-  tab1.messages.push(message1);
+  tab1.messages.push(...createMessage(20));
 
   // Configure properties for tab2 and add instances for tab2
   tab2.isDialogueMessageOn = true;
@@ -84,7 +88,7 @@ function Initialization(): SelfProfile {
   tab2.exceptionsChannels.push(channel2);
   tab2.blockedChats.push(chat2);
   tab2.folders.push(folder2);
-  tab2.messages.push(message2);
+  tab2.messages.push(...createMessage(10));
 
   // Configure properties for tab3 and add instances for tab3
   tab3.isDialogueMessageOn = true;
@@ -95,7 +99,7 @@ function Initialization(): SelfProfile {
   tab3.exceptionsChannels.push(channel3);
   tab3.blockedChats.push(chat3);
   tab3.folders.push(folder3);
-  tab3.messages.push(message3);
+  tab3.messages.push(...createMessage(15));
 
 
   selfProfile.tabs.push(tab1);
@@ -133,7 +137,7 @@ function getRandomNumber(): number {
   return randomNumber;
 }
 
-function crateMessage(count: number): Message[] {
+function createMessage(count: number): Message[] {
   const messages: Message[] = [];
   for (let i = 1; i <= count; i++) {
     const author = new User(`User${i}`);
