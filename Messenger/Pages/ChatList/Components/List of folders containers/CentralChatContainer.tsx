@@ -11,7 +11,6 @@ import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 
 import LastMessageStatus from "./LastMessageStatus";
 import ModeActivity from "../Status Content/ModeActivity";
-import { BlurView } from "expo-blur";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 
@@ -28,13 +27,15 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
   handlePress,
   onLongPressChat,
 }) => {
-  const currentBranch=0;
-  console.log(chat);
-  return
+
+  //console.log(chat);
+  //console.log( chat.messages[chat.messages.length - 1].content)
+  
   const lastMessage: Message | undefined =
-    chat.branches[currentBranch].messages[chat.branches.length - 1];
-    //console.log(chat);
-    
+  chat?.messages?
+    chat?.messages[chat.messages.length - 1]:undefined;
+    //console.log(lastMessage);
+ 
     const formattedTime = (): string => {
         if (!lastMessage) return "";
         const now: Date = new Date();
@@ -74,7 +75,7 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
           }`;
         }
       };
-
+    console.log(chat.linkToPhoto)
   return (
     <TouchableOpacity
           onPress={handlePress.current}
@@ -88,9 +89,9 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
           
             <View style={[listOfChatsStyle.imageContainer]}>
               <Image
-                source={{ uri: "https://pzks.fpm.kpi.ua/images/vykladachi/liushenko.jpg", }}
+                source={{ uri:chat.linkToPhoto }}
                 style={listOfChatsStyle.image}
-              ></Image>
+              />
               <ModeActivity
                 style={listOfChatsStyle.modeOfActivity}
                 status={1}
@@ -104,7 +105,7 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
-                    {chat.schema.name}
+                    {""}
                   </Text>
                 </View>
                 <View style={[listOfChatsStyle.rightContainer]}>

@@ -9,7 +9,6 @@ import Folder from "../dao/Models/Folder";
 import User from "../dao/Models/User";
 import { EMessageType } from "../dao/Models/EMessageType";
 import { user } from "../Pages/Profiles/SemiComponents/DBUser";
-import Branch from "../dao/Models/Chats/Branch";
 
 const messageDialog: string[] = [
   "Привіт",
@@ -111,7 +110,6 @@ function getRandomNumber(max = 10): number {
   return randomNumber;
 }
 function getRandomElementsFromArray<T>(arr: T[]): T[] {
-  if (arr.length == 0) return [];
   const randomCount = getRandomNumber(arr.length) + 1; // Випадкова кількість (мінімум 1)
   const shuffledArray = arr.slice().sort(() => Math.random() - 0.5); // Перемішуємо копію масиву
   return shuffledArray.slice(0, randomCount);
@@ -165,7 +163,7 @@ function createChat(count: number): Chat[] {
 function createDialogue(count: number, users: User[]): Dialogue[] {
   const dialogues: Dialogue[] = [];
   if (users.length <= 1)
-    throw Error("must be minimum 2 users")
+    throw Error("must be minimum 1 users")
   for (let i = 0; i < count; i++) {
     const user1 = users[getRandomNumber(users.length)];
     let user2 = users[getRandomNumber(users.length)];
@@ -174,33 +172,30 @@ function createDialogue(count: number, users: User[]): Dialogue[] {
 
     const dialogue = new Dialogue(user1, user2);
     dialogue.messages.push(...createMessage(100, [user1, user2], messageDialog));
-    if (Math.random() < 0.10) addBranch(getRandomNumber(5),dialogue);
     dialogues.push(dialogue);
   }
   return dialogues;
 }
 function createGroup(count: number, users: User[]): Group[] {
   const groups: Group[] = [];
-  if (users.length <= 1)
-    throw Error("must be minimum 2 users")
+  if (users.length <1)
+    throw Error("must be minimum 1 users")
   for (let i = 0; i < count; i++) {
     const group = new Group("Group " + i);
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
     group.messages.push(...createMessage(100, users, messageGroupsAndChannels));
-    if (Math.random() < 0.10) addBranch(getRandomNumber(5),group);
     groups.push(group);
   }
   return groups;
 }
 function createChannel(count: number, users: User[]): Channel[] {
   const channels: Channel[] = [];
-  if (users.length <= 1)
-    throw Error("must be minimum 2 users")
+  if (users.length < 1)
+    throw Error("must be minimum 1 users")
   for (let i = 0; i < count; i++) {
     const channel = new Channel("Channel " + i);
     channel.messages.push(...createMessage(100, users, messageGroupsAndChannels));
     channel.adminUser.push(...getRandomElementsFromArray<User>(users));
-    if (Math.random() < 0.15) addBranch(getRandomNumber(5),channel);
     channels.push(channel);
   }
   return channels;
@@ -223,16 +218,4 @@ function createTab(count: number): Tab[] {
     tabs.push(tab);
   }
   return tabs;
-}
-function addBranch(count: number, chat: Chat) {
-  for (let i = 0; i < count; i++) {
-    const branch = new Branch("Name branch " + i);
-    const massages = createMessage(50, chat.users, messageGroupsAndChannels);
-    branch.messages.push(...massages);
-    if (Math.random() < 0.3) branch.internalBranches.push(new Branch("Interanl branch " + i));
-    branch.pinnedMessage.push(...getRandomElementsFromArray(massages));
-    branch.pinnedMessageForAll.push(...getRandomElementsFromArray(massages));
-    branch.haveAccess.push(...getRandomElementsFromArray(chat.roles));
-    chat.branches.push(branch);
-  }
 }

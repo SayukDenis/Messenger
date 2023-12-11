@@ -19,14 +19,14 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
  })
  const currentBranch:number=0;
   const lastMessage: Message | undefined =
-    chat.branches[currentBranch].messages[chat.branches[currentBranch].messages.length - 1];
+    chat?.messages[chat.messages.length - 1];
   if (!lastMessage) {
     return null;
   }
   let content: ReactNode;
   const id: number | undefined = 0//chat..?.get(selfPro.id);
-  if (lastMessage.author.userI ===selfProfile.userId) {
-    if (id && lastMessage.author.userI < id) {
+  if (lastMessage.author.userId ===selfProfile.userId) {
+    if (id && lastMessage.author.userId < id) {
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
           <UnViewedMessage/>

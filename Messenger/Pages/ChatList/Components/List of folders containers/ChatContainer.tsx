@@ -32,7 +32,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     const self:SelfProfile=state.selfProfileUser;
     return self
  })
- const currentBranch:number=0;
+ 
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
     useState<number>(null);
   let randomBoolean = useRef(null);
@@ -41,21 +41,17 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
   const [isSwipedFromRight, setIsSwipedFromRight] = useState(false);
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
   const [positionXForSwipeable, setPositionXForSwipeable] =
-    useState<number>(screenWidth);
-    if(chat instanceof Dialogue){
-      const dialogue:Dialogue=chat;
-      console.log(dialogue.lastWathedMessage);
-    }
+  useState<number>(screenWidth);
   
   const haveUnreadMessages = (chat) => {
     const lastMessage: Message =
-      chat.listOfMessages.length > 0
-        ? chat.listOfMessages[chat.listOfMessages.length - 1]
+        chat.messages[chat.messages.length-1]
+        ? chat.messages[chat.messages.length - 1]
         : undefined;
     
     const id: number | undefined = chat.dictionary?.get(selfProfile.userId);
     if (!lastMessage)
-      if (lastMessage.author.userI !== selfProfile.userId) {
+      if (lastMessage.author.userId !== selfProfile.userId) {
         if (id && lastMessage.messageId > id) {
           return true;
         }
@@ -83,7 +79,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     console.log("Кнопку натиснули");
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
-    console.log(chat.branches[currentBranch].schema.name);
+    console.log(chat.messages[0]);
   });
   const handleScrollToRightEnd = () => {
     const scrollVarible = positionXForStartOfSwipeable == screenWidth;
