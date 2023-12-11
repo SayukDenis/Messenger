@@ -6,7 +6,7 @@ export default class User extends Model {
     super();
     this.name = name;
   }
-  userI?: number;
+  userId?: number;
   name!: string;
   numberPhone?: string;
   nickname?: string;

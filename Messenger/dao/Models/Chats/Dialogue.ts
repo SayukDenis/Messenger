@@ -15,9 +15,6 @@ export default class Dialogue extends Chat {
     firstUser!: User;
     secondUser!: User;
     messages: Array<Message> = new Array;
-
-    //last watched message of each User
-    lastWathedMessage: Array<ILastWathedMessage> = new Array;
     //schema
     static schema = {
         name: 'dialogues',
@@ -25,13 +22,13 @@ export default class Dialogue extends Chat {
             dialogueId: { type: 'integer', indexed: true },
             firstUser: { type: 'class', objectType: User },
             secondUser: { type: 'class', objectType: User },
-            messages: { type: 'list', objectType: Message },
-            chat: { type: 'class', objectType: Chat }, // realy?
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            messages: { type: 'list', objectType: Message },          
             pinnedMessage: { type: 'list', objectType: Message },
             pinnedMessageForAll: { type: 'list', objectType: Message },
             branches: { type: 'list', objectType: Branch },
             roles: { type: 'list', objectType: Role },
+            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            linkToPhoto: 'text?',
         },
         primaryKey: 'dialogueId',
         embedded: false,
