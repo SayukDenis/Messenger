@@ -16,17 +16,16 @@ export default class Tab extends Model {
     title!: string;
     //Notifications
     isDialogueMessageOn: boolean = true;
-    isgroupsMessageOn: boolean = true;
+    isGroupsMessageOn: boolean = true;
     isChannelMessageOn: boolean = true;
     //Exceptions "MessageOn"
     exceptionsDialogues: Array<Dialogue> = new Array;
-    exceptionsgroups: Array<Group> = new Array;
+    exceptionsGroups: Array<Group> = new Array;
     exceptionsChannels: Array<Channel> = new Array;
     //Blocked chats
     blockedChats: Array<Chat> = new Array;
     //Information about user
     folders: Array<Folder> = new Array;
-    messages: Array<Message> = new Array;
 
     static schema = {
         name: 'tabs',
@@ -39,13 +38,12 @@ export default class Tab extends Model {
             isChannelMessageOn: { type: 'bool', default: true },
             //Exceptions "MessageOn"
             exceptionsDialogues: { type: 'list', objectType: Dialogue },
-            exceptionsgroups: { type: 'list', objectType: Group },
+            exceptionsGroups: { type: 'list', objectType: Group },
             exceptionsChannels: { type: 'list', objectType: Channel },
             //Blocked chats
             blockedChats: { type: 'list', objectType: Chat },
             //Information about user
-            folders: { type: 'list', objectType: Folder },
-            messages: { type: 'list', objectType: Message },
+            folders: { type: 'list', objectType: Folder }
         },
         primaryKey: 'tabId',
     };

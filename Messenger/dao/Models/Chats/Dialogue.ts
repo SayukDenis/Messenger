@@ -2,20 +2,20 @@ import User from '../User';
 import Message from '../Message';
 import Chat from './Chat';
 import ILastWathedMessage from './ILastWathedMessage';
-import Model from '../Model';
+import Branch from './Branch';
+import Role from './Role';
 
-export default class Dialogue extends Model {
-    constructor(firstUser: User, secondUser: User, chat: Chat) {
+export default class Dialogue extends Chat {
+    constructor(firstUser: User, secondUser: User) {
         super();
         this.firstUser = firstUser;
         this.secondUser = secondUser;
-        this.chat = chat;
     }
     dialogueId?: number;
     firstUser!: User;
     secondUser!: User;
     messages: Array<Message> = new Array;
-    chat!: Chat;
+
     //last watched message of each User
     lastWathedMessage: Array<ILastWathedMessage> = new Array;
     //schema
@@ -26,9 +26,14 @@ export default class Dialogue extends Model {
             firstUser: { type: 'class', objectType: User },
             secondUser: { type: 'class', objectType: User },
             messages: { type: 'list', objectType: Message },
-            chat: { type: 'class', objectType: Chat },
+            chat: { type: 'class', objectType: Chat }, // realy?
             lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            pinnedMessage: { type: 'list', objectType: Message },
+            pinnedMessageForAll: { type: 'list', objectType: Message },
+            branches: { type: 'list', objectType: Branch },
+            roles: { type: 'list', objectType: Role },
         },
         primaryKey: 'dialogueId',
+        embedded: false,
     }
 }
