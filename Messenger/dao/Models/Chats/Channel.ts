@@ -13,8 +13,6 @@ export default class Channel extends Chat {
     channelId?: number;
     title!: string;
     adminUser: Array<User> = new Array;
-    users: Array<User> = new Array;
-    messages: Array<Message> = new Array;
     //schema
     static schema = {
         name: 'channels',

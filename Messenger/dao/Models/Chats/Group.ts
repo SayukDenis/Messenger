@@ -13,9 +13,6 @@ export default class Group extends Chat {
     groupId?: number;
     title!: string;
     adminUser: Array<User> = new Array;
-    users: Array<User> = new Array;
-    messages: Array<Message> = new Array;
-
     //schema
     static schema = {
         name: 'groups',

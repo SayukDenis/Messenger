@@ -14,14 +14,12 @@ export default class Dialogue extends Chat {
     dialogueId?: number;
     firstUser!: User;
     secondUser!: User;
-    messages: Array<Message> = new Array;
     //schema
     static schema = {
         name: 'dialogues',
         properties: {
             dialogueId: { type: 'integer', indexed: true },
-            firstUser: { type: 'class', objectType: User },
-            secondUser: { type: 'class', objectType: User },
+            users: { type: 'list', objectType: User },
             messages: { type: 'list', objectType: Message },          
             pinnedMessage: { type: 'list', objectType: Message },
             pinnedMessageForAll: { type: 'list', objectType: Message },
