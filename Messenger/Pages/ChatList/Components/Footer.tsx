@@ -1,15 +1,16 @@
 import React, { useRef, useState, useEffect, Ref } from "react";
 import { View, ScrollView, Dimensions, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import MySelfUser from "../1HelpFullFolder/MySelfUser";
+
 import { footerstyles } from "../Styles/FooterStyle";
 import FolderContainer from "./Footer containers/FolderContainer";
 import FolderIndicator from "./Footer containers/FolderIndicator";
-import { connect} from "react-redux";
+import { connect, useSelector} from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
+import SelfProfile from "../../../dao/Models/SelfProfile";
 
 interface FooterProps {
-  user: MySelfUser;
+
   isTouchableForHeader: boolean;
   scrollViewRefFooter: Ref<ScrollView | null>;
   handleLayout: any;
@@ -22,7 +23,7 @@ interface FooterProps {
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const Footer: React.FC<FooterProps> = ({
-  user,
+  
   isTouchableForHeader,
   scrollViewRefFooter,
   handleLayout,
@@ -36,6 +37,11 @@ const Footer: React.FC<FooterProps> = ({
   useEffect(() => {
     console.log("RERENDER");
   });
+  const selfProfile:SelfProfile=useSelector((state:any)=>{
+    const self:SelfProfile=state.selfProfileUser;
+    return self
+ })
+ const currentTab:number=0;
   const OnPressRef = useRef((event: any, index) => {
     handleFolderPress.current(index);
   });
@@ -87,7 +93,7 @@ const Footer: React.FC<FooterProps> = ({
         >
           <View style={{ justifyContent: Platform.OS == "ios"&& useSafeAreaInsets().bottom!=0?"flex-end":"center" }}>
             <View style={{ flexDirection: "row" }}>
-              {user.folders.map((folder, index) => (
+              {selfProfile.tabs[currentTab].folders.map((folder, index) => (
                 <View
                   key={index}
                   onLayout={(event) => handleLayout.current(event, index)}

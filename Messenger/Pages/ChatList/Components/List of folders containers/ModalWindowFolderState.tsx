@@ -11,6 +11,8 @@ import { BlurView } from "expo-blur";
 import { footerstyles } from "../../Styles/FooterStyle";
 import FolderModalWindow from "../Footer containers/FolderModalWindow";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import { useSelector } from "react-redux";
 const { height: screenHeight } = Dimensions.get("window");
 
 interface ModalWindowProps {
@@ -18,7 +20,6 @@ interface ModalWindowProps {
   animationState: boolean;
   selectedLongPressFolder: number;
   selectedFolder: number;
-  user: any; // замініть на правильний тип даних користувача
   positionX: number;
   positionXInContainer: number;
   widths: number[];
@@ -33,7 +34,6 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
   animationState,
   selectedLongPressFolder,
   selectedFolder,
-  user,
   positionX,
   positionXInContainer,
   widths,
@@ -42,6 +42,11 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
   handlePressOut,
   
 }) => {
+  const selfProfile:SelfProfile=useSelector((state:any)=>{
+    const self:SelfProfile=state.selfProfileUser;
+    return self
+ })
+ const currentTab:number=0;
   if (!animationState) {
     return null;
   }
@@ -85,7 +90,7 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
         />
       )}
       <FolderModalWindow
-        folder={user.folders[selectedLongPressFolder]}
+        folder={selfProfile.tabs[currentTab].folders[selectedLongPressFolder]}
         positionX={positionX}
         positionXInContainer={positionXInContainer}
         widthOfFolder={widths[selectedLongPressFolder]}
@@ -120,7 +125,7 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
               : footerstyles.folder
           ]}
         >
-          {user.folders[selectedLongPressFolder].name}
+          {selfProfile.tabs[currentTab].folders[selectedLongPressFolder].folderName}
         </Text>
       </TouchableOpacity>
     </TouchableOpacity>

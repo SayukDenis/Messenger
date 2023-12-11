@@ -9,8 +9,8 @@ import {
   GestureResponderEvent,
 } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
-import Folder from "../../1HelpFullFolder/Folder";
 import { connect, useSelector } from "react-redux";
+import Folder from "../../../../dao/Models/Folder";
 
 interface FolderProps {
   containerStyle?: StyleProp<ViewStyle>; // Стиль для контейнера
@@ -55,7 +55,7 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
         >
           <View style={[containerStyle,isSelected?footerstyles.selectedFolderContainer:null,]}>
             <Text style={isSelected &&isSelectedThere? footerstyles.selectedText : textStyle}>
-              {folder.name}
+              {folder.folderName}
             </Text>
           </View>
         </TouchableOpacity>

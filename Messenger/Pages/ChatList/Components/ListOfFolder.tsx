@@ -10,26 +10,30 @@ import {
   Platform,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import MySelfUser from "../1HelpFullFolder/MySelfUser";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
 import { connect, useSelector } from "react-redux";
+import SelfProfile from "../../../dao/Models/SelfProfile";
 
 interface ListOfFolderProps {
-  user: MySelfUser;
   currentFolder: number;
 }
 
-const ListOfFolder: React.FC<ListOfFolderProps> = ({ user, currentFolder }) => {
+const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
   useEffect(() => {
-    console.log(user.folders[currentFolder].name);
+    console.log(selfProfile.tabs[currentTab].folders[currentFolder].folderName);
   });
+  const selfProfile:SelfProfile=useSelector((state:any)=>{
+    const self:SelfProfile=state.selfProfileUser;
+    return self
+ })
+ const currentTab:number=0;
   return (
     <View style={{ height: screenHeight, width: screenWidth }}>
       <FlatList
-        data={user.folders[currentFolder].listOfChats}
+        data={selfProfile.tabs[currentTab].folders[currentFolder].chats}
         keyExtractor={(item, index) => index.toString()}
         nestedScrollEnabled={true}
         renderItem={({ item, index }) => (

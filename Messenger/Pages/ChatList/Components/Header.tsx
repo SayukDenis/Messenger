@@ -13,9 +13,6 @@ import Constants from "expo-constants";
 import { headerstyles } from "../Styles/HeaderStyle";
 import MagnifyingGlass from "./Headers containers/MagnifyingGlass";
 import ModeOfEmployment from "./Headers containers/ModeOfEmployment";
-
-import MySelfUser from "../1HelpFullFolder/MySelfUser";
-
 import { connect } from "react-redux";
 import RightContainer from "./Headers containers/RightContainer";
 import HamburgerSVG from "./SVG/HamburgerSVG";
@@ -24,12 +21,12 @@ import { LinearGradient } from "expo-linear-gradient";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 function Header({
-  mySelfUser,
+
   isTouchableHeader,
   onPress,
   navigation,
 }: {
-  mySelfUser: MySelfUser;
+
   isTouchableHeader: boolean;
   onPress: () => void;
   navigation: any;
