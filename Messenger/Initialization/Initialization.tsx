@@ -22,7 +22,6 @@ export function initialization(): SelfProfile {
   // Usage example: create 20 users
   const numberOfUsersToCreate = 20;
   const users = createUsers(numberOfUsersToCreate);
-
   const chat1 = new Chat();
   const chat2 = new Chat();
   const chat3 = new Chat();

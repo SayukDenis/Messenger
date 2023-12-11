@@ -6,6 +6,8 @@ import { mySelfUser } from "./1HelpFullFolder/Initialization";
 import React, { useState } from "react";
 import Main from "./Components/Main";
 import { LinearGradient } from "expo-linear-gradient";
+import { initialization } from "../../Initialization/Initialization";
+import SelfProfile from "../../dao/Models/SelfProfile";
 interface ChatListProps{
   navigation:any
 }
@@ -14,7 +16,9 @@ interface ChatListProps{
   const onPress = () => {
     setTouchable(!touchable);
   };
-
+  const selfProfile:SelfProfile=initialization();
+  console.log(selfProfile.tabs[1].folders)
+  return
   return (
     <>
       <LinearGradient
