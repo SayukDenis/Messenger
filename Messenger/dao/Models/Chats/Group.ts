@@ -13,10 +13,6 @@ export default class Group extends Chat {
     groupId?: number;
     title!: string;
     adminUser: Array<User> = new Array;
-    users: Array<User> = new Array;
-    messages: Array<Message> = new Array;
-    //last watched message of each User
-    lastWathedMessage: Array<ILastWathedMessage> = new Array;
     //schema
     static schema = {
         name: 'groups',
@@ -26,12 +22,12 @@ export default class Group extends Chat {
             adminUser: { type: 'list', objectType: User },
             users: { type: 'list', objectType: User },
             messages: { type: 'list', objectType: Message },
-            chat: { type: 'class', objectType: Chat },
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
             pinnedMessage: { type: 'list', objectType: Message },
             pinnedMessageForAll: { type: 'list', objectType: Message },
             branches: { type: 'list', objectType: Branch },
             roles: { type: 'list', objectType: Role },
+            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            linkToPhoto: 'text?',
         },
         primaryKey: 'groupId',
         embedded: false,
