@@ -17,17 +17,16 @@ import {
   setFolderSelectedArray,
   setSelectedFolderForChatList,
 } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
-import MySelfUser from "../1HelpFullFolder/MySelfUser";
+
 import ListOfFolder from "./ListOfFolder";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { setAnimationState } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import Footer from "./Footer";
-import { mySelfUser } from "../1HelpFullFolder/Initialization";
 import ModalWindowFolderState from "./List of folders containers/ModalWindowFolderState";
 import { FlatList } from "react-native";
 import Header from "./Header";
+import SelfProfile from "../../../dao/Models/SelfProfile";
 interface MainProps {
-  user: MySelfUser;
   onPressForTouchableHeader: () => void;
   isTouchableForHeader: boolean;
 }
@@ -35,10 +34,14 @@ interface MainProps {
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const Main: React.FC<MainProps> = ({
-  user,
   isTouchableForHeader,
   onPressForTouchableHeader,
 }) => {
+  const selfProfile:SelfProfile=useSelector((state:any)=>{
+    const self:SelfProfile=state.selfProfileUser;
+    return self
+ })
+ const currentTab:number=0;
   const [selectedLongPressFolder, setSelectedLongPressFolder] =
     useState<number>(0);
   const [startTime, setStartTime] = useState(0);
@@ -64,9 +67,9 @@ const Main: React.FC<MainProps> = ({
   const scrollViewRef = useRef<FlatList | null>(null);
   const scrollViewRefFooter = useRef<ScrollView | null>(null);
 
-  const widths = useRef<number[]>(user.folders.map(() => screenWidth * 0.1831));
-  const viewsRefs: any = [user.folders.forEach(() => useRef(null))];
-  const positionsOfFolder = useRef<number[]>(user.folders.map(() => 0));
+  const widths = useRef<number[]>(selfProfile.tabs[currentTab].folders.map(() => screenWidth * 0.1831));
+  const viewsRefs: any = [selfProfile.tabs[currentTab].folders.forEach(() => useRef(null))];
+  const positionsOfFolder = useRef<number[]>(selfProfile.tabs[currentTab].folders.map(() => 0));
 
   const handleFolderPress = useRef((index: number) => {
     setEndDragOfChatList(false);
@@ -80,9 +83,9 @@ const Main: React.FC<MainProps> = ({
       newHorizontalPosition = 0;
     } else if (
       newHorizontalPosition >
-      screenWidth * (user.folders.length - 1)
+      screenWidth * (selfProfile.tabs[currentTab].folders.length - 1)
     ) {
-      newHorizontalPosition = screenWidth * (user.folders.length - 1);
+      newHorizontalPosition = screenWidth * (selfProfile.tabs[currentTab].folders.length - 1);
     }
     dispatch(setCurrentPositionForChatList(newHorizontalPosition));
     const newFolder: number = Math.round(newHorizontalPosition / screenWidth);
@@ -184,7 +187,6 @@ const Main: React.FC<MainProps> = ({
         animationState={animationState}
         selectedLongPressFolder={selectedLongPressFolder}
         selectedFolder={selectFolder}
-        user={user}
         positionX={positionX}
         positionXInContainer={positionXInContainer}
         widths={widths.current}
@@ -193,7 +195,7 @@ const Main: React.FC<MainProps> = ({
         handlePressOut={handlePressOut}
       />
       <FlatList
-        data={user.folders}
+        data={selfProfile.tabs[currentTab].folders}
         horizontal
         pagingEnabled
         ref={scrollViewRef}
@@ -204,7 +206,7 @@ const Main: React.FC<MainProps> = ({
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View>
-            <ListOfFolder key={index} user={user} currentFolder={index} />
+            <ListOfFolder key={index}  currentFolder={index} />
           </View>
         )}
         onScroll={handleHorizontalScroll}
@@ -213,7 +215,7 @@ const Main: React.FC<MainProps> = ({
         //initialNumToRender={3}
       />
       <Footer
-        user={mySelfUser}
+ 
         isTouchableForHeader={isTouchableForHeader}
         scrollViewRefFooter={scrollViewRefFooter}
         handleLayout={handleLayout}

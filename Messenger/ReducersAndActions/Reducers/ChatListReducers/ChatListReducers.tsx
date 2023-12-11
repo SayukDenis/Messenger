@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import { mySelfUser } from '../../../Pages/ChatList/1HelpFullFolder/Initialization';
-
+import SelfProfile from '../../../dao/Models/SelfProfile';
+import { useSelector } from 'react-redux';
+import { selfProfileUser } from '../../UserReducersAndActions/Reducers/UserReducers';
+const currentTab:number=0;
 // Reducer for animation state
 const animationReducer = (state = { animationState: false }, action) => {
   switch (action.type) {
@@ -41,7 +43,7 @@ const currentPositionReducer = (state = { currentPosition: 0 }, action) => {
 
 // Reducer for FolderSelectedArray
 const folderSelectedArrayReducer = (
-  state = { folderSelectedArray: mySelfUser.folders.map((_, index) => index === 0) },
+  state = { folderSelectedArray: selfProfileUser.tabs[currentTab].folders.map((_, index) => index === 0) },
   action
 ) => {
   switch (action.type) {
