@@ -83,11 +83,19 @@ export function initialization(): SelfProfile {
   const tabs = createTab(numberOfTabToCreate);
 
   const allChatsTab = new Tab("AllChats");
+  const allChatsFolder = new Folder("AllChats");
 
   allChatsTab.exceptionsDialogues.push(...getRandomElementsFromArray<Dialogue>(dialogues));
   allChatsTab.exceptionsGroups.push(...getRandomElementsFromArray<Group>(groups));
   allChatsTab.exceptionsChannels.push(...getRandomElementsFromArray<Channel>(channels));
   allChatsTab.folders.push(...folders);
+
+  //add all in main Folder
+  allChatsFolder.chats.push(...channels);
+  allChatsFolder.chats.push(...groups);
+  allChatsFolder.chats.push(...dialogues);
+  allChatsTab.folders.push(allChatsFolder);  
+
   for (let folder of folders) {
     folder.chats.push(...getRandomElementsFromArray<Dialogue>(dialogues));
     folder.chats.push(...getRandomElementsFromArray<Group>(groups));
@@ -112,7 +120,7 @@ function getRandomNumber(max = 10): number {
 }
 function getRandomElementsFromArray<T>(arr: T[]): T[] {
   if (arr.length == 0) return [];
-  const randomCount = getRandomNumber(arr.length) + 1; // Випадкова кількість (мінімум 1)
+  const randomCount = getRandomNumber(arr.length); // Випадкова кількість 
   const shuffledArray = arr.slice().sort(() => Math.random() - 0.5); // Перемішуємо копію масиву
   return shuffledArray.slice(0, randomCount);
 }
@@ -175,6 +183,7 @@ function createDialogue(count: number, users: User[]): Dialogue[] {
     const dialogue = new Dialogue(user1, user2);
     dialogue.messages.push(...createMessage(100, [user1, user2], messageDialog));
     if (Math.random() < 0.10) addBranch(getRandomNumber(5),dialogue);
+    dialogue.linkToPhoto = images[getRandomNumber(images.length)];
     dialogues.push(dialogue);
   }
   return dialogues;
@@ -188,6 +197,7 @@ function createGroup(count: number, users: User[]): Group[] {
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
     group.messages.push(...createMessage(100, users, messageGroupsAndChannels));
     if (Math.random() < 0.10) addBranch(getRandomNumber(5),group);
+    group.linkToPhoto = images[getRandomNumber(images.length)];
     groups.push(group);
   }
   return groups;
@@ -201,6 +211,7 @@ function createChannel(count: number, users: User[]): Channel[] {
     channel.messages.push(...createMessage(100, users, messageGroupsAndChannels));
     channel.adminUser.push(...getRandomElementsFromArray<User>(users));
     if (Math.random() < 0.15) addBranch(getRandomNumber(5),channel);
+    channel.linkToPhoto = images[getRandomNumber(images.length)];
     channels.push(channel);
   }
   return channels;
