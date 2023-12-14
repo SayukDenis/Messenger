@@ -4,16 +4,23 @@ const windowHeight = Dimensions.get('window').height;
 
 const StyleFooterSavedMessage = StyleSheet.create({
     footerConteiner:{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
         display: "flex",
         alignItems:'center',
         flexDirection: 'row',
         width: "100%",
-        height: windowHeight*0.06,
+        height: windowHeight*0.08,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
         borderBottomLeftRadius:windowHeight*0.03,
         borderBottomRightRadius:windowHeight*0.03,
         backgroundColor: '#E7E6E4',
         borderWidth:1,
-        borderColor:'#A19C91'
+        borderColor:'#A19C91',
+        justifyContent:"center"
     },
 
     svgConteiner:{

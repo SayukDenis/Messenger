@@ -9,7 +9,7 @@ import {
   EasingFunction,
 } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
-import Folder from "../../1HelpFullFolder/Folder";
+
 import AddChatSvg from "../SVG/AddChatSvg";
 import OnNotifications from "../SVG/OnNotifications";
 import OffNotificationSvg from "../SVG/OffNotifications";
@@ -17,8 +17,10 @@ import EditFolderSvg from "../SVG/EditFolderSvg";
 import DeleteSvg from "../SVG/Delete";
 import SortFoldersSvg from "../SVG/SortFolders";
 import ReadFoldersMessagesSvg from "../SVG/ReadFoldersMessagesSvg";
-import { mySelfUser } from "../../1HelpFullFolder/Initialization";
-import Message from "../../1HelpFullFolder/Message";
+import Folder from "../../../../dao/Models/Folder";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import { useSelector } from "react-redux";
+
 interface FolderModalWindowProps {
   folder: Folder;
   positionX: number;
@@ -37,6 +39,7 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
   booleanRefForEndAnimation
 
 }) => {
+  return
   const statusNotification: boolean = Math.random() < 0.5;
   const getStylePosition = (position: number) => {
     if (position <= screenWidth * 0.5) {
@@ -46,11 +49,11 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
     }
   };
   const haveFolderUnreadMessages = (folder: Folder): boolean => {
-    for (let i = 0; i < folder.listOfChats.length; i++) {
-      const chat = folder.listOfChats[i];
+    for (let i = 0; i < folder.chats.length; i++) {
+      const chat = folder.chats[i];
 
       const lastMessage: Message | undefined =
-        chat.listOfMessages.length > 0
+        chat.branches.length > 0
           ? chat.listOfMessages[chat.listOfMessages.length - 1]
           : undefined;
       const id: number | undefined = chat.dictionary?.get(mySelfUser.id);

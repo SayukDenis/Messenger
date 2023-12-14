@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
+import Chat from "../../../../dao/Models/Chats/Chat";
 
-import Chat from "../../1HelpFullFolder/Chat";
 
 interface ChatModalWindowProps {
   chat:Chat

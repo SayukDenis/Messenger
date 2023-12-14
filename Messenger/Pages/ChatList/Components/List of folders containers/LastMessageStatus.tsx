@@ -1,25 +1,32 @@
 import React, { ReactNode } from "react";
 import { View, Text, Dimensions, ViewStyle } from "react-native";
-import Chat from "../../1HelpFullFolder/Chat";
-import Message from "../../1HelpFullFolder/Message";
-import { mySelfUser } from "../../1HelpFullFolder/Initialization";
+
 import ViewedMessageIcon from "./ViewedMessageIcon";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import UnViewedMessage from "./UnViewedMessage";
+import Chat from "../../../../dao/Models/Chats/Chat";
+import Message from "../../../../dao/Models/Message";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import { useSelector } from "react-redux";
 interface LastMessageStatusProps {
   chat: Chat;
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
+  const selfProfile:SelfProfile=useSelector((state:any)=>{
+    const self:SelfProfile=state.selfProfileUser;
+    return self
+ })
+ const currentBranch:number=0;
   const lastMessage: Message | undefined =
-    chat.listOfMessages[chat.listOfMessages.length - 1];
+    chat?.messages[chat.messages.length - 1];
   if (!lastMessage) {
     return null;
   }
   let content: ReactNode;
-  const id: number | undefined = chat.dictionary?.get(mySelfUser.id);
-  if (lastMessage.sender === mySelfUser) {
-    if (id && lastMessage.id < id) {
+  const id: number | undefined = 0//chat..?.get(selfPro.id);
+  if (lastMessage.author.userId ===selfProfile.userId) {
+    if (id && lastMessage.author.userId < id) {
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
           <UnViewedMessage/>
@@ -35,7 +42,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
       );
     }
   } else if (id) {
-    let countOfMessage: number = chat.listOfMessages.length - id;
+    let countOfMessage: number = chat.branches[currentBranch].messages.length - id;
     if (countOfMessage === 0) return null;
     content = CountOfMessages(countOfMessage);
   }

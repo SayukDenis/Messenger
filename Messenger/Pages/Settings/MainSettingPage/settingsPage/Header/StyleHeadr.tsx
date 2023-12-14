@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Dimensions  } from "react-native";
+import { StyleSheet, Dimensions, StatusBar,Platform  } from "react-native";
+import Constants from 'expo-constants';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -8,7 +9,7 @@ const StyleHeadr = StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         width: "100%",
-        height: windowHeight*0.06,
+        height: Platform.OS=="android"?windowHeight * 0.08+StatusBar.currentHeight:windowHeight * 0.08+Constants.statusBarHeight,
         borderBottomLeftRadius:40,
         borderBottomRightRadius:40,
         backgroundColor: '#E7E6E4',

@@ -17,12 +17,12 @@ const Center: React.FC<any> = ({ navigation })=>{
         return <View style={StyleCentre.conteiner} >
                                 
                                 <Image style={StyleCentre.imgStyle} source={{uri:'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1'}}></Image>
-                                <View style={StyleCentre.button}><TouchableOpacity onPress={() => navigation.navigate('Edit page')} ><Text>Edit</Text></TouchableOpacity></View>
+                                <TouchableOpacity onPress={() => navigation.navigate('Edit page')}  style={StyleCentre.button}><Text>Edit</Text></TouchableOpacity>
                                 <View style={StyleCentre.box}></View>
                                 <Text style= {StyleCentre.text}>Settings</Text>
                                 <ButtonList navigation = {navigation}></ButtonList>
-                                    <TouchableOpacity style ={StyleCentre.editButton} >
-                                        <Text style={StyleCentre.editButtonText} onPress={toggleModal}>Exit</Text>
+                                    <TouchableOpacity style ={StyleCentre.editButton}  onPress={toggleModal} >
+                                        <Text style={StyleCentre.editButtonText}>Exit</Text>
                                     </TouchableOpacity>           
                                 <Modal 
                                             animationType="none"

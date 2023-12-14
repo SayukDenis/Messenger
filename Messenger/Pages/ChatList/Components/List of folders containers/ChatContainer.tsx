@@ -12,23 +12,27 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import { mySelfUser } from "../../1HelpFullFolder/Initialization";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
-import Message from "../../1HelpFullFolder/Message";
-import Chat from "../../1HelpFullFolder/Chat";
 import RightContainersForSwipe from "./RightContainersForSwipe";
 import LeftContainerForSwipe from "./LeftContainerForSwipe";
 import CentralChatContainer from "./CentralChatContainer";
-import { connect } from "react-redux";
-import { BlurView } from "expo-blur";
+import { connect, useSelector } from "react-redux";
+import Chat from "../../../../dao/Models/Chats/Chat";
+import Message from "../../../../dao/Models/Message";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 
 interface ChatProps {
   chat: Chat;
-  isCurrent: boolean;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
+const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
+  const selfProfile:SelfProfile=useSelector((state:any)=>{
+    const self:SelfProfile=state.selfProfileUser;
+    return self
+ })
+ 
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
     useState<number>(null);
   let randomBoolean = useRef(null);
@@ -37,17 +41,18 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   const [isSwipedFromRight, setIsSwipedFromRight] = useState(false);
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
   const [positionXForSwipeable, setPositionXForSwipeable] =
-    useState<number>(screenWidth);
-
+  useState<number>(screenWidth);
+  
   const haveUnreadMessages = (chat) => {
     const lastMessage: Message =
-      chat.listOfMessages.length > 0
-        ? chat.listOfMessages[chat.listOfMessages.length - 1]
+        chat.messages[chat.messages.length-1]
+        ? chat.messages[chat.messages.length - 1]
         : undefined;
-    const id: number | undefined = chat.dictionary?.get(mySelfUser.id);
+    
+    const id: number | undefined = chat.dictionary?.get(selfProfile.userId);
     if (!lastMessage)
-      if (lastMessage?.sender !== mySelfUser) {
-        if (id && lastMessage.id > id) {
+      if (lastMessage.author.userId !== selfProfile.userId) {
+        if (id && lastMessage.messageId > id) {
           return true;
         }
       }
@@ -74,7 +79,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     console.log("Кнопку натиснули");
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
-    console.log(chat.name);
+    console.log(chat.messages[0]);
   });
   const handleScrollToRightEnd = () => {
     const scrollVarible = positionXForStartOfSwipeable == screenWidth;
