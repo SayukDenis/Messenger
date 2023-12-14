@@ -408,7 +408,7 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
     position: "absolute",
     bottom: 0,
-    zIndex: 2,
+    zIndex: 1,
     flexDirection: "row",
   },
   binIcon: {
@@ -418,6 +418,17 @@ export const styles = StyleSheet.create({
   arrowEastIcon: {
     width: 0.09 * screenWidth,
     height: 0.04 * screenHeight,
+  },
+  photoToolBar: {
+    backgroundColor: "rgb(231, 230,	228)",
+    width: "100%",
+    alignItems: "center",
+    height: 0.1 * screenHeight,
+    borderWidth: 1.5,
+    borderColor: "rgb(161, 156, 145)",
+    justifyContent: "center",
+    zIndex: 1,
+    position: "absolute",
   },
 });
 

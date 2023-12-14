@@ -42,8 +42,8 @@ export const setPositionYOfLongPressedAlbum = (positionY: number) => ({
   payload: positionY,
 });
 
-export const setIsDeleteAlbumPressed = (value: boolean) => ({
-  type: "SET_IS_DELETE_ALBUM_PRESSED",
+export const setRemovalApprovalText = (value: string) => ({
+  type: "SET_REMOVAL_APPROVAL_TEXT",
   payload: value,
 });
 
@@ -55,14 +55,4 @@ export const setIsAlbumSelectionVisible = (value: boolean) => ({
 export const setSelectedAlbums = (albums: Array<Album>) => ({
   type: "SET_SELECTED_ALBUMS",
   payload: albums,
-});
-
-export const setIsDeleteAllAlbumsPressed = (value: boolean) => ({
-  type: "SET_IS_DELETE_ALL_ALBUMS_PRESSED",
-  payload: value,
-});
-
-export const setIsDeleteSelectedAlbumsPressed = (value: boolean) => ({
-  type: "SET_IS_DELETE_SELECTED_ALBUMS_PRESSED",
-  payload: value,
 });

@@ -10,8 +10,8 @@ import {
   Image,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { styles } from "../MainUserScreen/Styles";
-import { user, Album, PhotoOrVideo } from "../../SemiComponents/DBUser";
+import { styles } from "./Styles";
+import { user, PhotoOrVideo } from "../../SemiComponents/DBUser";
 import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
 import { tempUser } from "../../SemiComponents/DBUser";
 import Name from "../../SemiComponents/MainScreen/Name";
@@ -30,49 +30,44 @@ interface AlbumFillingProps {
 }
 
 const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
+  const [removalApprovalText, setRemovalApprovalText] = useState("");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
-  const [isDeleteAlbumPressed, setIsDeleteAlbumPressed] = useState(false);
   const [isAddNewPhotoPressed, setIsAddNewPhotoPressed] = useState(false);
   const [selectedPhotosAndVideos, setSelectedPhotosAndVideos] = useState<
     Array<PhotoOrVideo>
   >([]);
   const [pressedPhoto, setPressedPhoto] = useState(new PhotoOrVideo(""));
   const [isPhotoSelectionVisible, setIsPhotoSelectionVisible] = useState(false);
-  const [isDeleteAllPhotosPressed, setIsDeleteAllPhotosPressed] =
-    useState(false);
-  const [isDeleteSelectedPhotosPressed, setIsDeleteSelectedPhotosPressed] =
-    useState(false);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {}, [isFocused]);
+  //2, 4, 5
 
-  var blursConditions: boolean[] = [
-    pressedPhoto.url != "",
-    isElseFeaturesVisible,
-    isDeleteAlbumPressed,
-    isAddNewPhotoPressed,
-    isDeleteAllPhotosPressed,
-    isDeleteSelectedPhotosPressed,
+  const removalApprovalsTexts: string[] = [
+    "delete an album",
+    "delete all photos",
+    "delete selected photos",
   ];
-  var blursOnPress: (() => void)[] = [
+  const removalApprovalsOnPress: (() => void)[] = [
     () => {
-      setPressedPhoto(new PhotoOrVideo(""));
+      user.albums.splice(user.albums.indexOf(tempUser.selectedAlbum), 1);
+      setIsPhotoSelectionVisible(false);
+      props.navigation.goBack();
     },
     () => {
-      setIsElseFeaturesVisible(false);
+      tempUser.selectedAlbum.photosAndVideos = [];
+      setIsPhotoSelectionVisible(false);
     },
     () => {
-      setIsDeleteAlbumPressed(false);
-    },
-    () => {
-      setIsAddNewPhotoPressed(false);
-    },
-    () => {
-      setIsDeleteAllPhotosPressed(false);
-    },
-    () => {
-      setIsDeleteSelectedPhotosPressed(false);
+      selectedPhotosAndVideos.forEach((photo) => {
+        tempUser.selectedAlbum.photosAndVideos.splice(
+          tempUser.selectedAlbum.photosAndVideos.indexOf(photo),
+          1
+        );
+      });
+      setSelectedPhotosAndVideos(Array<PhotoOrVideo>());
+      setIsPhotoSelectionVisible(false);
     },
   ];
 
@@ -80,21 +75,50 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
     <View
       style={[styles.mainContainer, { backgroundColor: "rgb(174, 174, 174)" }]}
     >
-      {blursConditions.map((item, index) => (
-        <Blur
-          key={index}
-          visibleWhen={item}
-          onPress={() => {
-            blursOnPress[index]();
-          }}
-          style={[
-            styles.blurEffect,
-            {
-              zIndex: index == 2 ? 3 : 1,
-            },
-          ]}
-        />
-      ))}
+      {/* General blur with zIndex 1 */}
+      <Blur
+        visibleWhen={
+          pressedPhoto.url != "" ||
+          isElseFeaturesVisible ||
+          isAddNewPhotoPressed
+        }
+        onPress={() => {
+          setPressedPhoto(new PhotoOrVideo(""));
+          setIsElseFeaturesVisible(false);
+          setIsAddNewPhotoPressed(false);
+        }}
+        style={styles.blurEffect}
+      />
+
+      {/* Blur over blur with zIndex 3 */}
+      <Blur
+        visibleWhen={removalApprovalText != ""}
+        onPress={() => {
+          setRemovalApprovalText("");
+        }}
+        style={[
+          styles.blurEffect,
+          {
+            zIndex: 3,
+          },
+        ]}
+      />
+
+      {removalApprovalsTexts.map((item, index) => {
+        return (
+          <RemovalApproval
+            key={item}
+            isVisible={removalApprovalText == item}
+            onAnyPress={() => {
+              setRemovalApprovalText("");
+            }}
+            onAgreePress={() => {
+              removalApprovalsOnPress[index]();
+            }}
+            text={"Do you really want to " + item + "?"}
+          />
+        );
+      })}
 
       <View style={styles.topToolBar}>
         {isPhotoSelectionVisible ? (
@@ -105,7 +129,7 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
                 { left: 0.06 * Dimensions.get("screen").width },
               ]}
               onPress={() => {
-                setIsDeleteAllPhotosPressed(true);
+                setRemovalApprovalText("delete all photos");
               }}
             >
               <Text style={[styles.doneButtonTitle, { color: "red" }]}>
@@ -172,7 +196,7 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
           setIsElseFeaturesVisible(false);
         }}
         onDeleteAlbumPress={() => {
-          setIsDeleteAlbumPressed(true);
+          setRemovalApprovalText("delete an album");
         }}
         onSortPress={() => {
           alert("Sorting...");
@@ -253,72 +277,11 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
       <BottomToolBar
         isVisible={isPhotoSelectionVisible}
         onDeletePress={() => {
-          setIsDeleteSelectedPhotosPressed(true);
+          setRemovalApprovalText("delete selected photos");
         }}
         onForwardPress={() => {
           alert("Forward photos...");
         }}
-      />
-
-      {/* Approval to delete an album */}
-      <RemovalApproval
-        isVisible={isDeleteAlbumPressed}
-        onAnyPress={() => {
-          setIsDeleteAlbumPressed(false);
-        }}
-        onAgreePress={() => {
-          user.albums.splice(user.albums.indexOf(tempUser.selectedAlbum), 1);
-          setIsDeleteAlbumPressed(false);
-          setIsPhotoSelectionVisible(false);
-          props.navigation.goBack();
-        }}
-        text={
-          "Do you really want to delete album " +
-          tempUser.selectedAlbum.name +
-          "?"
-        }
-      />
-
-      {/* Approval to delete selected photos in the album */}
-      <RemovalApproval
-        isVisible={isDeleteSelectedPhotosPressed}
-        onAnyPress={() => {
-          setIsDeleteSelectedPhotosPressed(false);
-        }}
-        onAgreePress={() => {
-          selectedPhotosAndVideos.forEach((photo) => {
-            tempUser.selectedAlbum.photosAndVideos.splice(
-              tempUser.selectedAlbum.photosAndVideos.indexOf(photo),
-              1
-            );
-          });
-          setSelectedPhotosAndVideos(Array<PhotoOrVideo>());
-          setIsPhotoSelectionVisible(false);
-          setIsDeleteSelectedPhotosPressed(false);
-        }}
-        text={
-          "Do you really want to delete selected photos in " +
-          tempUser.selectedAlbum.name +
-          "?"
-        }
-      />
-
-      {/* Approval to delete all photos in the album */}
-      <RemovalApproval
-        isVisible={isDeleteAllPhotosPressed}
-        onAnyPress={() => {
-          setIsDeleteAllPhotosPressed(false);
-        }}
-        onAgreePress={() => {
-          tempUser.selectedAlbum.photosAndVideos = [];
-          setIsDeleteAllPhotosPressed(false);
-          setIsPhotoSelectionVisible(false);
-        }}
-        text={
-          "Do you really want to delete all photos in " +
-          tempUser.selectedAlbum.name +
-          "?"
-        }
       />
 
       <AddingPhotoMenu

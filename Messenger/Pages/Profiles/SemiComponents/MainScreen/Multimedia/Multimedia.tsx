@@ -22,6 +22,7 @@ interface MultimediaProps {
   onAlbumLongPress: (value: Album, event: GestureResponderEvent) => void;
   isAlbumSelectionVisible: boolean;
   onAlbumPress: (value: Album) => void;
+  onPhotoPress: (value: PhotoOrVideo) => void;
   isAlbumCheckMarkVisible: (value: Album) => boolean;
 }
 
@@ -52,7 +53,7 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
           isPhotoSelectionVisible={false}
           data={user.photosAndVideos}
           onPress={(photo: PhotoOrVideo) => {
-            alert("Photo is pressed:" + photo.url);
+            props.onPhotoPress(photo);
           }}
         />
       )}

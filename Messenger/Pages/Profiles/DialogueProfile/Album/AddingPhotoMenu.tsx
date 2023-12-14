@@ -1,13 +1,12 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { FlatList } from "react-native-gesture-handler";
 import { PhotoOrVideo, user } from "../../SemiComponents/DBUser";
 import { tempUser } from "../../SemiComponents/DBUser";
 
-const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
 
 interface AddingPhotoMenuProps {

@@ -11,7 +11,12 @@ import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
-import { Album, tempUser, user } from "../../SemiComponents/DBUser";
+import {
+  Album,
+  PhotoOrVideo,
+  tempUser,
+  user,
+} from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
 import { GestureResponderEvent } from "react-native-modal";
@@ -23,89 +28,105 @@ type MainUserScreenProps = {
 };
 
 const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
+  const [removalApprovalText, setRemovalApprovalText] = useState("");
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
-    useState(false);
-  const [isClearChatButtonPressed, setIsClearChatButtonPressed] =
     useState(false);
   const [isMuted, setIsMuted] = useState(user.isMuted);
   const [isBlocked, setIsBlocked] = useState(user.isBlocked);
   const [longPressedAlbum, setLongPressedAlbum] = useState(null);
   const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
     useState(0);
-  const [isDeleteAlbumPressed, setIsDeleteAlbumPressed] = useState(false);
   const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
   const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
-  const [isDeleteAllAlbumsPressed, setIsDeleteAllAlbumsPressed] =
-    useState(false);
-  const [isDeleteSelectedAlbumsPressed, setIsDeleteSelectedAlbumsPressed] =
-    useState(false);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {}, [isFocused]);
 
-  var blursConditions: boolean[] = [
-    isPhotoAlbumSelectionVisible,
-    isElseFeaturesVisible,
-    isClearChatButtonPressed,
-    longPressedAlbum != null,
-    isDeleteAlbumPressed,
-    isDeleteAllAlbumsPressed,
-    isDeleteSelectedAlbumsPressed,
+  const removalApprovalsTexts: string[] = [
+    "clear the chat",
+    "delete an album",
+    "delete all albums",
+    "delete selected albums",
   ];
-  var blursOnPress: (() => void)[] = [
+  const removalApprovalsOnPress: (() => void)[] = [
     () => {
-      setIsPhotoAlbumSelectionVisible(false);
+      alert("Agree");
     },
     () => {
-      setIsElseFeaturesVisible(false);
-    },
-    () => {
-      setIsClearChatButtonPressed(false);
-    },
-    () => {
+      user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
       setLongPressedAlbum(null);
     },
     () => {
-      setIsDeleteAlbumPressed(false);
+      user.albums = Array<Album>();
+      setIsAlbumSelectionVisible(false);
     },
     () => {
-      setIsDeleteAllAlbumsPressed(false);
-    },
-    () => {
-      setIsDeleteSelectedAlbumsPressed(false);
+      selectedAlbums.forEach((album) => {
+        user.albums.splice(user.albums.indexOf(album), 1);
+      });
+      setSelectedAlbums(Array<Album>());
+      setIsAlbumSelectionVisible(false);
     },
   ];
 
   return (
     <View style={styles.mainContainer}>
-      {blursConditions.map((item, index) => (
-        <Blur
-          key={index}
-          visibleWhen={item}
-          onPress={() => {
-            blursOnPress[index]();
-          }}
-          style={[
-            styles.blurEffect,
-            {
-              zIndex:
-                index == 2 || index == 4 || index == 5 || index == 6 ? 3 : 1,
-            },
-          ]}
-        />
-      ))}
+      {/* General blur with zIndex 1 */}
+      <Blur
+        visibleWhen={
+          isElseFeaturesVisible ||
+          longPressedAlbum != null ||
+          isPhotoAlbumSelectionVisible
+        }
+        onPress={() => {
+          setIsElseFeaturesVisible(false);
+          setLongPressedAlbum(null);
+          setIsPhotoAlbumSelectionVisible(false);
+        }}
+        style={styles.blurEffect}
+      />
+
+      {/* Blur over blur with zIndex 3 */}
+      <Blur
+        visibleWhen={removalApprovalText != ""}
+        onPress={() => {
+          setRemovalApprovalText("");
+        }}
+        style={[
+          styles.blurEffect,
+          {
+            zIndex: 3,
+          },
+        ]}
+      />
+
+      {removalApprovalsTexts.map((item, index) => {
+        return (
+          <RemovalApproval
+            key={item}
+            isVisible={removalApprovalText == item}
+            onAnyPress={() => {
+              setRemovalApprovalText("");
+            }}
+            onAgreePress={() => {
+              removalApprovalsOnPress[index]();
+            }}
+            text={"Do you really want to " + item + "?"}
+          />
+        );
+      })}
 
       {/* Top tool bar with buttons*/}
       <TopToolBar
         primaryTitle={user.profileName}
         secondaryTitle={user.lastTimeOnline}
-        setIsElseFeaturesVisible={(value: boolean) =>
-          setIsElseFeaturesVisible(value)
-        }
+        onElseFeaturesPress={() => {
+          setIsElseFeaturesVisible(true);
+        }}
         isMuted={isMuted}
         isBlocked={isBlocked}
         isSearchButtonVisible={true}
@@ -119,7 +140,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           setIsAlbumSelectionVisible(false);
         }}
         onDeleteAllPress={() => {
-          setIsDeleteAllAlbumsPressed(true);
+          setRemovalApprovalText("delete all albums");
         }}
       />
 
@@ -135,66 +156,11 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         onBlockPress={(value: boolean) => {
           setIsBlocked(value);
         }}
-        isClearChatPressed={isClearChatButtonPressed}
-        onClearChatPress={(value: boolean) => {
-          setIsClearChatButtonPressed(value);
+        onClearChatPress={() => {
+          setRemovalApprovalText("clear the chat");
         }}
         settingsPress={() => navigation.navigate("SettingsScreen" as never)}
         mode="user"
-      />
-
-      {/* Approval to clear chat if clear button is pressed via else features buttons */}
-      <RemovalApproval
-        isVisible={isClearChatButtonPressed}
-        onAnyPress={() => {
-          setIsClearChatButtonPressed(false);
-        }}
-        onAgreePress={() => {
-          alert("Agree");
-        }}
-        text={user.clearChatText}
-      />
-
-      {/* Approval to delete an album */}
-      <RemovalApproval
-        isVisible={isDeleteAlbumPressed}
-        onAnyPress={() => {
-          setIsDeleteAlbumPressed(false);
-        }}
-        onAgreePress={() => {
-          user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
-          setLongPressedAlbum(null);
-        }}
-        text="Do you really want to delete an album?"
-      />
-
-      {/* Approval to delete all albums */}
-      <RemovalApproval
-        isVisible={isDeleteAllAlbumsPressed}
-        onAnyPress={() => {
-          setIsDeleteAllAlbumsPressed(false);
-        }}
-        onAgreePress={() => {
-          user.albums = Array<Album>();
-          setIsAlbumSelectionVisible(false);
-        }}
-        text="Do you really want to delete all albums?"
-      />
-
-      {/* Approval to delete selected albums */}
-      <RemovalApproval
-        isVisible={isDeleteSelectedAlbumsPressed}
-        onAnyPress={() => {
-          setIsDeleteSelectedAlbumsPressed(false);
-        }}
-        onAgreePress={() => {
-          selectedAlbums.forEach((album) => {
-            user.albums.splice(user.albums.indexOf(album), 1);
-          });
-          setSelectedAlbums(Array<Album>());
-          setIsAlbumSelectionVisible(false);
-        }}
-        text="Do you really want to delete selected albums?"
       />
 
       <AlbumLongPressedMenu
@@ -202,7 +168,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         longPressedAlbum={longPressedAlbum}
         positionYOfLongPressedAlbum={positionYOfLongPressedAlbum}
         onDeleteAlbumPress={() => {
-          setIsDeleteAlbumPressed(true);
+          setRemovalApprovalText("delete an album");
         }}
         onSelectAlbumPress={() => {
           setIsAlbumSelectionVisible(true);
@@ -214,7 +180,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
       <BottomToolBar
         isVisible={isAlbumSelectionVisible}
         onDeletePress={() => {
-          setIsDeleteSelectedAlbumsPressed(true);
+          setRemovalApprovalText("delete selected albums");
         }}
         onForwardPress={() => {
           alert("Forward album...");
@@ -259,6 +225,10 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           pressedMultimediaButton={pressedMultimediaButton}
           setPressedMultimediaButton={(value: string) => {
             setPressedMultimediaButton(value);
+          }}
+          onPhotoPress={(photo: PhotoOrVideo) => {
+            tempUser.selectedPhoto = photo;
+            navigation.navigate("PhotoScreen" as never);
           }}
           onAlbumPress={(item: Album) => {
             if (isAlbumSelectionVisible) {

@@ -9,7 +9,7 @@ import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon";
 import Name from "./Name";
 
 interface TopToolBarProps {
-  setIsElseFeaturesVisible?: (value: boolean) => void;
+  onElseFeaturesPress?: () => void;
   primaryTitle?: string;
   secondaryTitle?: string;
   isMuted?: boolean;
@@ -64,7 +64,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
             {/* Else features button */}
             <TouchableOpacity
               onPress={() => {
-                props?.setIsElseFeaturesVisible(true);
+                props?.onElseFeaturesPress();
               }}
               style={styles.elseFeaturesButton}
             >

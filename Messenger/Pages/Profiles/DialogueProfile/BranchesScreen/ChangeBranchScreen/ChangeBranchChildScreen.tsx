@@ -13,14 +13,12 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "../Styles";
 import Blur from "../../../SemiComponents/MainScreen/Blur";
 import Header from "../../../SemiComponents/Header";
-import { user, BranchParent } from "../../../SemiComponents/DBUser";
+import { user } from "../../../SemiComponents/DBUser";
 import EmojiAndColorButtons from "../NewBranchScreen/EmojiAndColorButtons";
 import BranchColorPicker from "../NewBranchScreen/BranchColorPicker";
 import ColorSelection from "../NewBranchScreen/ColorSelection";
 import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
-import BranchChildrenList from "./BranchChildrenList";
-import RemovalApproval from "../../../SemiComponents/MainScreen/RemovalApproval";
 import { tempUser, BranchChild } from "../../../SemiComponents/DBUser";
 
 interface ChangeBranchChildScreenProps {

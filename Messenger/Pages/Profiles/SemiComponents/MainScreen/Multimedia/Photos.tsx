@@ -35,7 +35,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
         numColumns={3}
         contentContainerStyle={{
           gap: 0.002 * Dimensions.get("screen").height,
-          paddingBottom: 0.5 * Dimensions.get("screen").height,
+          paddingBottom: 0.65 * Dimensions.get("screen").height,
           backgroundColor: "rgb(174, 174, 174)",
         }}
         scrollEnabled={false}

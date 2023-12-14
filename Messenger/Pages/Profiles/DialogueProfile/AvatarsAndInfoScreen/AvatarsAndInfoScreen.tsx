@@ -28,6 +28,7 @@ type AvatarsAndInfoScreenProps = {
 const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
   navigation,
 }) => {
+  const [removalApprovalText, setRemovalApprovalText] = useState("");
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
@@ -35,13 +36,8 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
   const [longPressedAlbum, setLongPressedAlbum] = useState(null);
   const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
     useState(0);
-  const [isDeleteAlbumPressed, setIsDeleteAlbumPressed] = useState(false);
   const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
   const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
-  const [isDeleteAllAlbumsPressed, setIsDeleteAllAlbumsPressed] =
-    useState(false);
-  const [isDeleteSelectedAlbumsPressed, setIsDeleteSelectedAlbumsPressed] =
-    useState(false);
   const [currentAvatar, setCurrentAvatar] = useState(user.avatars[0]);
   const [isAnyTextCopied, setIsAnyTextCopied] = useState(false);
   const [phoneUsernameOrBioCopied, setPhoneUsernameOrBioCopied] = useState("");
@@ -55,94 +51,75 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
     console.log(isAnyTextCopied);
   });
 
-  const blursConditions: boolean[] = [
-    isPhotoAlbumSelectionVisible,
-    longPressedAlbum != null,
-    isDeleteAlbumPressed,
-    isDeleteAllAlbumsPressed,
-    isDeleteSelectedAlbumsPressed,
-    isNumberPressed,
+  const removalApprovalsTexts: string[] = [
+    "delete an album",
+    "delete all albums",
+    "delete selected albums",
   ];
-  const blursOnPress: (() => void)[] = [
+  const removalApprovalsOnPress: (() => void)[] = [
     () => {
-      setIsPhotoAlbumSelectionVisible(false);
-    },
-    () => {
+      user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
       setLongPressedAlbum(null);
     },
     () => {
-      setIsDeleteAlbumPressed(false);
+      user.albums = Array<Album>();
+      setIsAlbumSelectionVisible(false);
     },
     () => {
-      setIsDeleteAllAlbumsPressed(false);
-    },
-    () => {
-      setIsDeleteSelectedAlbumsPressed(false);
-    },
-    () => {
-      setIsNumberPressed(false);
+      selectedAlbums.forEach((album) => {
+        user.albums.splice(user.albums.indexOf(album), 1);
+      });
+      setSelectedAlbums(Array<Album>());
+      setIsAlbumSelectionVisible(false);
     },
   ];
 
   return (
     <View style={styles.mainContainer}>
-      {blursConditions.map((item, index) => (
-        <Blur
-          key={index}
-          visibleWhen={item}
-          onPress={() => {
-            blursOnPress[index]();
-          }}
-          style={[
-            styles.blurEffect,
-            {
-              zIndex: index == 2 || index == 3 || index == 4 ? 3 : 1,
-            },
-          ]}
-        />
-      ))}
-
-      {/* Approval to delete an album */}
-      <RemovalApproval
-        isVisible={isDeleteAlbumPressed}
-        onAnyPress={() => {
-          setIsDeleteAlbumPressed(false);
-        }}
-        onAgreePress={() => {
-          user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
+      {/* General blur with zIndex 1 */}
+      <Blur
+        visibleWhen={
+          isPhotoAlbumSelectionVisible ||
+          longPressedAlbum != null ||
+          isNumberPressed
+        }
+        onPress={() => {
+          setIsPhotoAlbumSelectionVisible(false);
           setLongPressedAlbum(null);
+          setIsNumberPressed(false);
         }}
-        text="Do you really want to delete an album?"
+        style={styles.blurEffect}
       />
 
-      {/* Approval to delete all albums */}
-      <RemovalApproval
-        isVisible={isDeleteAllAlbumsPressed}
-        onAnyPress={() => {
-          setIsDeleteAllAlbumsPressed(false);
+      {/* Blur over blur with zIndex 3 */}
+      <Blur
+        visibleWhen={removalApprovalText != ""}
+        onPress={() => {
+          setRemovalApprovalText("");
         }}
-        onAgreePress={() => {
-          user.albums = Array<Album>();
-          setIsAlbumSelectionVisible(false);
-        }}
-        text="Do you really want to delete all albums?"
+        style={[
+          styles.blurEffect,
+          {
+            zIndex: 3,
+          },
+        ]}
       />
 
-      {/* Approval to delete selected albums */}
-      <RemovalApproval
-        isVisible={isDeleteSelectedAlbumsPressed}
-        onAnyPress={() => {
-          setIsDeleteSelectedAlbumsPressed(false);
-        }}
-        onAgreePress={() => {
-          selectedAlbums.forEach((album) => {
-            user.albums.splice(user.albums.indexOf(album), 1);
-          });
-          setSelectedAlbums(Array<Album>());
-          setIsAlbumSelectionVisible(false);
-        }}
-        text="Do you really want to delete selected albums?"
-      />
+      {removalApprovalsTexts.map((item, index) => {
+        return (
+          <RemovalApproval
+            key={item}
+            isVisible={removalApprovalText == item}
+            onAnyPress={() => {
+              setRemovalApprovalText("");
+            }}
+            onAgreePress={() => {
+              removalApprovalsOnPress[index]();
+            }}
+            text={"Do you really want to " + item + "?"}
+          />
+        );
+      })}
 
       <TopMenuWhenSelection
         isVisible={isAlbumSelectionVisible}
@@ -152,7 +129,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           setIsAlbumSelectionVisible(false);
         }}
         onDeleteAllPress={() => {
-          setIsDeleteAllAlbumsPressed(true);
+          setRemovalApprovalText("delete all albums");
         }}
       />
 
@@ -161,7 +138,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         longPressedAlbum={longPressedAlbum}
         positionYOfLongPressedAlbum={positionYOfLongPressedAlbum}
         onDeleteAlbumPress={() => {
-          setIsDeleteAlbumPressed(true);
+          setRemovalApprovalText("delete an album");
         }}
         onSelectAlbumPress={() => {
           setIsAlbumSelectionVisible(true);
@@ -173,7 +150,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
       <BottomToolBar
         isVisible={isAlbumSelectionVisible}
         onDeletePress={() => {
-          setIsDeleteSelectedAlbumsPressed(true);
+          setRemovalApprovalText("delete selected albums");
         }}
         onForwardPress={() => {
           alert("Forward album...");

@@ -1,12 +1,8 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity, Text, Dimensions } from "react-native";
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import GoBackButton from "../GoBackButton";
-import SearchIcon from "./Icons/SearchIcon";
-import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon";
-import Name from "./Name";
 import BinIcon from "./Icons/BinIcon";
 import ArrowEastIcon from "./Icons/ArromEastIcon";
 

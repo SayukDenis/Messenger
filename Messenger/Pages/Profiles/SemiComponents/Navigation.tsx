@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { StackView, createStackNavigator } from "@react-navigation/stack";
 import MainGroupPage from "../GroupProfile/MainGroupPage/MainGroupPage";
 import ChooseAuthor from "../SemiComponents/AuthorChoose";
 import MainUserScreen from "../DialogueProfile/MainUserScreen/MainUserScreen";
@@ -23,6 +23,7 @@ import Album from "../DialogueProfile/Album/Album";
 import GalleryWhileAddingNewPhoto from "../DialogueProfile/Album/GalleryWhileAddingNewPhoto";
 import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
 import ChangeBranchChildScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
+import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
 
 const Stack = createStackNavigator();
 
@@ -81,6 +82,7 @@ const UserNavigation = () => {
         name="AvatarsAndInfoScreen"
         component={AvatarsAndInfoScreen}
       />
+      <Stack.Screen name="PhotoScreen" component={PhotoScreen} />
     </Stack.Navigator>
   );
 };

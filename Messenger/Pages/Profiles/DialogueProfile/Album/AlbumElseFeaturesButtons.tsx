@@ -3,7 +3,6 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import { StackNavigationProp } from "@react-navigation/stack";
 import ForwardContactIcon from "../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
 import AddNewImageIcon from "../MainUserScreen/Icons/AddNewImageIcon";
 import SortIcon from "../MainUserScreen/Icons/SortIcon";

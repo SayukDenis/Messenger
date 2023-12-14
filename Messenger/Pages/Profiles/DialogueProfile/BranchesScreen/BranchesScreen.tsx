@@ -11,9 +11,8 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
-import GoBackButton from "../../SemiComponents/GoBackButton";
 import PlusIcon from "./Icons/PlusIcon";
-import { user, BranchParent } from "../../SemiComponents/DBUser";
+import { user } from "../../SemiComponents/DBUser";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";

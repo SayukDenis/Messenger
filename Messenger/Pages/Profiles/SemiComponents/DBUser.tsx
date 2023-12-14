@@ -3,6 +3,7 @@ interface tempUserProps {
   selectedPhotosAndVideos: Array<PhotoOrVideo>;
   selectedBranchParent: BranchParent;
   selectedBranchChild: BranchChild;
+  selectedPhoto: PhotoOrVideo;
 }
 
 export const tempUser: tempUserProps = {
@@ -10,6 +11,7 @@ export const tempUser: tempUserProps = {
   selectedPhotosAndVideos: new Array<PhotoOrVideo>(),
   selectedBranchParent: null,
   selectedBranchChild: null,
+  selectedPhoto: null,
 };
 
 export interface UserProps {
@@ -30,7 +32,6 @@ export interface UserProps {
   branchParents: Array<BranchParent>;
   photosAndVideos: Array<PhotoOrVideo>;
   files: Array<File>;
-  clearChatText: string;
   removalText: string;
   voice: Array<Voice>;
   links: Array<Link>;
@@ -57,7 +58,6 @@ export const user: UserProps = {
   isEmergencyMessagesEnabled: false,
   GroupBio: "Aboba - cool",
   branchParents: new Array<BranchParent>(),
-  clearChatText: "Do you really want to clear chat?",
   removalText: "Do you really want to delete",
   avatars: [
     {
@@ -80,7 +80,15 @@ export const user: UserProps = {
     },
   ],
   photosAndVideos: [
-    { url: "https://picsum.photos/id/1/5000/3333" },
+    {
+      url: "https://www.creativeboom.com/uploads/articles/e8/e8e93075801e9f3b444d2f0173ce5f17c8182112_1620.jpg",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/1027/200/300.jpg?hmac=WCxdERZ7sgk4jhwpfIZT0M48pctaaDcidOi3dKSHJYY",
+    },
+    {
+      url: "https://www.techsmith.com/blog/wp-content/uploads/2016/11/what-is-high-res.jpg",
+    },
     { url: "https://picsum.photos/id/2/5000/3333" },
     { url: "https://picsum.photos/id/1/5000/3333" },
     { url: "https://picsum.photos/id/1/5000/3333" },
@@ -100,6 +108,9 @@ export const user: UserProps = {
     { url: "https://picsum.photos/id/1/5000/3333" },
     { url: "https://picsum.photos/id/1/5000/3333" },
     { url: "https://picsum.photos/id/1/5000/3333" },
+    {
+      url: "https://fastly.picsum.photos/id/866/400/400.jpg?hmac=oHJBlOQwtaF75oX43dFtPf4At_GRLEx9FQqkkfpLR5U",
+    },
   ],
   files: [
     { name: "file1", format: "png" },

@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Dimensions,
@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../../../SemiComponents/Header";
-import GoBackButton from "../../../SemiComponents/GoBackButton";
 import { styles } from "../Styles";
 import EmojiAndColorButtons from "./EmojiAndColorButtons";
 import ColorSelection from "./ColorSelection";

@@ -22,8 +22,7 @@ interface ElseFeaturesButtonsProps {
   isMuted: boolean;
   onBlockPress?: (value: boolean) => void;
   isBlocked?: boolean;
-  onClearChatPress: (value: boolean) => void;
-  isClearChatPressed: boolean;
+  onClearChatPress: () => void;
   settingsPress: () => void;
   mode: string;
 }
@@ -77,7 +76,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {/* Clear chat button */}
           <TouchableOpacity
             onPress={() => {
-              props.onClearChatPress(true);
+              props.onClearChatPress();
             }}
             style={styles.additionalFeatureButton}
           >
