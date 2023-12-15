@@ -8,6 +8,7 @@ import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { useSelector } from "react-redux";
+import ILastWathedMessage from "../../../../dao/Models/Chats/ILastWathedMessage";
 interface LastMessageStatusProps {
   chat: Chat;
 }
@@ -24,7 +25,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
     return null;
   }
   let content: ReactNode;
-  const id: number | undefined = 0//chat..?.get(selfPro.id);
+  const id: number | undefined =0// chat.lastWathedMessage.map()
   if (lastMessage.author.userId ===selfProfile.userId) {
     if (id && lastMessage.author.userId < id) {
       content = (
@@ -42,7 +43,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
       );
     }
   } else if (id) {
-    let countOfMessage: number = chat.branches[currentBranch].messages.length - id;
+    let countOfMessage: number = chat.messages.length - id;
     if (countOfMessage === 0) return null;
     content = CountOfMessages(countOfMessage);
   }
