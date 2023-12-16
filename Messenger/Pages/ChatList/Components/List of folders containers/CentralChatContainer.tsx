@@ -13,6 +13,10 @@ import LastMessageStatus from "./LastMessageStatus";
 import ModeActivity from "../Status Content/ModeActivity";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
+import { useSelector } from "react-redux";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import User from "../../../../dao/Models/User";
 
 interface CentralChatContainerProps {
   chat: Chat;
@@ -30,7 +34,11 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
 
   //console.log(chat);
   //console.log( chat.messages[chat.messages.length - 1].content)
-  
+  const selfProfile:SelfProfile=useSelector((state:any)=>{
+    const self:SelfProfile=state.selfProfileUser;
+    //console.log(self.)
+    return self
+ })
   const lastMessage: Message | undefined =
   chat?.messages?
     chat?.messages[chat.messages.length - 1]:undefined;
@@ -52,7 +60,7 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
         const hoursString: string = hours < 10 ? `0${hours}` : hours.toString();
         const daySting: string = day < 10 ? `0${day}` : day.toString();
         const monthString: string = month < 10 ? `0${month}` : month.toString();
-    
+
         if (timeDiff < dayInMilliseconds) {
           return `${hoursString}:${minutesString}`;
         } else if (timeDiff < weekInMilliseconds) {
@@ -75,7 +83,22 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
           }`;
         }
       };
-    console.log(chat.linkToPhoto)
+   // console.log(chat.linkToPhoto)
+  const getNameOfChat=(chat:Chat)=>{
+    let name=""
+    if(chat instanceof Dialogue){
+     let dialogue:Dialogue = chat as Dialogue;
+      for(let i=0; i<dialogue.users.length;i++){
+        if(dialogue.users[i] !instanceof SelfProfile){
+          name=dialogue.users[i].name;
+          break;
+        }
+       
+      }
+    }
+   
+    return name;
+  }
   return (
     <TouchableOpacity
           onPress={handlePress.current}
@@ -105,7 +128,7 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
-                    {""}
+                    {getNameOfChat(chat)}
                   </Text>
                 </View>
                 <View style={[listOfChatsStyle.rightContainer]}>

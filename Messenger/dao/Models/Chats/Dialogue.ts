@@ -8,12 +8,10 @@ import Role from './Role';
 export default class Dialogue extends Chat {
     constructor(firstUser: User, secondUser: User) {
         super();
-        this.firstUser = firstUser;
-        this.secondUser = secondUser;
+        this.users.push(firstUser);
+        this.users.push(firstUser);
     }
     dialogueId?: number;
-    firstUser!: User;
-    secondUser!: User;
     //schema
     static schema = {
         name: 'dialogues',

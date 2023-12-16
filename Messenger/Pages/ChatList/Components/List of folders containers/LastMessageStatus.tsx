@@ -14,23 +14,23 @@ interface LastMessageStatusProps {
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
-  const selfProfile:SelfProfile=useSelector((state:any)=>{
-    const self:SelfProfile=state.selfProfileUser;
-    return self
- })
- const currentBranch:number=0;
+  const selfProfile: SelfProfile = useSelector((state: any) => {
+    const self: SelfProfile = state.selfProfileUser;
+    return self;
+  });
+  const currentBranch: number = 0;
   const lastMessage: Message | undefined =
     chat?.messages[chat.messages.length - 1];
   if (!lastMessage) {
     return null;
   }
   let content: ReactNode;
-  const id: number | undefined =0// chat.lastWathedMessage.map()
-  if (lastMessage.author.userId ===selfProfile.userId) {
+  const id: number | undefined = 0; // chat.lastWathedMessage.map()
+  if (lastMessage.author.userId === selfProfile.userId) {
     if (id && lastMessage.author.userId < id) {
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
-          <UnViewedMessage/>
+          <UnViewedMessage />
         </View>
       );
     } else {
@@ -66,7 +66,15 @@ function CountOfMessages(countOfMessage: number): ReactNode {
     <View
       style={[listOfChatsStyle.countOfUnreadMessagescontainer, containerStyle]}
     >
-      <View style={{position:"absolute",backgroundColor:"#FFFFFF",opacity:0.6,height:screenHeight,width:screenWidth}}/>
+      <View
+        style={{
+          position: "absolute",
+          backgroundColor: "#FFFFFF",
+          opacity: 0.6,
+          height: screenHeight,
+          width: screenWidth,
+        }}
+      />
       <Text style={listOfChatsStyle.countOfUnReadMessagesContent}>
         {formatText}
       </Text>

@@ -21,7 +21,7 @@ interface ChatListProps{
     const self:SelfProfile=state.selfProfileUser;
     return self
  })
-  console.log(selfProfile.nickname) 
+  //console.log(selfProfile.nickname) 
   return (
     <>
       <LinearGradient
