@@ -17,7 +17,7 @@ const ModeOfEmployment: React.FC<ModeActivityProps> = ({ style }) => {
       return self
    })
    const currentTab:number=0;
-   console.log(selfProfile.linkToPhoto)
+   //console.log(selfProfile.linkToPhoto)
   return (
     <View style={headerstyles.middleheader}>
       <View style={headerstyles.blockactivity}>

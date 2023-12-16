@@ -23,7 +23,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
   useEffect(() => {
-    console.log(selfProfile.tabs[currentTab].folders[currentFolder].folderName);
+   // console.log(selfProfile.tabs[currentTab].folders[currentFolder].folderName);
   });
   const selfProfile:SelfProfile=useSelector((state:any)=>{
     const self:SelfProfile=state.selfProfileUser;
@@ -37,7 +37,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
         keyExtractor={(item, index) => index.toString()}
         nestedScrollEnabled={true}
         renderItem={({ item, index }) => (
-          <ChatContainer key={index} chat={item} isCurrent={true} />
+          <ChatContainer key={index} chat={item}/>
         )}
         ListHeaderComponent={
           <>
