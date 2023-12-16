@@ -76,9 +76,12 @@ export function initialization(): SelfProfile {
   selfProfile.tabs = [];
 
   const users = createUsers(numberOfUsersToCreate);
-  const dialogues = createDialogue(numberOfDialogueToCreate, users);
+  const dialogues = createDialogue(numberOfDialogueToCreate, selfProfile, users);
+  console.log(users.length);
   const groups = createGroup(numberOfGroupeToCreate, users);
+  console.log(users.length);
   const channels = createChannel(numberOfChannelToCreate, users);
+  console.log(users.length);
   const folders = createFolder(numberOfFolderToCreate);
   const tabs = createTab(numberOfTabToCreate);
 
@@ -110,16 +113,16 @@ export function initialization(): SelfProfile {
 
   return selfProfile;
 }
-function getRandomNumber(max = 10): number {
+function getRandomNumber(max, min = 0): number {
   const randomDecimal = Math.random();
   // Scale the random decimal to the desired range [0, max)
-  const randomNumber = Math.floor(randomDecimal * max);
+  const randomNumber = Math.floor(randomDecimal * max) + min;
   return randomNumber;
 }
-function getRandomElementsFromArray<T>(arr: T[]): T[] {
+function getRandomElementsFromArray<T>(arr: T[], max = arr.length): T[] {
   if (arr.length == 1)
     return arr;
-  const randomCount = getRandomNumber(arr.length) + 1; // Випадкова кількість (мінімум 1)
+  const randomCount = getRandomNumber(max > arr.length ? arr.length : max, 1); // Випадкова кількість (мінімум 1)
   const shuffledArray = arr.slice().sort(() => Math.random() - 0.5); // Перемішуємо копію масиву
   return shuffledArray.slice(0, randomCount);
 }
@@ -140,10 +143,11 @@ function createUsers(count: number): User[] {
 
   return users;
 }
-function createMessage(count: number, users: User[] = [], texts: string[] = []): Message[] {
+function createMessage(count: number, users: User[], texts: string[] = []): Message[] {
   const messages: Message[] = [];
-  if (users.length == 0)
-    throw new Error("must bu more than 2 users");
+  if (users.length === 0)
+    throw new Error("must be more than 1 users");
+
   for (let i = 1; i <= count; i++) {
     let content: string;
     if (texts.length == 0)
@@ -169,50 +173,51 @@ function createChat(count: number): Chat[] {
   }
   return chats;
 }
-function createDialogue(count: number, users: User[]): Dialogue[] {
+function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Dialogue[] {
   const dialogues: Dialogue[] = [];
   if (users.length <= 1)
-    throw Error("must be minimum 2 users")
+    throw Error("must be minimum 2 users ")
   for (let i = 0; i < count; i++) {
-    const user1 = users[getRandomNumber(users.length)];
-    let user2 = users[getRandomNumber(users.length)];
-    while (user1 == user2)
-      user2 = users[getRandomNumber(users.length)];
-
-    const dialogue = new Dialogue(user1, user2);
-    dialogue.messages.push(...createMessage(100, [user1, user2], messageDialog));
+    const user = users[getRandomNumber(users.length)];
+    const dialogue = new Dialogue(selfUser, user);
+    dialogue.messages.push(...createMessage(100, dialogue.users, messageDialog));
     if (Math.random() < 0.10) addBranch(getRandomNumber(5), dialogue);
     dialogue.linkToPhoto = images[getRandomNumber(images.length)];
     dialogues.push(dialogue);
   }
+  console.log("dialog - ok - all")
   return dialogues;
 }
 function createGroup(count: number, users: User[]): Group[] {
   const groups: Group[] = [];
-  if (users.length < 1)
-    throw Error("must be minimum 1 users")
+  if (users.length == 0)
+    throw Error("must be minimum 1 users");
   for (let i = 0; i < count; i++) {
     const group = new Group("Group " + i);
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
+    group.users.push(...getRandomElementsFromArray<User>(users))
     group.messages.push(...createMessage(100, users, messageGroupsAndChannels));
     if (Math.random() < 0.10) addBranch(getRandomNumber(5), group);
     group.linkToPhoto = images[getRandomNumber(images.length)];
     groups.push(group);
   }
+  console.log("groupe - ok - all")
   return groups;
 }
 function createChannel(count: number, users: User[]): Channel[] {
   const channels: Channel[] = [];
-  if (users.length < 1)
+  if (users.length == 0)
     throw Error("must be minimum 1 users")
   for (let i = 0; i < count; i++) {
     const channel = new Channel("Channel " + i);
     channel.messages.push(...createMessage(100, users, messageGroupsAndChannels));
     channel.adminUser.push(...getRandomElementsFromArray<User>(users));
-    if (Math.random() < 0.15) addBranch(getRandomNumber(5),channel);
+    channel.users.push(...getRandomElementsFromArray<User>(users))
+    if (Math.random() < 0.15) addBranch(getRandomNumber(5), channel);
     channel.linkToPhoto = images[getRandomNumber(images.length)];
     channels.push(channel);
   }
+  console.log("channel - ok - all")
   return channels;
 }
 function createFolder(count: number): Folder[] {
