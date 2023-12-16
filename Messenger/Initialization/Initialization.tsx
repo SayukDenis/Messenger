@@ -77,11 +77,8 @@ export function initialization(): SelfProfile {
 
   const users = createUsers(numberOfUsersToCreate);
   const dialogues = createDialogue(numberOfDialogueToCreate, selfProfile, users);
-  console.log(users.length);
-  const groups = createGroup(numberOfGroupeToCreate, users);
-  console.log(users.length);
-  const channels = createChannel(numberOfChannelToCreate, users);
-  console.log(users.length);
+  const groups = createGroup(numberOfGroupeToCreate, selfProfile, users);
+  const channels = createChannel(numberOfChannelToCreate, selfProfile, users);
   const folders = createFolder(numberOfFolderToCreate);
   const tabs = createTab(numberOfTabToCreate);
 
@@ -185,31 +182,40 @@ function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Di
     dialogue.linkToPhoto = images[getRandomNumber(images.length)];
     dialogues.push(dialogue);
   }
-  console.log("dialog - ok - all")
   return dialogues;
 }
-function createGroup(count: number, users: User[]): Group[] {
+function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group[] {
   const groups: Group[] = [];
   if (users.length == 0)
     throw Error("must be minimum 1 users");
   for (let i = 0; i < count; i++) {
     const group = new Group("Group " + i);
+
+    if (Math.random() < 0.4) {
+      group.adminUser.push(selfUser);
+      group.title = "AdminGroup" + i;
+    }
+    group.users.push(SelfProfile);
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
     group.users.push(...getRandomElementsFromArray<User>(users))
     group.messages.push(...createMessage(100, users, messageGroupsAndChannels));
-    if (Math.random() < 0.10) addBranch(getRandomNumber(5), group);
+    if (Math.random() < 0.1) addBranch(getRandomNumber(5), group);
     group.linkToPhoto = images[getRandomNumber(images.length)];
     groups.push(group);
   }
-  console.log("groupe - ok - all")
   return groups;
 }
-function createChannel(count: number, users: User[]): Channel[] {
+function createChannel(count: number, selfUser: SelfProfile, users: User[]): Channel[] {
   const channels: Channel[] = [];
   if (users.length == 0)
     throw Error("must be minimum 1 users")
   for (let i = 0; i < count; i++) {
     const channel = new Channel("Channel " + i);
+    if (Math.random() < 0.4) {
+      channel.adminUser.push(selfUser);
+      channel.title = "AdminChannel" + i;
+    }
+    channel.users.push(SelfProfile)
     channel.messages.push(...createMessage(100, users, messageGroupsAndChannels));
     channel.adminUser.push(...getRandomElementsFromArray<User>(users));
     channel.users.push(...getRandomElementsFromArray<User>(users))
@@ -217,7 +223,6 @@ function createChannel(count: number, users: User[]): Channel[] {
     channel.linkToPhoto = images[getRandomNumber(images.length)];
     channels.push(channel);
   }
-  console.log("channel - ok - all")
   return channels;
 }
 function createFolder(count: number): Folder[] {

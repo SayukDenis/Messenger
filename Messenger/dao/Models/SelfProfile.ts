@@ -1,24 +1,17 @@
 import Model from './Model';
 import Tab from './Tab';
+import User from './User';
 
 
-export default class SelfProfile extends Model {
+export default class SelfProfile extends User {
     constructor(name: string, password: string, numberPhone: string) {
-        super();
-        this.name = name;
+        super(name);
         this.password = password;
         this.numberPhone = numberPhone;
     }
-    // Necessary
-    userId?: number;
-    name!: string;
     password!: string;
-    numberPhone!: string;
     //Additional
     email?: string;
-    nickname?: string;
-    description?: string;
-    linkToPhoto?: string;
     //Information about user
     timeLastEntry?: Date;
     tabs: Array<Tab> = new Array();
@@ -26,7 +19,7 @@ export default class SelfProfile extends Model {
     static schema = {
         name: 'selfProfiles',
         properties: {
-            userId: { type: 'integer', indexed: true },
+            userId: 'integer',
             name: 'text',
             password: 'text',
             numberPhone: 'text',
@@ -37,7 +30,7 @@ export default class SelfProfile extends Model {
             linkToPhoto: 'text?',
             //Information about user
             timeLastEntry: 'date?',
-            tabs: {type: 'list', objectType: Tab},
+            tabs: { type: 'list', objectType: Tab },
         },
         primaryKey: 'userId',
     };
