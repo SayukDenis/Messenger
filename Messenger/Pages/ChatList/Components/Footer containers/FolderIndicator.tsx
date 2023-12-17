@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Animated, View } from 'react-native';
 import { footerstyles } from '../../Styles/FooterStyle';
-import { useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Easing } from 'react-native-reanimated';
 
 interface AnimatedFolderIndicatorProps {
@@ -57,4 +57,4 @@ const FolderIndicator: React.FC<AnimatedFolderIndicatorProps> = ({
   );
 };
 
-export default FolderIndicator;
+export default connect(null)(FolderIndicator);

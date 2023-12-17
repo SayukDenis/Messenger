@@ -9,6 +9,7 @@ import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { useSelector } from "react-redux";
 import ILastWathedMessage from "../../../../dao/Models/Chats/ILastWathedMessage";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 interface LastMessageStatusProps {
   chat: Chat;
 }
@@ -18,38 +19,44 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
   });
-  const currentBranch: number = 0;
   const lastMessage: Message | undefined =
     chat?.messages[chat.messages.length - 1];
   if (!lastMessage) {
     return null;
   }
-  let content: ReactNode;
-  const id: number | undefined = 0; // chat.lastWathedMessage.map()
-  if (lastMessage.author.userId === selfProfile.userId) {
-    if (id && lastMessage.author.userId < id) {
-      content = (
-        <View style={listOfChatsStyle.checkMarkercontainerStyle}>
-          <UnViewedMessage />
-        </View>
-      );
-    } else {
-      content = (
-        <View style={listOfChatsStyle.checkMarkercontainerStyle}>
-          <ViewedMessageIcon
-            stylePosition={listOfChatsStyle.positionOfFirstCheckMarkStyle}
-          />
-        </View>
-      );
+  const lastMessageStatus = (chat: Chat):ReactNode => {
+    let content: ReactNode;
+    const id: number | undefined = 0;
+    let dialogue:Dialogue=chat as Dialogue;
+   // console.log()
+   // console.log(lastMessage.messageId)
+   // console.log(chat.lastWathedMessage[1].user.name)
+   // console.log(dialogue.lastWathedMessage)
+    if (lastMessage.author.userId === selfProfile.userId) {
+      if (id && lastMessage.author.userId < id) {
+        content = (
+          <View style={listOfChatsStyle.checkMarkercontainerStyle}>
+            <UnViewedMessage />
+          </View>
+        );
+      } else if (true) {
+        //console.log(10)
+        content = (
+          <View style={listOfChatsStyle.checkMarkercontainerStyle}>
+            <ViewedMessageIcon
+              stylePosition={listOfChatsStyle.positionOfFirstCheckMarkStyle}
+            />
+          </View>
+        );
+      }
+    } else if (id) {
+      let countOfMessage: number = chat.messages.length - id;
+      if (countOfMessage === 0) return null;
+      content = CountOfMessages(countOfMessage);
     }
-  } else if (id) {
-    let countOfMessage: number = chat.messages.length - id;
-    if (countOfMessage === 0) return null;
-    content = CountOfMessages(countOfMessage);
-  }
-  return (
-    <View style={listOfChatsStyle.lastMessageStatusContainer}>{content}</View>
-  );
+    return content
+  };
+  return <View style={listOfChatsStyle.lastMessageStatusContainer}>{lastMessageStatus(chat)}</View>;
 };
 function CountOfMessages(countOfMessage: number): ReactNode {
   let containerStyle: ViewStyle = listOfChatsStyle.fourCharcontainer;

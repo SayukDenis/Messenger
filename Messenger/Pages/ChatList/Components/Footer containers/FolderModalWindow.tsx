@@ -7,6 +7,7 @@ import {
   Animated,
   Easing,
   EasingFunction,
+  Platform,
 } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
 
@@ -20,6 +21,7 @@ import ReadFoldersMessagesSvg from "../SVG/ReadFoldersMessagesSvg";
 import Folder from "../../../../dao/Models/Folder";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { useSelector } from "react-redux";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface FolderModalWindowProps {
   folder: Folder;
@@ -27,7 +29,7 @@ interface FolderModalWindowProps {
   positionXInContainer: number;
   widthOfFolder: number;
   exit: boolean;
-  booleanRefForEndAnimation:()=>void
+  booleanRefForEndAnimation: () => void;
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
@@ -36,10 +38,8 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
   widthOfFolder,
   positionXInContainer,
   exit,
-  booleanRefForEndAnimation
-
+  booleanRefForEndAnimation,
 }) => {
-  return
   const statusNotification: boolean = Math.random() < 0.5;
   const getStylePosition = (position: number) => {
     if (position <= screenWidth * 0.5) {
@@ -49,7 +49,8 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
     }
   };
   const haveFolderUnreadMessages = (folder: Folder): boolean => {
-    for (let i = 0; i < folder.chats.length; i++) {
+    return true;
+    /*for (let i = 0; i < folder.chats.length; i++) {
       const chat = folder.chats[i];
 
       const lastMessage: Message | undefined =
@@ -64,7 +65,7 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
         }
       }
     }
-    return false;
+    return false;*/
   };
   const containerWidth = new Animated.Value(0); // Початкова ширина
   const firstContainerTranslate = new Animated.Value(0); // Початкова висота
@@ -74,7 +75,7 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
   const fifthContainerTranslate = new Animated.Value(0);
   const durationOfAnimation: number = 20;
   const [state, setState] = useState(1);
-  const easing:EasingFunction= Easing.linear;
+  const easing: EasingFunction = Easing.linear;
   const firstContainerOpacity = firstContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
@@ -163,31 +164,27 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
     useNativeDriver: true, // Вимагається для анімації стилів
   });
   useEffect(() => {
-    
-      Animated.sequence([
-        containerSize,
-        animateOfFirstContainer,
-        animateOfSecondContainer,
-        animateOfThirdContainer,
-        animateOfFourthContainer,
-        animateOfFifthContainer,
-      ]).start(() => setState(0));
-
+    Animated.sequence([
+      containerSize,
+      animateOfFirstContainer,
+      animateOfSecondContainer,
+      animateOfThirdContainer,
+      animateOfFourthContainer,
+      animateOfFifthContainer,
+    ]).start(() => setState(0));
   }, []);
   useEffect(() => {
-        if(!exit){
-          Animated.sequence([
-            animateOfFifthContainer,
-            animateOfFourthContainer,
-            animateOfThirdContainer,
-            animateOfSecondContainer,
-            animateOfFirstContainer,
-            containerSize,
-          ]).start(()=>booleanRefForEndAnimation())
-          
-        }
-      
-  },[exit]);
+    if (!exit) {
+      Animated.sequence([
+        animateOfFifthContainer,
+        animateOfFourthContainer,
+        animateOfThirdContainer,
+        animateOfSecondContainer,
+        animateOfFirstContainer,
+        containerSize,
+      ]).start(() => booleanRefForEndAnimation());
+    }
+  }, [exit]);
 
   return (
     <TouchableOpacity
@@ -195,6 +192,9 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
       style={[
         footerstyles.modalWindowContainerStyle,
         getStylePosition(positionX - positionXInContainer + widthOfFolder / 2),
+        {bottom:Platform.OS == "ios"&& useSafeAreaInsets().bottom!=0
+        ? screenHeight * 0.045 + useSafeAreaInsets().bottom
+        : screenHeight * 0.055,}
       ]}
     >
       <Animated.View

@@ -62,9 +62,9 @@ const images: string[] = [
 const numberOfUsersToCreate = 20;
 const numberOfFolderToCreate = 5;
 const numberOfTabToCreate = 4;
-const numberOfDialogueToCreate = 20;
-const numberOfGroupeToCreate = 10;
-const numberOfChannelToCreate = 10;
+const numberOfDialogueToCreate = 4;
+const numberOfGroupeToCreate = 0;
+const numberOfChannelToCreate = 0;
 
 //id
 let idUsersToCreate = 1;
@@ -77,7 +77,7 @@ let idMessageToCreate = 0;
 let idBranchToCrate = 0;
 
 export function initialization(): SelfProfile {
-  const selfProfile = new SelfProfile(' Гена', 'password123', '1234567890');
+  const selfProfile = new SelfProfile('Денис', 'password123', '1234567890');
   selfProfile.email = 'john.doe@example.com';
   selfProfile.nickname = 'johndoe';
   selfProfile.description = 'A description about John Doe';
@@ -99,13 +99,14 @@ export function initialization(): SelfProfile {
   allChatsTab.exceptionsDialogues.push(...getRandomElementsFromArray<Dialogue>(dialogues));
   allChatsTab.exceptionsGroups.push(...getRandomElementsFromArray<Group>(groups));
   allChatsTab.exceptionsChannels.push(...getRandomElementsFromArray<Channel>(channels));
+  allChatsTab.folders.push(allChatsFolder);
   allChatsTab.folders.push(...folders);
 
   //add all in main Folder
   allChatsFolder.chats.push(...channels);
   allChatsFolder.chats.push(...groups);
   allChatsFolder.chats.push(...dialogues);
-  allChatsTab.folders.push(allChatsFolder);
+  
 
   for (let folder of folders) {
     folder.chats.push(...getRandomElementsFromArray<Dialogue>(dialogues));
@@ -138,12 +139,12 @@ function createUsers(count: number): User[] {
   const users: User[] = [];
 
   for (let i = 1; i <= count; i++) {
-    const userName = `User${i}`;
+    const userName = `User ${i}`;
     const user = new User(userName);
     user.userId = idUsersToCreate++;
     // Additional properties can be set if needed
     user.numberPhone = `+123456789${i}`;
-    user.nickname = `Nickname${i}`;
+    user.nickname = `@Nickname${i}`;
     user.description = `Description for User${i}`;
     user.linkToPhoto = images[getRandomNumber(images.length)];
     users.push(user);
@@ -188,6 +189,7 @@ function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Di
     throw Error("must be minimum 2 users ")
   for (let i = 0; i < count; i++) {
     const user = users[getRandomNumber(users.length)];
+    
     const dialogue = new Dialogue(selfUser, user);
     dialogue.dialogueId = idDialogueToCreate++;
 
@@ -207,7 +209,7 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
     group.groupId = idGroupeToCreate++;
     if (Math.random() < 0.4) {
       group.adminUser.push(selfUser);
-      group.title = "AdminGroup" + i;
+      group.title = "Admin Group" + i;
     }
     group.users.push(SelfProfile);
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
@@ -228,7 +230,7 @@ function createChannel(count: number, selfUser: SelfProfile, users: User[]): Cha
     channel.channelId = idChannelToCreate++;
     if (Math.random() < 0.4) {
       channel.adminUser.push(selfUser);
-      channel.title = "AdminChannel" + i;
+      channel.title = "Admin Channel " + i;
     }
     channel.users.push(SelfProfile)
     channel.messages.push(...createMessage(100, users, messageGroupsAndChannels));

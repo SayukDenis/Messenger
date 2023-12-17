@@ -13,24 +13,37 @@ import Constants from "expo-constants";
 import { headerstyles } from "../Styles/HeaderStyle";
 import MagnifyingGlass from "./Headers containers/MagnifyingGlass";
 import ModeOfEmployment from "./Headers containers/ModeOfEmployment";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import RightContainer from "./Headers containers/RightContainer";
 import HamburgerSVG from "./SVG/HamburgerSVG";
 import BackButtonForHeaderChatListSVG from "./SVG/BackButtonForHeaderChatListSVG";
 import { LinearGradient } from "expo-linear-gradient";
+import { setBooleanForTouchOnHamburgerInHeaderChatList } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+import { booleanForLogging } from "../ChatList";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-function Header({
-
-  isTouchableHeader,
-  onPress,
-  navigation,
-}: {
-
-  isTouchableHeader: boolean;
-  onPress: () => void;
-  navigation: any;
-}) {
+function Header({ navigation }: { navigation: any }) {
+  const isTouchableForHeader = useSelector((state: any) => {
+    //console.log("ABOBA")
+    // console.log(state.chatListReducer.booleanForHamburgerTouchable.isTouchable)
+    return state.chatListReducer.booleanForHamburgerTouchable.isTouchable;
+  });
+  const dispatch = useDispatch();
+  const OnHamburgerPressForDispatch = () => {
+    dispatch(
+      setBooleanForTouchOnHamburgerInHeaderChatList(!isTouchableForHeader)
+    );
+  };
+  useEffect(() => {
+    if (!isTouchableForHeader && animationStateForTouchHamburger == 0) {
+      onHamburgerPress();
+    }
+  }, [isTouchableForHeader]);
+  useEffect(() => {
+    if (booleanForLogging) {
+      console.log("RERENDER HEADER");
+    }
+  });
   const HamburgerAnimationDuration = 150;
   const [animationStateForTouchHamburger, setAnimationStateForTouchHamburger] =
     useState(1);
@@ -41,7 +54,10 @@ function Header({
       outputRange: [0, -screenWidth * 0.8],
     });
 
-  const onHamburgerPres = () => {
+  const onHamburgerPress = () => {
+    console.log(isTouchableForHeader);
+    console.log(animationStateForTouchHamburger);
+
     Animated.timing(HamburgerAnimationStatePosition.current, {
       toValue: animationStateForTouchHamburger,
       duration: HamburgerAnimationDuration,
@@ -70,29 +86,26 @@ function Header({
               ? screenHeight * 0.08 + StatusBar.currentHeight
               : screenHeight * 0.08 + Constants.statusBarHeight,
           justifyContent: "flex-end",
-          overflow:"hidden",
+          overflow: "hidden",
         },
       ]}
     >
-      
       <View style={headerstyles.container}>
-      <LinearGradient
-        colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-        locations={[0.25, 0.5, 0.75]}
-        start={{ x: 1, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={{
-          opacity:0.7,
-          top: 0,
-          position:"absolute",
-          left: 0,
-          right: 0,
-          height: screenHeight,
-          width: screenWidth,
-
-        
-        }}
-      />
+        <LinearGradient
+          colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+          locations={[0.25, 0.5, 0.75]}
+          start={{ x: 1, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={{
+            opacity: 0.7,
+            top: 0,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            height: screenHeight,
+            width: screenWidth,
+          }}
+        />
         <Animated.View style={[headerstyles.header]}>
           <Animated.View
             style={{
@@ -113,7 +126,9 @@ function Header({
               <ModeOfEmployment />
               <TouchableOpacity
                 style={{ justifyContent: "center" }}
-                onPress={onHamburgerPres}
+                onPress={() => {
+                  onHamburgerPress(), OnHamburgerPressForDispatch();
+                }}
               >
                 {animationStateForTouchHamburger == 1 ? (
                   <HamburgerSVG />

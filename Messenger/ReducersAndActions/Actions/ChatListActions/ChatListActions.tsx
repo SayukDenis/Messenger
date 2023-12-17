@@ -12,6 +12,10 @@ export const setCurrentPositionForChatList=(currentPosition)=>({
   currentPosition
 })
 
+export const setBooleanForTouchOnHamburgerInHeaderChatList = (isTouchable) => ({
+  type: "SET_BOOLEAN_FOR_TOUCH_ON_HABMURGER_IN_HEADER_IN_CHATLIST",
+  isTouchable,
+});
 
 export const setFolderSelectedArray = (folderSelectedArray) => ({
   type: "SET_FOLDER_SELECTED_ARRAY",

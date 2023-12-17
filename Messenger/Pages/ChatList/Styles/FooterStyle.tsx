@@ -50,8 +50,9 @@ export const footerstyles = StyleSheet.create({
   },
   modalWindowContainerStyle: {
     position: "absolute",
-    bottom: screenHeight * 0.073,
+   // bottom: screenHeight * 0.0,
     zIndex: 10,
+    
   },
   containerForModalWindowText: {
     flexDirection:"row",

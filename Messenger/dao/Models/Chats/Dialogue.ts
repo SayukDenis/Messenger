@@ -9,7 +9,7 @@ export default class Dialogue extends Chat {
     constructor(firstUser: User, secondUser: User) {
         super();
         this.users.push(firstUser);
-        this.users.push(firstUser);
+        this.users.push(secondUser);
     }
     dialogueId?: number;
     //schema

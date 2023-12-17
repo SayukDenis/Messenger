@@ -14,6 +14,7 @@ import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
 import { connect, useSelector } from "react-redux";
 import SelfProfile from "../../../dao/Models/SelfProfile";
+import { booleanForLogging } from "../ChatList";
 
 interface ListOfFolderProps {
   currentFolder: number;
@@ -23,13 +24,15 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
   useEffect(() => {
-   // console.log(selfProfile.tabs[currentTab].folders[currentFolder].folderName);
+    if (booleanForLogging) {
+      console.log("RERENDER LIST OF FOLDERS");
+    }
   });
-  const selfProfile:SelfProfile=useSelector((state:any)=>{
-    const self:SelfProfile=state.selfProfileUser;
-    return self
- })
- const currentTab:number=0;
+  const selfProfile: SelfProfile = useSelector((state: any) => {
+    const self: SelfProfile = state.selfProfileUser;
+    return self;
+  });
+  const currentTab: number = 0;
   return (
     <View style={{ height: screenHeight, width: screenWidth }}>
       <FlatList
@@ -37,7 +40,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
         keyExtractor={(item, index) => index.toString()}
         nestedScrollEnabled={true}
         renderItem={({ item, index }) => (
-          <ChatContainer key={index} chat={item}/>
+          <ChatContainer key={index} chat={item} />
         )}
         ListHeaderComponent={
           <>
