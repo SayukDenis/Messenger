@@ -1,4 +1,10 @@
-import React, { Ref, useEffect, useRef, useState } from "react";
+import React, {
+  MutableRefObject,
+  Ref,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
   Image,
@@ -14,16 +20,18 @@ import ModeActivity from "../Status Content/ModeActivity";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import Channel from "../../../../dao/Models/Chats/Channel";
 import Group from "../../../../dao/Models/Chats/Group";
 import { booleanForLogging } from "../../ChatList";
+import BranchesSVG from "../SVG/BranchesSVG";
 
 interface CentralChatContainerProps {
   chat: Chat;
   handlePress: any;
   onLongPressChat: any;
+  onBranchPress:()=>void;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -32,12 +40,14 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
   chat,
   handlePress,
   onLongPressChat,
+  onBranchPress
 }) => {
   useEffect(() => {
     if (booleanForLogging) {
       console.log("RERENDER CENTRAL CHAT CONTAINER " + getNameOfChat(chat));
     }
   });
+
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     //console.log(self.)
@@ -47,7 +57,7 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
     ? chat?.messages[chat.messages.length - 1]
     : undefined;
   //console.log(lastMessage);
-
+  
   const formattedTime = (): string => {
     if (!lastMessage) return "";
     const now: Date = new Date();
@@ -140,14 +150,46 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
               <Text style={listOfChatsStyle.timeStyle}>{formattedTime()}</Text>
             </View>
           </View>
-          <View style={listOfChatsStyle.containerForContent}>
-            <Text
-              style={listOfChatsStyle.contentStyle}
-              numberOfLines={2}
-              ellipsizeMode="tail"
+          <View style={{ flexDirection: "row" }}>
+            <View style={listOfChatsStyle.containerForContent}>
+              <Text
+                style={listOfChatsStyle.contentStyle}
+                numberOfLines={2}
+                ellipsizeMode="tail"
+              >
+                {lastMessage?.content}
+              </Text>
+            </View>
+            <View
+              style={{
+                // backgroundColor: "red",
+                width: screenWidth * 0.15,
+                height: screenHeight * 0.045,
+                justifyContent: "center",
+              }}
             >
-              {lastMessage?.content}
-            </Text>
+              {chat.branches.length > 0 ? (
+                <TouchableOpacity
+                  onPress={onBranchPress}
+                  style={{
+                    justifyContent: "center",
+                    flexDirection: "row",
+                    height: screenHeight * 0.045,
+                    width: screenWidth * 0.15,
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "blue",
+                      height: screenHeight * 0.045,
+                      width: screenWidth * 0.15,
+                    }}
+                  >
+                    <BranchesSVG width={screenWidth} height={screenWidth} />
+                  </View>
+                </TouchableOpacity>
+              ) : null}
+            </View>
           </View>
         </View>
       </View>

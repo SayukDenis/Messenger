@@ -68,12 +68,14 @@ const folderSelectedArrayReducer = (
   }
 };
 
+
 const rootReducerChatList = combineReducers({
   animation: animationReducer,
   selectedFolder: selectedFolderReducer,
   currentPosition: currentPositionReducer,
   folderSelectedArray: folderSelectedArrayReducer,
-  booleanForHamburgerTouchable:booleanForTouchOnHamburgerInHeaderChatListReducer
+  booleanForHamburgerTouchable:booleanForTouchOnHamburgerInHeaderChatListReducer,
+
   // Add other reducers here if needed
 });
 

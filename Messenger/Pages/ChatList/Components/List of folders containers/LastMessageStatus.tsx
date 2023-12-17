@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
 import { View, Text, Dimensions, ViewStyle } from "react-native";
 
-import ViewedMessageIcon from "./ViewedMessageIcon";
+import ViewedMessageIcon from "../SVG/ViewedMessageIcon";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
-import UnViewedMessage from "./UnViewedMessage";
+import UnViewedMessage from "../SVG/UnViewedMessage";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";

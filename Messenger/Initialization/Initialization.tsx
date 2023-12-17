@@ -63,8 +63,8 @@ const numberOfUsersToCreate = 20;
 const numberOfFolderToCreate = 5;
 const numberOfTabToCreate = 4;
 const numberOfDialogueToCreate = 4;
-const numberOfGroupeToCreate = 0;
-const numberOfChannelToCreate = 0;
+const numberOfGroupeToCreate = 10;
+const numberOfChannelToCreate = 10;
 
 //id
 let idUsersToCreate = 1;
