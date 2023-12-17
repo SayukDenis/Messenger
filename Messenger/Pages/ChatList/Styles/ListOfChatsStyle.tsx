@@ -55,16 +55,18 @@ export const listOfChatsStyle = StyleSheet.create({
     //backgroundColor:"white",
     marginLeft: screenWidth * 0.01,
     justifyContent: "flex-end",
+
   },
   containerForContent: {
     width: screenWidth * 0.7,
     //backgroundColor:"white",
     flex: 1,
     marginTop: screenHeight * 0.005,
+    //backgroundColor: "blue",
   },
   namecontainer: {
     width: screenWidth * 0.6,
-
+    //backgroundColor: "red",
     paddingTop: screenHeight * 0.005,
     alignSelf: "flex-end",
 
@@ -76,6 +78,7 @@ export const listOfChatsStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-end",
+    //backgroundColor:"yellow"
   },
   highcontainer: {
     flexDirection: "row",

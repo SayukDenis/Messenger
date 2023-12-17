@@ -43,8 +43,8 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
   
 }) => {
   const selfProfile:SelfProfile=useSelector((state:any)=>{
-    const self:SelfProfile=state.selfProfileUser;
-    return self
+    return state.selfProfileUser;
+    
  })
  const currentTab:number=0;
   if (!animationState) {
@@ -86,7 +86,7 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
             right: 0,
             bottom: 0,
           }}
-          intensity={0}
+          intensity={10}
         />
       )}
       <FolderModalWindow
@@ -106,18 +106,22 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
             position: "absolute",
             left: positionX - positionXInContainer,
             bottom: Platform.OS == "ios"&& useSafeAreaInsets().bottom!=0
-            ? screenHeight * 0.0048 + useSafeAreaInsets().bottom
+            ? screenHeight * 0.0049 + useSafeAreaInsets().bottom
             : screenHeight * 0.0165,
             borderRadius: 100,
+            justifyContent:"center",
             height: screenHeight * 0.036,
-           // backgroundColor: "#E7E6E4",
-            shadowColor: "black",
-            shadowOffset: { width: 1, height: 1 },
-            shadowOpacity: 0.3,
+           backgroundColor: "#E7E6E4",
+           alignSelf:"center"
+            //shadowColor: "black",
+            //shadowOffset: { width: 1, height: 1 },
+           // shadowOpacity: 0.3,
+           
           },
         ]}
       >
 
+       
         <Text
           style={[
             selectedLongPressFolder == selectedFolder

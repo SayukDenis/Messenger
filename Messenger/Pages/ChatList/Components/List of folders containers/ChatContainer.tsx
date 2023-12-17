@@ -1,4 +1,10 @@
-import React, { Ref, useEffect, useRef, useState } from "react";
+import React, {
+  MutableRefObject,
+  Ref,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
   Image,
@@ -11,6 +17,7 @@ import {
   NativeScrollEvent,
   ScrollView,
   Platform,
+  FlatList,
 } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import RightContainersForSwipe from "./RightContainersForSwipe";
@@ -28,27 +35,27 @@ interface ChatProps {
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
-  const selfProfile:SelfProfile=useSelector((state:any)=>{
-    const self:SelfProfile=state.selfProfileUser;
-    return self
- })
- 
+  const selfProfile: SelfProfile = useSelector((state: any) => {
+    const self: SelfProfile = state.selfProfileUser;
+    return self;
+  });
+
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
     useState<number>(null);
   let randomBoolean = useRef(null);
+  const [IsBranchesOpenBoolean, setIsBranchesOpenBoolean] = useState(false);
   const timeForAnimation: number = 150;
   const [isSwiped, setIsSwiped] = useState(false);
   const [isSwipedFromRight, setIsSwipedFromRight] = useState(false);
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
   const [positionXForSwipeable, setPositionXForSwipeable] =
-  useState<number>(screenWidth);
-  
+    useState<number>(screenWidth);
+
   const haveUnreadMessages = (chat) => {
-    const lastMessage: Message =
-        chat.messages[chat.messages.length-1]
-        ? chat.messages[chat.messages.length - 1]
-        : undefined;
-    
+    const lastMessage: Message = chat.messages[chat.messages.length - 1]
+      ? chat.messages[chat.messages.length - 1]
+      : undefined;
+
     const id: number | undefined = chat.dictionary?.get(selfProfile.userId);
     if (!lastMessage)
       if (lastMessage.author.userId !== selfProfile.userId) {
@@ -58,19 +65,23 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
       }
     return false;
   };
+  const onBranchPress:()=>void = () => {
+    setIsBranchesOpenBoolean(!IsBranchesOpenBoolean);
+  };
   useEffect(() => {
     randomBoolean.current = Math.random() < 0.5;
     haveUnreadMessagesBoolf.current = haveUnreadMessages(chat);
   }, []);
+
   const rightDragXposition = useState(new Animated.Value(screenWidth));
   const leftDragXposition = useState(new Animated.Value(0));
-  const [rightDragXpositionForRerender,setRightDragXpositionForRerender] = useState(screenWidth);
-  const [leftDragXpositionForRerender,setLeftDragXpositionForRerender] = useState(0);
+  const [rightDragXpositionForRerender, setRightDragXpositionForRerender] =
+    useState(screenWidth);
+  const [leftDragXpositionForRerender, setLeftDragXpositionForRerender] =
+    useState(0);
   const [stateForSwipeDirection, setStateForSwipeDirection] =
     useState<number>(null);
-  useEffect(() => {
-    //console.log(chat.name)
-  });
+
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
 
@@ -79,7 +90,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     console.log("Кнопку натиснули");
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
-    console.log(chat.messages[0]);
+    console.log("Кнопку зажали");
   });
   const handleScrollToRightEnd = () => {
     const scrollVarible = positionXForStartOfSwipeable == screenWidth;
@@ -195,7 +206,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
   ) => {
     const positionX = e.nativeEvent.contentOffset.x;
     setPositionXForSwipeable(positionX);
-    setRightDragXpositionForRerender(positionX)
+    setRightDragXpositionForRerender(positionX);
     Animated.timing(rightDragXposition[0], {
       toValue: positionX,
       duration: 0,
@@ -222,6 +233,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
           chat={chat}
           handlePress={handlePress}
           onLongPressChat={onLongPressChat}
+          onBranchPress={onBranchPress}
         />
         <View
           style={{
@@ -234,70 +246,112 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
       </>
     );
   }
-  useEffect(()=>{
-    
-   // console.log(((leftDragXpositionForRerender)/screenWidth))
-  })
   return (
-    <Animated.View>
-      <View style={{backgroundColor:null,position:"absolute",height:screenHeight*0.08,width:!isSwipedFromLeft?0:screenWidth*(1-(leftDragXpositionForRerender)/screenWidth),top:0,left:0,bottom:0,zIndex:10}}/>
-      <View style={{backgroundColor:null,position:"absolute",direction:"rtl",height:screenHeight*0.08,width:!isSwipedFromRight?0:screenWidth*(rightDragXpositionForRerender-screenWidth)/screenWidth,top:0,right:0,bottom:0,zIndex:10}}/>
-      <TouchableOpacity
-        style={listOfChatsStyle.helpContainer}
-        onPress={handlePress.current}
-        onLongPress={onLongPressChat.current}
-        activeOpacity={0.1}
-      />
-      
-      <Animated.ScrollView
-        ref={scrollViewRef}
-        pagingEnabled={true}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{
-          width: screenWidth,
-          flexDirection: "row",
-          zIndex: isSwiped ? 2 : 0,
-        }}
-        decelerationRate={0.1}
-        scrollEventThrottle={1}
-        contentOffset={{ x: screenWidth, y: 0 }}
-        onScrollBeginDrag={(e: NativeSyntheticEvent<NativeScrollEvent>) => {
-          setIsSwiped(true);
-          setPositionXForStartOfSwipeable(e.nativeEvent.contentOffset.x);
-        }}
-        onMomentumScrollBegin={handleScrollEnd}
-        onScroll={handleScroll}
-        onScrollEndDrag={handleScrollEnd}
-      >
-        
-        <LeftContainerForSwipe
-          leftDragXposition={leftDragXposition[0]}
-          leftDragXpositionForRerender={leftDragXpositionForRerender}
-          haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
+    <View>
+      <Animated.View>
+        <View
+          style={{
+            backgroundColor: null,
+            position: "absolute",
+            height: screenHeight * 0.08,
+            width: !isSwipedFromLeft
+              ? 0
+              : screenWidth * (1 - leftDragXpositionForRerender / screenWidth),
+            top: 0,
+            left: 0,
+            bottom: 0,
+            zIndex: 10,
+          }}
         />
-        
-        
-        <CentralChatContainer
-          chat={chat}
-          handlePress={handlePress}
-          onLongPressChat={onLongPressChat}
+        <View
+          style={{
+            backgroundColor: null,
+            position: "absolute",
+            direction: "rtl",
+            height: screenHeight * 0.08,
+            width: !isSwipedFromRight
+              ? 0
+              : (screenWidth * (rightDragXpositionForRerender - screenWidth)) /
+                screenWidth,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 10,
+          }}
         />
-        <RightContainersForSwipe
-          randomBoolean={randomBoolean}
-          rightDragXposition={rightDragXposition[0]}
-          rightDragXpositionForRerender={rightDragXpositionForRerender}
+        <TouchableOpacity
+          style={listOfChatsStyle.helpContainer}
+          onPress={handlePress.current}
+          onLongPress={onLongPressChat.current}
+          activeOpacity={0.1}
         />
-      </Animated.ScrollView>
-      <View
-        style={{
-          width: screenWidth,
-          height: 2,
-          opacity: 0.1,
-          backgroundColor: "gray",
-        }}
-      />
-    </Animated.View>
+
+        <Animated.ScrollView
+          ref={scrollViewRef}
+          pagingEnabled={true}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{
+            width: screenWidth,
+            flexDirection: "row",
+            zIndex: isSwiped ? 2 : 0,
+          }}
+          decelerationRate={0.1}
+          scrollEventThrottle={1}
+          contentOffset={{ x: screenWidth, y: 0 }}
+          onScrollBeginDrag={(e: NativeSyntheticEvent<NativeScrollEvent>) => {
+            setIsSwiped(true);
+            setPositionXForStartOfSwipeable(e.nativeEvent.contentOffset.x);
+          }}
+          onMomentumScrollBegin={handleScrollEnd}
+          onScroll={handleScroll}
+          onScrollEndDrag={handleScrollEnd}
+        >
+          <LeftContainerForSwipe
+            leftDragXposition={leftDragXposition[0]}
+            leftDragXpositionForRerender={leftDragXpositionForRerender}
+            haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
+          />
+
+          <CentralChatContainer
+            chat={chat}
+            handlePress={handlePress}
+            onLongPressChat={onLongPressChat}
+            onBranchPress={onBranchPress}
+          />
+          <RightContainersForSwipe
+            randomBoolean={randomBoolean}
+            rightDragXposition={rightDragXposition[0]}
+            rightDragXpositionForRerender={rightDragXpositionForRerender}
+          />
+        </Animated.ScrollView>
+        <View
+          style={{
+            width: screenWidth,
+            height: 2,
+            opacity: 0.1,
+            backgroundColor: "gray",
+          }}
+        />
+      </Animated.View>
+      {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
+        <>
+          <FlatList
+            data={chat.branches}
+            renderItem={({ item: branch }) => (
+              <View
+                style={{
+                  width: screenWidth,
+                  height: screenHeight * 0.08,
+                  backgroundColor: "black",
+                }}
+              ></View>
+            )}
+            keyExtractor={(branch) => branch.title}
+          />
+        </>
+      ) : null}
+    </View>
   );
 };
 

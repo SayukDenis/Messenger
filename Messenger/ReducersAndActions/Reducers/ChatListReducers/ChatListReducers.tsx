@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import SelfProfile from '../../../dao/Models/SelfProfile';
 import { useSelector } from 'react-redux';
 import { selfProfileUser } from '../../UserReducersAndActions/Reducers/UserReducers';
+import { setBooleanForTouchOnHamburgerInHeaderChatList } from '../../Actions/ChatListActions/ChatListActions';
 const currentTab:number=0;
 // Reducer for animation state
 const animationReducer = (state = { animationState: false }, action) => {
@@ -28,7 +29,17 @@ const selectedFolderReducer = (state = { selectedFolder: 0 }, action) => {
       return state;
   }
 };
-
+const booleanForTouchOnHamburgerInHeaderChatListReducer= (state = {isTouchable:false}, action) => {
+  switch (action.type) {
+    case "SET_BOOLEAN_FOR_TOUCH_ON_HABMURGER_IN_HEADER_IN_CHATLIST":
+      return {
+        ...state,
+        isTouchable: action.isTouchable,
+      };
+    default:
+      return state;
+  }
+};
 const currentPositionReducer = (state = { currentPosition: 0 }, action) => {
   switch (action.type) {
     case "SET_CURRENT_POSITION_FOR_CHATLIST_STATE":
@@ -57,11 +68,14 @@ const folderSelectedArrayReducer = (
   }
 };
 
+
 const rootReducerChatList = combineReducers({
   animation: animationReducer,
   selectedFolder: selectedFolderReducer,
   currentPosition: currentPositionReducer,
   folderSelectedArray: folderSelectedArrayReducer,
+  booleanForHamburgerTouchable:booleanForTouchOnHamburgerInHeaderChatListReducer,
+
   // Add other reducers here if needed
 });
 
