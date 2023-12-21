@@ -20,7 +20,7 @@ import ModeActivity from "../Status Content/ModeActivity";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import Channel from "../../../../dao/Models/Chats/Channel";
 import Group from "../../../../dao/Models/Chats/Group";

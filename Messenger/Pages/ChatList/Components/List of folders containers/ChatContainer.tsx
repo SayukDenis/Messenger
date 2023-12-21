@@ -28,13 +28,15 @@ import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
+import ListOfBranches from "./ListOfBranches";
 
 interface ChatProps {
   chat: Chat;
+  nesting: number;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
+const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
@@ -44,7 +46,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     useState<number>(null);
   let randomBoolean = useRef(null);
   const [IsBranchesOpenBoolean, setIsBranchesOpenBoolean] = useState(false);
-  const timeForAnimation: number = 150;
+  const [stateForBranchesShow, setStateForBranchesShow] = useState(false);
   const [isSwiped, setIsSwiped] = useState(false);
   const [isSwipedFromRight, setIsSwipedFromRight] = useState(false);
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
@@ -65,7 +67,13 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
       }
     return false;
   };
-  const onBranchPress:()=>void = () => {
+  const onBranchPress: () => void = () => {
+    if (!IsBranchesOpenBoolean) {
+      setBranchPressOpen();
+    }
+    setStateForBranchesShow(!stateForBranchesShow);
+  };
+  const setBranchPressOpen: () => void = () => {
     setIsBranchesOpenBoolean(!IsBranchesOpenBoolean);
   };
   useEffect(() => {
@@ -81,7 +89,6 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     useState(0);
   const [stateForSwipeDirection, setStateForSwipeDirection] =
     useState<number>(null);
-
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
 
@@ -210,7 +217,6 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     Animated.timing(rightDragXposition[0], {
       toValue: positionX,
       duration: 0,
-
       useNativeDriver: false,
     }).start();
   };
@@ -226,6 +232,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
       useNativeDriver: false,
     }).start();
   };
+
   if (Platform.OS == "android") {
     return (
       <>
@@ -243,6 +250,14 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
             backgroundColor: "gray",
           }}
         />
+        {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
+          <ListOfBranches
+            chat={chat}
+            nesting={nesting + 1}
+            setBranchOpen={setBranchPressOpen}
+            stateForBranchesShow={stateForBranchesShow}
+          />
+        ) : null}
       </>
     );
   }
@@ -335,21 +350,12 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
         />
       </Animated.View>
       {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
-        <>
-          <FlatList
-            data={chat.branches}
-            renderItem={({ item: branch }) => (
-              <View
-                style={{
-                  width: screenWidth,
-                  height: screenHeight * 0.08,
-                  backgroundColor: "black",
-                }}
-              ></View>
-            )}
-            keyExtractor={(branch) => branch.title}
-          />
-        </>
+        <ListOfBranches
+          chat={chat}
+          nesting={nesting + 1}
+          setBranchOpen={setBranchPressOpen}
+          stateForBranchesShow={stateForBranchesShow}
+        />
       ) : null}
     </View>
   );

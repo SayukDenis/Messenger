@@ -20,6 +20,7 @@ import BackButtonForHeaderChatListSVG from "./SVG/BackButtonForHeaderChatListSVG
 import { LinearGradient } from "expo-linear-gradient";
 import { setBooleanForTouchOnHamburgerInHeaderChatList } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import { booleanForLogging } from "../ChatList";
+import HeaderContainer from "../../SemiComponents/HeaderContainer";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 function Header({ navigation }: { navigation: any }) {
@@ -69,85 +70,47 @@ function Header({ navigation }: { navigation: any }) {
   };
 
   return (
-    <View
-      style={[
-        {
-          position: "absolute",
-          //top: Platform.OS == "android" ? 100 : 0,
-          left: 0,
-          right: 0,
-          zIndex: 5,
-          elevation: 0.001,
-          borderBottomLeftRadius: 30,
-          borderBottomRightRadius: 30,
-          //backgroundColor:"black",
-          height:
-            Platform.OS == "android"
-              ? screenHeight * 0.08 + StatusBar.currentHeight
-              : screenHeight * 0.08 + Constants.statusBarHeight,
-          justifyContent: "flex-end",
-          overflow: "hidden",
-        },
-      ]}
-    >
-      <View style={headerstyles.container}>
-        <LinearGradient
-          colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-          locations={[0.25, 0.5, 0.75]}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={{
-            opacity: 0.7,
-            top: 0,
-            position: "absolute",
-            left: 0,
-            right: 0,
-            height: screenHeight,
-            width: screenWidth,
-          }}
-        />
-        <Animated.View style={[headerstyles.header]}>
-          <Animated.View
-            style={{
+    <HeaderContainer>
+     <View style={headerstyles.header}>
+      <Animated.View
+        style={{
+
+          flexDirection: "row",
+          transform: [{ translateX: HamburgerAnimationPosition }],
+        }}
+      >
+        <Animated.View
+          style={[
+            {
+              justifyContent: "space-between",
               flexDirection: "row",
-              transform: [{ translateX: HamburgerAnimationPosition }],
+              width: screenWidth * 0.96,
+            },
+          ]}
+        >
+          <MagnifyingGlass style={headerstyles.magnifyingglass} />
+          <ModeOfEmployment />
+          <TouchableOpacity
+            style={{ justifyContent: "center" }}
+            onPress={() => {
+              onHamburgerPress(), OnHamburgerPressForDispatch();
             }}
           >
-            <Animated.View
-              style={[
-                {
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  width: screenWidth * 0.96,
-                },
-              ]}
-            >
-              <MagnifyingGlass style={headerstyles.magnifyingglass} />
-              <ModeOfEmployment />
-              <TouchableOpacity
-                style={{ justifyContent: "center" }}
-                onPress={() => {
-                  onHamburgerPress(), OnHamburgerPressForDispatch();
-                }}
-              >
-                {animationStateForTouchHamburger == 1 ? (
-                  <HamburgerSVG />
-                ) : (
-                  <BackButtonForHeaderChatListSVG />
-                )}
-              </TouchableOpacity>
-            </Animated.View>
-          </Animated.View>
-          <Animated.View
-            style={[
-              { transform: [{ translateX: HamburgerAnimationPosition }] },
-            ]}
-          >
-            <RightContainer navigation={navigation} />
-          </Animated.View>
+            {animationStateForTouchHamburger == 1 ? (
+              <HamburgerSVG />
+            ) : (
+              <BackButtonForHeaderChatListSVG />
+            )}
+          </TouchableOpacity>
         </Animated.View>
-      </View>
-    </View>
+      </Animated.View>
+      <Animated.View
+        style={[{ transform: [{ translateX: HamburgerAnimationPosition }] }]}
+      >
+        <RightContainer navigation={navigation} />
+      </Animated.View>
+     </View>
+    </HeaderContainer>
   );
 }
 export default connect(null)(Header);
