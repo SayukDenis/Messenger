@@ -4,8 +4,9 @@ import Chat from './Chat';
 import ILastWathedMessage from './ILastWathedMessage';
 import Branch from './Branch';
 import Role from './Role';
+import MainChat from './MainChat';
 
-export default class Dialogue extends Chat {
+export default class Dialogue extends MainChat {
     constructor(firstUser: User, secondUser: User) {
         super();
         this.users.push(firstUser);

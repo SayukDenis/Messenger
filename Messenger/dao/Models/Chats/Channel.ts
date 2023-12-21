@@ -4,8 +4,9 @@ import Chat from './Chat';
 import Branch from './Branch';
 import Role from './Role';
 import ILastWathedMessage from './ILastWathedMessage';
+import MainChat from './MainChat';
 
-export default class Channel extends Chat {
+export default class Channel extends MainChat {
     constructor(title: string) {
         super();
         this.title = title;
