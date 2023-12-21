@@ -1,11 +1,11 @@
 import User from '../User';
 import Message from '../Message';
-import Chat from './Chat';
+import MainChat from './MainChat';
 import ILastWathedMessage from './ILastWathedMessage';
 import Branch from './Branch';
 import Role from './Role';
 
-export default class Group extends Chat {
+export default class Group extends MainChat {
     constructor(title: string) {
         super();
         this.title = title;
