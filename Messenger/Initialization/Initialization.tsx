@@ -10,6 +10,7 @@ import User from "../dao/Models/User";
 import { EMessageType } from "../dao/Models/EMessageType";
 import { user } from "../Pages/Profiles/SemiComponents/DBUser";
 import Branch from "../dao/Models/Chats/Branch";
+import MainChat from "../dao/Models/Chats/MainChat";
 
 const messageDialog: string[] = [
   "Привіт",
@@ -232,16 +233,16 @@ function createTab(count: number): Tab[] {
   }
   return tabs;
 }
-function addBranch(count: number, chat: Chat) {
+function addBranch(count: number, mainChat: MainChat) {
   for (let i = 0; i < count; i++) {
     const branch = new Branch("Name branch " + i);
     branch.branchId = idBranchToCrate++;
-    addMessages(branch, chat.users, messageGroupsAndChannels); //TODO
-    if (Math.random() < 0.3) branch.internalBranches.push(new Branch("Interanl branch " + i));
+    addMessages(branch, 100 ,mainChat.users, messageGroupsAndChannels);
+    if (Math.random() < 0.3) branch.branches.push(new Branch("Interanl branch " + i));
     branch.pinnedMessage.push(...getRandomElementsFromArray<Message>(branch.messages));
     branch.pinnedMessageForAll.push(...getRandomElementsFromArray<Message>(branch.messages));
-    branch.haveAccess.push(...getRandomElementsFromArray(chat.roles));
-    chat.branches.push(branch);
+    branch.haveAccess.push(...getRandomElementsFromArray(mainChat.roles));
+    mainChat.branches.push(branch);
   }
 }
 function addMessages(chat: Chat, count: number, users: User[], texts: string[] = []) {
