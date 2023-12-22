@@ -40,7 +40,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
         keyExtractor={(item, index) => index.toString()}
         nestedScrollEnabled={true}
         renderItem={({ item, index }) => (
-          <ChatContainer key={index} chat={item} />
+          <ChatContainer key={index} chat={item} nesting={0} />
         )}
         ListHeaderComponent={
           <>

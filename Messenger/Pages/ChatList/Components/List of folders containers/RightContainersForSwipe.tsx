@@ -6,7 +6,6 @@ import UnMuteForSwipeableSvg from "../SVG/UnMuteForSwipeableSvg";
 import DeleteForSwipeableSvg from "../SVG/DeleteForSwipeableSvg";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { deg } from 'react-native-linear-gradient-degree';
 interface RightContainersForSwipeProps {
   rightDragXposition: any;
   rightDragXpositionForRerender:number;
