@@ -11,7 +11,6 @@ export default class Branch extends Chat {
     }
     branchId?: number;
     title!: string;
-    internalBranches: Array<Branch> = new Array;
     //access
     haveAccess: Array<Role> = new Array;
     //schema
@@ -22,7 +21,7 @@ export default class Branch extends Chat {
             title: 'text',
             linkToPhoto: 'text?',
             messages: { type: 'list', objectType: Message },
-            internalBranches: { type: 'list', objectType: Branch },
+            branches: { type: 'list', objectType: Branch },
             pinnedMessageForAll: { type: 'list', objectType: Message },
             pinnedMessage: { type: 'list', objectType: Message },
             //access

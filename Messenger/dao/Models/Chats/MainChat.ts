@@ -6,8 +6,7 @@ import User from '../User';
 import Chat from './Chat';
 
 export default class MainChat extends Chat {
-    users: Array<User> = new Array;  
-    branches: Array<Branch> = new Array;
+    users: Array<User> = new Array;
     roles: Array<Role> = new Array;    
     //last watched message of each User
     lastWathedMessage: Array<ILastWathedMessage> = new Array;    
