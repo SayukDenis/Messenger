@@ -3,31 +3,28 @@ import {
   View,
   ScrollView,
   Dimensions,
-  Animated,
-  Platform,
   LayoutChangeEvent,
   GestureResponderEvent,
-  Text,
   TouchableOpacity,
-  StatusBar,
-  SafeAreaView,
 } from "react-native";
 import {
   setBooleanForTouchOnHamburgerInHeaderChatList,
   setCurrentPositionForChatList,
+  setEnumForChatListBlurs,
   setFolderSelectedArray,
   setSelectedFolderForChatList,
 } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 
 import ListOfFolder from "./ListOfFolder";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { setAnimationState } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+import { setAnimationStateForFolderChatList } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import Footer from "./Footer";
 import ModalWindowFolderState from "./List of folders containers/ModalWindowFolderState";
 import { FlatList } from "react-native";
-import Header from "./Header";
 import SelfProfile from "../../../dao/Models/SelfProfile";
 import { booleanForLogging } from "../ChatList";
+import BlursForChatList from "./Headers containers/BlursForChatList";
+import { EnumForChatListBlurs } from "./Enums/EnumsForChatListBlurs";
 interface MainProps {}
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -37,7 +34,11 @@ const Main: React.FC<MainProps> = ({}) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
   });
-  const currentTab: number = 0;
+  const currentTab = useSelector((state: any) => {
+    let Tab = state.chatListReducer.currentTab.currentTab;
+    return Tab;
+  });
+
   const [selectedLongPressFolder, setSelectedLongPressFolder] =
     useState<number>(0);
   const [startTime, setStartTime] = useState(0);
@@ -48,7 +49,9 @@ const Main: React.FC<MainProps> = ({}) => {
   const [positionXInContainer, setPositionXInContainer] = useState<number>(0);
   const dispatch = useDispatch();
   const animationState = useSelector((state: any) => {
-    return state.chatListReducer.animation.animationState;
+    //console.log(state.chatListReducer.animationForChatListFolder)
+    return state.chatListReducer.animationForChatListFolder
+      .animationForChatListFolder;
   });
   const folderSelectedArray = useSelector((state: any) => {
     return state.chatListReducer.folderSelectedArray.folderSelectedArray;
@@ -57,12 +60,9 @@ const Main: React.FC<MainProps> = ({}) => {
     // console.log(state.chatListReducer.booleanForHamburgerTouchable.isTouchable)
     return state.chatListReducer.booleanForHamburgerTouchable.isTouchable;
   });
-  useEffect(() => {
-    if (booleanForLogging) {
-      console.log("RERENDER MAIN");
-    }
-  });
+
   const selectFolder = useSelector((state: any) => {
+    //console.log(selfProfile.tabs[currentTab].folders[state.chatListReducer.selectedFolder.selectedFolder].folderName)
     return state.chatListReducer.selectedFolder.selectedFolder;
   });
 
@@ -72,9 +72,7 @@ const Main: React.FC<MainProps> = ({}) => {
   const widths = useRef<number[]>(
     selfProfile.tabs[currentTab].folders.map(() => screenWidth * 0.1831)
   );
-  const viewsRefs: any = [
-    selfProfile.tabs[currentTab].folders.forEach(() => useRef(null)),
-  ];
+
   const positionsOfFolder = useRef<number[]>(
     selfProfile.tabs[currentTab].folders.map(() => 0)
   );
@@ -98,7 +96,7 @@ const Main: React.FC<MainProps> = ({}) => {
     }
     dispatch(setCurrentPositionForChatList(newHorizontalPosition));
     const newFolder: number = Math.round(newHorizontalPosition / screenWidth);
-    //console.log(mySelfUser.folders[newFolder].name)
+
     scrollToPosition(newHorizontalPosition);
     if (newFolder != selectFolder) {
       if (!endDragOfChatList) {
@@ -107,6 +105,9 @@ const Main: React.FC<MainProps> = ({}) => {
       NewFolderSelect(newFolder);
     }
   };
+  useEffect(() => {
+    scrollViewRef.current.scrollToOffset({ offset: 0, animated: false });
+  }, [currentTab]);
   const NewFolderSelect = (newFolder: number) => {
     dispatch(setSelectedFolderForChatList(newFolder));
     let bufferFolderSelectedArray = [...folderSelectedArray];
@@ -147,6 +148,11 @@ const Main: React.FC<MainProps> = ({}) => {
     updatedWidths[index] = width;
     widths.current = updatedWidths;
   });
+  useEffect(() => {
+    if (booleanForLogging) {
+      console.log("RERENDER MAIN");
+    }
+  }, [booleanForLogging]);
 
   const handleLongPress = useRef((e: GestureResponderEvent, index: number) => {
     setSelectedLongPressFolder(index);
@@ -169,7 +175,7 @@ const Main: React.FC<MainProps> = ({}) => {
       setPositionXInContainer(0);
     }
     setisVisibleForModalFolder(true);
-    dispatch(setAnimationState(true));
+    dispatch(setAnimationStateForFolderChatList(true));
   });
   const handlePress = () => {
     setStartTime(Date.now());
@@ -179,6 +185,7 @@ const Main: React.FC<MainProps> = ({}) => {
     setEndTime(Date.now());
     const duration = startTime - endTime;
     if (duration < 16) {
+      dispatch(setEnumForChatListBlurs(EnumForChatListBlurs.None));
       setisVisibleForModalFolder(false);
       return;
     }
@@ -186,9 +193,8 @@ const Main: React.FC<MainProps> = ({}) => {
   }
 
   const setAnimation = () => {
-    dispatch(setAnimationState(false));
+    dispatch(setAnimationStateForFolderChatList(false));
   };
-
   return (
     <>
       <ModalWindowFolderState
@@ -200,6 +206,10 @@ const Main: React.FC<MainProps> = ({}) => {
         positionXInContainer={positionXInContainer}
         widths={widths.current}
         setAnimation={setAnimation}
+        handlePress={handlePress}
+        handlePressOut={handlePressOut}
+      />
+      <BlursForChatList
         handlePress={handlePress}
         handlePressOut={handlePressOut}
       />
@@ -216,14 +226,11 @@ const Main: React.FC<MainProps> = ({}) => {
         nestedScrollEnabled={true}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View>
-            <ListOfFolder key={index} currentFolder={index} />
-          </View>
+          <ListOfFolder key={index} currentFolder={index} />
         )}
         onScroll={handleHorizontalScroll}
-        // onMomentumScrollBegin={()=>{}}
-        windowSize={3}
-        //initialNumToRender={3}
+        windowSize={8}
+        initialNumToRender={8}
       />
       <Footer
         isTouchableForHeader={isTouchableForHeader}
@@ -250,7 +257,6 @@ const Main: React.FC<MainProps> = ({}) => {
             width: screenWidth,
             position: "absolute",
             zIndex: 4,
-            // backgroundColor:"black"
           }}
         />
       ) : null}

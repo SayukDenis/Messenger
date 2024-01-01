@@ -1,15 +1,13 @@
-import { createRef, useDebugValue, useEffect, useRef, useState } from "react";
+import CentralHeaderContainer from "./Headers containers/CentralHeaderContainer";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 import {
   View,
   TouchableOpacity,
   Animated,
   Dimensions,
-  SafeAreaView,
-  Platform,
-  StatusBar,
+  LayoutChangeEvent,
 } from "react-native";
-import Constants from "expo-constants";
 import { headerstyles } from "../Styles/HeaderStyle";
 import MagnifyingGlass from "./Headers containers/MagnifyingGlass";
 import ModeOfEmployment from "./Headers containers/ModeOfEmployment";
@@ -17,22 +15,32 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import RightContainer from "./Headers containers/RightContainer";
 import HamburgerSVG from "./SVG/HamburgerSVG";
 import BackButtonForHeaderChatListSVG from "./SVG/BackButtonForHeaderChatListSVG";
-import { LinearGradient } from "expo-linear-gradient";
-import { setBooleanForTouchOnHamburgerInHeaderChatList } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+import {
+  setBooleanForTouchOnHamburgerInHeaderChatList,
+  setEnumForChatListBlurs,
+  setLayoutOfModeOfEmployment,
+} from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import { booleanForLogging } from "../ChatList";
+
 import HeaderContainer from "../../SemiComponents/HeaderContainer";
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+import { EnumForChatListBlurs } from "./Enums/EnumsForChatListBlurs";
+import { GestureResponderEvent } from "react-native-modal";
+import { screenWidth } from "../Constants/ConstantsForChatlist";
 
 function Header({ navigation }: { navigation: any }) {
   const isTouchableForHeader = useSelector((state: any) => {
-    //console.log("ABOBA")
-    // console.log(state.chatListReducer.booleanForHamburgerTouchable.isTouchable)
     return state.chatListReducer.booleanForHamburgerTouchable.isTouchable;
   });
   const dispatch = useDispatch();
   const OnHamburgerPressForDispatch = () => {
     dispatch(
       setBooleanForTouchOnHamburgerInHeaderChatList(!isTouchableForHeader)
+    );
+  };
+
+  const PressOnModesOfEmployment = (event: GestureResponderEvent) => {
+    dispatch(
+      setEnumForChatListBlurs(EnumForChatListBlurs.ModeOfEmploymentTouch)
     );
   };
   useEffect(() => {
@@ -56,8 +64,8 @@ function Header({ navigation }: { navigation: any }) {
     });
 
   const onHamburgerPress = () => {
-    console.log(isTouchableForHeader);
-    console.log(animationStateForTouchHamburger);
+    //console.log(isTouchableForHeader);
+    //console.log(animationStateForTouchHamburger);
 
     Animated.timing(HamburgerAnimationStatePosition.current, {
       toValue: animationStateForTouchHamburger,
@@ -68,49 +76,35 @@ function Header({ navigation }: { navigation: any }) {
       animationStateForTouchHamburger == 0 ? 1 : 0
     );
   };
-
+  const OnLayoutModeOfEmployment = (event: LayoutChangeEvent) => {
+    dispatch(setLayoutOfModeOfEmployment(event.nativeEvent.layout));
+    //console.log(event.nativeEvent.layout)
+  };
   return (
     <HeaderContainer>
-     <View style={headerstyles.header}>
-      <Animated.View
-        style={{
-
-          flexDirection: "row",
-          transform: [{ translateX: HamburgerAnimationPosition }],
-        }}
-      >
+      <View style={headerstyles.header}>
         <Animated.View
-          style={[
-            {
-              justifyContent: "space-between",
-              flexDirection: "row",
-              width: screenWidth * 0.96,
-            },
-          ]}
+          style={{
+            flexDirection: "row",
+            transform: [{ translateX: HamburgerAnimationPosition }],
+          }}
         >
-          <MagnifyingGlass style={headerstyles.magnifyingglass} />
-          <ModeOfEmployment />
-          <TouchableOpacity
-            style={{ justifyContent: "center" }}
-            onPress={() => {
-              onHamburgerPress(), OnHamburgerPressForDispatch();
-            }}
-          >
-            {animationStateForTouchHamburger == 1 ? (
-              <HamburgerSVG />
-            ) : (
-              <BackButtonForHeaderChatListSVG />
-            )}
-          </TouchableOpacity>
+          <CentralHeaderContainer
+            OnLayoutModeOfEmployment={OnLayoutModeOfEmployment}
+            PressOnModesOfEmployment={PressOnModesOfEmployment}
+            onHamburgerPress={onHamburgerPress}
+            OnHamburgerPressForDispatch={OnHamburgerPressForDispatch}
+            animationStateForTouchHamburger={animationStateForTouchHamburger}
+          />
         </Animated.View>
-      </Animated.View>
-      <Animated.View
-        style={[{ transform: [{ translateX: HamburgerAnimationPosition }] }]}
-      >
-        <RightContainer navigation={navigation} />
-      </Animated.View>
-     </View>
+        <Animated.View
+          style={[{ transform: [{ translateX: HamburgerAnimationPosition }] }]}
+        >
+          <RightContainer navigation={navigation} />
+        </Animated.View>
+      </View>
     </HeaderContainer>
   );
 }
+
 export default connect(null)(Header);

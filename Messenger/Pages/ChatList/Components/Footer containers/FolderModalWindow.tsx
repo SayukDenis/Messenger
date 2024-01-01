@@ -67,8 +67,8 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
     }
     return false;*/
   };
-  const containerWidth = new Animated.Value(0); // Початкова ширина
-  const firstContainerTranslate = new Animated.Value(0); // Початкова висота
+  const containerWidth = new Animated.Value(0); 
+  const firstContainerTranslate = new Animated.Value(0); 
   const secondContainerTranslate = new Animated.Value(0);
   const thirdContainerTranslate = new Animated.Value(0);
   const fourthContainerTranslate = new Animated.Value(0);
