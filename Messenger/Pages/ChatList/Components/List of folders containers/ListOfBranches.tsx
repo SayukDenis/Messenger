@@ -36,7 +36,6 @@ const ListOfBranches: React.FC<ListOfBranchesProps> = ({ chat, nesting,setBranch
   );
   useEffect(()=>{
     Animated.sequence(stateForBranchesShow?animationsForBranches:animationsForBranches.slice().reverse()).start(() => {
-      console.log("Aboba");
       if(!stateForBranchesShow){
         setBranchOpen();
       }
@@ -53,7 +52,7 @@ const ListOfBranches: React.FC<ListOfBranchesProps> = ({ chat, nesting,setBranch
             transform: [{ translateY: translateYOfContainers[index] }],opacity:arrayOfBranchesValues[index][0]
           }}
         >
-          <ChatContainer chat={chat} nesting={nesting} />
+          <ChatContainer chat={item} nesting={nesting} />
         </Animated.View>
       )}
     />

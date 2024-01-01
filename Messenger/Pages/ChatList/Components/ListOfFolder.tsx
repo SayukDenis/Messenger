@@ -32,7 +32,11 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
   });
-  const currentTab: number = 0;
+  const currentTab = useSelector((state: any) => {
+    let Tab = state.chatListReducer.currentTab.currentTab;
+    return Tab;
+  });
+  
   return (
     <View style={{ height: screenHeight, width: screenWidth }}>
       <FlatList
@@ -58,11 +62,11 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
           />
         }
         showsVerticalScrollIndicator={false}
-        windowSize={10}
-        initialNumToRender={10}
+        windowSize={20}
+      
       />
     </View>
   );
 };
 
-export default connect(null)(ListOfFolder);
+export default connect(null)(React.memo(ListOfFolder));

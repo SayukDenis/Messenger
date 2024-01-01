@@ -14,8 +14,6 @@ import Folder from "../../../../dao/Models/Folder";
 import { booleanForLogging } from "../../ChatList";
 
 interface FolderProps {
-  containerStyle?: StyleProp<ViewStyle>; // Стиль для контейнера
-  textStyle?: StyleProp<TextStyle>; // Стиль для тексту
   folder: Folder;
   isSelected: boolean;
   onPress: any;
@@ -24,15 +22,7 @@ interface FolderProps {
 }
 
 const FolderContainer: React.FC<FolderProps> = React.memo(
-  ({
-    containerStyle,
-    textStyle,
-    folder,
-    isSelected,
-    onPress,
-    handleLongPress,
-    index,
-  }) => {
+  ({ folder, isSelected, onPress, handleLongPress, index }) => {
     useEffect(() => {
       if (booleanForLogging) {
         console.log("RERENDER FOLDER CONTAINER IN FOOTER " + folder.folderName);
@@ -42,7 +32,6 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
       onPress.current(event, index);
     });
     const isSelectedThere = useSelector((state: any) => {
-      //  console.log(folder.name+":"+state.folderSelectedArray.folderSelectedArray[index])
       return state.chatListReducer.folderSelectedArray.folderSelectedArray[
         index
       ];
@@ -52,30 +41,28 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
     });
 
     return (
-      <>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={OnPressRef.current}
-          onLongPress={OnLongPressRef.current}
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={OnPressRef.current}
+        onLongPress={OnLongPressRef.current}
+      >
+        <View
+          style={[
+            footerstyles.folderContainer,
+            isSelected ? footerstyles.selectedFolderContainer : null,
+          ]}
         >
-          <View
-            style={[
-              containerStyle,
-              isSelected ? footerstyles.selectedFolderContainer : null,
-            ]}
+          <Text
+            style={
+              isSelected && isSelectedThere
+                ? footerstyles.selectedText
+                : footerstyles.folder
+            }
           >
-            <Text
-              style={
-                isSelected && isSelectedThere
-                  ? footerstyles.selectedText
-                  : textStyle
-              }
-            >
-              {folder.folderName}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </>
+            {folder.folderName}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 );

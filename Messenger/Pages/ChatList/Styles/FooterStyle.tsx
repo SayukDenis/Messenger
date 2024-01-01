@@ -1,6 +1,6 @@
-import { StyleSheet, View, Text, Dimensions, Platform } from "react-native";
+import { StyleSheet ,} from "react-native";
+import { screenHeight, screenWidth } from "../Constants/ConstantsForChatlist";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const footerstyles = StyleSheet.create({
   container: {
@@ -19,7 +19,7 @@ export const footerstyles = StyleSheet.create({
     justifyContent:"center"
   },
   scrollView: {
-    marginLeft: screenWidth * 0.04,
+    marginLeft: screenWidth* 0.04,
     width: screenWidth * 0.92,
     //backgroundColor:"red",
     

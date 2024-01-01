@@ -7,8 +7,6 @@ import React, {
 } from "react";
 import {
   View,
-  Image,
-  Text,
   TouchableOpacity,
   Dimensions,
   Animated,
@@ -17,7 +15,6 @@ import {
   NativeScrollEvent,
   ScrollView,
   Platform,
-  FlatList,
 } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import RightContainersForSwipe from "./RightContainersForSwipe";
@@ -27,7 +24,6 @@ import { connect, useSelector } from "react-redux";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
-import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 import ListOfBranches from "./ListOfBranches";
 
 interface ChatProps {
@@ -52,14 +48,22 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
   const [positionXForSwipeable, setPositionXForSwipeable] =
     useState<number>(screenWidth);
-
+  useEffect(() => {});
+  function obhod(chat: Chat) {
+    for (let index = 0; index < chat.branches.length; index++) {
+      console.log(chat.branches[index].title);
+      obhod(chat.branches[index]);
+    }
+    return;
+  }
   const haveUnreadMessages = (chat) => {
-    const lastMessage: Message = chat.messages[chat.messages.length - 1]
-      ? chat.messages[chat.messages.length - 1]
-      : undefined;
+    const lastMessage: Message =
+      chat.messages.length > 0
+        ? chat.messages[chat.messages.length - 1]
+        : undefined;
 
     const id: number | undefined = chat.dictionary?.get(selfProfile.userId);
-    if (!lastMessage)
+    if (lastMessage !== undefined)
       if (lastMessage.author.userId !== selfProfile.userId) {
         if (id && lastMessage.messageId > id) {
           return true;
@@ -78,7 +82,6 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
   };
   useEffect(() => {
     randomBoolean.current = Math.random() < 0.5;
-    haveUnreadMessagesBoolf.current = haveUnreadMessages(chat);
   }, []);
 
   const rightDragXposition = useState(new Animated.Value(screenWidth));
@@ -92,7 +95,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
 
-  const haveUnreadMessagesBoolf = useRef(null);
+  const haveUnreadMessagesBool = haveUnreadMessages(chat);
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
   });
@@ -241,6 +244,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
           handlePress={handlePress}
           onLongPressChat={onLongPressChat}
           onBranchPress={onBranchPress}
+          nesting={nesting}
         />
         <View
           style={{
@@ -266,7 +270,6 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
       <Animated.View>
         <View
           style={{
-            backgroundColor: null,
             position: "absolute",
             height: screenHeight * 0.08,
             width: !isSwipedFromLeft
@@ -325,7 +328,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
           <LeftContainerForSwipe
             leftDragXposition={leftDragXposition[0]}
             leftDragXpositionForRerender={leftDragXpositionForRerender}
-            haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
+            haveUnreadMessagesBool={haveUnreadMessagesBool}
           />
 
           <CentralChatContainer
@@ -333,6 +336,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
             handlePress={handlePress}
             onLongPressChat={onLongPressChat}
             onBranchPress={onBranchPress}
+            nesting={nesting}
           />
           <RightContainersForSwipe
             randomBoolean={randomBoolean}
