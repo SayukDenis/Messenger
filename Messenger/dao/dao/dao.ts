@@ -1,19 +1,33 @@
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
-const fs = require('fs');
-
-const {
-    databaseName,
-    databaseVersion
-} = JSON.parse(fs.readFileSync('../config.json', 'utf8'));
-export const database = SQLite.openDatabase(databaseName, databaseVersion);
+import * as FileSystem from 'expo-file-system';
 
 
-function Open() {
-    const database = SQLite.openDatabase(databaseName, databaseVersion);
-    const [isLoading, setIsLoading] = useState(true);
+export async function Open() {
+    const { databasePath, databaseVersion } = await ReadConfigFile();
+    const database = SQLite.openDatabase(databasePath, databaseVersion);
 
-    if (isLoading) {
-
-    }
+    return database;
 }
+
+function ReadConfigFile() {
+    //path to configuration file
+    const fileUri = `${FileSystem.documentDirectory}detail_connection.json`;
+
+    const readFile = async () => {
+        try {
+            const fileContent = await FileSystem.readAsStringAsync(fileUri);
+            const parsedData = JSON.parse(fileContent);
+            return {
+                databasePath: parsedData.databasePath,
+                databaseVersion: parsedData.databaseVersion
+            };
+        } catch (error) {
+            console.error('Error reading the file:', error);
+            return null;
+        }
+    };
+
+    return readFile();
+}
+
