@@ -3,7 +3,7 @@ import Message from '../Message';
 import Chat from './Chat';
 import Branch from './Branch';
 import Role from './Role';
-import ILastWathedMessage from './ILastWathedMessage';
+import ILastWatchedMessage from './ILastWatchedMessage';
 import MainChat from './MainChat';
 
 export default class Channel extends MainChat {
@@ -27,7 +27,7 @@ export default class Channel extends MainChat {
             pinnedMessageForAll: { type: 'list', objectType: Message },
             branches: { type: 'list', objectType: Branch },
             roles: { type: 'list', objectType: Role },            
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            lastWathedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
             linkToPhoto: 'text?',
         },
         primaryKey: 'channelId',

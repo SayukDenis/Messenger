@@ -1,4 +1,4 @@
-import { addClasses, Creator  } from "../dao/generate/main";
+import { addClasses, Creator  } from "../dao/generate/createTabels";
 
 export function tAdd(){
     addClasses();

@@ -9,7 +9,7 @@
 * `real` - stored as an REAL
 * `boolean`  - stored as an BOOLEAN
 * `string` and `text` - stored as a TEXT
-* `datetime` - stored as a DATETIME
+* `date` - stored as a DATETIME
 * `blob` - stored as a BLOB (image, audio, video and other type of raw binary information)
 * `null` - stored as an NULL
 

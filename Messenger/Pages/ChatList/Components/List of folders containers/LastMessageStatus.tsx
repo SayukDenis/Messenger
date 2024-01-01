@@ -8,7 +8,7 @@ import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { useSelector } from "react-redux";
-import ILastWathedMessage from "../../../../dao/Models/Chats/ILastWathedMessage";
+import ILastWatchedMessage from "../../../../dao/Models/Chats/ILastWatchedMessage";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 interface LastMessageStatusProps {
   chat: Chat;
