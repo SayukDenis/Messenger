@@ -5,12 +5,12 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { GroupHead } from "./GroupHeadProfile";
 import { GroupBio } from "./GroupBio";
 import { UserProps, user } from "../../SemiComponents/DBUser";
-import { GroupName } from "./GroupNameInput";
+import { GroupNameInput } from "./GroupNameInput";
 import { EditGroupPhoto } from "./EditGroupPhoto";
 import { User } from "./UserProfile";
 
 export default function EditGroup() {
-  const [GroupHeadNameExample, setGroupHeadNameExample] = useState("");
+  const [groupHeadName, setGroupHeadName] = useState("Aboba");
   const [bioTextExample, setBioTextExample] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
   const [GroupNameExample, setGroupNameExample] = useState("");
@@ -21,9 +21,11 @@ export default function EditGroup() {
   return (
     <GestureHandlerRootView style={styles.wrapper}>
       <SafeAreaView style={styles.container}>
-        <GroupHead setGroupHeadNameExample={setGroupHeadNameExample} />
+        <GroupHead GroupHeadName={groupHeadName} />
         <EditGroupPhoto />
-        <GroupName setGroupNameExample={setGroupNameExample} />
+        <GroupNameInput
+          setGroupHeadName={(value: string) => setGroupHeadName(value)}
+        />
         <GroupBio setBioTextExample={setBioTextExample} />
         <User {...user} />
       </SafeAreaView>

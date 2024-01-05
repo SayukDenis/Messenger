@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+// GroupHeadProfile.tsx
+import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { styles } from "./ProfileGroupStyles";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Path, Rect } from "react-native-svg";
+import { styles } from "./ProfileGroupStyles";
 
-export const GroupHead = ({
-  setGroupHeadNameExample,
-}: {
-  setGroupHeadNameExample: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-  const [GroupHeadName, setGroupHeadName] = useState("Group");
+type GroupHeadProps = {
+  GroupHeadName: string;
+};
 
+export const GroupHead: React.FC<GroupHeadProps> = ({ GroupHeadName }) => {
   const navigation = useNavigation();
 
   const handleEditGroupPress = () => {
-    navigation.navigate("SettingsMenu" as never); // Визначаємо тип рядка як 'never'
+    navigation.navigate("SettingsMenu" as never);
   };
 
   return (
@@ -38,7 +36,7 @@ export const GroupHead = ({
           />
         </Svg>
       </TouchableOpacity>
-      <Text style={{ top: "15%" }}>Group</Text>
+      <Text style={{ top: "15%" }}>{GroupHeadName}</Text>
       <TouchableOpacity style={{ left: "38%", top: "-6%" }}>
         <Text>Done</Text>
       </TouchableOpacity>
