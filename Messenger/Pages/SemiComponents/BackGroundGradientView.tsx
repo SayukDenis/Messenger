@@ -1,13 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { ReactNode } from 'react';
-import { View, ViewStyle, Platform, Dimensions, StatusBar } from 'react-native';
-import { headerstyles } from '../ChatList/Styles/HeaderStyle';
-import Constants from "expo-constants";
 import { connect } from 'react-redux';
+import { screenHeight, screenWidth } from '../ChatList/Constants/ConstantsForChatlist';
 interface BackGroundGradinetViewProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
 const BackGroundGradinetView: React.FC<BackGroundGradinetViewProps> = ({ children }) => {
   return (
     <LinearGradient
@@ -15,7 +13,7 @@ const BackGroundGradinetView: React.FC<BackGroundGradinetViewProps> = ({ childre
         locations={[0.25, 0.5, 0.75]}
         start={{ x: 1, y: 0 }}
         end={{ x: 0, y: 1 }}
-      >
+        style={{height:screenHeight,width:screenWidth}}>
         {children}
       </LinearGradient>
   );

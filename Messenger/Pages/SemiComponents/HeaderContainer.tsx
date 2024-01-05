@@ -1,14 +1,14 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { ReactNode } from 'react';
-import { View, ViewStyle, Platform, Dimensions, StatusBar } from 'react-native';
-import { headerstyles } from '../ChatList/Styles/HeaderStyle';
+import { LinearGradient } from "expo-linear-gradient";
+import React, { ReactNode } from "react";
+import { View, ViewStyle, Platform, Dimensions, StatusBar } from "react-native";
+import { headerstyles } from "../ChatList/Styles/HeaderStyle";
 import Constants from "expo-constants";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 interface HeaderContainerProps {
-  children: ReactNode;
+  children?: ReactNode | null;
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const HeaderContainer: React.FC<HeaderContainerProps> = ({ children }) => {
+const HeaderContainer: React.FC<HeaderContainerProps> = ({ children=null }) => {
   return (
     <View
       style={[
@@ -50,4 +50,4 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({ children }) => {
     </View>
   );
 };
-export default connect(null)(HeaderContainer)
+export default connect(null)(HeaderContainer);

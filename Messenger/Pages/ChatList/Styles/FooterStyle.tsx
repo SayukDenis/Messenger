@@ -1,6 +1,5 @@
-import { StyleSheet ,} from "react-native";
+import { StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../Constants/ConstantsForChatlist";
-
 
 export const footerstyles = StyleSheet.create({
   container: {
@@ -8,32 +7,21 @@ export const footerstyles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-   // backgroundColor: "#E7E6E4",
-   backgroundColor:"white",
+    backgroundColor: "white",
     flex: 1,
-    height: screenHeight*0.08,
+    height: screenHeight * 0.08,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     flexDirection: "column",
     zIndex: 5,
-    justifyContent:"center"
+    justifyContent: "center",
   },
   scrollView: {
-    marginLeft: screenWidth* 0.04,
+    marginLeft: screenWidth * 0.04,
     width: screenWidth * 0.92,
-    //backgroundColor:"red",
-    
-  
-    
   },
-  folderContainer: {
-    //marginTop: screenHeight * 0.01,
-  },
-  selectedFolderContainer:{
-    //backgroundColor:"#9FBAEF",
-   // borderRadius:100,
-    
-  },
+  folderContainer: {},
+  selectedFolderContainer: {},
   folder: {
     fontSize: screenHeight * 0.017,
     padding: screenWidth * 0.017,
@@ -50,12 +38,10 @@ export const footerstyles = StyleSheet.create({
   },
   modalWindowContainerStyle: {
     position: "absolute",
-   // bottom: screenHeight * 0.0,
     zIndex: 10,
-    
   },
   containerForModalWindowText: {
-    flexDirection:"row",
+    flexDirection: "row",
     backgroundColor: "#E7E6E4",
     width: screenWidth * 0.45,
     height: screenHeight * 0.04,
@@ -68,7 +54,7 @@ export const footerstyles = StyleSheet.create({
   modalWindowText: {
     fontSize: screenHeight * 0.018,
     marginLeft: screenWidth * 0.02,
-    alignSelf:"center"
+    alignSelf: "center",
   },
   triangle: {
     width: 0,
@@ -93,8 +79,8 @@ export const footerstyles = StyleSheet.create({
     bottom: screenHeight * 0.008,
     left: screenWidth * 0.415,
   },
-  svgContainer:{
-    justifyContent:"center",
-    marginLeft:screenWidth*0.02
-  }
+  svgContainer: {
+    justifyContent: "center",
+    marginLeft: screenWidth * 0.02,
+  },
 });
