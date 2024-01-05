@@ -1,11 +1,8 @@
 import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView } from 'react-native';
 import { memo, useCallback, useRef, useState } from 'react';
 import {Message, messages} from '../tmpdata';
-import styles from '../components/Styles/DialogueMessagesStyle';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { styles } from './Styles/DefaultTextType';
 import React from 'react';
-import tw from 'tailwind-react-native-classnames';
 
 const {width, height} = Dimensions.get('window');
 
@@ -34,26 +31,28 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
 
   const wrapText = (text, maxLength) => {
     const words = text.split(' ');
-    const maxLengthForLongWord = maxLength-10;
     let currentLine = '';
     const lines = [];
   
     words.forEach((word) => {
       if (word.length > maxLength) {
         // Break the long word into chunks of maxLength characters
-        for (let i = 0; i < word.length; i += maxLengthForLongWord) {
-          lines.push(word.slice(i, i + maxLengthForLongWord));
+        if(currentLine.length)
+          lines.push(currentLine.trim());
+        currentLine = '';
+        for (let i = 0; i < word.length; i += maxLength) {
+          lines.push(word.slice(i, i + maxLength).trim());
         }
       } else if ((currentLine + word).length > maxLength) {
-        lines.push(currentLine);
+        lines.push(currentLine.trim());
         currentLine = word + ' ';
       } else {
         currentLine += word + ' ';
       }
     });
   
-    lines.push(currentLine.trim()); // Add the last line
-    
+    lines.push(currentLine.trim());
+
     return lines.join('\n').trim();
   };
 
@@ -63,16 +62,16 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
       alwaysBounceHorizontal={false} 
       pagingEnabled 
       showsHorizontalScrollIndicator={false}
-      style={{width:width, alignSelf:'stretch', overflow:'visible'}}
+      style={styles.swipeableContainer}
     >
       <TouchableOpacity 
-        style={{width:width+50, flexDirection:'row', overflow:'visible'}}
+        style={styles.mainContainer} 
         activeOpacity={1} 
         onPress={(event) => {setMessageMenuVisible(handlePress(event))}}
       >
-        <View style={[styles.messageContainer, message.isUser?{ justifyContent:'flex-end' }:null]}>
-          <View style={[{maxWidth:width*0.65}, message.isUser?{ marginRight:10 }:{ marginLeft:10 }]}>
-            <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.text.length>40?styles.longMessage:null]}>
+        <View style={[styles.messageBlockContainer, message.isUser&&{ justifyContent:'flex-end' }]}>
+          <View style={styles.messageContainer}>
+            <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.text.length>40&&styles.longMessage]}>
               <Text>{wrapText(message.text, 40)}</Text>
               <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.edited?'edited ':''}

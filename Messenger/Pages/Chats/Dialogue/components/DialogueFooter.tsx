@@ -1,27 +1,24 @@
 import { View, Button, TextInput, StyleSheet, Dimensions, Alert, Text, TouchableOpacity } from 'react-native';
-import React, { useState, memo, useCallback, Dispatch, SetStateAction } from 'react';
-import styles from './Styles/DialogueFooterStyle';
+import React, { useState, memo, useCallback, Dispatch, SetStateAction, useEffect } from 'react';
+import styles from './Styles/DialogueFooter';
 import { Message } from '../tmpdata';
 import { Svg, Path } from 'react-native-svg';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
-
-interface DialogueFooterProps {
-  messages:Message[], 
-  setMessages:(arg0: Message)=>void, 
-  isReply:boolean, 
-  replyMessage:Message, 
-  onSendMessageOrCancelReplyAndEdit:()=>void, 
-  isEdit:boolean, 
-  editMessage:Message, 
-  messageID:number,
-}
+import { DialogueFooterProps, sendMessageProps } from './interfaces/IDialoueFooter';
 
 const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, messageID}:DialogueFooterProps) => {
 
-  const [text, setText] = useState(isEdit?editMessage.text:'');
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    if(isEdit)
+      setText(editMessage.text)
+    else
+      setText('');
+  }, [editMessage, isEdit]);
 
   return(
-    <View style={{flex:6, backgroundColor:'rgba(0, 0, 0, 0)'}}>
+    <View style={styles.mainContainer}>
       <ReplyAndEditMenu 
         isReply={isReply} 
         replyMessage={replyMessage} 
@@ -40,17 +37,6 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     </View>
   );
 })
-
-interface sendMessageProps {
-  text:string, 
-  setText:(arg0: string)=>void,
-  messages:Message[], 
-  setMessages:(arg0: Message)=>void, 
-  replyMessage:Message, 
-  onSendMessageOrCancelReplyAndEdit:()=>void, 
-  editMessage:Message, 
-  messageID:number,
-}
 
 const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID}:sendMessageProps) => {
   setText('');

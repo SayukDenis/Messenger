@@ -1,15 +1,13 @@
 import { View, StyleSheet, Text, Button, Image, Dimensions } from 'react-native';
-import styles from './Styles/DialogueHeaderStyle';
+import styles from './Styles/DialogueHeader';
 import React from 'react';
 
 let userName = 'Denis';
 let wasOnline = 'Online recently';
 
-const { height, width } = Dimensions.get('window');
-
 const DialogueHeader = () => {
   return(
-    <View style={{flex:6}}>
+    <View style={styles.mainContainer}>
       <View style={styles.header}>
         <Button title='back'/>
         <View style={styles.chatUserInfo}>

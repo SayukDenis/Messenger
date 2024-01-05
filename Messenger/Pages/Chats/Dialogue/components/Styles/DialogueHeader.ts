@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 6,
+  },
   header: {
     paddingVertical: 5,
     paddingHorizontal: 10,

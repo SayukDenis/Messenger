@@ -105,7 +105,10 @@ const Dialogue = () => {
       end={{x: 0, y: 1}} 
       colors={['#D7B168', '#D783FF']}
     >
-      <View style={{flex:1, alignSelf:'stretch', position:'relative'}} >
+      <View 
+        className='' 
+        style={{flex:1, alignSelf:'stretch', position:'relative'}}
+      >
         <View style={styles.dialogueContainer}>
           <MessageMenu 
             isUser={mes!=undefined?mes.isUser:false} 

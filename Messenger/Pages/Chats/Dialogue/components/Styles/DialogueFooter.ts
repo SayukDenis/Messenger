@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex:6, 
+    backgroundColor:'rgba(0, 0, 0, 0)'
+  },
   footerContainer: {
     display: 'flex',
     justifyContent: 'flex-end',

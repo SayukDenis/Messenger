@@ -1,23 +1,13 @@
-import { View, Dimensions, ScrollView, Alert } from 'react-native';
-import { useRef, MutableRefObject, useState, useEffect, memo, useCallback } from 'react';
-import {Message} from '../tmpdata';
-import styles from './Styles/DialogueMessagesStyle'
+import { View, Dimensions, ScrollView } from 'react-native';
+import { useRef, useState, useEffect } from 'react';
+import styles from './Styles/DialogueMessages'
 import DefaultTextType from '../MessageViewsAndTypes/DefaultTextType'
 import ReplyTextType from '../MessageViewsAndTypes/ReplyTextType';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
+import { messageProps, messageViewHandleProps } from './interfaces/IDialogueMessages';
 
 const { height, width } = Dimensions.get('window');
-
-interface messageProps {
-  setMessageMenuVisible:(arg0: {x:number, y:number, ID:number})=>void;
-  messageMenuVisisbleAppearence:boolean;
-  messageID:number;
-  listOfMessages:Message[];
-  isReply:boolean;
-  isEdit:boolean;
-}
 
 export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit}:messageProps) => {
   const scrollViewRef = useRef(null);
@@ -27,9 +17,9 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
     }
   }, [listOfMessages]);
   
-  const [coordsY, setCoordsY]:any = useState([]); //{coordsY:number[]; setCoordsY:(arg0: {arr:number[]})=>void}
+  const [coordsY, setCoordsY]:any = useState([]); 
   return(
-    <GestureHandlerRootView style={{flex: 88, overflow:'visible', position:'relative'}}>
+    <GestureHandlerRootView style={styles.mainContainer}>
       
       <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} style={[styles.dialogueChat, {zIndex:3}]}>
         {listOfMessages.map((message, index) => (
@@ -39,7 +29,7 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
               setCoordsY(coordsY);
             }
           } key={message.id} style={{flex:1, zIndex:message.id===messageID?4:-10}}>
-            {messageViewHandle(listOfMessages, message, setMessageMenuVisible, message.id, scrollViewRef, coordsY)}
+            {messageViewHandle({ listOfMessages, message, setMessageMenuVisible, scrollViewRef, coordsY})}
           </View>
         ))}
         <View style={{height:isReply||isEdit?height*0.052:0, width:width}}/>
@@ -51,13 +41,11 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
   );
 };
 
-const messageViewHandle = (messages:Message[], message:Message, setMessageMenuVisible:{(arg0: {x:number, y:number, ID:number}):void}, messageID:number, scrollViewRef:MutableRefObject<any>, cordsY:any) => {
-  // for(let i = 0; i < cordsY.length; i++)
-  //   console.log(cordsY[i], 'index '+i);
+const messageViewHandle = ({listOfMessages, message, setMessageMenuVisible, scrollViewRef, coordsY}:messageViewHandleProps) => {
   if(message.type == 'text' && message.isReply == true) {
-    return <ReplyTextType key={messageID} messages={messages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={messageID} scrollView={scrollViewRef} cordsY={cordsY}/>;
+    return <ReplyTextType key={message.id} messages={listOfMessages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={message.id} scrollView={scrollViewRef} cordsY={coordsY}/>;
   }
   else if(message.type == 'text') {
-    return <DefaultTextType key={messageID} messages={messages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={messageID}/>;
+    return <DefaultTextType key={message.id} messages={listOfMessages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={message.id}/>;
   }
 };
