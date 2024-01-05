@@ -9,7 +9,7 @@ const {width, height} = Dimensions.get('window');
 interface DefaultTextMessageProps {
   messages:Message[];
   message:Message;
-  setMessageMenuVisible:(arg0: {x:number, y:number, ID:number})=>void;
+  setMessageMenuVisible:(arg0: {x:number, y:number, ID:number}, arg1: boolean)=>void;
   id:number;
 }
 
@@ -19,7 +19,9 @@ for(let i = 0; i < messages.length; i++)
 
 const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:DefaultTextMessageProps) => {
 
-  const handlePress = useCallback((event:{ nativeEvent: { pageX: number; pageY: number } }) => {
+  const handlePress = useCallback((event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
+    if(!event) return { x: 0, y: 0, ID: id };
+
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
     return { x:(pageX<(width/8)?(width/8):pageX)>(width*0.6)?(width*0.6):pageX,
@@ -63,12 +65,12 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
       pagingEnabled 
       showsHorizontalScrollIndicator={false}
       style={styles.swipeableContainer}
-      onScrollEndDrag={() => console.log('end')}
+      onScrollEndDrag={() => setMessageMenuVisible(handlePress(null), false)}
     >
       <TouchableOpacity 
         style={styles.mainContainer} 
         activeOpacity={1} 
-        onPress={(event) => {setMessageMenuVisible(handlePress(event))}}
+        onPress={(event) => {setMessageMenuVisible(handlePress(event), true)}}
       >
         <View style={[styles.messageBlockContainer, message.isUser&&{ justifyContent:'flex-end' }]}>
           <View style={styles.messageContainer}>

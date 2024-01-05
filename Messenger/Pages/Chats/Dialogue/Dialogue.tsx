@@ -28,7 +28,7 @@ const Dialogue = () => {
   const [isReply, setIsReply] = useState(false);
   const [replyMessage, setReplyMessage] = useState({} as Message);
 
-  const pressReplyButton = useCallback(() => {
+  const replyHandler = useCallback(() => {
     setIsReply(!isReply);
     setReplyMessageHandler();
   },[]);
@@ -64,11 +64,16 @@ const Dialogue = () => {
       setEditMessage({} as Message);
   }
 
-  const handleMessagePress = useCallback((coordinations:Coordinations) => {
-    setMessageMenuVisible(true);
-    coord = coordinations;
-    messageID = coordinations.ID;
-    setMessageMenuVisisbleAppearence(true);
+  const handleMessagePressOrSwipe = useCallback((coordinations:Coordinations, pressed: boolean) => {
+    if(pressed) {
+      setMessageMenuVisible(true);
+      coord = coordinations;
+      setMessageMenuVisisbleAppearence(true);
+      messageID = coordinations.ID;
+    } else {
+      messageID = coordinations.ID;
+      replyHandler();
+    }
   }, []);
 
   const setMessages = useCallback((mes:Message) => {
@@ -106,13 +111,13 @@ const Dialogue = () => {
             isVisible={messageMenuVisible} 
             onOverlayPress={handleMessageMenuPress} 
             coord={coord} 
-            onReplyPress={pressReplyButton} 
+            onReplyPress={replyHandler} 
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
           />
           <DialogueHeader />
           <DialogueMessages 
-            setMessageMenuVisible={handleMessagePress} 
+            setMessageMenuVisible={handleMessagePressOrSwipe} 
             messageMenuVisisbleAppearence={messageMenuVisisbleAppearence} 
             messageID={messageID} 
             listOfMessages={listOfMessages} 

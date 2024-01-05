@@ -10,14 +10,16 @@ const {width, height} = Dimensions.get('window');
 interface ReplyTextType {
   messages:Message[];
   message:Message;
-  setMessageMenuVisible:(arg0: {x:number, y:number, ID:number})=>void;
+  setMessageMenuVisible:(arg0: {x:number, y:number, ID:number}, arg1: boolean)=>void;
   id:number;
   scrollView:MutableRefObject<any>;
   cordsY:any;
 }
 
 const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrollView, cordsY}:ReplyTextType) => {
-  const handlePress = useCallback((event:{ nativeEvent: { pageX: number; pageY: number } }) => {
+  const handlePress = useCallback((event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
+    if(!event) return { x: 0, y: 0, ID: id };
+
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
     return { x:(pageX<(width/8)?(width/8):pageX)>(width*0.6)?(width*0.6):pageX,
@@ -38,6 +40,7 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
       pagingEnabled 
       showsHorizontalScrollIndicator={false}
       style={styles.swipeableContainer}
+      onScrollEndDrag={() => setMessageMenuVisible(handlePress(null), false)}
     >
       <View style={styles.replyContainer}>
         <View style={styles.innerReplyContainer}>
@@ -66,7 +69,7 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
               </View>
             </TouchableOpacity>
           </View>}
-          <TouchableOpacity activeOpacity={1} onPress={(event) => {setMessageMenuVisible(handlePress(event));}}>
+          <TouchableOpacity activeOpacity={1} onPress={(event) => {setMessageMenuVisible(handlePress(event), true);}}>
             <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}]}>
               <Text>{message.text}</Text>
               <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>

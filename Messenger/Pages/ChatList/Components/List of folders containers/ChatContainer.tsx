@@ -25,6 +25,7 @@ import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import ListOfBranches from "./ListOfBranches";
+import { useNavigation } from "@react-navigation/native";
 
 interface ChatProps {
   chat: Chat;
@@ -96,8 +97,10 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
 
   const haveUnreadMessagesBool = haveUnreadMessages(chat);
+  const navigation = useNavigation<any>();
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
+    navigation.navigate('DialogueNavigation');
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
     console.log("Кнопку зажали");
