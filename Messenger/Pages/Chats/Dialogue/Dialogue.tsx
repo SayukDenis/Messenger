@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, TouchableOpacity, View, PanResponder, Modal, Dimensions, } from 'react-native';
-import { Provider, useState, useCallback, SetStateAction, Dispatch, useRef } from 'react';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { useState, useCallback } from 'react';
 import DialogueHeader from './components/DialogueHeader';
 import { DialogueMessages } from './components/DialogueMessages';
 import DialogueFooter from './components/DialogueFooter';
@@ -8,8 +7,8 @@ import MessageMenu from './components/MessageMenu';
 import styles from './DialogueStyle';
 import { messages, Message } from './tmpdata';
 import React from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
 import DeleteMessageModal from './components/DeleteMessageModal';
+import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 
 interface Coordinations {
   x: number;
@@ -99,17 +98,9 @@ const Dialogue = () => {
   
   const mes = listOfMessages.find(m => m.id==messageID);
   return  (
-    <LinearGradient 
-      style={{flex:1}} 
-      start={{x: 1, y: 0}} 
-      end={{x: 0, y: 1}} 
-      colors={['#D7B168', '#D783FF']}
-    >
-      <View 
-        className='' 
-        style={{flex:1, alignSelf:'stretch', position:'relative'}}
-      >
-        <View style={styles.dialogueContainer}>
+    <View style={{flex:1, alignSelf:'stretch', position:'relative' }} >
+      <View style={styles.dialogueContainer}>
+        <BackGroundGradinetView>
           <MessageMenu 
             isUser={mes!=undefined?mes.isUser:false} 
             isVisible={messageMenuVisible} 
@@ -126,7 +117,7 @@ const Dialogue = () => {
             messageID={messageID} 
             listOfMessages={listOfMessages} 
             isReply={isReply} 
-            isEdit={isEdit} 
+            isEdit={isEdit}
           />
           <DialogueFooter 
             messages={listOfMessages} 
@@ -144,9 +135,9 @@ const Dialogue = () => {
             onDeletePress={onDeletePress} 
             message={mes} 
           />
-        </View>
+        </BackGroundGradinetView>
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 

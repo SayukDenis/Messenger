@@ -1,14 +1,15 @@
 import { StyleSheet } from "react-native";
+import { screenHeight } from "../../../../ChatList/Constants/ConstantsForChatlist";
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex:6, 
+    height: screenHeight * 0.06,
     backgroundColor:'rgba(0, 0, 0, 0)'
   },
   footerContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    flex: 6
+    height: screenHeight*0.06,
   },
 
   footer: {
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     //height: '60%',
-    flex: 1, 
+    height: screenHeight*0.06,
     alignSelf: 'stretch',
     borderWidth: 1,
     borderStyle: 'solid',

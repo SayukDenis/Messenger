@@ -1,4 +1,4 @@
-import { View, Dimensions, ScrollView } from 'react-native';
+import { View, Dimensions, ScrollView, Keyboard, KeyboardEvent } from 'react-native';
 import { useRef, useState, useEffect } from 'react';
 import styles from './Styles/DialogueMessages'
 import DefaultTextType from '../MessageViewsAndTypes/DefaultTextType'
@@ -6,10 +6,13 @@ import ReplyTextType from '../MessageViewsAndTypes/ReplyTextType';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import { messageProps, messageViewHandleProps } from './interfaces/IDialogueMessages';
+import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
+import Constants from 'expo-constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const { height, width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('screen');
 
-export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit}:messageProps) => {
+export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit }:messageProps) => {
   const scrollViewRef = useRef(null);
   useEffect(() => {
     if (scrollViewRef.current) {
@@ -18,10 +21,44 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
   }, [listOfMessages]);
   
   const [coordsY, setCoordsY]:any = useState([]); 
+
+  const insets = useSafeAreaInsets();
+
+  const checkForSoftMenuBar = () => {
+    if(height-screenHeight-Constants.statusBarHeight > 0)
+      return insets.top;
+    
+    return 0;
+  } 
+
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (event: KeyboardEvent) => {
+        setKeyboardHeight(event.endCoordinates.height);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    // Clean up the event listeners when the component is unmounted
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return(
-    <GestureHandlerRootView style={styles.mainContainer}>
+    <GestureHandlerRootView style={[styles.mainContainer, { height: screenHeight * 0.94 + (checkForSoftMenuBar()?insets.top:0) - keyboardHeight }]}>
       
       <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} style={[styles.dialogueChat, {zIndex:3}]}>
+        <View style={{ backgroundColor: 'transparent', height: screenHeight * 0.08 + Constants.statusBarHeight }} />
         {listOfMessages.map((message, index) => (
           <View onLayout={
             (event:any) => {

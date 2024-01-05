@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -6,7 +7,8 @@ export const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor:'transparent', 
-    flex:1, 
+    height: screenHeight,
+    width: screenWidth,
     zIndex:5,
   },
   buttonsContainer: {

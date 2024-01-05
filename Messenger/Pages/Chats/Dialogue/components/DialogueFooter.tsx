@@ -1,8 +1,7 @@
-import { View, Button, TextInput, StyleSheet, Dimensions, Alert, Text, TouchableOpacity } from 'react-native';
-import React, { useState, memo, useCallback, Dispatch, SetStateAction, useEffect } from 'react';
+import { View, Button, TextInput, Alert, KeyboardAvoidingView } from 'react-native';
+import React, { useState, memo, useEffect } from 'react';
 import styles from './Styles/DialogueFooter';
 import { Message } from '../tmpdata';
-import { Svg, Path } from 'react-native-svg';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
 import { DialogueFooterProps, sendMessageProps } from './interfaces/IDialoueFooter';
 

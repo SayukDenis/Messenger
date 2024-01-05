@@ -5,7 +5,7 @@ import { styles } from './Styles/DeleteMessageModal';
 
 const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, message}:DeleteMessageModalProps) => {
   useEffect(()=> {
-    console.log(setDeletingHandler);
+    
   }, [setDeletingHandler]);
   return (
     <Modal style={styles.modalWindow} visible={deleting} transparent={true} onRequestClose={setDeletingHandler} statusBarTranslucent={true} >

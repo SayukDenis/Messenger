@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
+import Constants from 'expo-constants';
+import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
 
 const styles = StyleSheet.create(
   {
     dialogueContainer: {
-      flex: 1,
+      height: screenHeight,
       alignSelf: 'stretch',
     }
   }

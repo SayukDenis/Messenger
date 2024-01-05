@@ -63,6 +63,7 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
       pagingEnabled 
       showsHorizontalScrollIndicator={false}
       style={styles.swipeableContainer}
+      onScrollEndDrag={() => console.log('end')}
     >
       <TouchableOpacity 
         style={styles.mainContainer} 

@@ -1,16 +1,17 @@
-import { StyleSheet, Dimensions } from "react-native";
-const { width, height } = Dimensions.get('window')
+import { StyleSheet } from "react-native";
+import { screenHeight } from "../../../../ChatList/Constants/ConstantsForChatlist";
+import Constants from 'expo-constants';
+
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 88, 
     overflow:'visible', 
-    position:'relative'
+    position:'relative',
   },
   dialogueChat: {
     display: 'flex',
     flexDirection: 'column',
-    flex: 1,
+    height: screenHeight * 0.88, 
   },
 });
 
