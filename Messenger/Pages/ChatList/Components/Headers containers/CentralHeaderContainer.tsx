@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { TouchableOpacity, View } from "react-native";
 import MagnifyingGlass from "./MagnifyingGlass";
 import ModeOfEmployment from "./ModeOfEmployment";
@@ -13,7 +13,11 @@ function CentralHeaderContainer({
   onHamburgerPress,
   OnHamburgerPressForDispatch,
   animationStateForTouchHamburger,
+  navigation
 }) {
+  const onMagnifyingGlassPress=useRef(()=>{
+    navigation.navigate("SearchForAllPages")
+  })
   return (
     <View
       style={[
@@ -24,7 +28,14 @@ function CentralHeaderContainer({
         },
       ]}
     >
-      <MagnifyingGlass style={headerstyles.magnifyingglass} />
+      <TouchableOpacity
+        style={headerstyles.magnifyingglass}
+        onPress={onMagnifyingGlassPress.current}
+        
+      >
+        <MagnifyingGlass />
+      </TouchableOpacity>
+
       <TouchableOpacity
         onLayout={OnLayoutModeOfEmployment}
         activeOpacity={0.4}
