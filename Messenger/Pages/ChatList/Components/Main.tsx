@@ -25,11 +25,13 @@ import SelfProfile from "../../../dao/Models/SelfProfile";
 import { booleanForLogging } from "../ChatList";
 import BlursForChatList from "./Headers containers/BlursForChatList";
 import { EnumForChatListBlurs } from "./Enums/EnumsForChatListBlurs";
-interface MainProps {}
+interface MainProps {
+  navigation:any
+}
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const Main: React.FC<MainProps> = ({}) => {
+const Main: React.FC<MainProps> = ({navigation}) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
@@ -226,7 +228,7 @@ const Main: React.FC<MainProps> = ({}) => {
         nestedScrollEnabled={true}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <ListOfFolder key={index} currentFolder={index} />
+          <ListOfFolder key={index} currentFolder={index} navigation={navigation} />
         )}
         onScroll={handleHorizontalScroll}
         windowSize={8}
