@@ -21,19 +21,16 @@ export function createTables() {
   //create Sql code of each classes
   const models: Map<string, string> = generateTableCreationQueries();
 
-  const tableOrder = addingDependencies(models);
-  //sort by priority
-  const sortedModels = sortModels(models, tableOrder);
-
   if (isEnableLog) {
-    for (const model of sortedModels)
+    for (const model of models)
       console.log(`\nName table: ${model[0]}\nhave sql code:\n${model[1]}\n`)
     console.log("\ndao_generate_main: End of main\n\n");
   }
+
   //create all table in database 
-
-  for (const model in models) {
-
+  for (const model of models) {
+    executeSql(model[1]);
+    if (isEnableLog) console.log(`Table "${model[0]}" was created`);
   }
 
 }
@@ -98,57 +95,24 @@ function sortingRows(a: string, b: string): number {
   else
     return 0;
 }
+async function executeSql(sqlCode: string) {
+  try {
+    const database = await Open();
 
-interface TableInfo {
-  tableName: string;
-  dependencies: string[];
-}
-
-function addingDependencies(models: Map<string, string>): TableInfo[] {
-  const tableOrder: TableInfo[] = [];
-
-  for (const model of Creator.getInstance().outClass()) {
-    tableOrder.push({ tableName: model.schema.name, dependencies: [] })
+    await
+      database.transaction(tx => {
+        tx.executeSql(
+          sqlCode, null,
+          () => {
+            if (isEnableLog) console.log('Successful created table');
+          },
+          (_, error) => {
+            console.error('Error executing SQL: ', error);
+            return true;
+          }
+        );
+      });
+  } catch (error) {
+    console.error('Error opening database: ', error);
   }
-
-  for (const model in models) {
-    const sqlCode: string = models[model].sqlCodes;
-    const tableNames = sqlCode.match(/\bREFERENCES\s(\w+)\(/g).map(match => match.match(/\bREFERENCES\s(\w+)\(/)[1]);
-
-    for (const table of tableNames) {
-      tableOrder[table].dependencies.push(model);
-    }
-  }
-  return tableOrder;
-}
-
-const tableOrder: TableInfo[] = [
-  { tableName: "roles", dependencies: [] },
-  { tableName: "channels", dependencies: ["roles"] },
-  { tableName: "dialogues", dependencies: ["roles"] },
-  { tableName: "groups", dependencies: ["roles"] },
-  { tableName: "tabs", dependencies: [] },
-  { tableName: "users", dependencies: [] },
-  { tableName: "selfProfiles", dependencies: ["users"] },
-  { tableName: "branches", dependencies: [] },
-  { tableName: "messages", dependencies: ["branches", "channels", "dialogues", "groups", "users"] },
-  { tableName: "folders", dependencies: ["tabs"] },
-];
-
-function sortModels(models: Map<string, string>, tableOrder: TableInfo[]): Map<string, string> {
-  const sortedModels: Map<string, string> = new Map();
-  while (tableOrder.length > 0) {
-    for (let i = 0; i < tableOrder.length; i++) {
-      const tableInfo = tableOrder[i];
-      const dependenciesMet = tableInfo.dependencies.every((dep) => sortedModels.has(dep));
-
-      if (dependenciesMet) {
-        const tableName = tableInfo.tableName;
-        sortedModels.set(tableName, models.get(tableName)!);
-        tableOrder.splice(i, 1);
-        i--; // Adjust index after removal
-      }
-    }
-  }
-  return sortedModels;
 }
