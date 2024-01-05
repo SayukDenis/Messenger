@@ -11,7 +11,7 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
-import PlusIcon from "./Icons/PlusIcon";
+import PlusIcon from "../../DialogueProfile/BranchesScreen/Icons/PlusIcon";
 import { user } from "../../SemiComponents/DBUser";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
 import Blur from "../../SemiComponents/MainScreen/Blur";
@@ -20,13 +20,13 @@ import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { tempUser } from "../../SemiComponents/DBUser";
 
-type BranchesScreenProps = {
+type MembersScreenProps = {
   navigation: StackNavigationProp<{}>;
 };
 
-const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
-  const [isDeleteBranchPressed, setIsDeleteBranchPressed] = useState(false);
-  const [branchNameToRemove, setBranchNameToRemove] = useState("");
+const MembersScreen: React.FC<MembersScreenProps> = ({ navigation }) => {
+  const [isDeleteMemberPressed, setIsDeleteMemberPressed] = useState(false);
+  const [memberNameToRemove, setMemberNameToRemove] = useState("");
 
   const isFocused = useIsFocused();
 
@@ -34,39 +34,11 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Blur
-        visibleWhen={isDeleteBranchPressed}
-        onPress={() => {
-          setIsDeleteBranchPressed(false);
-        }}
-        style={styles.blurEffect}
-      />
       <Header
-        primaryTitle="Branches"
+        primaryTitle="Members"
         onGoBackPress={() => {
           navigation.goBack();
         }}
-      />
-      <RemovalApproval
-        onAnyPress={() => {
-          setIsDeleteBranchPressed(false);
-        }}
-        onAgreePress={() => {
-          const branchToRemoveNow = user.branchParents.find(
-            (branch) => branch.name === branchNameToRemove
-          );
-
-          if (branchToRemoveNow) {
-            user.branchParents.splice(
-              user.branchParents.indexOf(branchToRemoveNow),
-              1
-            );
-          }
-
-          setBranchNameToRemove("");
-        }}
-        isVisible={isDeleteBranchPressed}
-        text={user.removalText + " " + branchNameToRemove + "?"}
       />
 
       <ScrollView>
@@ -74,10 +46,10 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           onPress={() => {
             navigation.navigate("NewBranchScreen" as never);
           }}
-          style={styles.settingOption}
+          style={styles.memberContainer}
         >
           <PlusIcon style={styles.plusIcon} />
-          <Text style={styles.plusBranchTitle}>Branch</Text>
+          <Text style={styles.plusMemberTitle}>Member</Text>
         </TouchableOpacity>
 
         <FlatList
@@ -96,11 +68,11 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
                 tempUser.selectedBranchParent = item;
                 navigation.navigate("ChangeBranchParentScreen" as never);
               }}
-              style={styles.settingOption}
+              style={styles.memberContainer}
             >
               <View
                 style={[
-                  styles.branchAvatarInList,
+                  styles.memberAvatarInList,
                   {
                     backgroundColor: item.color,
                   },
@@ -108,15 +80,15 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
               >
                 <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
               </View>
-              <View style={styles.branchTitleContainer}>
-                <Text numberOfLines={1} style={styles.branchTitleInList}>
+              <View style={styles.memberTitleContainer}>
+                <Text numberOfLines={1} style={styles.memberTitleInList}>
                   {item.name}
                 </Text>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  setIsDeleteBranchPressed(true);
-                  setBranchNameToRemove(item.name);
+                  setIsDeleteMemberPressed(true);
+                  setMemberNameToRemove(item.name);
                 }}
                 style={styles.binIconContainer}
               >
@@ -130,4 +102,4 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
   );
 };
 
-export default BranchesScreen;
+export default MembersScreen;

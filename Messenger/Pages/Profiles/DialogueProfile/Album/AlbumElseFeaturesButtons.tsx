@@ -4,8 +4,8 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import ForwardContactIcon from "../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
-import AddNewImageIcon from "../MainUserScreen/Icons/AddNewImageIcon";
-import SortIcon from "../MainUserScreen/Icons/SortIcon";
+import AddNewImageIcon from "../../SemiComponents/MainScreen/Icons/AddNewImageIcon";
+import SortIcon from "../../SemiComponents/MainScreen/Icons/SortIcon";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
 
 interface AlbumElseFeaturesButtonsProps {

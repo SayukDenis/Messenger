@@ -7,14 +7,13 @@ import PhoneIcon from "./Icons/PhoneIcon";
 import VideoCameraIcon from "./Icons/VideoCameraIcon";
 
 interface AvatarWithCallingButtonsProps {
+  avatarURL: string;
   onAvatarPress: () => void;
 }
 
 const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
   props
 ) => {
-  const avatarURL: string = "https://picsum.photos/id/1084/536/354";
-
   return (
     <View>
       {/* Touchable avatar image */}
@@ -24,11 +23,14 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
         }}
         style={styles.mainAvatarImage}
       >
-        <Image style={styles.mainAvatarImage} source={{ uri: avatarURL }} />
+        <Image
+          style={styles.mainAvatarImage}
+          source={{ uri: props.avatarURL }}
+        />
       </TouchableOpacity>
 
-      {/* Phone button */}
       <View style={styles.horizontalContainerForCalling}>
+        {/* Phone button */}
         <TouchableOpacity
           onPress={() => {
             alert("Calling (no camera)...");

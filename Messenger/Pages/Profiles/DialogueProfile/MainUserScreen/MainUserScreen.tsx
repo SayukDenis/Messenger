@@ -6,7 +6,7 @@ import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
-import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
+import AvatarWithCallingButtons from "../../SemiComponents/MainScreen/AvatarWithCallingButtons";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
@@ -211,6 +211,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
         {/* Touchable avatar image with phone and videocamera buttons*/}
         <AvatarWithCallingButtons
+          avatarURL="https://picsum.photos/id/1084/536/354"
           onAvatarPress={() => {
             navigation.navigate("AvatarsAndInfoScreen" as never);
           }}
@@ -248,7 +249,6 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
             navigation.navigate("NewAlbumScreen" as never);
           }}
           onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
-            setLongPressedAlbum(value);
             if (!isAlbumSelectionVisible) {
               setLongPressedAlbum(value);
               setPositionYOfLongPressedAlbum(

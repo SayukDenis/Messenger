@@ -261,6 +261,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     alignSelf: "center",
+    hitSlop: { top: 0, right: 0, bottom: 1000, left: 0 },
   },
   doneButtonContainer: {
     position: "absolute",

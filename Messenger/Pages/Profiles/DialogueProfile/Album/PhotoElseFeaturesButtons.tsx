@@ -6,8 +6,8 @@ import { styles } from "./Styles";
 import ForwardContactIcon from "../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
 import SelectIcon from "../../SemiComponents/MainScreen/Icons/SelectIcon";
-import CopyIcon from "../MainUserScreen/Icons/CopyIcon";
-import StarIcon from "../MainUserScreen/Icons/StarIcon";
+import CopyIcon from "../../SemiComponents/MainScreen/Icons/CopyIcon";
+import StarIcon from "../../SemiComponents/MainScreen/Icons/StarIcon";
 
 interface PhotoElseFeaturesButtonsProps {
   isVisible: boolean;

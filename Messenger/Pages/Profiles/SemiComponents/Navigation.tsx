@@ -24,6 +24,8 @@ import GalleryWhileAddingNewPhoto from "../DialogueProfile/Album/GalleryWhileAdd
 import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
 import ChangeBranchChildScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
 import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
+import MainChannelScreen from "../ChannelProfile/MainChannelScreen/MainChannelScreen";
+import MembersScreen from "../ChannelProfile/MembersScreen/MembersScreen";
 
 const Stack = createStackNavigator();
 
@@ -44,6 +46,7 @@ export default function StartPage() {
         <Stack.Screen name="ChooseAuthor" component={ChooseAuthor} />
         <Stack.Screen name="GroupNavigation" component={GroupNavigation} />
         <Stack.Screen name="UserNavigation" component={UserNavigation} />
+        <Stack.Screen name="ChannelNavigation" component={ChannelNavigation} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -104,6 +107,21 @@ const GroupNavigation = () => {
       <Stack.Screen name="EditGroup" component={EditGroup} />
       <Stack.Screen name="CreateRole" component={CreateRole} />
       <Stack.Screen name="RolePermission" component={RolePermission} />
+    </Stack.Navigator>
+  );
+};
+
+const ChannelNavigation = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="MainChannelScreen"
+      screenOptions={{
+        headerShown: false,
+        animationEnabled: false,
+      }}
+    >
+      <Stack.Screen name="MainChannelScreen" component={MainChannelScreen} />
+      <Stack.Screen name="MembersScreen" component={MembersScreen} />
     </Stack.Navigator>
   );
 };

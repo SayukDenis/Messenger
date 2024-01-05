@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, ScrollView } from "react-native";
+import { View, Image, ScrollView, Dimensions } from "react-native";
 import { styles } from "../../SemiComponents/ProfileStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
@@ -8,13 +8,22 @@ import Blur from "../../SemiComponents/MainScreen/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import BioAndLink from "./BioAndLink";
-import { user } from "../../SemiComponents/DBUser";
+import {
+  Album,
+  PhotoOrVideo,
+  tempUser,
+  user,
+} from "../../SemiComponents/DBUser";
+import { GestureResponderEvent } from "react-native-modal";
+
+const screenHeight = Dimensions.get("screen").height;
 
 type MainUserPageProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
 
 const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
+  const [removalApprovalText, setRemovalApprovalText] = useState("");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
@@ -22,6 +31,13 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
     useState(false);
   const [isMuted, setIsMuted] = useState(user.isMuted);
   const [isBlocked, setIsBlocked] = useState(user.isBlocked);
+  const [longPressedAlbum, setLongPressedAlbum] = useState(null);
+  const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
+    useState(0);
+  const [pressedMultimediaButton, setPressedMultimediaButton] =
+    useState("Photos");
+  const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
+  const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
 
   useEffect(() => {
     user.isBlocked = isBlocked;
@@ -57,17 +73,25 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
       {/* Top tool bar with buttons*/}
       <TopToolBar
         primaryTitle={user.profileName}
-        secondaryTitle={user.MembersCount}
-        setIsElseFeaturesVisible={(value: boolean) =>
-          setIsElseFeaturesVisible(value)
-        }
+        secondaryTitle={user.lastTimeOnline}
+        onElseFeaturesPress={() => {
+          setIsElseFeaturesVisible(true);
+        }}
         isMuted={isMuted}
         isBlocked={isBlocked}
         isSearchButtonVisible={true}
-        onGoBackPress={() => navigation.goBack()}
-        onCancelPress={() => {}}
-        onDeleteAllPress={() => {}}
-        quantityOfSelectedItems={2}
+        onGoBackPress={() => {
+          navigation.goBack();
+        }}
+        isMediaSelectionVisible={isAlbumSelectionVisible}
+        quantityOfSelectedItems={selectedAlbums.length}
+        onCancelPress={() => {
+          setSelectedAlbums([]);
+          setIsAlbumSelectionVisible(false);
+        }}
+        onDeleteAllPress={() => {
+          setRemovalApprovalText("delete all albums");
+        }}
       />
       {/* Else features which appear when else features button is pressed*/}
       <ElseFeaturesButtons
@@ -81,9 +105,8 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         onBlockPress={(value: boolean) => {
           setIsBlocked(value);
         }}
-        isClearChatPressed={isClearChatButtonClicked}
-        onClearChatPress={(value: boolean) => {
-          setIsClearChatButtonClicked(value);
+        onClearChatPress={() => {
+          setRemovalApprovalText("clear the chat");
         }}
         settingsPress={() => navigation.navigate("SettingsMenu" as never)}
         mode="group"
@@ -127,8 +150,57 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         <BioAndLink />
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
-          isLongPressed={isPhotoAlbumSelectionVisible}
-          onLongPress={(value) => setIsPhotoAlbumSelectionVisible(value)}
+          isPhotoAlbumSelectionVisible={isPhotoAlbumSelectionVisible}
+          setIsPhotoAlbumSelectionVisible={(value: boolean) =>
+            setIsPhotoAlbumSelectionVisible(value)
+          }
+          pressedMultimediaButton={pressedMultimediaButton}
+          setPressedMultimediaButton={(value: string) => {
+            setPressedMultimediaButton(value);
+          }}
+          onPhotoPress={(photo: PhotoOrVideo) => {
+            tempUser.selectedPhoto = photo;
+            navigation.navigate("PhotoScreen" as never);
+          }}
+          onAlbumPress={(item: Album) => {
+            if (isAlbumSelectionVisible) {
+              if (!selectedAlbums.includes(item)) {
+                setSelectedAlbums(selectedAlbums.concat([item]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums.filter((photoOrVideo) => photoOrVideo !== item)
+                );
+              }
+            } else {
+              tempUser.selectedAlbum = item;
+              navigation.navigate("Album" as never);
+            }
+          }}
+          onNewAlbumPress={() => {
+            navigation.navigate("NewAlbumScreen" as never);
+          }}
+          onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
+            if (!isAlbumSelectionVisible) {
+              setLongPressedAlbum(value);
+              setPositionYOfLongPressedAlbum(
+                event.nativeEvent.pageY + 0.05 * screenHeight
+              );
+            } else {
+              if (!selectedAlbums.includes(value)) {
+                setSelectedAlbums(selectedAlbums.concat([value]));
+              } else {
+                setSelectedAlbums(
+                  selectedAlbums.filter(
+                    (photoOrVideo) => photoOrVideo !== value
+                  )
+                );
+              }
+            }
+          }}
+          isAlbumSelectionVisible={isAlbumSelectionVisible}
+          isAlbumCheckMarkVisible={(value: Album) => {
+            return selectedAlbums.includes(value);
+          }}
         />
       </ScrollView>
     </View>

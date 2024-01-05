@@ -430,6 +430,27 @@ export const styles = StyleSheet.create({
     zIndex: 1,
     position: "absolute",
   },
+  mainAvatarImage: {
+    width: 120 * figmaHeightPixelConverter,
+    height: 120 * figmaHeightPixelConverter,
+    borderRadius: 100,
+    alignSelf: "center",
+    top: 0.015 * screenHeight,
+  },
+  horizontalContainerForCalling: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingTop: 0.045 * screenHeight,
+    gap: 0.25 * screenWidth,
+  },
+  phone: {
+    width: 34 * figmaWidthPixelConverter,
+    height: 34 * figmaWidthPixelConverter,
+  },
+  videoCamera: {
+    width: 38 * figmaWidthPixelConverter,
+    height: 38 * figmaWidthPixelConverter,
+  },
 });
 
 export default styles;

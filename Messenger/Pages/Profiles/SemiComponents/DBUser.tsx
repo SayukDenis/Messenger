@@ -488,3 +488,9 @@ export const AuditLog: AuditLogProps = {
     { url: "https://picsum.photos/id/2/5000/3333" },
   ],
 };
+
+export interface ChannelProps {
+  subscribersQuantity: number;
+}
+
+export const channel: ChannelProps = { subscribersQuantity: 1002313 };

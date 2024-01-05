@@ -5,63 +5,58 @@ import { View, ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
+import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
+import AvatarWithCallingButtons from "../../SemiComponents/MainScreen/AvatarWithCallingButtons";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/MainScreen/Blur";
+import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import {
   Album,
   PhotoOrVideo,
+  channel,
   tempUser,
   user,
 } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
-import AvatarsNameAndGoBackButton from "./AvatarsNameAndGoBackButton";
-import TopMenuWhenSelection from "../../SemiComponents/TopMenuWhenSelection";
-import NumberUsernameAndBio from "./NumberUsernameAndBio";
-import CurrentAvatarBar from "./CurrentAvatarBar";
-import AnimatedMessageAboutCopying from "./AnimatedMessageAboutCopying";
-import CallingMenu from "./CallingMenu";
 import { GestureResponderEvent } from "react-native-modal";
+import SubscribersButton from "./SubscribersButton";
 
 const screenHeight = Dimensions.get("screen").height;
 
-type AvatarsAndInfoScreenProps = {
-  navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
-};
+interface MainChannelScreenProps {
+  navigation: StackNavigationProp<{}>;
+}
 
-const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
-  navigation,
-}) => {
+const MainChannelScreen: React.FC<MainChannelScreenProps> = (props) => {
   const [removalApprovalText, setRemovalApprovalText] = useState("");
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
+  const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
+  const [isMuted, setIsMuted] = useState(user.isMuted);
   const [longPressedAlbum, setLongPressedAlbum] = useState(null);
   const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
     useState(0);
   const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
   const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
-  const [currentAvatar, setCurrentAvatar] = useState(user.avatars[0]);
-  const [isAnyTextCopied, setIsAnyTextCopied] = useState(false);
-  const [phoneUsernameOrBioCopied, setPhoneUsernameOrBioCopied] = useState("");
-  const [isNumberPressed, setIsNumberPressed] = useState(false);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {}, [isFocused]);
 
-  useEffect(() => {
-    console.log(isAnyTextCopied);
-  });
-
   const removalApprovalsTexts: string[] = [
+    "clear the chat",
     "delete an album",
     "delete all albums",
     "delete selected albums",
   ];
   const removalApprovalsOnPress: (() => void)[] = [
+    () => {
+      alert("Agree");
+    },
     () => {
       user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
       setLongPressedAlbum(null);
@@ -84,14 +79,14 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
       {/* General blur with zIndex 1 */}
       <Blur
         visibleWhen={
-          isPhotoAlbumSelectionVisible ||
+          isElseFeaturesVisible ||
           longPressedAlbum != null ||
-          isNumberPressed
+          isPhotoAlbumSelectionVisible
         }
         onPress={() => {
-          setIsPhotoAlbumSelectionVisible(false);
+          setIsElseFeaturesVisible(false);
           setLongPressedAlbum(null);
-          setIsNumberPressed(false);
+          setIsPhotoAlbumSelectionVisible(false);
         }}
         style={styles.blurEffect}
       />
@@ -126,8 +121,19 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         );
       })}
 
-      <TopMenuWhenSelection
-        isVisible={isAlbumSelectionVisible}
+      {/* Top tool bar with buttons*/}
+      <TopToolBar
+        primaryTitle={user.profileName}
+        secondaryTitle={user.lastTimeOnline}
+        onElseFeaturesPress={() => {
+          setIsElseFeaturesVisible(true);
+        }}
+        isMuted={isMuted}
+        isSearchButtonVisible={true}
+        onGoBackPress={() => {
+          props.navigation.goBack();
+        }}
+        isMediaSelectionVisible={isAlbumSelectionVisible}
         quantityOfSelectedItems={selectedAlbums.length}
         onCancelPress={() => {
           setSelectedAlbums([]);
@@ -136,6 +142,23 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         onDeleteAllPress={() => {
           setRemovalApprovalText("delete all albums");
         }}
+      />
+
+      {/* Else features which appear when else features button is pressed*/}
+      <ElseFeaturesButtons
+        isVisible={isElseFeaturesVisible}
+        setIsVisible={(value: boolean) => setIsElseFeaturesVisible(value)}
+        isMuted={isMuted}
+        onMutePress={(value: boolean) => {
+          setIsMuted(value);
+        }}
+        onClearChatPress={() => {
+          setRemovalApprovalText("clear the chat");
+        }}
+        settingsPress={() =>
+          props.navigation.navigate("SettingsScreen" as never)
+        }
+        mode="channel"
       />
 
       <AlbumLongPressedMenu
@@ -149,27 +172,6 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           setIsAlbumSelectionVisible(true);
           setSelectedAlbums(selectedAlbums?.concat([longPressedAlbum]));
           setLongPressedAlbum(null);
-        }}
-      />
-
-      <BottomToolBar
-        isVisible={isAlbumSelectionVisible}
-        onDeletePress={() => {
-          setRemovalApprovalText("delete selected albums");
-        }}
-        onForwardPress={() => {
-          alert("Forward album...");
-        }}
-      />
-
-      <CallingMenu
-        isVisible={isNumberPressed}
-        onCopyPress={() => {
-          setIsAnyTextCopied(true);
-          setPhoneUsernameOrBioCopied("Number");
-        }}
-        onCancelPress={() => {
-          setIsNumberPressed(false);
         }}
       />
 
@@ -195,37 +197,19 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           style={[styles.blurEffect, { zIndex: 3 }]}
         />
 
-        <AvatarsNameAndGoBackButton
-          onGoBackPress={() => {
-            navigation.goBack();
-          }}
-          currentAvatar={currentAvatar}
-          onRightPress={() => {
-            setCurrentAvatar(
-              user.avatars[
-                (user.avatars.indexOf(currentAvatar) + 1) % user.avatars.length
-              ]
-            );
-          }}
-          onLeftPress={() => {
-            setCurrentAvatar(
-              user.avatars[
-                user.avatars.indexOf(currentAvatar) - 1 > -1
-                  ? user.avatars.indexOf(currentAvatar) - 1
-                  : user.avatars.length - 1
-              ]
-            );
+        {/* Touchable avatar image with phone and videocamera buttons*/}
+        <AvatarWithCallingButtons
+          avatarURL="https://fastly.picsum.photos/id/22/4434/3729.jpg?hmac=fjZdkSMZJNFgsoDh8Qo5zdA_nSGUAWvKLyyqmEt2xs0"
+          onAvatarPress={() => {
+            props.navigation.navigate("AvatarsAndInfoScreen" as never);
           }}
         />
 
-        <CurrentAvatarBar currentAvatar={currentAvatar} />
-
-        <NumberUsernameAndBio
-          onUsernameAndBioPress={(text: string) => {
-            setIsAnyTextCopied(true);
-            setPhoneUsernameOrBioCopied(text);
+        <SubscribersButton
+          onPress={() => {
+            props.navigation.navigate("MembersScreen" as never);
           }}
-          onNumberPress={() => setIsNumberPressed(true)}
+          subscribersQuantity={channel.subscribersQuantity}
         />
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
@@ -240,7 +224,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           }}
           onPhotoPress={(photo: PhotoOrVideo) => {
             tempUser.selectedPhoto = photo;
-            navigation.navigate("PhotoScreen" as never);
+            props.navigation.navigate("PhotoScreen" as never);
           }}
           onAlbumPress={(item: Album) => {
             if (isAlbumSelectionVisible) {
@@ -253,15 +237,13 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
               }
             } else {
               tempUser.selectedAlbum = item;
-              navigation.navigate("Album" as never);
+              props.navigation.navigate("Album" as never);
             }
           }}
           onNewAlbumPress={() => {
-            navigation.navigate("NewAlbumScreen" as never);
+            props.navigation.navigate("NewAlbumScreen" as never);
           }}
-          isAlbumSelectionVisible={isAlbumSelectionVisible}
           onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
-            setLongPressedAlbum(value);
             if (!isAlbumSelectionVisible) {
               setLongPressedAlbum(value);
               setPositionYOfLongPressedAlbum(
@@ -279,21 +261,24 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
               }
             }
           }}
+          isAlbumSelectionVisible={isAlbumSelectionVisible}
           isAlbumCheckMarkVisible={(value: Album) => {
             return selectedAlbums.includes(value);
           }}
         />
       </ScrollView>
 
-      <AnimatedMessageAboutCopying
-        isVisible={isAnyTextCopied}
-        onEnd={() => {
-          setIsAnyTextCopied(false);
+      <BottomToolBar
+        isVisible={isAlbumSelectionVisible}
+        onDeletePress={() => {
+          setRemovalApprovalText("delete selected albums");
         }}
-        text={phoneUsernameOrBioCopied + " is copied"}
+        onForwardPress={() => {
+          alert("Forward album...");
+        }}
       />
     </View>
   );
 };
 
-export default AvatarsAndInfoScreen;
+export default MainChannelScreen;

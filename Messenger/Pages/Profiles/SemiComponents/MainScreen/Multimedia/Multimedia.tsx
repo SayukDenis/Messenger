@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState, useEffect } from "react";
-import { Dimensions, ScrollView, View } from "react-native";
+import React from "react";
+import { Dimensions, View } from "react-native";
 import styles from "../Styles";
 import MultimediaBar from "./MultimediaBar";
 import Photos from "./Photos";
@@ -28,7 +28,12 @@ interface MultimediaProps {
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
   return (
-    <View style={{ zIndex: props.isPhotoAlbumSelectionVisible ? 3 : 0 }}>
+    <View
+      style={{
+        zIndex: props.isPhotoAlbumSelectionVisible ? 3 : 0,
+        top: -0.02 * Dimensions.get("screen").height,
+      }}
+    >
       <Blur
         visibleWhen={props.isPhotoAlbumSelectionVisible}
         onPress={() => {

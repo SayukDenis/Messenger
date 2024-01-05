@@ -13,27 +13,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgb(227, 192, 124)",
   },
-  mainAvatarImage: {
-    width: 120 * figmaHeightPixelConverter,
-    height: 120 * figmaHeightPixelConverter,
-    borderRadius: 100,
-    alignSelf: "center",
-    top: 0.015 * screenHeight,
-  },
-  horizontalContainerForCalling: {
-    flexDirection: "row",
-    justifyContent: "center",
-    top: 0.04 * screenHeight,
-    gap: 90,
-  },
-  phone: {
-    width: 34 * figmaWidthPixelConverter,
-    height: 34 * figmaWidthPixelConverter,
-  },
-  videoCamera: {
-    width: 34 * figmaWidthPixelConverter,
-    height: 34 * figmaWidthPixelConverter,
-  },
   blurEffect: {
     width: "100%",
     height: "100%",
