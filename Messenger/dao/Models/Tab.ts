@@ -33,9 +33,9 @@ export default class Tab extends Model {
             tabId: { type: 'integer', indexed: true },
             title: 'text',
             //Notifications
-            isDialogueMessageOn: { type: 'bool', default: true },
-            isgroupsMessageOn: { type: 'bool', default: true },
-            isChannelMessageOn: { type: 'bool', default: true },
+            isDialogueMessageOn: { type: 'boolean', default: true },
+            isGroupsMessageOn: { type: 'boolean', default: true },
+            isChannelMessageOn: { type: 'boolean', default: true },
             //Exceptions "MessageOn"
             exceptionsDialogues: { type: 'list', objectType: Dialogue },
             exceptionsGroups: { type: 'list', objectType: Group },

@@ -10,7 +10,7 @@ export default class Chat extends Model {
     pinnedMessage: Array<Message> = new Array;
     pinnedMessageForAll: Array<Message> = new Array;
     //last watched message of each User
-    lastWathedMessage: Array<ILastWatchedMessage> = new Array;    
+    lastWatchedMessage: Array<ILastWatchedMessage> = new Array;    
     //schema
     static schema = {
         name: 'chats',
@@ -20,7 +20,7 @@ export default class Chat extends Model {
             branches: { type: 'list', objectType: Branch },
             pinnedMessage: { type: 'list', objectType: Message },
             pinnedMessageForAll: { type: 'list', objectType: Message },
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
+            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
         },
         embedded: true,
     }

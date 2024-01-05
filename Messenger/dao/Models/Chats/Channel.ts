@@ -27,7 +27,7 @@ export default class Channel extends MainChat {
             pinnedMessageForAll: { type: 'list', objectType: Message },
             branches: { type: 'list', objectType: Branch },
             roles: { type: 'list', objectType: Role },            
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
+            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
             linkToPhoto: 'text?',
         },
         primaryKey: 'channelId',
