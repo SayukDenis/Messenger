@@ -207,7 +207,7 @@ const MainChannelScreen: React.FC<MainChannelScreenProps> = (props) => {
 
         <SubscribersButton
           onPress={() => {
-            props.navigation.navigate("MembersScreen" as never);
+            props.navigation.navigate("SubscribersScreen" as never);
           }}
           subscribersQuantity={channel.subscribersQuantity}
         />

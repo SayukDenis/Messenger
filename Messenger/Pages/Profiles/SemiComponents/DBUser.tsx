@@ -491,6 +491,43 @@ export const AuditLog: AuditLogProps = {
 
 export interface ChannelProps {
   subscribersQuantity: number;
+  subscribers: Array<Contact>;
 }
 
-export const channel: ChannelProps = { subscribersQuantity: 1002313 };
+export const channel: ChannelProps = {
+  subscribersQuantity: 1002313,
+  subscribers: [],
+};
+
+export class Contact {
+  avatar: string;
+  name: string;
+}
+
+export const contacts: Array<Contact> = [
+  { avatar: "https://picsum.photos/id/2/5000/3333", name: "Dmytro" },
+  {
+    avatar: "https://picsum.photos/id/1/5000/3333",
+    name: "Dmytrod wad awdwad awd awd awd awd awd aw",
+  },
+  {
+    avatar: "https://picsum.photos/id/1/5000/3333",
+    name: "Dmytrodawd awd awd wdad wd awd wa d",
+  },
+  { avatar: "https://picsum.photos/id/1084/536/354", name: "ХЕЛЛЛЛЛОУУУУУ" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+  { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro" },
+];

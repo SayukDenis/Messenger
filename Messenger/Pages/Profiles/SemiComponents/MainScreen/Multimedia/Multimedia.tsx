@@ -31,7 +31,7 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
     <View
       style={{
         zIndex: props.isPhotoAlbumSelectionVisible ? 3 : 0,
-        top: -0.02 * Dimensions.get("screen").height,
+        top: 0.02 * Dimensions.get("screen").height,
       }}
     >
       <Blur

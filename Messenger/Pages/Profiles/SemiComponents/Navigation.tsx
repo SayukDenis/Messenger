@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { StackView, createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import MainGroupPage from "../GroupProfile/MainGroupPage/MainGroupPage";
 import ChooseAuthor from "../SemiComponents/AuthorChoose";
 import MainUserScreen from "../DialogueProfile/MainUserScreen/MainUserScreen";
@@ -25,7 +25,8 @@ import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/Avatar
 import ChangeBranchChildScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
 import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
 import MainChannelScreen from "../ChannelProfile/MainChannelScreen/MainChannelScreen";
-import MembersScreen from "../ChannelProfile/MembersScreen/MembersScreen";
+import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
+import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen/AddSubscriberScreen";
 
 const Stack = createStackNavigator();
 
@@ -121,7 +122,11 @@ const ChannelNavigation = () => {
       }}
     >
       <Stack.Screen name="MainChannelScreen" component={MainChannelScreen} />
-      <Stack.Screen name="MembersScreen" component={MembersScreen} />
+      <Stack.Screen name="SubscribersScreen" component={SubscribersScreen} />
+      <Stack.Screen
+        name="AddSubscriberScreen"
+        component={AddSubscriberScreen}
+      />
     </Stack.Navigator>
   );
 };

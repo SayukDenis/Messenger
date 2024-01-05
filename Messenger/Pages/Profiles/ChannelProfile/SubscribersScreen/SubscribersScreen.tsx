@@ -20,13 +20,16 @@ import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { tempUser } from "../../SemiComponents/DBUser";
 
-type MembersScreenProps = {
+type SubscribersScreenProps = {
   navigation: StackNavigationProp<{}>;
 };
 
-const MembersScreen: React.FC<MembersScreenProps> = ({ navigation }) => {
-  const [isDeleteMemberPressed, setIsDeleteMemberPressed] = useState(false);
-  const [memberNameToRemove, setMemberNameToRemove] = useState("");
+const SubscribersScreen: React.FC<SubscribersScreenProps> = ({
+  navigation,
+}) => {
+  const [isDeleteSubscriberPressed, setIsDeleteSubscriberPressed] =
+    useState(false);
+  const [subscriberNameToRemove, setSubscriberNameToRemove] = useState("");
 
   const isFocused = useIsFocused();
 
@@ -35,7 +38,7 @@ const MembersScreen: React.FC<MembersScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <Header
-        primaryTitle="Members"
+        primaryTitle="Subscribers"
         onGoBackPress={() => {
           navigation.goBack();
         }}
@@ -44,12 +47,12 @@ const MembersScreen: React.FC<MembersScreenProps> = ({ navigation }) => {
       <ScrollView>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("NewBranchScreen" as never);
+            navigation.navigate("AddSubscriberScreen" as never);
           }}
-          style={styles.memberContainer}
+          style={styles.subscriberContainer}
         >
           <PlusIcon style={styles.plusIcon} />
-          <Text style={styles.plusMemberTitle}>Member</Text>
+          <Text style={styles.plusSubscriberTitle}>Member</Text>
         </TouchableOpacity>
 
         <FlatList
@@ -68,11 +71,11 @@ const MembersScreen: React.FC<MembersScreenProps> = ({ navigation }) => {
                 tempUser.selectedBranchParent = item;
                 navigation.navigate("ChangeBranchParentScreen" as never);
               }}
-              style={styles.memberContainer}
+              style={styles.subscriberContainer}
             >
               <View
                 style={[
-                  styles.memberAvatarInList,
+                  styles.subscriberAvatarInList,
                   {
                     backgroundColor: item.color,
                   },
@@ -80,15 +83,15 @@ const MembersScreen: React.FC<MembersScreenProps> = ({ navigation }) => {
               >
                 <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
               </View>
-              <View style={styles.memberTitleContainer}>
-                <Text numberOfLines={1} style={styles.memberTitleInList}>
+              <View style={styles.subscriberTitleContainer}>
+                <Text numberOfLines={1} style={styles.subscriberTitleInList}>
                   {item.name}
                 </Text>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  setIsDeleteMemberPressed(true);
-                  setMemberNameToRemove(item.name);
+                  setIsDeleteSubscriberPressed(true);
+                  setSubscriberNameToRemove(item.name);
                 }}
                 style={styles.binIconContainer}
               >
@@ -102,4 +105,4 @@ const MembersScreen: React.FC<MembersScreenProps> = ({ navigation }) => {
   );
 };
 
-export default MembersScreen;
+export default SubscribersScreen;

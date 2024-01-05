@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     height: 40 * figmaWidthPixelConverter,
   },
   multimediaBar: {
-    top: 55 * figmaHeightPixelConverter,
+    top: 25 * figmaHeightPixelConverter,
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     height: 30 * figmaHeightPixelConverter,
@@ -270,7 +270,7 @@ export const styles = StyleSheet.create({
   mediaContainer: {
     width: "100%",
     height: "100%",
-    top: 55 * figmaHeightPixelConverter,
+    top: 25 * figmaHeightPixelConverter,
     flex: 1,
   },
   photo: {

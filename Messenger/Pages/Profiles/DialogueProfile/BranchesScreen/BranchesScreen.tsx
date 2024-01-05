@@ -90,6 +90,7 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
             paddingBottom: 0.07 * Dimensions.get("screen").height,
             zIndex: 0,
           }}
+          style={{ zIndex: 0 }}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
