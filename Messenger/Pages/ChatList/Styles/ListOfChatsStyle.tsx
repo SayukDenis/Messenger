@@ -1,5 +1,6 @@
 import { StyleSheet,Platform,StatusBar, Dimensions } from "react-native";
 import Constants from 'expo-constants';
+import { heightOfHeader } from "../Constants/ConstantsForChatlist";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const listOfChatsStyle = StyleSheet.create({
@@ -47,7 +48,7 @@ export const listOfChatsStyle = StyleSheet.create({
     left: screenHeight * 0.02,
   },
   gapContainerHigh: {
-    height: Platform.OS=="android"?screenHeight * 0.08+StatusBar.currentHeight:screenHeight * 0.08+Constants.statusBarHeight,
+    height: heightOfHeader
   },
   
   containerForOther: {

@@ -33,6 +33,7 @@
     "react-native": "0.72.6",
     "react-native-cli": "^2.0.1",
     "react-native-color-picker": "^0.6.0",
+    "react-native-contacts": "^7.0.8",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-linear-gradient-degree": "^0.0.1",

@@ -1,14 +1,16 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { ReactNode } from "react";
-import { View, ViewStyle, Platform, Dimensions, StatusBar } from "react-native";
+import { View, Dimensions } from "react-native";
 import { headerstyles } from "../ChatList/Styles/HeaderStyle";
-import Constants from "expo-constants";
 import { connect } from "react-redux";
+import { heightOfHeader } from "../ChatList/Constants/ConstantsForChatlist";
 interface HeaderContainerProps {
   children?: ReactNode | null;
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const HeaderContainer: React.FC<HeaderContainerProps> = ({ children=null }) => {
+const HeaderContainer: React.FC<HeaderContainerProps> = ({
+  children = null,
+}) => {
   return (
     <View
       style={[
@@ -20,10 +22,7 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({ children=null }) => {
           elevation: 0.001,
           borderBottomLeftRadius: 30,
           borderBottomRightRadius: 30,
-          height:
-            Platform.OS == "android"
-              ? screenHeight * 0.08 + StatusBar.currentHeight
-              : screenHeight * 0.08 + Constants.statusBarHeight,
+          height: heightOfHeader,
           justifyContent: "flex-end",
           overflow: "hidden",
         },

@@ -6,6 +6,7 @@ import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import LastMessageStatus from "./CompontentsForChatListContainer/LastMessageStatus";
 import Chat from "../../../../dao/Models/Chats/Chat";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 
 interface CentralChatContainerProps {
   chat: Chat;
@@ -22,6 +23,7 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
   onBranchPress,
   nesting,
 }) => {
+  
   return (
     <TouchableOpacity
       onPress={handlePress.current}
