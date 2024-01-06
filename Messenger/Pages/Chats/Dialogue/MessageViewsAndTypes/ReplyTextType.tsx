@@ -18,6 +18,7 @@ interface ReplyTextType {
 
 const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrollView, cordsY}:ReplyTextType) => {
   const handlePress = useCallback((event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
+    console.log(id);
     if(!event) return { x: 0, y: 0, ID: id };
 
     const { nativeEvent } = event;

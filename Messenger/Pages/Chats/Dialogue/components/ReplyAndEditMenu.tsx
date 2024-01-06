@@ -14,8 +14,8 @@ const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, e
               <View style={{marginLeft:10}}>
                 <Text style={styles.usernameText}>{isReply?'user name':'Edit'}</Text>
                 <Text style={styles.messageText}>{
-                  isReply?(replyMessage.text!.length>40?replyMessage.text.slice(0,40)+'...':replyMessage.text):
-                  (editMessage.text!.length>40?editMessage.text.slice(0,40)+'...':editMessage.text)
+                  isReply?(replyMessage?.text!.length>40?replyMessage?.text.slice(0,40)+'...':replyMessage?.text):
+                  (editMessage?.text!.length>40?editMessage?.text.slice(0,40)+'...':editMessage?.text)
                 }</Text>
               </View>
               <TouchableOpacity onPress={cancelReplyAndEdit} style={styles.closeButton}>

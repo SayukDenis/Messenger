@@ -1,11 +1,13 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import Constants from 'expo-constants';
 import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
+
+const { height, width } = Dimensions.get('screen');
 
 const styles = StyleSheet.create(
   {
     dialogueContainer: {
-      height: screenHeight,
+      height: height,
       alignSelf: 'stretch',
     }
   }

@@ -69,7 +69,8 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
             {messageViewHandle({ listOfMessages, message, setMessageMenuVisible, scrollViewRef, coordsY})}
           </View>
         ))}
-        <View style={{height:isReply||isEdit?height*0.052:0, width:width}}/>
+        <View style={{height:isReply||isEdit?screenHeight*0.05:0, width:width}}/>
+        <View style={{ height: screenHeight*0.03 }} />
       </ScrollView>
       <View
         style={{position:'absolute', width:messageMenuVisisbleAppearence&&2*width, height:messageMenuVisisbleAppearence&&2*height, backgroundColor:'rgba(0, 0, 0, 0.3)', zIndex: 3, marginTop:-100}}

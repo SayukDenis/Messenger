@@ -1,11 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { screenHeight } from '../../../../ChatList/Constants/ConstantsForChatlist';
 
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
-    height:0, 
-    top: -(height*0.052)
+    height:0,
+    bottom: screenHeight*0.08,
   },
   innerContainer: {
     height:height*0.052, 

@@ -1,5 +1,5 @@
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import DialogueHeader from './components/DialogueHeader';
 import { DialogueMessages } from './components/DialogueMessages';
 import DialogueFooter from './components/DialogueFooter';
@@ -18,6 +18,7 @@ interface Coordinations {
 
 let coord:Coordinations;
 let messageID:number=-1;
+let msgs:Message[];
 
 const Dialogue = () => {
 
@@ -35,7 +36,7 @@ const Dialogue = () => {
 
   const setReplyMessageHandler = () => {
     if(!isReply) {
-      setReplyMessage(messages.find(m => m.id==messageID)!);
+      setReplyMessage(msgs.find(m => m.id==messageID));
       setEditMessage({} as Message);
     }
     else
@@ -57,7 +58,7 @@ const Dialogue = () => {
 
   const setEditMessageHandler = () => {
     if(!isEdit) {
-      setEditMessage(messages.find(m => m.id==messageID)!);
+      setEditMessage(msgs.find(m => m.id==messageID)!);
       setReplyMessage({} as Message);
     }
     else
@@ -85,6 +86,10 @@ const Dialogue = () => {
     }
   }, [listOfMessages]);
 
+  useEffect(()=> {
+    msgs = listOfMessages;
+  }, [listOfMessages]);
+  
   const [deleting, setDeleting] = useState(false);
   const setDeletingHandler = () => {
     setDeleting(!deleting);
@@ -92,6 +97,7 @@ const Dialogue = () => {
 
   // якогось хуя useRef не працює якщо useState з boolean
   const onDeletePress = () => {
+    console.log('hohnpjopo');
     setListOfMessages([...listOfMessages.filter(m => m.id!=messageID)]);
     setDeleting(!deleting);
   }
@@ -103,7 +109,6 @@ const Dialogue = () => {
   
   const mes = listOfMessages.find(m => m.id==messageID);
   return  (
-    <View style={{flex:1, alignSelf:'stretch', position:'relative' }} >
       <View style={styles.dialogueContainer}>
         <BackGroundGradinetView>
           <MessageMenu 
@@ -142,7 +147,6 @@ const Dialogue = () => {
           />
         </BackGroundGradinetView>
       </View>
-    </View>
   );
 };
 
