@@ -11,15 +11,15 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "../Styles";
-import Blur from "../../../SemiComponents/Blur";
-import Header from "../../../SemiComponents/Header";
-import { user } from "../../../SemiComponents/DBUser";
+import Blur from "../../Blur";
+import Header from "../../Header";
+import { user } from "../../DBUser";
 import EmojiAndColorButtons from "../NewBranchScreen/EmojiAndColorButtons";
 import BranchColorPicker from "../NewBranchScreen/BranchColorPicker";
 import ColorSelection from "../NewBranchScreen/ColorSelection";
 import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
-import { tempUser, BranchChild } from "../../../SemiComponents/DBUser";
+import { tempCharacter, BranchChild } from "../../DBUser";
 
 interface ChangeBranchChildScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -41,15 +41,15 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
   var isValid: boolean = true;
 
   const [branchName, setBranchName] = useState(
-    tempUser.selectedBranchChild.name
+    tempCharacter().selectedBranchChild.name
   );
   const [pickedEmoji, setPickedEmoji] = useState(
-    tempUser.selectedBranchChild.emoji
+    tempCharacter().selectedBranchChild.emoji
   );
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
   const [pickedColor, setPickedColor] = useState(
-    tempUser.selectedBranchChild.color
+    tempCharacter().selectedBranchChild.color
   );
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
@@ -82,7 +82,7 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
           user.branchParents.map((branch) => {
             if (
               branch.name == branchName &&
-              branch.name != tempUser.selectedBranchChild.name
+              branch.name != tempCharacter().selectedBranchChild.name
             ) {
               isValid = false;
               alert(nameIsBusyTitle);
@@ -91,7 +91,7 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
             branch.children.map((child) => {
               if (
                 child.name == branchName &&
-                child.name != tempUser.selectedBranchChild.name
+                child.name != tempCharacter().selectedBranchChild.name
               ) {
                 isValid = false;
                 alert(nameIsBusyTitle);
@@ -100,18 +100,22 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
           });
 
           if (isValid) {
-            const branchToRemove = tempUser.selectedBranchParent.children.find(
-              (branch) => branch.name === tempUser.selectedBranchChild.name
-            );
+            const branchToRemove =
+              tempCharacter().selectedBranchParent.children.find(
+                (branch) =>
+                  branch.name === tempCharacter().selectedBranchChild.name
+              );
 
             if (branchToRemove) {
-              tempUser.selectedBranchParent.children.splice(
-                tempUser.selectedBranchParent.children.indexOf(branchToRemove),
+              tempCharacter().selectedBranchParent.children.splice(
+                tempCharacter().selectedBranchParent.children.indexOf(
+                  branchToRemove
+                ),
                 1
               );
             }
 
-            tempUser.selectedBranchParent.children.push(
+            tempCharacter().selectedBranchParent.children.push(
               new BranchChild(branchName, pickedEmoji, pickedColor)
             );
 

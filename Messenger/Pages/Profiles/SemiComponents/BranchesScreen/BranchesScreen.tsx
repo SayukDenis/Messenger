@@ -1,24 +1,17 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  Dimensions,
-} from "react-native";
+import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
-import Header from "../../SemiComponents/Header";
+import Header from "../Header";
 import PlusIcon from "./Icons/PlusIcon";
-import { user } from "../../SemiComponents/DBUser";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
-import Blur from "../../SemiComponents/Blur";
-import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import BinIcon from "../MainScreen/Icons/BinIcon";
+import Blur from "../Blur";
+import RemovalApproval from "../MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-import { tempUser } from "../../SemiComponents/DBUser";
+import { character, tempCharacter } from "../DBUser";
 
 type BranchesScreenProps = {
   navigation: StackNavigationProp<{}>;
@@ -52,13 +45,13 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           setIsDeleteBranchPressed(false);
         }}
         onAgreePress={() => {
-          const branchToRemoveNow = user.branchParents.find(
+          const branchToRemoveNow = character().branchParents.find(
             (branch) => branch.name === branchNameToRemove
           );
 
           if (branchToRemoveNow) {
-            user.branchParents.splice(
-              user.branchParents.indexOf(branchToRemoveNow),
+            character().branchParents.splice(
+              character().branchParents.indexOf(branchToRemoveNow),
               1
             );
           }
@@ -66,7 +59,7 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           setBranchNameToRemove("");
         }}
         isVisible={isDeleteBranchPressed}
-        text={user.removalText + " " + branchNameToRemove + "?"}
+        text={"Do you really want to delete " + branchNameToRemove + "?"}
       />
 
       <ScrollView>
@@ -86,12 +79,12 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
             zIndex: 0,
           }}
         >
-          {user.branchParents.map((item, index) => {
+          {character().branchParents.map((item, index) => {
             return (
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  tempUser.selectedBranchParent = item;
+                  tempCharacter().selectedBranchParent = item;
                   navigation.navigate("ChangeBranchParentScreen" as never);
                 }}
                 style={styles.settingOption}

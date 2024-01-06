@@ -13,21 +13,22 @@ import CreateRole from "../GroupProfile/Role/CreateRole/CreateRole";
 import RolePermission from "../GroupProfile/Role/CreateRole/RolePermission/RolePermission";
 import DialogueSettingsScreen from "../DialogueProfile/SettingsScreen/DialogueSettingsScreen";
 import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen";
-import BranchesScreen from "../DialogueProfile/BranchesScreen/BranchesScreen";
-import NewBranchScreen from "../DialogueProfile/BranchesScreen/NewBranchScreen/NewBranchScreen";
+import BranchesScreen from "./BranchesScreen/BranchesScreen";
+import NewBranchScreen from "./BranchesScreen/NewBranchScreen/NewBranchScreen";
 import NewAlbumScreen from "../DialogueProfile/NewAlbumScreen/NewAlbumScreen";
 import GalleryScreen from "../DialogueProfile/NewAlbumScreen/GalleryScreen";
 import { useFonts } from "expo-font";
-import ChangeBranchParentScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchParentScreen";
+import ChangeBranchParentScreen from "./BranchesScreen/ChangeBranchScreen/ChangeBranchParentScreen";
 import Album from "../DialogueProfile/Album/Album";
 import GalleryWhileAddingNewPhoto from "../DialogueProfile/Album/GalleryWhileAddingNewPhoto";
 import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
-import ChangeBranchChildScreen from "../DialogueProfile/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
+import ChangeBranchChildScreen from "./BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
 import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
 import MainChannelScreen from "../ChannelProfile/MainChannelScreen/MainChannelScreen";
 import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
 import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen/AddSubscriberScreen";
 import ChannelSettingsScreen from "../ChannelProfile/SettingsScreen/ChannelSettingsScreen";
+import AuditLogScreen from "../ChannelProfile/AuditLogScreen/AuditLogScreen";
 
 const Stack = createStackNavigator();
 
@@ -135,6 +136,17 @@ const ChannelNavigation = () => {
         name="ChannelSettingsScreen"
         component={ChannelSettingsScreen}
       />
+      <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
+      <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
+      <Stack.Screen
+        name="ChangeBranchParentScreen"
+        component={ChangeBranchParentScreen}
+      />
+      <Stack.Screen
+        name="ChangeBranchChildScreen"
+        component={ChangeBranchChildScreen}
+      />
+      <Stack.Screen name="AuditLogScreen" component={AuditLogScreen} />
     </Stack.Navigator>
   );
 };

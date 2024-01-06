@@ -10,20 +10,20 @@ import {
   ScrollView,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import Header from "../../../SemiComponents/Header";
+import Header from "../../Header";
 import { styles } from "../Styles";
 import EmojiAndColorButtons from "./EmojiAndColorButtons";
 import ColorSelection from "./ColorSelection";
 import EmojiSelection from "./EmojiSelection";
-import Blur from "../../../SemiComponents/Blur";
+import Blur from "../../Blur";
 import BranchColorPicker from "./BranchColorPicker";
 import BranchAppearance from "./BranchAppearance";
 import {
-  user,
   BranchParent,
   BranchChild,
-} from "../../../SemiComponents/DBUser";
-import { tempUser } from "../../../SemiComponents/DBUser";
+  character,
+  tempCharacter,
+} from "../../DBUser";
 
 type BranchesProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -75,7 +75,7 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
             alert(noNameWarningTitle);
           }
 
-          user.branchParents.map((branch) => {
+          character().branchParents.map((branch) => {
             if (branch.name == branchName) {
               isValid = false;
               alert(nameIsBusyTitle);
@@ -90,8 +90,8 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
           });
 
           if (isValid) {
-            if (tempUser.selectedBranchParent == null) {
-              user.branchParents.push(
+            if (tempCharacter().selectedBranchParent == null) {
+              character().branchParents.push(
                 new BranchParent(
                   branchName,
                   pickedEmoji,
@@ -100,13 +100,15 @@ const NewBranchScreen: React.FC<BranchesProps> = ({ navigation }) => {
                 )
               );
 
-              user.branchParents.sort((a, b) => a.name.localeCompare(b.name));
+              character().branchParents.sort((a, b) =>
+                a.name.localeCompare(b.name)
+              );
             } else {
-              tempUser.selectedBranchParent.children.push(
+              tempCharacter().selectedBranchParent.children.push(
                 new BranchChild(branchName, pickedEmoji, pickedColor)
               );
 
-              tempUser.selectedBranchParent.children.sort((a, b) =>
+              tempCharacter().selectedBranchParent.children.sort((a, b) =>
                 a.name.localeCompare(b.name)
               );
             }

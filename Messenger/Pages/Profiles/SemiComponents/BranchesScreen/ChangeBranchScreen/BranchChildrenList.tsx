@@ -1,18 +1,12 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useEffect } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  Dimensions,
-} from "react-native";
+import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "../Styles";
 import { useIsFocused } from "@react-navigation/native";
 import PlusIcon from "../Icons/PlusIcon";
-import BinIcon from "../../../SemiComponents/MainScreen/Icons/BinIcon";
-import { BranchChild, tempUser } from "../../../SemiComponents/DBUser";
+import BinIcon from "../../MainScreen/Icons/BinIcon";
+import { BranchChild, tempCharacter } from "../../DBUser";
 
 interface BranchChildrenListProps {
   onPlusBranchPress: () => void;
@@ -63,7 +57,7 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
           zIndex: 0,
         }}
       >
-        {tempUser.selectedBranchParent.children.map((item, index) => {
+        {tempCharacter().selectedBranchParent.children.map((item, index) => {
           return (
             <TouchableOpacity
               style={styles.settingOption}

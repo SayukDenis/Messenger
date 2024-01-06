@@ -6,6 +6,7 @@ import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
+import { branchMode } from "../../SemiComponents/DBUser";
 
 type DialogueSettingsScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -29,7 +30,11 @@ const DialogueSettingsScreen: React.FC<DialogueSettingsScreenProps> = ({
       />
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("BranchesScreen" as never)}
+        onPress={() => {
+          branchMode.mode = "user";
+
+          navigation.navigate("BranchesScreen" as never);
+        }}
         style={styles.settingOption}
       >
         <Text style={styles.settingOptionTitle}>{branchesTitle}</Text>

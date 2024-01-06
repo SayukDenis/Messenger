@@ -32,7 +32,6 @@ export interface UserProps {
   branchParents: Array<BranchParent>;
   photosAndVideos: Array<PhotoOrVideo>;
   files: Array<File>;
-  removalText: string;
   voice: Array<Voice>;
   links: Array<Link>;
   albums: Array<Album>;
@@ -58,7 +57,6 @@ export const user: UserProps = {
   isEmergencyMessagesEnabled: false,
   GroupBio: "Aboba - cool",
   branchParents: new Array<BranchParent>(),
-  removalText: "Do you really want to delete",
   avatars: [
     {
       url: "https://fastly.picsum.photos/id/866/400/400.jpg?hmac=oHJBlOQwtaF75oX43dFtPf4At_GRLEx9FQqkkfpLR5U",
@@ -367,7 +365,11 @@ export const user: UserProps = {
   ],
 };
 
-export var branchMode: string = null;
+interface branchModeProps {
+  mode: string;
+}
+
+export const branchMode: branchModeProps = { mode: null };
 
 export class BranchParent {
   name: string;
@@ -494,11 +496,224 @@ export const AuditLog: AuditLogProps = {
 export interface ChannelProps {
   subscribersQuantity: number;
   subscribers: Array<Contact>;
+  branchParents: Array<BranchParent>;
+  events: Array<ChannelEvent>;
 }
 
 export const channel: ChannelProps = {
   subscribersQuantity: 1002313,
   subscribers: [],
+  branchParents: new Array<BranchParent>(),
+  events: [
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Aboba",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "wda dwd ad awd awd aw dawdawd awdawd awd awd awd awd awd awd wad a d",
+        id: 1,
+      },
+      text: "Deleted the message @traewe",
+    },
+    {
+      author: {
+        avatar:
+          "https://fastly.picsum.photos/id/22/4434/3729.jpg?hmac=fjZdkSMZJNFgsoDh8Qo5zdA_nSGUAWvKLyyqmEt2xs0",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Added user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+    {
+      author: {
+        avatar: "https://picsum.photos/id/2/5000/3333",
+        name: "Dmytro",
+        id: 1,
+      },
+      text: "Deleted user @traewe",
+    },
+  ],
+};
+
+export class ChannelEvent {
+  author: Contact;
+  text: string;
+}
+
+interface tempChannelProps {
+  selectedBranchParent: BranchParent;
+  selectedBranchChild: BranchChild;
+}
+
+export const tempChannel: tempChannelProps = {
+  selectedBranchParent: null,
+  selectedBranchChild: null,
 };
 
 export class Contact {
@@ -540,3 +755,31 @@ export const contacts: Array<Contact> = [
   { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro", id: 18 },
   { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro", id: 19 },
 ];
+
+export const character = () => {
+  switch (branchMode.mode) {
+    case "user": {
+      return user;
+    }
+    case "group": {
+      return null;
+    }
+    case "channel": {
+      return channel;
+    }
+  }
+};
+
+export const tempCharacter = () => {
+  switch (branchMode.mode) {
+    case "user": {
+      return tempUser;
+    }
+    case "group": {
+      return null;
+    }
+    case "channel": {
+      return tempChannel;
+    }
+  }
+};

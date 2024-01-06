@@ -12,7 +12,7 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
-import PlusIcon from "../../DialogueProfile/BranchesScreen/Icons/PlusIcon";
+import PlusIcon from "../../SemiComponents/BranchesScreen/Icons/PlusIcon";
 import { channel } from "../../SemiComponents/DBUser";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
 import Blur from "../../SemiComponents/Blur";

@@ -11,21 +11,21 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "../Styles";
-import Blur from "../../../SemiComponents/Blur";
-import Header from "../../../SemiComponents/Header";
+import Blur from "../../Blur";
+import Header from "../../Header";
 import {
-  user,
+  character,
+  tempCharacter,
   BranchParent,
   BranchChild,
-} from "../../../SemiComponents/DBUser";
+} from "../../DBUser";
 import EmojiAndColorButtons from "../NewBranchScreen/EmojiAndColorButtons";
 import BranchColorPicker from "../NewBranchScreen/BranchColorPicker";
 import ColorSelection from "../NewBranchScreen/ColorSelection";
 import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
 import BranchChildrenList from "./BranchChildrenList";
-import RemovalApproval from "../../../SemiComponents/MainScreen/RemovalApproval";
-import { tempUser } from "../../../SemiComponents/DBUser";
+import RemovalApproval from "../../MainScreen/RemovalApproval";
 
 interface ChangeBranchParentScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -47,15 +47,15 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
   var isValid: boolean = true;
 
   const [branchName, setBranchName] = useState(
-    tempUser.selectedBranchParent.name
+    tempCharacter().selectedBranchParent.name
   );
   const [pickedEmoji, setPickedEmoji] = useState(
-    tempUser.selectedBranchParent.emoji
+    tempCharacter().selectedBranchParent.emoji
   );
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
   const [pickedColor, setPickedColor] = useState(
-    tempUser.selectedBranchParent.color
+    tempCharacter().selectedBranchParent.color
   );
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
@@ -84,7 +84,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
       <Header
         primaryTitle={newBranchTitle}
         onGoBackPress={() => {
-          tempUser.selectedBranchParent = null;
+          tempCharacter().selectedBranchParent = null;
           props.navigation.goBack();
         }}
       />
@@ -97,10 +97,10 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
             alert(noNameWarningTitle);
           }
 
-          user.branchParents.map((branch) => {
+          character().branchParents.map((branch) => {
             if (
               branch.name == branchName &&
-              branch.name != tempUser.selectedBranchParent.name
+              branch.name != tempCharacter().selectedBranchParent.name
             ) {
               isValid = false;
               alert(nameIsBusyTitle);
@@ -109,7 +109,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
             branch.children.map((child) => {
               if (
                 child.name == branchName &&
-                child.name != tempUser.selectedBranchParent.name
+                child.name != tempCharacter().selectedBranchParent.name
               ) {
                 isValid = false;
                 alert(nameIsBusyTitle);
@@ -118,27 +118,30 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           });
 
           if (isValid) {
-            const branchToRemove = user.branchParents.find(
-              (branch) => branch.name === tempUser.selectedBranchParent.name
+            const branchToRemove = character().branchParents.find(
+              (branch) =>
+                branch.name === tempCharacter().selectedBranchParent.name
             );
 
             if (branchToRemove) {
-              user.branchParents.splice(
-                user.branchParents.indexOf(branchToRemove),
+              character().branchParents.splice(
+                character().branchParents.indexOf(branchToRemove),
                 1
               );
             }
 
-            user.branchParents.push(
+            character().branchParents.push(
               new BranchParent(
                 branchName,
                 pickedEmoji,
                 pickedColor,
-                tempUser.selectedBranchParent.children
+                tempCharacter().selectedBranchParent.children
               )
             );
 
-            user.branchParents.sort((a, b) => a.name.localeCompare(b.name));
+            character().branchParents.sort((a, b) =>
+              a.name.localeCompare(b.name)
+            );
 
             props.navigation.goBack();
           }
@@ -152,13 +155,16 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           setIsDeleteBranchPressed(false);
         }}
         onAgreePress={() => {
-          const branchToRemoveNow = tempUser.selectedBranchParent.children.find(
-            (branch) => branch.name === branchNameToRemove
-          );
+          const branchToRemoveNow =
+            tempCharacter().selectedBranchParent.children.find(
+              (branch) => branch.name === branchNameToRemove
+            );
 
           if (branchToRemoveNow) {
-            tempUser.selectedBranchParent.children.splice(
-              tempUser.selectedBranchParent.children.indexOf(branchToRemoveNow),
+            tempCharacter().selectedBranchParent.children.splice(
+              tempCharacter().selectedBranchParent.children.indexOf(
+                branchToRemoveNow
+              ),
               1
             );
           }
@@ -166,7 +172,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           setBranchNameToRemove("");
         }}
         isVisible={isDeleteBranchPressed}
-        text={user.removalText + " " + branchNameToRemove + "?"}
+        text={"Do you really want to delete " + branchNameToRemove + "?"}
       />
 
       <BranchColorPicker
@@ -264,7 +270,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
               setBranchNameToRemove(value);
             }}
             onChildBranchPress={(child: BranchChild) => {
-              tempUser.selectedBranchChild = child;
+              tempCharacter().selectedBranchChild = child;
               props.navigation.navigate("ChangeBranchChildScreen" as never);
             }}
           />

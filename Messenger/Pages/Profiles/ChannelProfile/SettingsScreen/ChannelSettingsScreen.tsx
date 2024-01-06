@@ -7,6 +7,7 @@ import Header from "../../SemiComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 import Group from "../../../../dao/Models/Chats/Group";
+import { branchMode } from "../../SemiComponents/DBUser";
 
 type ChannelSettingsScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -25,7 +26,9 @@ const ChannelSettingsScreen: React.FC<ChannelSettingsScreenProps> = ({
       />
 
       <TouchableOpacity
-        onPress={() => alert("Aboba")}
+        onPress={() => {
+          navigation.navigate("AuditLogScreen" as never);
+        }}
         style={styles.settingOption}
       >
         <Text style={styles.settingOptionTitle}>Audit log</Text>
@@ -33,7 +36,11 @@ const ChannelSettingsScreen: React.FC<ChannelSettingsScreenProps> = ({
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => alert("Aboba")}
+        onPress={() => {
+          branchMode.mode = "channel";
+
+          navigation.navigate("BranchesScreen" as never);
+        }}
         style={styles.settingOption}
       >
         <Text style={styles.settingOptionTitle}>Branches</Text>
