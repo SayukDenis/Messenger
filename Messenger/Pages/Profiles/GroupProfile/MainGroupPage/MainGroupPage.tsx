@@ -15,6 +15,7 @@ import {
   user,
 } from "../../SemiComponents/DBUser";
 import { GestureResponderEvent } from "react-native-modal";
+import { useIsFocused } from "@react-navigation/native";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -43,6 +44,9 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
     user.isBlocked = isBlocked;
     user.isMuted = isMuted;
   });
+
+  const isFocused = useIsFocused();
+  useEffect(() => {}, [isFocused]);
 
   return (
     <View style={styles.mainContainer}>
@@ -108,7 +112,7 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
         onClearChatPress={() => {
           setRemovalApprovalText("clear the chat");
         }}
-        settingsPress={() => navigation.navigate("SettingsMenu" as never)}
+        onSettingsPress={() => navigation.navigate("SettingsMenu" as never)}
         mode="group"
       />
 

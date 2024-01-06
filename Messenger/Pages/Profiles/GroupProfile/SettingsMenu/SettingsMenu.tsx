@@ -8,12 +8,23 @@ import AuditLogButton from "./SettingsAuditLogButton";
 import BranchesButton from "./SettingsBranchesButton";
 import RoleButton from "./SettingsRoleButton";
 import Svg, { Path, Rect } from "react-native-svg";
+import Header from "../../SemiComponents/Header";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-export default function SettingsMenu() {
+interface SettingsMenuProps {
+  navigation: StackNavigationProp<{}>;
+}
+
+const SettingsMenu: React.FC<SettingsMenuProps> = (props) => {
   return (
     <GestureHandlerRootView style={styles.wrapper}>
       <SafeAreaView style={styles.container}>
-        <SettingsHead />
+        <Header
+          primaryTitle="Settings"
+          onGoBackPress={() => {
+            props.navigation.goBack();
+          }}
+        />
         <AuditLogButton />
         <BranchesButton />
         <RoleButton />
@@ -21,4 +32,6 @@ export default function SettingsMenu() {
       </SafeAreaView>
     </GestureHandlerRootView>
   );
-}
+};
+
+export default SettingsMenu;

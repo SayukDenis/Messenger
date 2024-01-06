@@ -1,17 +1,25 @@
-// GroupHeadProfile.tsx
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Path, Rect } from "react-native-svg";
 import { styles } from "./ProfileGroupStyles";
+import { user } from "../../SemiComponents/DBUser";
 
-type GroupHeadProps = {
+interface GroupHeadProps {
   GroupHeadName: string;
-};
+  BioText: string;
+}
 
-export const GroupHead: React.FC<GroupHeadProps> = ({ GroupHeadName }) => {
+export const GroupHead: React.FC<GroupHeadProps> = ({
+  GroupHeadName,
+  BioText,
+}) => {
   const navigation = useNavigation();
 
+  const ChangeNameAndBio = () => {
+    user.profileName = GroupHeadName;
+    user.GroupBio = BioText;
+  };
   const handleEditGroupPress = () => {
     navigation.navigate("SettingsMenu" as never);
   };
@@ -37,7 +45,10 @@ export const GroupHead: React.FC<GroupHeadProps> = ({ GroupHeadName }) => {
         </Svg>
       </TouchableOpacity>
       <Text style={{ top: "15%" }}>{GroupHeadName}</Text>
-      <TouchableOpacity style={{ left: "38%", top: "-6%" }}>
+      <TouchableOpacity
+        style={{ left: "38%", top: "-6%" }}
+        onPress={() => ChangeNameAndBio()}
+      >
         <Text>Done</Text>
       </TouchableOpacity>
     </View>
