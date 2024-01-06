@@ -123,7 +123,7 @@ export function initialization(): SelfProfile {
   return selfProfile;
 }
 
-function getRandomNumber(max, min = 0): number {
+function getRandomNumber(max:number, min = 0): number {
   const randomDecimal = Math.random();
   // Scale the random decimal to the desired range [0, max)
   const randomNumber = Math.floor(randomDecimal * max) + min;
@@ -273,7 +273,7 @@ function addBranch(count: number, mainChat: MainChat) {
 }
 function addMessages(chat: Chat, count: number, users: User[], texts: string[] = []) {
   let idMessageToCreate = 0
-  if (chat.messages.length > 0) idMessageToCreate = chat.messages.at(-1).messageId + 1;
+  if (chat.messages.length > 0) idMessageToCreate = chat.messages?.at(-1)?.messageId! + 1;
 
   if (users.length === 0) throw new Error("must be more than 1 users");
 

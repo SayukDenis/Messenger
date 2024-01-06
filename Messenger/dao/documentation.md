@@ -107,3 +107,61 @@ Fields in the schema should be named like class fields - their names will be ana
 * For foreign keys in this table (one-to-one relationship): `{field name}_fk`
 
 ## Other
+
+class Employee {
+  date_of_birth: Date;
+  employee_id: number;
+  first_name: string;
+  last_name: string;
+  salary: number;
+  is_active: boolean;
+  constructor(employee_id, first_name, last_name, date_of_birth, salary, is_active) {
+    this.employee_id = employee_id;
+    this.first_name = first_name;
+    this.last_name = last_name;
+    this.date_of_birth = new Date(date_of_birth);
+    this.salary = salary;
+    this.is_active = is_active;
+  }
+}
+
+// Додавання запису в таблицю
+const addEmployee = () => {
+  db.transaction(tx => {
+    tx.executeSql(
+      `INSERT INTO employees 
+          (first_name, last_name, date_of_birth, salary, is_active) 
+          VALUES (?, ?, ?, ?, ?);`,
+      ['John', 'Doe', new Date().getTime(), 50000.0, `${false}`],
+      (_, { rows }) => {
+        console.log('Inserted Employee ID: ', rows._array.findIndex(() => true));
+      },
+      (_, error) => {
+        console.error('Error inserting employee:', error);
+        return true;
+      }
+    );
+  });
+};
+
+// Отримання даних з таблиці та створення об'єкта Employee
+const readEmployees = () => {
+  db.transaction(tx => {
+    tx.executeSql(
+      `SELECT * FROM employees;`,
+      [],
+      (_, { rows }) => {
+        const employees = rows._array.map(
+          ({ employee_id, first_name, last_name, date_of_birth, salary, is_active }) =>
+            new Employee(employee_id, first_name, last_name, date_of_birth, salary, is_active)
+        );
+        for (let x of employees)
+          console.log('Employees:',x );
+      },
+      (_, error) => {
+        console.error('Error reading employees:', error);
+        return true;
+      }
+    );
+  });
+};

@@ -1,7 +1,18 @@
 {
+  "typeRoots": [
+    "node_modules/@types",
+    "node_modules"
+  ],
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "target": "es2017",
+    "strict": true,
     "module": "esnext",
     "jsx": "react"
+  },
+  "paths": {
+    "expo": [
+      "node_modules/expo"
+    ]
   }
 }
