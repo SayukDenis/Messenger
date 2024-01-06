@@ -8,7 +8,7 @@ import Chat from "../../../../../dao/Models/Chats/Chat";
 import Dialogue from "../../../../../dao/Models/Chats/Dialogue";
 import SelfProfile from "../../../../../dao/Models/SelfProfile";
 import { CountOfMessages } from "../Functions/CountOfMessages";
-import ILastWathedMessage from "../../../../../dao/Models/Chats/ILastWathedMessage";
+
 
 interface LastMessageStatusProps {
   chat: Chat;
@@ -39,7 +39,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
   const lastMessage = chat.messages[chat.messages.length - 1];
 
   if (lastMessage.author.userId === selfProfile.userId) {
-    if (lastMessageId && lastMessage.author.userId < lastMessageId) {
+    if (lastMessageId && lastMessage.author.userId!==undefined && lastMessage?.author.userId < lastMessageId) {
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
           <UnViewedMessage />

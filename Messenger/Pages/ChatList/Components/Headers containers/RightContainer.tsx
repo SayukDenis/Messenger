@@ -7,7 +7,7 @@ import UserIconSvg from "../SVG/UserIconSvg";
 import { connect } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const RightContainer = ({ navigation }) => {
+const RightContainer = ({ navigation }:any) => {
   const kefForSizeOfSvg: number = 0.073;
   const PressOnUserIcon = useRef(() => {
     navigation.navigate("NavigationForSettings");

@@ -5,5 +5,5 @@ export interface DeleteMessageModalProps {
   deleting:boolean,
   setDeletingHandler:()=>void,
   onDeletePress:()=>void,
-  message:Message,
+  message:Message|undefined,
 }

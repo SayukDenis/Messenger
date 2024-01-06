@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import {
-  View,
   ScrollView,
   Dimensions,
   LayoutChangeEvent,
@@ -108,7 +107,7 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     }
   };
   useEffect(() => {
-    scrollViewRef.current.scrollToOffset({ offset: 0, animated: false });
+    scrollViewRef.current?.scrollToOffset({ offset: 0, animated: false });
   }, [currentTab]);
   const NewFolderSelect = (newFolder: number) => {
     dispatch(setSelectedFolderForChatList(newFolder));
@@ -161,16 +160,16 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     const target = e.nativeEvent;
     setPositionX(target.pageX);
     setPositionXInContainer(target.locationX);
-    if (target.pageX - target.locationX + widths[index] > screenWidth * 0.98) {
+    if (target.pageX - target.locationX + widths.current[index] > screenWidth * 0.98) {
       scrollViewRefFooter.current?.scrollTo({
-        x: positionsOfFolder[index] - screenWidth * 0.92 + widths[index],
+        x: positionsOfFolder.current[index] - screenWidth * 0.92 + widths.current[index],
         animated: false,
       });
-      setPositionX(screenWidth * 0.964 - widths[index]);
+      setPositionX(screenWidth * 0.964 - widths.current[index]);
       setPositionXInContainer(0);
     } else if (target.pageX - target.locationX < screenWidth * 0.04) {
       scrollViewRefFooter.current?.scrollTo({
-        x: positionsOfFolder[index],
+        x: positionsOfFolder.current[index],
         animated: false,
       });
       setPositionX(screenWidth * 0.044);

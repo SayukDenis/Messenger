@@ -1,8 +1,10 @@
+// DialogueNavigation.js
 import { Stack } from "../../../../Navigation/Navigation";
 import React from "react";
 import Dialogue from "../Dialogue";
 
-const ChatListNavigation = () => {
+const DialogueNavigation = ({route}:any) => {
+
   return (
     <>
       <Stack.Navigator
@@ -11,10 +13,14 @@ const ChatListNavigation = () => {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Dialogue" component={Dialogue} />
+        <Stack.Screen
+          name="Dialogue"
+          component={Dialogue}
+          initialParams={route.params}
+        />
       </Stack.Navigator>
     </>
   );
 };
 
-export default ChatListNavigation
+export default DialogueNavigation;

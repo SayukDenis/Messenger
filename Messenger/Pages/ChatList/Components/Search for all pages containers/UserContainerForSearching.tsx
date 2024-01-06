@@ -14,14 +14,14 @@ const UserContainerForSearching: React.FC<UserContainerForSearchingProps> = ({
   dialogue,
 }) => {
   const radiusOfImage = screenHeight * 0.07;
-  const otherUser: User = dialogue.users.find(
+  const otherUser: User|undefined = dialogue.users.find(
     (user) => user instanceof User && !(user instanceof SelfProfile)
   );
 
   return (
     <View style={{ marginHorizontal: 5, marginTop: 10,flex:1,height:radiusOfImage+5}}>
       <Image
-        source={{ uri: otherUser.linkToPhoto }}
+        source={{ uri: otherUser?.linkToPhoto }}
         style={{
             
           width: radiusOfImage,

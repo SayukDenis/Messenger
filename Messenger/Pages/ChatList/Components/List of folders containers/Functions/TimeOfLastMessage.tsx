@@ -1,6 +1,6 @@
 import Message from "../../../../../dao/Models/Message";
 
-const formattedTime = (lastMessage:Message): string => {
+const formattedTime = (lastMessage:Message|undefined|null): string => {
     if (!lastMessage) return "";
     const now: Date = new Date();
     const timeDiff: number = now.getTime() - lastMessage.sendingTime.getTime();

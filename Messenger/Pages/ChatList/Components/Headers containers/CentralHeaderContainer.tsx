@@ -14,7 +14,7 @@ function CentralHeaderContainer({
   OnHamburgerPressForDispatch,
   animationStateForTouchHamburger,
   navigation
-}) {
+}:any) {
   const onMagnifyingGlassPress=useRef(()=>{
     navigation.navigate("SearchForAllPages")
   })
