@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import ChatList from '../Pages/ChatList/ChatList';
 import NavigationForSettings from '../Pages/Settings/NavigationForSettings';
 import { connect } from 'react-redux';
 import ChatListNavigation from '../Pages/ChatList/СhatListNavigation/ChatListNavigation';

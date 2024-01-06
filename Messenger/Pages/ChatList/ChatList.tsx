@@ -8,6 +8,8 @@ interface ChatListProps{
 }
  const ChatList:React.FC<ChatListProps>=({navigation})=> {
 
+
+
   return (
     <BackGroundGradientView>
         <Header

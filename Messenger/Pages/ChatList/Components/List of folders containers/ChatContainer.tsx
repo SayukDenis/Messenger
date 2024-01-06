@@ -100,10 +100,10 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
   const haveUnreadMessagesBool = haveUnreadMessages(chat);
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
-    /*if(chat instanceof Dialogue){
-      navigation.navigate("Dialogue,{chat:(chat as Dialogue)})
+    if(chat instanceof Dialogue){
+      navigation.navigate("DialogueNavigation",{chat:(chat as Dialogue)})
     }
-    else*/
+  
     
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
