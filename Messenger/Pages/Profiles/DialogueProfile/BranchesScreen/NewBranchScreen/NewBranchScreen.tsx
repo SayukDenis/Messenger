@@ -15,7 +15,7 @@ import { styles } from "../Styles";
 import EmojiAndColorButtons from "./EmojiAndColorButtons";
 import ColorSelection from "./ColorSelection";
 import EmojiSelection from "./EmojiSelection";
-import Blur from "../../../SemiComponents/MainScreen/Blur";
+import Blur from "../../../SemiComponents/Blur";
 import BranchColorPicker from "./BranchColorPicker";
 import BranchAppearance from "./BranchAppearance";
 import {

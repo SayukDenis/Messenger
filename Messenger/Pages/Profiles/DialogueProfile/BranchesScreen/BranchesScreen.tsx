@@ -14,7 +14,7 @@ import Header from "../../SemiComponents/Header";
 import PlusIcon from "./Icons/PlusIcon";
 import { user } from "../../SemiComponents/DBUser";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
-import Blur from "../../SemiComponents/MainScreen/Blur";
+import Blur from "../../SemiComponents/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -80,52 +80,50 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           <Text style={styles.plusBranchTitle}>Branch</Text>
         </TouchableOpacity>
 
-        <FlatList
-          data={user.branchParents}
-          keyExtractor={(item) => user.branchParents.indexOf(item).toString()}
-          horizontal={false}
-          numColumns={1}
-          scrollEnabled={false}
-          contentContainerStyle={{
+        <View
+          style={{
             paddingBottom: 0.07 * Dimensions.get("screen").height,
             zIndex: 0,
           }}
-          style={{ zIndex: 0 }}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                tempUser.selectedBranchParent = item;
-                navigation.navigate("ChangeBranchParentScreen" as never);
-              }}
-              style={styles.settingOption}
-            >
-              <View
-                style={[
-                  styles.branchAvatarInList,
-                  {
-                    backgroundColor: item.color,
-                  },
-                ]}
-              >
-                <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
-              </View>
-              <View style={styles.branchTitleContainer}>
-                <Text numberOfLines={1} style={styles.branchTitleInList}>
-                  {item.name}
-                </Text>
-              </View>
+        >
+          {user.branchParents.map((item, index) => {
+            return (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
-                  setIsDeleteBranchPressed(true);
-                  setBranchNameToRemove(item.name);
+                  tempUser.selectedBranchParent = item;
+                  navigation.navigate("ChangeBranchParentScreen" as never);
                 }}
-                style={styles.binIconContainer}
+                style={styles.settingOption}
               >
-                <BinIcon style={styles.binIcon} />
+                <View
+                  style={[
+                    styles.branchAvatarInList,
+                    {
+                      backgroundColor: item.color,
+                    },
+                  ]}
+                >
+                  <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
+                </View>
+                <View style={styles.branchTitleContainer}>
+                  <Text numberOfLines={1} style={styles.branchTitleInList}>
+                    {item.name}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsDeleteBranchPressed(true);
+                    setBranchNameToRemove(item.name);
+                  }}
+                  style={styles.binIconContainer}
+                >
+                  <BinIcon style={styles.binIcon} />
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
-          )}
-        />
+            );
+          })}
+        </View>
       </ScrollView>
     </View>
   );

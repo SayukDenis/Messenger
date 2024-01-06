@@ -8,7 +8,7 @@ import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "../../SemiComponents/MainScreen/AvatarWithCallingButtons";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/MainScreen/Blur";
+import Blur from "../../SemiComponents/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import {
@@ -22,6 +22,7 @@ import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/Alb
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
 import { GestureResponderEvent } from "react-native-modal";
 import SubscribersButton from "./SubscribersButton";
+import TypeChannelMenu from "./TypeChannelMenu";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -42,6 +43,7 @@ const MainChannelScreen: React.FC<MainChannelScreenProps> = (props) => {
     useState(0);
   const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
   const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
+  const [isTypeChannelPressed, setIsTypeChannelPressed] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -81,14 +83,15 @@ const MainChannelScreen: React.FC<MainChannelScreenProps> = (props) => {
         visibleWhen={
           isElseFeaturesVisible ||
           longPressedAlbum != null ||
-          isPhotoAlbumSelectionVisible
+          isPhotoAlbumSelectionVisible ||
+          isTypeChannelPressed
         }
         onPress={() => {
           setIsElseFeaturesVisible(false);
           setLongPressedAlbum(null);
           setIsPhotoAlbumSelectionVisible(false);
+          setIsTypeChannelPressed(false);
         }}
-        style={styles.blurEffect}
       />
 
       {/* Blur over blur with zIndex 3 */}
@@ -155,10 +158,24 @@ const MainChannelScreen: React.FC<MainChannelScreenProps> = (props) => {
         onClearChatPress={() => {
           setRemovalApprovalText("clear the chat");
         }}
-        settingsPress={() =>
-          props.navigation.navigate("SettingsScreen" as never)
+        onTypeChannelPress={() => {
+          setIsTypeChannelPressed(true);
+          setIsElseFeaturesVisible(false);
+        }}
+        onSettingsPress={() =>
+          props.navigation.navigate("ChannelSettingsScreen" as never)
         }
         mode="channel"
+      />
+
+      <TypeChannelMenu
+        isVisible={isTypeChannelPressed}
+        onPrivatePress={() => {
+          alert("private");
+        }}
+        onPublicPress={() => {
+          alert("public");
+        }}
       />
 
       <AlbumLongPressedMenu

@@ -11,7 +11,7 @@ import Branches from "../GroupProfile/Branches/Branches";
 import Role from "../GroupProfile/Role/Role";
 import CreateRole from "../GroupProfile/Role/CreateRole/CreateRole";
 import RolePermission from "../GroupProfile/Role/CreateRole/RolePermission/RolePermission";
-import SettingsScreen from "../DialogueProfile/SettingsScreen/SettingsScreen";
+import DialogueSettingsScreen from "../DialogueProfile/SettingsScreen/DialogueSettingsScreen";
 import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen";
 import BranchesScreen from "../DialogueProfile/BranchesScreen/BranchesScreen";
 import NewBranchScreen from "../DialogueProfile/BranchesScreen/NewBranchScreen/NewBranchScreen";
@@ -27,6 +27,7 @@ import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
 import MainChannelScreen from "../ChannelProfile/MainChannelScreen/MainChannelScreen";
 import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
 import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen/AddSubscriberScreen";
+import ChannelSettingsScreen from "../ChannelProfile/SettingsScreen/ChannelSettingsScreen";
 
 const Stack = createStackNavigator();
 
@@ -63,7 +64,10 @@ const UserNavigation = () => {
       }}
     >
       <Stack.Screen name="MainUserScreen" component={MainUserScreen} />
-      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+      <Stack.Screen
+        name="DialogueSettingsScreen"
+        component={DialogueSettingsScreen}
+      />
       <Stack.Screen name="PermissionScreen" component={PermissionScreen} />
       <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
       <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
@@ -126,6 +130,10 @@ const ChannelNavigation = () => {
       <Stack.Screen
         name="AddSubscriberScreen"
         component={AddSubscriberScreen}
+      />
+      <Stack.Screen
+        name="ChannelSettingsScreen"
+        component={ChannelSettingsScreen}
       />
     </Stack.Navigator>
   );

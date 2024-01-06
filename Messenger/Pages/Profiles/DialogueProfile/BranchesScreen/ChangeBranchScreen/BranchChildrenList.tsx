@@ -56,52 +56,49 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
         <Text style={styles.settingTitle}>Under the branch</Text>
       </View>
 
-      <FlatList
-        data={tempUser.selectedBranchParent.children}
-        keyExtractor={(item) =>
-          tempUser.selectedBranchParent.children.indexOf(item).toString()
-        }
-        horizontal={false}
-        numColumns={1}
-        scrollEnabled={false}
-        contentContainerStyle={{
+      <View
+        style={{
           top: -0.025 * Dimensions.get("screen").height,
-          paddingBottom: 0.07 * Dimensions.get("screen").height,
+          paddingBottom: 0.08 * Dimensions.get("screen").height,
           zIndex: 0,
         }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.settingOption}
-            onPress={() => {
-              props.onChildBranchPress(item);
-            }}
-          >
-            <View
-              style={[
-                styles.branchAvatarInList,
-                {
-                  backgroundColor: item.color,
-                },
-              ]}
-            >
-              <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
-            </View>
-            <View style={styles.branchTitleContainer}>
-              <Text numberOfLines={1} style={styles.branchTitleInList}>
-                {item.name}
-              </Text>
-            </View>
+      >
+        {tempUser.selectedBranchParent.children.map((item, index) => {
+          return (
             <TouchableOpacity
+              style={styles.settingOption}
+              key={index}
               onPress={() => {
-                props.onBinPress(item.name);
+                props.onChildBranchPress(item);
               }}
-              style={styles.binIconContainer}
             >
-              <BinIcon style={styles.binIcon} />
+              <View
+                style={[
+                  styles.branchAvatarInList,
+                  {
+                    backgroundColor: item.color,
+                  },
+                ]}
+              >
+                <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
+              </View>
+              <View style={styles.branchTitleContainer}>
+                <Text numberOfLines={1} style={styles.branchTitleInList}>
+                  {item.name}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  props.onBinPress(item.name);
+                }}
+                style={styles.binIconContainer}
+              >
+                <BinIcon style={styles.binIcon} />
+              </TouchableOpacity>
             </TouchableOpacity>
-          </TouchableOpacity>
-        )}
-      />
+          );
+        })}
+      </View>
     </View>
   );
 };

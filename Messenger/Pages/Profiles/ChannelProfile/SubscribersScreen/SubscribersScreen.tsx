@@ -7,18 +7,18 @@ import {
   Text,
   FlatList,
   Dimensions,
+  Image,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/Header";
 import PlusIcon from "../../DialogueProfile/BranchesScreen/Icons/PlusIcon";
-import { user } from "../../SemiComponents/DBUser";
+import { channel } from "../../SemiComponents/DBUser";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
-import Blur from "../../SemiComponents/MainScreen/Blur";
+import Blur from "../../SemiComponents/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-import { tempUser } from "../../SemiComponents/DBUser";
 
 type SubscribersScreenProps = {
   navigation: StackNavigationProp<{}>;
@@ -27,9 +27,11 @@ type SubscribersScreenProps = {
 const SubscribersScreen: React.FC<SubscribersScreenProps> = ({
   navigation,
 }) => {
-  const [isDeleteSubscriberPressed, setIsDeleteSubscriberPressed] =
-    useState(false);
-  const [subscriberNameToRemove, setSubscriberNameToRemove] = useState("");
+  const [subscriberToRemove, setSubscriberToRemove] = useState({
+    name: null,
+    avatar: null,
+    id: null,
+  });
 
   const isFocused = useIsFocused();
 
@@ -55,52 +57,57 @@ const SubscribersScreen: React.FC<SubscribersScreenProps> = ({
           <Text style={styles.plusSubscriberTitle}>Member</Text>
         </TouchableOpacity>
 
-        <FlatList
-          data={user.branchParents}
-          keyExtractor={(item) => user.branchParents.indexOf(item).toString()}
-          horizontal={false}
-          numColumns={1}
-          scrollEnabled={false}
-          contentContainerStyle={{
-            paddingBottom: 0.07 * Dimensions.get("screen").height,
-            zIndex: 0,
-          }}
-          renderItem={({ item }) => (
+        <View style={{ paddingBottom: 0.07 * Dimensions.get("screen").height }}>
+          {channel.subscribers.map((item, index) => (
             <TouchableOpacity
+              key={index}
               onPress={() => {
-                tempUser.selectedBranchParent = item;
-                navigation.navigate("ChangeBranchParentScreen" as never);
+                alert(item.name + " is pressed");
               }}
               style={styles.subscriberContainer}
             >
-              <View
-                style={[
-                  styles.subscriberAvatarInList,
-                  {
-                    backgroundColor: item.color,
-                  },
-                ]}
-              >
-                <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
-              </View>
-              <View style={styles.subscriberTitleContainer}>
-                <Text numberOfLines={1} style={styles.subscriberTitleInList}>
+              <Image
+                source={{ uri: item.avatar }}
+                style={styles.subscriberAvatarInList}
+              />
+              <View style={styles.contactTitleContainer}>
+                <Text numberOfLines={1} style={styles.contactTitleInList}>
                   {item.name}
                 </Text>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  setIsDeleteSubscriberPressed(true);
-                  setSubscriberNameToRemove(item.name);
+                  setSubscriberToRemove(item);
                 }}
                 style={styles.binIconContainer}
               >
                 <BinIcon style={styles.binIcon} />
               </TouchableOpacity>
             </TouchableOpacity>
-          )}
-        />
+          ))}
+        </View>
       </ScrollView>
+
+      <Blur
+        visibleWhen={subscriberToRemove?.name != null}
+        onPress={() => {
+          setSubscriberToRemove(null);
+        }}
+        style={styles.blurEffect}
+      />
+
+      <RemovalApproval
+        isVisible={subscriberToRemove?.name != null}
+        onAnyPress={() => {
+          setSubscriberToRemove(null);
+        }}
+        onAgreePress={() => {
+          channel.subscribers = channel.subscribers.filter(
+            (item) => item.id !== subscriberToRemove.id
+          );
+        }}
+        text={"Do you really want to kick " + subscriberToRemove?.name + "?"}
+      />
     </View>
   );
 };

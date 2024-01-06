@@ -48,8 +48,8 @@ export const styles = StyleSheet.create({
     color: "rgb(92, 64, 129)",
   },
   subscriberAvatarInList: {
-    width: 0.045 * screenHeight,
-    height: 0.045 * screenHeight,
+    width: 0.04 * screenHeight,
+    height: 0.04 * screenHeight,
     borderRadius: 100,
     position: "absolute",
     left: 0.0125 * screenHeight,

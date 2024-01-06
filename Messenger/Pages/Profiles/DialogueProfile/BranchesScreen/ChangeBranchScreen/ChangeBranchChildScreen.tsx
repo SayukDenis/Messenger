@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "../Styles";
-import Blur from "../../../SemiComponents/MainScreen/Blur";
+import Blur from "../../../SemiComponents/Blur";
 import Header from "../../../SemiComponents/Header";
 import { user } from "../../../SemiComponents/DBUser";
 import EmojiAndColorButtons from "../NewBranchScreen/EmojiAndColorButtons";

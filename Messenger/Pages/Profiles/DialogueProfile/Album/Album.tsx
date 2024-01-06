@@ -16,7 +16,7 @@ import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
 import { tempUser } from "../../SemiComponents/DBUser";
 import Name from "../../SemiComponents/MainScreen/Name";
 import GoBackButton from "../../SemiComponents/GoBackButton";
-import Blur from "../../SemiComponents/MainScreen/Blur";
+import Blur from "../../SemiComponents/Blur";
 import ElseFeaturesIcon from "../../SemiComponents/MainScreen/Icons/ElseFeaturesIcon";
 import AlbumElseFeaturesButtons from "./AlbumElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";

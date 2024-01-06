@@ -8,7 +8,7 @@ import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "../../SemiComponents/MainScreen/AvatarWithCallingButtons";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/MainScreen/Blur";
+import Blur from "../../SemiComponents/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import {
@@ -159,7 +159,9 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         onClearChatPress={() => {
           setRemovalApprovalText("clear the chat");
         }}
-        settingsPress={() => navigation.navigate("SettingsScreen" as never)}
+        onSettingsPress={() =>
+          navigation.navigate("DialogueSettingsScreen" as never)
+        }
         mode="user"
       />
 

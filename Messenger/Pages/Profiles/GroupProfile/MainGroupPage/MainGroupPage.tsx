@@ -4,7 +4,7 @@ import { styles } from "../../SemiComponents/ProfileStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/MainScreen/Blur";
+import Blur from "../../SemiComponents/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import BioAndLink from "./BioAndLink";

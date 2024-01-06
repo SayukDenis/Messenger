@@ -24,7 +24,8 @@ interface ElseFeaturesButtonsProps {
   onBlockPress?: (value: boolean) => void;
   isBlocked?: boolean;
   onClearChatPress: () => void;
-  settingsPress: () => void;
+  onSettingsPress: () => void;
+  onTypeChannelPress?: () => void;
   mode: string;
 }
 
@@ -36,7 +37,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {/* Settings button */}
           <TouchableOpacity
             onPress={() => {
-              props.settingsPress();
+              props.onSettingsPress();
               props.setIsVisible(false);
             }}
             style={styles.additionalFeatureButton}
@@ -138,7 +139,12 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {props.mode === "channel" && (
             <>
               {/* Type channel button */}
-              <TouchableOpacity style={styles.additionalFeatureButton}>
+              <TouchableOpacity
+                onPress={() => {
+                  props.onTypeChannelPress();
+                }}
+                style={styles.additionalFeatureButton}
+              >
                 <LockIcon style={styles.additionalFeatureIcon} />
                 <Text style={styles.additionalFeatureTitle}>Type channel</Text>
               </TouchableOpacity>

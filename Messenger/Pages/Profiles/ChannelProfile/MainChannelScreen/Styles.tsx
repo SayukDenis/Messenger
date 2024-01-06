@@ -51,4 +51,33 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: "rgb(92, 64, 129)",
   },
+  typeChannelMenuContainer: {
+    position: "absolute",
+    right: 0.06 * screenWidth,
+    top: 0.065 * screenHeight,
+    width: 0.51 * screenWidth,
+    zIndex: 2,
+  },
+  typeChannelMenuButton: {
+    width: "100%",
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "rgb(231, 230,	228)",
+    borderWidth: 0.5,
+    borderColor: "rgb(161, 156, 145)",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 4.5 * figmaWidthPixelConverter,
+    paddingLeft: 17 * figmaWidthPixelConverter,
+  },
+  typeChannelMenuTitle: {
+    fontSize: 16,
+    fontFamily: "JacquesFrancois-Regular",
+  },
+  typeChannelMenuIcon: {
+    width: 18 * figmaWidthPixelConverter,
+    height: 18 * figmaWidthPixelConverter,
+    color: "black",
+  },
 });

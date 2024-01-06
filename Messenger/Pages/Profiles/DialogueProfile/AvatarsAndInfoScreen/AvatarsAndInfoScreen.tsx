@@ -6,7 +6,7 @@ import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/MainScreen/Blur";
+import Blur from "../../SemiComponents/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import {
   Album,

@@ -7,11 +7,13 @@ import Header from "../../SemiComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 
-type SettingsScreenProps = {
+type DialogueSettingsScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 };
 
-const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
+const DialogueSettingsScreen: React.FC<DialogueSettingsScreenProps> = ({
+  navigation,
+}) => {
   const settingsTitle: string = "Settings";
   const branchesTitle: string = "Branches";
   const editWallpaperTitle: string = "Edit wallpaper";
@@ -55,4 +57,4 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   );
 };
 
-export default SettingsScreen;
+export default DialogueSettingsScreen;
