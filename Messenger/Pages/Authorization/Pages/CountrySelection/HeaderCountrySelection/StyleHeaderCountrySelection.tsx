@@ -25,7 +25,7 @@ const StyleHeaderCountrySelection = StyleSheet.create({
         alignItems:'center',
         flexDirection: 'row',
         width: "100%",
-        height: windowHeight*0.08,
+        height: responsiveHeight(44),
         borderBottomLeftRadius:windowHeight*0.03,
         borderBottomRightRadius:windowHeight*0.03,
         backgroundColor: '#E7E6E4',
@@ -42,12 +42,13 @@ const StyleHeaderCountrySelection = StyleSheet.create({
     },
 
     textInput:{
-        width:'80%',
-        height:'60%',
-        borderRadius: responsiveWidth(30),
+        width: responsiveWidth(297),
+        height: responsiveHeight(25),
+        borderRadius: responsiveWidth(30), 
         backgroundColor:'#272727',
         color :'#888282',
-        paddingLeft: '5%'
+        fontSize: responsiveHeight(13),
+        paddingLeft: responsiveWidth(25)
     },
 
 
@@ -67,4 +68,3 @@ const StyleHeaderCountrySelection = StyleSheet.create({
 });
 
 export default StyleHeaderCountrySelection;
-

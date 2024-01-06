@@ -1,7 +1,3 @@
-import React from "react";
-import { View, FlatList, Text, TouchableOpacity, Image, ScrollView } from "react-native";  
-
-
 const countries = [
   { id: 1, name: 'Ukraine', code: '+380', flag: require('../Image/UkraineFlag.png') },
   { id: 2, name: 'United States', code: '+1', flag: require('../Image/UkraineFlag.png') },
