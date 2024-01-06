@@ -16,10 +16,10 @@ interface ReplyTextType {
   cordsY:any;
 }
 
-let size = [];
+let size:any[] = [];
 const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrollView, cordsY}:ReplyTextType) => {
 
-  const onLayout = (event) => {
+  const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
     size = [...size, { ID: id, layout: { width, height }}];
   };

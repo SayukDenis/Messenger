@@ -226,7 +226,7 @@ const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
     }
   }
 
-  const onLayout = (event) => {
+  const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
     size = { width, height }
   };
@@ -234,15 +234,46 @@ const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
   const handleMenuPosition = () => {
     console.log((coord?coord.pageY:0))
     if(isUser) {
-      if((coord?coord.pageY:0) < 600)
+      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
+        console.log((coord?coord.pageY:0), height-screenHeight*0.06-size.height)
         return { top:(coord?coord.pageY:0), left:(coord?width-coord.width-10:0)-size.width-5 }
-      else
-        return { top:600, left:(coord?width-coord.width-10:0)-size.width-5 }
+      }
+      else {
+        return { top:(coord?coord.pageY:0)-size.height, left:(coord?width-coord.width-10:0)-size.width-5 }
+      }
     } else {
-      if((coord?coord.pageY:0) < 600) {
+      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
         return { top:(coord?coord.pageY:0), right:(coord?width-coord.width-10:0)-size.width-5 }
       } else {
-        return { top:600, right:(coord?width-coord.width-10:0)-size.width-5 }
+        return { top:(coord?coord.pageY:0)-size.height, right:(coord?width-coord.width-10:0)-size.width-5 }
+      }
+    }
+  }
+
+  const handleTrianglePosition = () => {
+    if(isUser) {
+      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
+        return [
+          footerstyles.triangle,
+          footerstyles.positionOfModalWindowRightTop,
+        ]
+      } else {
+        return [
+          footerstyles.triangle,
+          footerstyles.positionOfModalWindowRightBottom,
+        ]
+      }
+    } else {
+      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
+        return [
+          footerstyles.triangle,
+          footerstyles.positionOfModalWindowLeftTop,
+        ]
+      } else {
+        return [
+          footerstyles.triangle,
+          footerstyles.positionOfModalWindowLeftBottom,
+        ]
       }
     }
   }
@@ -263,12 +294,9 @@ const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
         {buttons.map((button, index) => {
           return button.text=='Edit'&&!isUser? null: 
           <Animated.View key={button.text} style={helperFunc(index)}>
-            {button.text==='Reply'&&coord.pageY<screenHeight/2?
+            {button.text==='Reply'&&(coord?coord.pageY:0) < height-screenHeight*0.06-size.height?
             <View
-              style={[
-                footerstyles.triangle,
-                isUser?footerstyles.positionOfModalWindowRightTop:footerstyles.positionOfModalWindowLeftTop,
-              ]}
+              style={handleTrianglePosition()}
             />:null}
             <TouchableOpacity 
               key={index} 
@@ -278,12 +306,9 @@ const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
             >
               <Text style={{color:button.color}}>{button.text}</Text>
             </TouchableOpacity>
-            {button.text==='Select'&&coord.pageY>screenHeight/2?
+            {button.text==='Select'&&(coord?coord.pageY:0) > height-screenHeight*0.06-size.height?
             <View
-              style={[
-                footerstyles.triangle,
-                footerstyles.positionOfModalWindowRightBottom,
-              ]}
+              style={handleTrianglePosition()}
             />:null}
           </Animated.View>
         })}

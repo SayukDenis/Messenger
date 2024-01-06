@@ -17,10 +17,10 @@ const arr = new Array(messages.length);
 for(let i = 0; i < messages.length; i++)
   arr[i] = [0];
 
-let size = [];
+let size:any[] = [];
 const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:DefaultTextMessageProps) => {
 
-  const onLayout = (event) => {
+  const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
     size = [...size, { ID: id, layout: { width, height }}];
   };
@@ -44,7 +44,7 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
 
   //console.log('DefaultTextType-arr:', arr);
 
-  const wrapText = (text, maxLength) => {
+  const wrapText = (text:string, maxLength:number) => {
     const words = text.split(' ');
     let currentLine = '';
     const lines = [];
