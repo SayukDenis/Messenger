@@ -2,7 +2,7 @@ import Message from '../Message';
 import Role from './Role';
 import Model from '../Model';
 import Chat from './Chat';
-import ILastWathedMessage from './ILastWathedMessage';
+import ILastWatchedMessage from './ILastWatchedMessage';
 
 export default class Branch extends Chat {
     constructor(title: string) {
@@ -15,7 +15,7 @@ export default class Branch extends Chat {
     haveAccess: Array<Role> = new Array;
     //schema
     static schema = {
-        name: 'branchs',
+        name: 'branches',
         properties: {
             branchId: { type: 'integer', indexed: true },
             title: 'text',
@@ -26,7 +26,7 @@ export default class Branch extends Chat {
             pinnedMessage: { type: 'list', objectType: Message },
             //access
             haveAccess: { type: 'list', objectType: Role },
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
         },
         primaryKey: 'branchId',
         embedded: false,
