@@ -192,7 +192,7 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
       group.adminUser.push(selfUser);
       group.title = "Admin Group" + i;
     }
-    group.users.push(SelfProfile);
+    group.users.push(selfUser);
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
     group.users.push(...getRandomElementsFromArray<User>(users));
     addMessages(group, 100, users, messageGroupsAndChannels);
@@ -219,7 +219,7 @@ function createChannel(count: number, selfUser: SelfProfile, users: User[]): Cha
       channel.title = "Admin Channel " + i;
     }
     channel.linkToPhoto = images[getRandomNumber(images.length)];
-    channel.users.push(SelfProfile);
+    channel.users.push(selfUser);
     addMessages(channel, 100, users, messageGroupsAndChannels);
     channel.adminUser.push(...getRandomElementsFromArray<User>(users));
     channel.users.push(...getRandomElementsFromArray<User>(users));
@@ -295,7 +295,7 @@ function addMessages(chat: Chat, count: number, users: User[], texts: string[] =
   }
 }
 function initializationLastWatchedMessageChat(chat: MainChat) {
-  if (chat.branches != null) {
+  if (chat.branches.length>0) {
     for (let branch of chat.branches) {
       initializationLastWatchedMessageBranch(branch, chat.users);
     }
@@ -307,7 +307,7 @@ function initializationLastWatchedMessageChat(chat: MainChat) {
 
 }
 function initializationLastWatchedMessageBranch(chat: Chat, users: User[]) {
-  if (chat.branches != null) {
+  if (chat.branches.length>0) {
     for (let branch of chat.branches) {
       initializationLastWatchedMessageBranch(branch, users)
     }

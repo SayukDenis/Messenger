@@ -9,6 +9,8 @@ import Dialogue from "../../../../../dao/Models/Chats/Dialogue";
 import SelfProfile from "../../../../../dao/Models/SelfProfile";
 import { CountOfMessages } from "../Functions/CountOfMessages";
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
+import getNameOfChat from "../Functions/GetNameOfChat";
+import Group from "../../../../../dao/Models/Chats/Group";
 
 
 interface LastMessageStatusProps {
@@ -23,15 +25,13 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
   const listOfLastWatchedMessage:ILastWatchedMessage[]=chat.lastWatchedMessage;
   const ILastMessage: ILastWatchedMessage | undefined = (listOfLastWatchedMessage===undefined?null:listOfLastWatchedMessage)?.find(
     (value: ILastWatchedMessage) => {
-      return value.user.userId === selfProfile.userId;
+      return value.user.userId == selfProfile.userId;
     }
   );
   const  lastMessageId:number|undefined=(ILastMessage?.value!==undefined?ILastMessage.value:null)?.messageId
   
-  
   let content: ReactNode;
   const lastMessage = chat.messages[chat.messages.length - 1];
-
   if (lastMessage.author.userId === selfProfile.userId) {
     if (lastMessageId && lastMessage.author.userId!==undefined && lastMessage?.author.userId < lastMessageId) {
       content = (
@@ -51,6 +51,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
   } else if (lastMessageId) {
     const countOfMessage: number = chat.messages.length - lastMessageId;
     if (countOfMessage === 0) return null;
+    //console.log(getNameOfChat(chat,selfProfile) +" "+lastMessageId+ ":"+chat.messages.length)
     content = CountOfMessages(countOfMessage);
   }
 
