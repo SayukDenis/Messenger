@@ -37,7 +37,7 @@ const NavigationForSettings = () => {
   );
 };
 
-const ConfidentialityPageNavigator = () => {
+export const ConfidentialityPageNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="ConfidentialityPage"
@@ -54,7 +54,7 @@ const ConfidentialityPageNavigator = () => {
     </Stack.Navigator>
   );
 };
-const EditPageNavigator = () => {
+ export const EditPageNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="EditPage"
@@ -69,7 +69,7 @@ const EditPageNavigator = () => {
   );
 };
 
-const ChatFolderPageNAvigator = () => {
+export const ChatFolderPageNAvigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="Chatfolders"

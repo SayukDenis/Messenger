@@ -1,11 +1,8 @@
-// LastMessageStatus.tsx
 import React, { ReactNode } from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
 import UnViewedMessage from "../../SVG/UnViewedMessage";
 import ViewedMessageIcon from "../../SVG/ViewedMessageIcon";
-
-
 import { listOfChatsStyle } from "../../../Styles/ListOfChatsStyle";
 import Chat from "../../../../../dao/Models/Chats/Chat";
 import Dialogue from "../../../../../dao/Models/Chats/Dialogue";
@@ -15,21 +12,30 @@ import ILastWathedMessage from "../../../../../dao/Models/Chats/ILastWathedMessa
 
 interface LastMessageStatusProps {
   chat: Chat;
-  selfProfile:SelfProfile;
+  selfProfile: SelfProfile;
 }
 
-const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat,selfProfile }) => {
-  const lastMessageId: number  = chat.lastWathedMessage.find((value: ILastWathedMessage) => {
-    return value.user.userId === selfProfile.userId;
-  })?.value.messageId;
-  console.log(selfProfile.userId+" "+chat?.lastWathedMessage[0]?.user.userId)
-  console.log(lastMessageId)
+const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
+  chat,
+  selfProfile,
+}) => {
+  const lastMessageId: number =0/* chat.lastWathedMessage.find(
+    (value: ILastWathedMessage) => {
+      return value.user.userId === selfProfile.userId;
+    }
+  )?.value.messageId;
+  console.log(
+    selfProfile.userId + " " + chat?.lastWathedMessage[0]?.user.userId
+  );
+  console.log(lastMessageId);
   let content: ReactNode;
-  if(chat instanceof Dialogue){
-  let dialogue: Dialogue = chat as Dialogue;
-  console.log(selfProfile.userId+" "+dialogue?.lastWathedMessage[0]?.user.userId)
-}
-
+  if (chat instanceof Dialogue) {
+    let dialogue: Dialogue = chat as Dialogue;
+    console.log(
+      selfProfile.userId + " " + dialogue?.lastWathedMessage[0]?.user.userId
+    );
+  }*/
+  let content: ReactNode;
   const lastMessage = chat.messages[chat.messages.length - 1];
 
   if (lastMessage.author.userId === selfProfile.userId) {
