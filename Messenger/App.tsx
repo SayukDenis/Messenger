@@ -8,7 +8,6 @@ import Navigation from "./Navigation/Navigation";
 import Authorization from "./Pages/Authorization/Authorization";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-
   return (
     <SafeAreaProvider>
     <StatusBar translucent backgroundColor="transparent" />

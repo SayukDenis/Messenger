@@ -1,39 +1,42 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Animated,
-  Dimensions,
-  Text,
-  FlatList,
-  ScrollView,
-  GestureResponderEvent,
-  Platform,
-} from "react-native";
+import { View, Dimensions, FlatList, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import MySelfUser from "../1HelpFullFolder/MySelfUser";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
 import { connect, useSelector } from "react-redux";
+import SelfProfile from "../../../dao/Models/SelfProfile";
+import { booleanForLogging } from "../ChatList";
 
 interface ListOfFolderProps {
-  user: MySelfUser;
   currentFolder: number;
+  navigation:any;
 }
 
-const ListOfFolder: React.FC<ListOfFolderProps> = ({ user, currentFolder }) => {
+const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder,navigation }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
   useEffect(() => {
-    console.log(user.folders[currentFolder].name);
+    if (booleanForLogging) {
+      console.log("RERENDER LIST OF FOLDERS");
+    }
   });
+  const selfProfile: SelfProfile = useSelector((state: any) => {
+    const self: SelfProfile = state.selfProfileUser;
+    return self;
+  });
+  const currentTab = useSelector((state: any) => {
+    let Tab = state.chatListReducer.currentTab.currentTab;
+    return Tab;
+  });
+
   return (
     <View style={{ height: screenHeight, width: screenWidth }}>
       <FlatList
-        data={user.folders[currentFolder].listOfChats}
+        data={selfProfile.tabs[currentTab].folders[currentFolder].chats}
         keyExtractor={(item, index) => index.toString()}
         nestedScrollEnabled={true}
         renderItem={({ item, index }) => (
-          <ChatContainer key={index} chat={item} isCurrent={true} />
+          <ChatContainer key={index} chat={item} nesting={0} navigation={navigation} />
         )}
         ListHeaderComponent={
           <>
@@ -51,11 +54,10 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ user, currentFolder }) => {
           />
         }
         showsVerticalScrollIndicator={false}
-        windowSize={10}
-        initialNumToRender={10}
+        windowSize={20}
       />
     </View>
   );
 };
 
-export default connect(null)(ListOfFolder);
+export default connect(null)(React.memo(ListOfFolder));
