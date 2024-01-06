@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, TouchableOpacity, View, PanResponder, Modal, Dimensions, } from 'react-native';
-import { Provider, useState, useCallback, SetStateAction, Dispatch, useRef } from 'react';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { useState, useCallback, useEffect } from 'react';
 import DialogueHeader from './components/DialogueHeader';
 import { DialogueMessages } from './components/DialogueMessages';
 import DialogueFooter from './components/DialogueFooter';
@@ -8,19 +7,28 @@ import MessageMenu from './components/MessageMenu';
 import styles from './DialogueStyle';
 import { messages, Message } from './tmpdata';
 import React from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
 import DeleteMessageModal from './components/DeleteMessageModal';
+import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
+import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 
-interface Coordinations {
-  x: number;
-  y: number;
+interface Layout {
   ID: number;
+  pageX: number;
+  pageY: number;
+  width: number;
+  height: number;  
 }
 
-let coord:Coordinations;
+let coord:Layout;
 let messageID:number=-1;
+let msgs:Message[];
 
-const Dialogue = () => {
+interface DialogueProps {
+  navigation: any;
+  dialogue: DialogueModel.default;
+}
+
+const Dialogue = ({ navigation, dialogue }:DialogueProps) => {
 
   const [messageMenuVisible, setMessageMenuVisible] = useState(false);
   const [messageMenuVisisbleAppearence, setMessageMenuVisisbleAppearence] = useState(false);
@@ -29,14 +37,14 @@ const Dialogue = () => {
   const [isReply, setIsReply] = useState(false);
   const [replyMessage, setReplyMessage] = useState({} as Message);
 
-  const pressReplyButton = useCallback(() => {
+  const replyHandler = useCallback(() => {
     setIsReply(!isReply);
     setReplyMessageHandler();
   },[]);
 
   const setReplyMessageHandler = () => {
     if(!isReply) {
-      setReplyMessage(messages.find(m => m.id==messageID)!);
+      setReplyMessage(msgs.find(m => m.id==messageID));
       setEditMessage({} as Message);
     }
     else
@@ -58,18 +66,23 @@ const Dialogue = () => {
 
   const setEditMessageHandler = () => {
     if(!isEdit) {
-      setEditMessage(messages.find(m => m.id==messageID)!);
+      setEditMessage(msgs.find(m => m.id==messageID)!);
       setReplyMessage({} as Message);
     }
     else
       setEditMessage({} as Message);
   }
 
-  const handleMessagePress = useCallback((coordinations:Coordinations) => {
-    setMessageMenuVisible(true);
-    coord = coordinations;
-    messageID = coordinations.ID;
-    setMessageMenuVisisbleAppearence(true);
+  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed: boolean) => {
+    if(pressed) {
+      setMessageMenuVisible(true);
+      coord = coordinations;
+      setMessageMenuVisisbleAppearence(true);
+      messageID = coordinations.ID;
+    } else {
+      messageID = coordinations.ID;
+      replyHandler();
+    }
   }, []);
 
   const setMessages = useCallback((mes:Message) => {
@@ -81,6 +94,10 @@ const Dialogue = () => {
     }
   }, [listOfMessages]);
 
+  useEffect(()=> {
+    msgs = listOfMessages;
+  }, [listOfMessages]);
+  
   const [deleting, setDeleting] = useState(false);
   const setDeletingHandler = () => {
     setDeleting(!deleting);
@@ -88,6 +105,7 @@ const Dialogue = () => {
 
   // якогось хуя useRef не працює якщо useState з boolean
   const onDeletePress = () => {
+    console.log('hohnpjopo');
     setListOfMessages([...listOfMessages.filter(m => m.id!=messageID)]);
     setDeleting(!deleting);
   }
@@ -99,31 +117,25 @@ const Dialogue = () => {
   
   const mes = listOfMessages.find(m => m.id==messageID);
   return  (
-    <LinearGradient 
-      style={{flex:1}} 
-      start={{x: 1, y: 0}} 
-      end={{x: 0, y: 1}} 
-      colors={['#D7B168', '#D783FF']}
-    >
-      <View style={{flex:1, alignSelf:'stretch', position:'relative'}} >
-        <View style={styles.dialogueContainer}>
+      <View style={styles.dialogueContainer}>
+        <BackGroundGradinetView>
           <MessageMenu 
             isUser={mes!=undefined?mes.isUser:false} 
             isVisible={messageMenuVisible} 
             onOverlayPress={handleMessageMenuPress} 
             coord={coord} 
-            onReplyPress={pressReplyButton} 
+            onReplyPress={replyHandler} 
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
           />
           <DialogueHeader />
           <DialogueMessages 
-            setMessageMenuVisible={handleMessagePress} 
+            setMessageMenuVisible={handleMessagePressOrSwipe} 
             messageMenuVisisbleAppearence={messageMenuVisisbleAppearence} 
             messageID={messageID} 
             listOfMessages={listOfMessages} 
             isReply={isReply} 
-            isEdit={isEdit} 
+            isEdit={isEdit}
           />
           <DialogueFooter 
             messages={listOfMessages} 
@@ -141,9 +153,8 @@ const Dialogue = () => {
             onDeletePress={onDeletePress} 
             message={mes} 
           />
-        </View>
+        </BackGroundGradinetView>
       </View>
-    </LinearGradient>
   );
 };
 

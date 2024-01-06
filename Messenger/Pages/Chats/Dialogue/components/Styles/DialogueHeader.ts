@@ -1,13 +1,20 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    display: "flex",
+    flexDirection: "row",
+    
+    marginHorizontal: screenWidth * 0.02,
+    overflow:"hidden",
+  },
   header: {
     paddingVertical: 5,
     paddingHorizontal: 10,
     backgroundColor: 'rgb(231, 230, 228)',
     display: 'flex',
     flexDirection: 'row',
-    flex: 1, 
     alignSelf: 'stretch',
     // boxShadow: 'inset 0px 0px 0px 1px rgb(161, 156, 145)',
     borderWidth: 1,
