@@ -2,11 +2,13 @@ import React from "react";
 import MainForSearchForAllPages from "./Search for all pages containers/MainForSearchForAllPages";
 import HeaderForSearchForAllPages from "./Search for all pages containers/HeaderForSearchForAllPages";
 
-interface SearchForAllPagesProps {}
-const SearchForAllPages: React.FC<SearchForAllPagesProps> = ({}) => {
+interface SearchForAllPagesProps {
+  navigation:any;
+}
+const SearchForAllPages: React.FC<SearchForAllPagesProps> = ({navigation}) => {
   return (
     <>
-      <HeaderForSearchForAllPages />
+      <HeaderForSearchForAllPages navigation={navigation}/>
       <MainForSearchForAllPages />
     </>
   );

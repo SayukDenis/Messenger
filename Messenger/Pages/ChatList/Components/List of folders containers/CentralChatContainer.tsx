@@ -1,11 +1,17 @@
 import ChatContentForCentralChat from "./CompontentsForChatListContainer/ChatContentForCentralChat";
 import BackgroundColorForBranchInChatList from "./CompontentsForChatListContainer/BackgroundColorForBranchInChatList";
 import ImageContainerForChatListContiner from "./CompontentsForChatListContainer/ImageContainerForChatListContiner";
-import React, { useEffect, useMemo } from "react";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import React from "react";
+import { TouchableOpacity } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
-import LastMessageStatus from "./CompontentsForChatListContainer/LastMessageStatus";
+
 import Chat from "../../../../dao/Models/Chats/Chat";
+import User from "../../../../dao/Models/User";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
+import Channel from "../../../../dao/Models/Chats/Channel";
+import Group from "../../../../dao/Models/Chats/Group";
+import { getUrlToPhoto } from "./Functions/GetUrlToPhoto";
 
 interface CentralChatContainerProps {
   chat: Chat;
@@ -22,6 +28,8 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
   onBranchPress,
   nesting,
 }) => {
+
+
   return (
     <TouchableOpacity
       onPress={handlePress.current}
@@ -30,8 +38,8 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
       activeOpacity={1}
       style={listOfChatsStyle.chatcontainer}
     >
-      <ImageContainerForChatListContiner urlToPhoto={chat.linkToPhoto} />
-      <ChatContentForCentralChat   chat={chat} onBranchPress={onBranchPress}  />
+      <ImageContainerForChatListContiner urlToPhoto={getUrlToPhoto(chat)} />
+      <ChatContentForCentralChat chat={chat} onBranchPress={onBranchPress} />
       <BackgroundColorForBranchInChatList nesting={nesting} />
     </TouchableOpacity>
   );

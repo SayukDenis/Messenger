@@ -25,15 +25,16 @@ import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import ListOfBranches from "./ListOfBranches";
-import { useNavigation } from "@react-navigation/native"; // delete this line
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 
 interface ChatProps {
   chat: Chat;
   nesting: number;
+  navigation:any;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
+const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
@@ -97,10 +98,13 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
 
   const haveUnreadMessagesBool = haveUnreadMessages(chat);
-  const navigation = useNavigation<any>(); // delete this line
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
-    navigation.navigate('DialogueNavigation'); // delete this line
+    /*if(chat instanceof Dialogue){
+      navigation.navigate("Dialogue,{chat:(chat as Dialogue)})
+    }
+    else*/
+    
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
     console.log("Кнопку зажали");

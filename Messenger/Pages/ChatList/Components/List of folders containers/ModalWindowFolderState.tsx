@@ -44,7 +44,10 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
   const selfProfile: SelfProfile = useSelector((state: any) => {
     return state.selfProfileUser;
   });
-  const currentTab: number = 0;
+  const currentTab = useSelector((state: any) => {
+    let Tab = state.chatListReducer.currentTab.currentTab;
+    return Tab;
+  });
   if (!animationState) {
     return null;
   }

@@ -63,9 +63,9 @@ const images: string[] = [
 const numberOfUsersToCreate = 20;
 const numberOfFolderToCreate = 5;
 const numberOfTabToCreate = 4;
-const numberOfDialogueToCreate = 4;
-const numberOfGroupeToCreate = 10;
-const numberOfChannelToCreate = 10;
+const numberOfDialogueToCreate = 15;
+const numberOfGroupeToCreate = 3;
+const numberOfChannelToCreate = 3;
 
 //id
 let idUsersToCreate = 1;

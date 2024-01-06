@@ -25,6 +25,7 @@ function CentralHeaderContainer({
           justifyContent: "space-between",
           flexDirection: "row",
           width: screenWidth * 0.96,
+          
         },
       ]}
     >

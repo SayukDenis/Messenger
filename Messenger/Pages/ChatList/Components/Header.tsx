@@ -71,11 +71,10 @@ const Header:React.FC<HeaderProps>=({navigation})=> {
   };
   const OnLayoutModeOfEmployment = (event: LayoutChangeEvent) => {
     dispatch(setLayoutOfModeOfEmployment(event.nativeEvent.layout));
-    //console.log(event.nativeEvent.layout)
   };
   return (
     <HeaderContainer>
-      <View style={headerstyles.header}>
+      <View style={[headerstyles.header]}>
         <Animated.View
           style={{
             flexDirection: "row",

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { View, Animated, Dimensions } from "react-native";
 import ContactsSvg from "../SVG/ContactsSvg";
-import AddChatSvg from "../SVG/AddChatSvg";
 import AddFolderSvg from "../SVG/AddFolderSvg";
 import WriteMessageSvg from "../SVG/WriteMessageSvg";
 import UserIconSvg from "../SVG/UserIconSvg";
@@ -13,6 +12,15 @@ const RightContainer = ({ navigation }) => {
   const PressOnUserIcon = useRef(() => {
     navigation.navigate("NavigationForSettings");
   });
+  const PressOnContactsIcon=useRef(()=>{
+    navigation.navigate("ContactsPage");
+  })
+  const PressaOnAddFolderIcon=useRef(()=>{
+    navigation.navigate("Chat folders");
+  })
+  const PressOnWriteMessage=useRef(()=>{
+    navigation.navigate("Create channel and group or write message");
+  })
   return (
     <Animated.View
       style={[
@@ -29,24 +37,24 @@ const RightContainer = ({ navigation }) => {
           justifyContent: "center",
         }}
       >
-        <View style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}>
+        <TouchableOpacity  onPress={PressOnContactsIcon.current} style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}>
           <ContactsSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
-        </View>
-        <View style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }} onPress={PressaOnAddFolderIcon.current}>
           <AddFolderSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
-        </View>
-        <View style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={PressOnWriteMessage.current} style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}>
           <WriteMessageSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         onPress={PressOnUserIcon.current}
