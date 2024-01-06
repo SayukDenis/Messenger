@@ -9,18 +9,26 @@ import { messages, Message } from './tmpdata';
 import React from 'react';
 import DeleteMessageModal from './components/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
+import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 
-interface Coordinations {
-  x: number;
-  y: number;
+interface Layout {
   ID: number;
+  pageX: number;
+  pageY: number;
+  width: number;
+  height: number;  
 }
 
-let coord:Coordinations;
+let coord:Layout;
 let messageID:number=-1;
 let msgs:Message[];
 
-const Dialogue = () => {
+interface DialogueProps {
+  navigation: any;
+  dialogue: DialogueModel.default;
+}
+
+const Dialogue = ({ navigation, dialogue }:DialogueProps) => {
 
   const [messageMenuVisible, setMessageMenuVisible] = useState(false);
   const [messageMenuVisisbleAppearence, setMessageMenuVisisbleAppearence] = useState(false);
@@ -65,7 +73,7 @@ const Dialogue = () => {
       setEditMessage({} as Message);
   }
 
-  const handleMessagePressOrSwipe = useCallback((coordinations:Coordinations, pressed: boolean) => {
+  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed: boolean) => {
     if(pressed) {
       setMessageMenuVisible(true);
       coord = coordinations;

@@ -5,11 +5,16 @@ const { width, height } = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor:'transparent', 
-    height: screenHeight,
-    width: screenWidth,
-    zIndex:5,
+    //...StyleSheet.absoluteFillObject,
+    backgroundColor:'rgba(0,0,0,0.3)', 
+    height: height,
+    width: width,
+    zIndex:115,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
   buttonsContainer: {
     position:'absolute', 
@@ -19,8 +24,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal:10, 
     paddingVertical:5, 
     borderRadius:15, 
-    borderWidth:0.2, 
-    borderColor:'rgb(83,83,83)', 
     width:width*0.2
   }
 })

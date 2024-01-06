@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
-import { MutableRefObject, useState, memo, useCallback, useRef } from 'react'
+import { MutableRefObject, useState, memo, useCallback, useRef, useEffect } from 'react'
 import {Message, messages} from '../tmpdata';
 import { styles } from './Styles/ReplyTextType';
 import handlePress from './DefaultTextType';
@@ -10,23 +10,37 @@ const {width, height} = Dimensions.get('window');
 interface ReplyTextType {
   messages:Message[];
   message:Message;
-  setMessageMenuVisible:(arg0: {x:number, y:number, ID:number}, arg1: boolean)=>void;
+  setMessageMenuVisible:(arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
   id:number;
   scrollView:MutableRefObject<any>;
   cordsY:any;
 }
 
+let size = [];
 const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrollView, cordsY}:ReplyTextType) => {
+
+  const onLayout = (event) => {
+    const { width, height } = event.nativeEvent.layout;
+    size = [...size, { ID: id, layout: { width, height }}];
+  };
+  
   const handlePress = useCallback((event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
-    console.log(id);
-    if(!event) return { x: 0, y: 0, ID: id };
+    if(!event) return { ID: id, pageX: 0, pageY: 0, width: 0, height: 0 };
 
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
-    return { x:(pageX<(width/8)?(width/8):pageX)>(width*0.6)?(width*0.6):pageX,
-             y:(pageY<(height/12)?(height/12):pageY)>(height*5/7)?(height*5/7):pageY,
-             ID: id };
+
+    const component = size.find(c => c.ID === id);
+
+    return { 
+      ID: id,
+      pageX: pageX, //(pageX<(width/8)?(width/8):pageX)>(width*0.6)?(width*0.6):pageX
+      pageY: pageY, //(pageY<(height/12)?(height/12):pageY)>(height*5/7)?(height*5/7):pageY
+      width: component.layout.width,
+      height: component.layout.height,
+    };
   }, []);
+
   const handleLinkTo = useCallback((messageID:any) => {
     const y = cordsY[--messageID][0] - ((height*0.88)/2-cordsY[messageID][1]/2);
     scrollView.current.scrollTo({y, animated:true});
@@ -70,8 +84,14 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
               </View>
             </TouchableOpacity>
           </View>}
-          <TouchableOpacity activeOpacity={1} onPress={(event) => {setMessageMenuVisible(handlePress(event), true);}}>
-            <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}]}>
+          <TouchableOpacity 
+            activeOpacity={1} 
+            onPress={(event) => {setMessageMenuVisible(handlePress(event), true);}}
+          >
+            <View 
+              onLayout={(event) => onLayout(event)}
+              style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}]}
+            >
               <Text>{message.text}</Text>
               <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.edited?'edited ':''}
