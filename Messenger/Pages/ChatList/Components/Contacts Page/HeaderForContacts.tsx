@@ -41,7 +41,7 @@ const HeaderForContacts: React.FC<HeaderForContactsProps> = ({ navigation }) => 
             ref={inputRef}
             style={{
               width: screenWidth * 0.8,
-              height: screenHeight * 0.045,
+              height: screenHeight * 0.0415,
               backgroundColor: "#272727",
               alignSelf: "center",
               color: "white",
