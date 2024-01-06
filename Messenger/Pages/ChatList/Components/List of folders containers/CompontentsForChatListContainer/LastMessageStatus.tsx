@@ -23,11 +23,12 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({ chat }) => {
   if (!lastMessage) {
     return null;
   }
-  
-  return <View style={listOfChatsStyle.lastMessageStatusContainer}><LastMessageStatusContent selfProfile={selfProfile} chat={chat} /></View>;
+
+  return (
+    <View style={listOfChatsStyle.lastMessageStatusContainer}>
+      <LastMessageStatusContent selfProfile={selfProfile} chat={chat} />
+    </View>
+  );
 };
-
-
-
 
 export default LastMessageStatus;

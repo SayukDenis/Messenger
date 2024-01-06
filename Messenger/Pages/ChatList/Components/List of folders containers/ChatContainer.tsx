@@ -25,14 +25,16 @@ import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import ListOfBranches from "./ListOfBranches";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 
 interface ChatProps {
   chat: Chat;
   nesting: number;
+  navigation:any;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
+const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
@@ -98,6 +100,11 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting }) => {
   const haveUnreadMessagesBool = haveUnreadMessages(chat);
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
+    /*if(chat instanceof Dialogue){
+      navigation.navigate("Dialogue,{chat:(chat as Dialogue)})
+    }
+    else*/
+    
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
     console.log("Кнопку зажали");

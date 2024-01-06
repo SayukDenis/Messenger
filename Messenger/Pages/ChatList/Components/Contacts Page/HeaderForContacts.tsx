@@ -2,26 +2,22 @@ import React, { useEffect, useRef } from "react";
 import { View, TouchableOpacity, TextInput } from "react-native";
 import HeaderContainer from "../../../SemiComponents/HeaderContainer";
 import { headerstyles } from "../../Styles/HeaderStyle";
-import {
-  screenHeight,
-  screenWidth,
-} from "../../Constants/ConstantsForChatlist";
+import { screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
 import BackButton from "../../../SemiComponents/BackButton";
 
-interface HeaderForSearchForAllPagesProps {
+interface HeaderForContactsProps {
   navigation: any;
 }
 
-const HeaderForSearchForAllPages: React.FC<HeaderForSearchForAllPagesProps> = ({
-  navigation,
-}) => {
+const HeaderForContacts: React.FC<HeaderForContactsProps> = ({ navigation }) => {
   const pressOnBackButton = useRef(() => {
     navigation.goBack();
   });
   const inputRef = useRef<TextInput>(null);
-  useEffect(()=>{
-    inputRef.current.focus()
-  },[])
+  useEffect(() => {
+    //inputRef.current?.focus();
+  }, []);
+
   return (
     <HeaderContainer>
       <View
@@ -30,7 +26,6 @@ const HeaderForSearchForAllPages: React.FC<HeaderForSearchForAllPagesProps> = ({
           {
             width: screenWidth * 0.96,
             height: screenHeight * 0.08,
-            //justifyContent: "center",
             flexDirection: "row",
           },
         ]}
@@ -64,4 +59,4 @@ const HeaderForSearchForAllPages: React.FC<HeaderForSearchForAllPagesProps> = ({
   );
 };
 
-export default HeaderForSearchForAllPages;
+export default HeaderForContacts;

@@ -13,6 +13,9 @@ const RightContainer = ({ navigation }) => {
   const PressOnUserIcon = useRef(() => {
     navigation.navigate("NavigationForSettings");
   });
+  const PressOnContactsIcon=useRef(()=>{
+    navigation.navigate("ContactsPage")
+  })
   return (
     <Animated.View
       style={[
@@ -29,12 +32,12 @@ const RightContainer = ({ navigation }) => {
           justifyContent: "center",
         }}
       >
-        <View style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}>
+        <TouchableOpacity  onPress={PressOnContactsIcon.current} style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}>
           <ContactsSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
-        </View>
+        </TouchableOpacity>
         <View style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}>
           <AddFolderSvg
             width={screenWidth * kefForSizeOfSvg}

@@ -13,7 +13,7 @@ interface ChatListProps{
         <Header
           navigation={navigation}
         />
-        <Main/>
+        <Main navigation={navigation}/>
     </BackGroundGradientView>
   );
 }
