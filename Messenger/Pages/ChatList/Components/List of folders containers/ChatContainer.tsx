@@ -7,8 +7,6 @@ import React, {
 } from "react";
 import {
   View,
-  Image,
-  Text,
   TouchableOpacity,
   Dimensions,
   Animated,
@@ -17,7 +15,6 @@ import {
   NativeScrollEvent,
   ScrollView,
   Platform,
-  FlatList,
 } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import RightContainersForSwipe from "./RightContainersForSwipe";
@@ -27,14 +24,17 @@ import { connect, useSelector } from "react-redux";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
+import ListOfBranches from "./ListOfBranches";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 
 interface ChatProps {
   chat: Chat;
+  nesting: number;
+  navigation:any;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
+const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
@@ -44,20 +44,28 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     useState<number>(null);
   let randomBoolean = useRef(null);
   const [IsBranchesOpenBoolean, setIsBranchesOpenBoolean] = useState(false);
-  const timeForAnimation: number = 150;
+  const [stateForBranchesShow, setStateForBranchesShow] = useState(false);
   const [isSwiped, setIsSwiped] = useState(false);
   const [isSwipedFromRight, setIsSwipedFromRight] = useState(false);
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
   const [positionXForSwipeable, setPositionXForSwipeable] =
     useState<number>(screenWidth);
-
+  useEffect(() => {});
+  function obhod(chat: Chat) {
+    for (let index = 0; index < chat.branches.length; index++) {
+      console.log(chat.branches[index].title);
+      obhod(chat.branches[index]);
+    }
+    return;
+  }
   const haveUnreadMessages = (chat) => {
-    const lastMessage: Message = chat.messages[chat.messages.length - 1]
-      ? chat.messages[chat.messages.length - 1]
-      : undefined;
+    const lastMessage: Message =
+      chat.messages.length > 0
+        ? chat.messages[chat.messages.length - 1]
+        : undefined;
 
     const id: number | undefined = chat.dictionary?.get(selfProfile.userId);
-    if (!lastMessage)
+    if (lastMessage !== undefined)
       if (lastMessage.author.userId !== selfProfile.userId) {
         if (id && lastMessage.messageId > id) {
           return true;
@@ -65,12 +73,17 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
       }
     return false;
   };
-  const onBranchPress:()=>void = () => {
+  const onBranchPress: () => void = () => {
+    if (!IsBranchesOpenBoolean) {
+      setBranchPressOpen();
+    }
+    setStateForBranchesShow(!stateForBranchesShow);
+  };
+  const setBranchPressOpen: () => void = () => {
     setIsBranchesOpenBoolean(!IsBranchesOpenBoolean);
   };
   useEffect(() => {
     randomBoolean.current = Math.random() < 0.5;
-    haveUnreadMessagesBoolf.current = haveUnreadMessages(chat);
   }, []);
 
   const rightDragXposition = useState(new Animated.Value(screenWidth));
@@ -82,12 +95,16 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
   const [stateForSwipeDirection, setStateForSwipeDirection] =
     useState<number>(null);
 
-
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
 
-  const haveUnreadMessagesBoolf = useRef(null);
+  const haveUnreadMessagesBool = haveUnreadMessages(chat);
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
+    /*if(chat instanceof Dialogue){
+      navigation.navigate("Dialogue,{chat:(chat as Dialogue)})
+    }
+    else*/
+    
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
     console.log("Кнопку зажали");
@@ -210,7 +227,6 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
     Animated.timing(rightDragXposition[0], {
       toValue: positionX,
       duration: 0,
-
       useNativeDriver: false,
     }).start();
   };
@@ -226,6 +242,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
       useNativeDriver: false,
     }).start();
   };
+
   if (Platform.OS == "android") {
     return (
       <>
@@ -234,6 +251,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
           handlePress={handlePress}
           onLongPressChat={onLongPressChat}
           onBranchPress={onBranchPress}
+          nesting={nesting}
         />
         <View
           style={{
@@ -243,6 +261,14 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
             backgroundColor: "gray",
           }}
         />
+        {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
+          <ListOfBranches
+            chat={chat}
+            nesting={nesting + 1}
+            setBranchOpen={setBranchPressOpen}
+            stateForBranchesShow={stateForBranchesShow}
+          />
+        ) : null}
       </>
     );
   }
@@ -251,7 +277,6 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
       <Animated.View>
         <View
           style={{
-            backgroundColor: null,
             position: "absolute",
             height: screenHeight * 0.08,
             width: !isSwipedFromLeft
@@ -310,7 +335,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
           <LeftContainerForSwipe
             leftDragXposition={leftDragXposition[0]}
             leftDragXpositionForRerender={leftDragXpositionForRerender}
-            haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
+            haveUnreadMessagesBool={haveUnreadMessagesBool}
           />
 
           <CentralChatContainer
@@ -318,6 +343,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
             handlePress={handlePress}
             onLongPressChat={onLongPressChat}
             onBranchPress={onBranchPress}
+            nesting={nesting}
           />
           <RightContainersForSwipe
             randomBoolean={randomBoolean}
@@ -335,21 +361,12 @@ const ChatContainer: React.FC<ChatProps> = ({ chat }) => {
         />
       </Animated.View>
       {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
-        <>
-          <FlatList
-            data={chat.branches}
-            renderItem={({ item: branch }) => (
-              <View
-                style={{
-                  width: screenWidth,
-                  height: screenHeight * 0.08,
-                  backgroundColor: "black",
-                }}
-              ></View>
-            )}
-            keyExtractor={(branch) => branch.title}
-          />
-        </>
+        <ListOfBranches
+          chat={chat}
+          nesting={nesting + 1}
+          setBranchOpen={setBranchPressOpen}
+          stateForBranchesShow={stateForBranchesShow}
+        />
       ) : null}
     </View>
   );

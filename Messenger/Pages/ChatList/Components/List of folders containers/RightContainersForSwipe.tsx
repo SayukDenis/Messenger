@@ -1,12 +1,9 @@
-// RightContainersForSwipe.tsx
-import React, { useRef, useEffect, useState } from "react";
-import { View, Text, Animated, Dimensions } from "react-native";
-import MuteForSwipeableSvg from "../SVG/MuteForSwipeableSvg";
-import UnMuteForSwipeableSvg from "../SVG/UnMuteForSwipeableSvg";
-import DeleteForSwipeableSvg from "../SVG/DeleteForSwipeableSvg";
+import DeleteContainerForRightContainerForSwipe from "./CompontentsForChatListContainer/DeleteContainerForRightContainerForSwipe";
+import NotificationStatusContainerForRightContainerForSwipe from "./CompontentsForChatListContainer/NotificationStatusContainerForRightContainerForSwipe";
+import React, { useEffect,} from "react";
+import { View, Dimensions } from "react-native";
 import { connect } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
-import { deg } from 'react-native-linear-gradient-degree';
+
 interface RightContainersForSwipeProps {
   rightDragXposition: any;
   rightDragXpositionForRerender:number;
@@ -37,16 +34,10 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
       screenWidth * 2,
     ],
     outputRange: [0, 1, 0, 0],
-    //extrapolateLeft: "clamp",
   });
   const procentOfSwipe=(rightDragXpositionForRerender-screenWidth)/screenWidth;
   useEffect(() => {
-    //console.log(rightDragXposition)
-    //console.log(procentOfSwipe)
-   // console.log(scaleForNotRender.__getValue())
-    //console.log(rightDragXposition.__getValue())
-    //console.log(Number.parseInt(JSON.stringify(scaleForNotRender)))
-    //console.log(10)
+
   });
   useEffect(() => {
     randomBoolean.current = Math.random() < 0.5;
@@ -61,103 +52,8 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
         flexDirection: "row",
       }}
     >
-      <Animated.View
-        style={{
-          position: "absolute",
-          width: screenWidth * 0.2 * scaleForNotRender.__getValue(),
-          overflow: "hidden",
-          zIndex: 0,
-          top: 0,
-          bottom: 0,
-          left: 0,
-        }}
-      >
-        <LinearGradient
-           colors={["rgba(255, 135, 35, 1)", "rgba(255, 135, 35, 0.1)"]}
-           start={{ x: 0.2, y: -2*procentOfSwipe }}
-           end={{ x: 0, y: 1.2*procentOfSwipe}}
-          style={{
-            position: "absolute",
-            width: screenWidth*0.2,
-            height: screenHeight * 0.08,
-          }}
-        />
-        <Animated.View
-          style={{
-           // backgroundColor: "#F79747",
-            width: screenWidth * 0.2,
-            height: screenHeight * 0.08,
-            justifyContent: "center",
-            position: "absolute",
-          }}
-        >
-          <Animated.View
-            style={{ justifyContent: "center", flexDirection: "row" }}
-          >
-            <Animated.View style={{ justifyContent: "center" }}>
-              <Animated.View
-                style={{ flexDirection: "row", justifyContent: "center" }}
-              >
-                {randomBoolean.current ? (
-                  <MuteForSwipeableSvg
-                    width={screenWidth * 0.085}
-                    height={screenHeight * 0.05}
-                    color="white"
-                  />
-                ) : (
-                  <UnMuteForSwipeableSvg
-                    width={screenWidth * 0.085}
-                    height={screenHeight * 0.05}
-                    color="white"
-                  />
-                )}
-              </Animated.View>
-              <Animated.Text style={{ color: "white", alignSelf: "center" }}>
-                Notification
-              </Animated.Text>
-            </Animated.View>
-          </Animated.View>
-        </Animated.View>
-      </Animated.View>
-      <Animated.View
-        style={{
-          width: screenWidth,
-          justifyContent: "center",
-
-          transform: [{ translateX: scale1ForRight }],
-        }}
-      >
-        <LinearGradient
-          colors={["rgba(255, 34, 27, 1)", "rgba(255, 34, 27, 0.1)"]}
-          start={{ x: 0.2, y: -2*procentOfSwipe }}
-          end={{ x: 0, y: 1.2*procentOfSwipe}}
-          style={{
-            position: "absolute",
-            width: screenWidth,
-            height: screenHeight * 0.08,
-          }}
-        />
-        <Animated.View
-          style={{
-            width: screenWidth * 0.2,
-            height: screenHeight * 0.08,
-            justifyContent: "center",
-            flexDirection: "row",
-            //backgroundColor: "red",
-          }}
-        >
-          <Animated.View style={{ justifyContent: "center" }}>
-            <DeleteForSwipeableSvg
-              width={screenWidth * 0.085}
-              height={screenHeight * 0.05}
-              color="white"
-            />
-            <Animated.Text style={{ color: "white", alignSelf: "center" }}>
-              Delete
-            </Animated.Text>
-          </Animated.View>
-        </Animated.View>
-      </Animated.View>
+     <NotificationStatusContainerForRightContainerForSwipe scaleForNotRender={scaleForNotRender} randomBoolean={randomBoolean}  screenWidth={screenWidth} procentOfSwipe={procentOfSwipe} screenHeight={screenHeight}  />
+      <DeleteContainerForRightContainerForSwipe scale1ForRight={scale1ForRight}  procentOfSwipe={procentOfSwipe} screenHeight={screenHeight} screenWidth={screenWidth}  />
     </View>
   );
 };

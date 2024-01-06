@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Animated,
-  Dimensions,
-  Text,
-  FlatList,
-  ScrollView,
-  GestureResponderEvent,
-  Platform,
-} from "react-native";
+import { View, Dimensions, FlatList, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
@@ -18,9 +9,10 @@ import { booleanForLogging } from "../ChatList";
 
 interface ListOfFolderProps {
   currentFolder: number;
+  navigation:any;
 }
 
-const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
+const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder,navigation }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
   useEffect(() => {
@@ -32,7 +24,11 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
   });
-  const currentTab: number = 0;
+  const currentTab = useSelector((state: any) => {
+    let Tab = state.chatListReducer.currentTab.currentTab;
+    return Tab;
+  });
+
   return (
     <View style={{ height: screenHeight, width: screenWidth }}>
       <FlatList
@@ -40,7 +36,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
         keyExtractor={(item, index) => index.toString()}
         nestedScrollEnabled={true}
         renderItem={({ item, index }) => (
-          <ChatContainer key={index} chat={item} />
+          <ChatContainer key={index} chat={item} nesting={0} navigation={navigation} />
         )}
         ListHeaderComponent={
           <>
@@ -58,11 +54,10 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder }) => {
           />
         }
         showsVerticalScrollIndicator={false}
-        windowSize={10}
-        initialNumToRender={10}
+        windowSize={20}
       />
     </View>
   );
 };
 
-export default connect(null)(ListOfFolder);
+export default connect(null)(React.memo(ListOfFolder));
