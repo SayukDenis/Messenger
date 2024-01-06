@@ -115,4 +115,11 @@ export const styles = StyleSheet.create({
     fontSize: responsiveWidth(18),
     color: '#fff',
   },
+
+  countryFlag: {
+    width: responsiveWidth(24),
+    height: responsiveHeight(23),
+    marginRight: responsiveWidth(7),
+    marginLeft: responsiveWidth(11),
+  },
 });

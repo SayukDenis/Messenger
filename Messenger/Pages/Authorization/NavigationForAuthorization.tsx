@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Authorization from './Authorization';
 import PhoneCodeRegistration from './Pages/PhoneCodeRegistration';
 import Registration from './Pages/Registration';
+import CountrySelection from './Pages/CountrySelection';
 import CodePassword from '../CodePassword/CodePassword';
 import { Stack } from '../../Navigation/Navigation';
 import ChatList from '../ChatList/ChatList';
@@ -20,6 +21,7 @@ const NavigationForAuthorization = () => {
     <Stack.Screen name="PhoneCodeRegistration" component={PhoneCodeRegistration} />
     <Stack.Screen name="Registration" component={Registration} />
     <Stack.Screen name="CodePassword" component={CodePassword} />
+    <Stack.Screen name="CountrySelection" component={CountrySelection}/>
     <Stack.Screen name="ChatList" component={ChatList}/>
   </Stack.Navigator>
   );

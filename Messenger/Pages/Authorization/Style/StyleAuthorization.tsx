@@ -13,5 +13,5 @@ function responsiveHeight(baseHeight: number) {
 }
 
 export const styles = StyleSheet.create({
-  
+ 
 });
