@@ -10,7 +10,6 @@ import Creator from './Creator';
 import { generateSqlTableFields } from './generateSQL';
 import Branch from '../../Models/Chats/Branch';
 import Role from '../../Models/Chats/Role';
-import { Open } from '../dao';
 import LogWriter from '../LogWriter';
 import DataBase from '../Database';
 
@@ -98,9 +97,9 @@ async function executeSql(sqlCode: string) {
   try {
     const database = await db.openDatabase();
 
-    await database.transaction(tx => {
+    await database!.transaction(tx => {
       tx.executeSql(
-        sqlCode, null,
+        sqlCode, undefined,
         () => {
           LogWriter.log('Successful executing SQL');
         },
