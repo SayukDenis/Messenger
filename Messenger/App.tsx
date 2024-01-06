@@ -1,36 +1,21 @@
 import { registerRootComponent } from "expo";
 import { StatusBar, AppRegistry } from "react-native";
-import React, { useEffect, useState } from 'react';
-import { printSelfProfile } from "./Initialization/Print";
-import { View, Text } from 'react-native';
-import * as SQLite from 'expo-sqlite';
-
-const db = SQLite.openDatabase('mydb.db');
-
-
+import React from "react";
+import { Provider } from "react-redux";
+import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Navigation from "./Navigation/Navigation";
 export default function App() {
-  printSelfProfile();
-  //createTables();
-  //test();
-  //Open();
-  //let date = Date.now();
-  //console.log(date.toString());
-  //console.log("next:\n\n")
-  //let t = true;
-  //console.log(`4djjdjd^ ${t}`);
-  //let f = false;
-  //console.log(f);
-  ////let num = 12.2;
-  ////console.log(`Yes ${num}`);
-  //addEmployee();
-  //readEmployees();
-
+  StatusBar.setBarStyle("dark-content");
   return (
-    <View>
-    </View>
+    <SafeAreaProvider>
+      <StatusBar translucent backgroundColor="transparent" />
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    </SafeAreaProvider>
   );
 }
-
 registerRootComponent(App);
 AppRegistry.registerComponent("10", () => App);
 AppRegistry.registerComponent("10".toLowerCase(), () => App);

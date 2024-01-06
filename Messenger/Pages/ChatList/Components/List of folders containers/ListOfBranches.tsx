@@ -3,24 +3,31 @@ import Chat from "../../../../dao/Models/Chats/Chat";
 import ChatContainer from "./ChatContainer";
 import { connect } from "react-redux";
 import { Animated, Easing, Dimensions, FlatList } from "react-native";
+import { screenHeight } from "../../Constants/ConstantsForChatlist";
 interface ListOfBranchesProps {
   chat: Chat;
   nesting: number;
-  setBranchOpen:()=>void;
-  stateForBranchesShow:boolean;
+  setBranchOpen: () => void;
+  stateForBranchesShow: boolean;
+  navigation: any;
 }
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ListOfBranches: React.FC<ListOfBranchesProps> = ({ chat, nesting,setBranchOpen,stateForBranchesShow }) => {
+const ListOfBranches: React.FC<ListOfBranchesProps> = ({
+  chat,
+  nesting,
+  setBranchOpen,
+  stateForBranchesShow,
+  navigation
+}) => {
   const arrayOfBranchesValues = Array.from(
     { length: chat.branches.length },
     (_, index) => useState(new Animated.Value(0))
   );
-  const durationOfAnimation: number = 75*1;
+  const durationOfAnimation: number = 75 * 1;
   const translateYOfContainers = arrayOfBranchesValues.map(
     (animatedValue, index) => {
       return animatedValue[0].interpolate({
         inputRange: [0, 1],
-        outputRange: [-screenHeight*0.08, 0],
+        outputRange: [-screenHeight * 0.08, 0],
       });
     }
   );
@@ -34,13 +41,17 @@ const ListOfBranches: React.FC<ListOfBranchesProps> = ({ chat, nesting,setBranch
       });
     }
   );
-  useEffect(()=>{
-    Animated.sequence(stateForBranchesShow?animationsForBranches:animationsForBranches.slice().reverse()).start(() => {
-      if(!stateForBranchesShow){
+  useEffect(() => {
+    Animated.sequence(
+      stateForBranchesShow
+        ? animationsForBranches
+        : animationsForBranches.slice().reverse()
+    ).start(() => {
+      if (!stateForBranchesShow) {
         setBranchOpen();
       }
     });
-  },[stateForBranchesShow])
+  }, [stateForBranchesShow]);
 
   return (
     <FlatList
@@ -49,10 +60,15 @@ const ListOfBranches: React.FC<ListOfBranchesProps> = ({ chat, nesting,setBranch
       renderItem={({ item, index }) => (
         <Animated.View
           style={{
-            transform: [{ translateY: translateYOfContainers[index] }],opacity:arrayOfBranchesValues[index][0]
+            transform: [{ translateY: translateYOfContainers[index] }],
+            opacity: arrayOfBranchesValues[index][0],
           }}
         >
-          <ChatContainer chat={item} nesting={nesting} />
+          <ChatContainer
+            chat={item}
+            nesting={nesting}
+            navigation={navigation}
+          />
         </Animated.View>
       )}
     />

@@ -20,7 +20,7 @@ const HeaderForSearchForAllPages: React.FC<HeaderForSearchForAllPagesProps> = ({
   });
   const inputRef = useRef<TextInput>(null);
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
   return (
     <HeaderContainer>

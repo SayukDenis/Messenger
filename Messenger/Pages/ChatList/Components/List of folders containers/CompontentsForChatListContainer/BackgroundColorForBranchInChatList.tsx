@@ -15,7 +15,7 @@ const BackgroundColorForBranchInChatList: React.FC<
   return (
     <View
       style={{
-        backgroundColor: nesting == 0 ? null : `rgba(118,214,255,0.1)`,
+        backgroundColor: nesting == 0 ? undefined : `rgba(118,214,255,0.1)`,
         width: screenWidth,
         height: screenHeight * 0.08,
         position: "absolute",

@@ -4,7 +4,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const headerstyles = StyleSheet.create({
 
   container: {
-    height: Platform.OS=="android"?screenHeight * 0.08+StatusBar.currentHeight:screenHeight * 0.08+Constants.statusBarHeight,
+    height: Platform.OS=="android"?screenHeight * 0.08+(StatusBar.currentHeight==undefined?0:StatusBar.currentHeight):screenHeight * 0.08+Constants.statusBarHeight,
    // backgroundColor: "#E7E6E4",
    backgroundColor:"white",
     borderBottomLeftRadius: 30,

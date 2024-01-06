@@ -24,7 +24,7 @@ const ContactContainer: React.FC<ContactContainerProps> = ({ contact }) => {
   };
   const CryptoJS = require('crypto-js');
 
-const generateColorFromPhoneNumber = (phoneNumber) => {
+const generateColorFromPhoneNumber = (phoneNumber:string|undefined) => {
   const cleanedPhoneNumber = phoneNumber?.replace(/^\+/, '');
   const hash = CryptoJS.MD5(cleanedPhoneNumber).toString();
   const r = parseInt(hash.substr(0, 2), 16);

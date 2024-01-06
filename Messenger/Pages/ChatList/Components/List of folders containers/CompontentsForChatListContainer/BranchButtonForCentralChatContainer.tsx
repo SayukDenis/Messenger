@@ -6,7 +6,7 @@ import { screenHeight, screenWidth } from "../../../Constants/ConstantsForChatli
 export function BranchButtonForCentralChatContainer({
   onBranchPress,
 
-}) {
+}:any) {
   return (
     <TouchableOpacity
       onPress={onBranchPress}

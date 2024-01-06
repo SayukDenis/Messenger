@@ -25,7 +25,7 @@ let msgs:Message[];
 
 
 
-const Dialogue = ({ navigation, route }) => {
+const Dialogue = ({ navigation, route }:any) => {
   console.log((route.params.chat as DialogueModel.default).users[1].name)
   const dialogue:DialogueModel.default=route.params.chat as DialogueModel.default;
   const [messageMenuVisible, setMessageMenuVisible] = useState(false);
@@ -33,7 +33,7 @@ const Dialogue = ({ navigation, route }) => {
   const [listOfMessages, setListOfMessages] = useState(messages);
   
   const [isReply, setIsReply] = useState(false);
-  const [replyMessage, setReplyMessage] = useState({} as Message);
+  const [replyMessage, setReplyMessage] = useState({} as any);
 
   const replyHandler = useCallback(() => {
     setIsReply(!isReply);

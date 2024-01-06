@@ -3,7 +3,7 @@ import { Stack } from "../../../../Navigation/Navigation";
 import React from "react";
 import Dialogue from "../Dialogue";
 
-const DialogueNavigation = ({route}) => {
+const DialogueNavigation = ({route}:any) => {
 
   return (
     <>
