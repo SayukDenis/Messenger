@@ -11,31 +11,30 @@ import { generateSqlTableFields } from './generateSQL';
 import Branch from '../../Models/Chats/Branch';
 import Role from '../../Models/Chats/Role';
 import { Open } from '../dao';
+import LogWriter from '../LogWriter';
+import DataBase from '../Database';
 
-const isEnableLog = true;
+const db = await DataBase.getInstance();
 
 export function createTables() {
-  const database = Open()
   //add schemes of all classes
   initializeClasses();
   //create Sql code of each classes
   const models: Map<string, string> = generateTableCreationQueries();
 
-  if (isEnableLog) {
-    for (const model of models)
-      console.log(`\nName table: ${model[0]}\nhave sql code:\n${model[1]}\n`)
-    console.log("\ndao_generate_main: End of main\n\n");
-  }
+
+  for (const model of models)
+    LogWriter.log(`\nName table: ${model[0]}\nhave sql code:\n${model[1]}\n`)
+  LogWriter.log("\ndao_generate_main: End of main\n\n");
+
 
   //create all table in database 
   for (const model of models) {
     executeSql(model[1]);
-    if (isEnableLog) console.log(`Table "${model[0]}" was created`);
+    LogWriter.log(`Table "${model[0]}" was created`);
   }
 
 }
-
-//with sorting by priority
 function initializeClasses() {
   const creator = Creator.getInstance();
   creator.clean();
@@ -50,7 +49,7 @@ function initializeClasses() {
   creator.addClass(Tab);
   creator.addClass(User);
 
-  isEnableLog && console.log("dao_generate_addClasses: Number of class: " + creator.outClass().length);
+  LogWriter.log("dao_generate_addClasses: Number of class: " + creator.outClass().length);
 }
 function generateTableCreationQueries(): Map<string, string> {
   const creator = Creator.getInstance();
@@ -64,7 +63,7 @@ function generateTableCreationQueries(): Map<string, string> {
     ])
   );
 
-  isEnableLog && console.log("dao_generate_createTable: Number of class in map: " + modelsMap.size);
+  LogWriter.log("dao_generate_createTable: Number of class in map: " + modelsMap.size);
   //add sql code and priority
   generateSqlTableFields(creator.outClass(), modelsMap);
   //create from sqlCodes one string
@@ -97,22 +96,21 @@ function sortingRows(a: string, b: string): number {
 }
 async function executeSql(sqlCode: string) {
   try {
-    const database = await Open();
+    const database = await db.openDatabase();
 
-    await
-      database.transaction(tx => {
-        tx.executeSql(
-          sqlCode, null,
-          () => {
-            if (isEnableLog) console.log('Successful created table');
-          },
-          (_, error) => {
-            console.error('Error executing SQL: ', error);
-            return true;
-          }
-        );
-      });
+    await database.transaction(tx => {
+      tx.executeSql(
+        sqlCode, null,
+        () => {
+          LogWriter.log('Successful executing SQL');
+        },
+        (_, error) => {
+          LogWriter.error(`Error executing SQL: ${error}`);
+          return true;
+        }
+      );
+    });
   } catch (error) {
-    console.error('Error opening database: ', error);
+    LogWriter.error(`Error opening database: ${error}`);
   }
 }
