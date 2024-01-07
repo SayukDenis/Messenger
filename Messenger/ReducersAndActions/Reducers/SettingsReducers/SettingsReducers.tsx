@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 const inisialStateNewfolder ={
-    listOfNewFolder:["All chats"],
+    listOfNewFolder:[],
 }
 const inisialStaterecomendedfolder ={
   recomdendedFolders:[],
