@@ -14,7 +14,7 @@ import EditUsernamePage from "./MainSettingPage/EdiitPage/EditUserNamePage/EditU
 import AddFolderPage from "./ChatFolderPage/AddFolderPage/AddFolderPage";
 import { Stack } from "../../Navigation/Navigation";
 
-const NavigationForSettings = () => {
+ export const NavigationForSettings = () => {
   return (
     <>
       <Stack.Navigator
@@ -37,7 +37,7 @@ const NavigationForSettings = () => {
   );
 };
 
-const ConfidentialityPageNavigator = () => {
+export const ConfidentialityPageNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="ConfidentialityPage"
@@ -54,7 +54,7 @@ const ConfidentialityPageNavigator = () => {
     </Stack.Navigator>
   );
 };
-const EditPageNavigator = () => {
+export const EditPageNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="EditPage"
@@ -69,7 +69,7 @@ const EditPageNavigator = () => {
   );
 };
 
-const ChatFolderPageNAvigator = () => {
+export const ChatFolderPageNAvigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="Chatfolders"

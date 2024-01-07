@@ -22,7 +22,7 @@ const MainForSearchForAllPages: React.FC<MainForSearchForAllPagesProps> = () => 
     <BackGroundGradientView>
       {contacts.map((contact)=>{
         return (<View >
-          <Text>{contact.}</Text>
+       
         </View>)
       })}
     </BackGroundGradientView>
