@@ -1,19 +1,22 @@
 import { MutableRefObject } from "react";
-import { Message } from "../../tmpdata";
+import { MessageProps } from "../../GeneralInterfaces/IMessage";
+import User from "../../../../../dao/Models/User";
 
-export interface messageProps {
+export interface DialogueMessagesProps {
   setMessageMenuVisible:(arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
   messageMenuVisisbleAppearence:boolean;
   messageID:number;
-  listOfMessages:Message[];
+  listOfMessages:MessageProps[];
   isReply:boolean;
   isEdit:boolean;
+  author: User;
 }
 
 export interface messageViewHandleProps {
-  listOfMessages:Message[], 
-  message:Message, 
-  setMessageMenuVisible:{(arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean):void}, 
-  scrollViewRef:MutableRefObject<any>, 
-  coordsY:any
+  listOfMessages: MessageProps[]; 
+  message: MessageProps; 
+  setMessageMenuVisible: {(arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean):void}; 
+  scrollViewRef: MutableRefObject<any>; 
+  coordsY: any;
+  author: User;
 }

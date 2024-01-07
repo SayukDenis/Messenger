@@ -1,10 +1,9 @@
-import { Message } from "../../tmpdata";
-
+import { MessageProps } from "../../GeneralInterfaces/IMessage";
 
 export interface ReplyAndEditMenuProps {
   isReply:boolean, 
-  replyMessage:Message, 
+  replyMessage:MessageProps, 
   cancelReplyAndEdit:()=>void, 
   isEdit:boolean, 
-  editMessage:Message
+  editMessage:MessageProps
 }

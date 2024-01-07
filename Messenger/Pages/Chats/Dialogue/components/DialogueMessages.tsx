@@ -1,22 +1,21 @@
-import { View, Dimensions, ScrollView, Keyboard, KeyboardEvent } from 'react-native';
-import { useRef, useState, useEffect } from 'react';
+import { View, Dimensions, ScrollView, Keyboard, KeyboardEvent, FlatList } from 'react-native';
+import { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import styles from './Styles/DialogueMessages'
-import DefaultTextType from '../MessageViewsAndTypes/DefaultTextType'
-import ReplyTextType from '../MessageViewsAndTypes/ReplyTextType';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { messageProps, messageViewHandleProps } from './interfaces/IDialogueMessages';
+import { DialogueMessagesProps, messageViewHandleProps } from './interfaces/IDialogueMessages';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { connect } from 'react-redux';
+import MessageItem from './MessageItem';
 
 const { height, width } = Dimensions.get('screen');
 
-export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit }:messageProps) => {
+const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit, author }:DialogueMessagesProps) => {
   const scrollViewRef = useRef(null);
   useEffect(() => {
     if (scrollViewRef.current) {
-      (scrollViewRef.current as ScrollView).scrollToEnd({ animated: true });
+      (scrollViewRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
     }
   }, [listOfMessages]);
   
@@ -54,33 +53,53 @@ export const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppea
     };
   }, []);
 
+  const keyExtractor = (item:any) => {
+    return item.messageId.toString();
+  }
+
+  const setCoordsYHandler = (newCoordsY:any) => {
+    setCoordsY(newCoordsY);
+  }
+
+  const renderItem = ({item}:any) => (
+    <MessageItem 
+      item={item}
+      listOfMessages={listOfMessages}
+      setMessageMenuVisible={setMessageMenuVisible}
+      scrollViewRef={scrollViewRef}
+      coordsY={coordsY}
+      author={author}
+      messageID={messageID}
+      setCoordsY={setCoordsYHandler}
+    />);
+  const memoizedItem = useMemo(() => renderItem, []);
+
+  const ListHeaderComponent = () => (
+    <View style={{ height: screenHeight * 0.03+(isReply||isEdit?screenHeight*0.05:0) }} />
+  );
+
+  const ListFooterComponent = () => (
+    <View 
+      style={{ backgroundColor: 'transparent', height: (screenHeight*0.08+Constants.statusBarHeight) }} 
+    />
+  )
+
   return(
-    <GestureHandlerRootView style={[styles.mainContainer, { height: screenHeight * 0.94 + (checkForSoftMenuBar()?insets.top:0) - keyboardHeight }]}>
-      
-      <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} style={[styles.dialogueChat, {zIndex:3}]}>
-        <View style={{ backgroundColor: 'transparent', height: screenHeight * 0.08 + Constants.statusBarHeight }} />
-        {listOfMessages.map((message, index) => (
-          <View onLayout={
-            (event:any) => {
-              coordsY[message.id] = [event.nativeEvent.layout.y, event.nativeEvent.layout.height]; 
-              setCoordsY(coordsY);
-            }
-          } key={message.id} style={{flex:1, zIndex:message.id===messageID?4:-10}}>
-            {messageViewHandle({ listOfMessages, message, setMessageMenuVisible, scrollViewRef, coordsY})}
-          </View>
-        ))}
-        <View style={{height:isReply||isEdit?screenHeight*0.05:0, width:width}}/>
-        <View style={{ height: screenHeight*0.03 }} />
-      </ScrollView>
-    </GestureHandlerRootView>
+    <View style={[styles.mainContainer, { height: screenHeight * 0.94 + (checkForSoftMenuBar()?insets.top:0) - keyboardHeight, zIndex:0 }]}>
+      <FlatList
+        ref={scrollViewRef}
+        showsVerticalScrollIndicator={false}
+        style={[styles.dialogueChat, { zIndex: 3 }]}
+        data={listOfMessages}
+        inverted
+        windowSize={20}
+        keyExtractor={keyExtractor}
+        renderItem={memoizedItem}
+        ListHeaderComponent={ListHeaderComponent}//<View style={{ backgroundColor: 'transparent', height: screenHeight * 0.08 + Constants.statusBarHeight }} />
+        ListFooterComponent={ListFooterComponent} //<View style={{ height: screenHeight * 0.03 }} />
+      />
+    </View>
   );
 };
 
-const messageViewHandle = ({listOfMessages, message, setMessageMenuVisible, scrollViewRef, coordsY}:messageViewHandleProps) => {
-  if(message.type == 'text' && message.isReply == true) {
-    return <ReplyTextType key={message.id} messages={listOfMessages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={message.id} scrollView={scrollViewRef} cordsY={coordsY}/>;
-  }
-  else if(message.type == 'text') {
-    return <DefaultTextType key={message.id} messages={listOfMessages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={message.id}/>;
-  }
-};
+export default memo(connect(null)(DialogueMessages))
