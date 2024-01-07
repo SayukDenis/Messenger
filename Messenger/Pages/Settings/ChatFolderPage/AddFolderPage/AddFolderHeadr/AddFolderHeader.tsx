@@ -3,8 +3,8 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import StyleAddFolderHeader from "./StyleAddFolderHeader";
 import { useEffect } from "react";
-import { State } from "react-native-gesture-handler";
 import { addNewFolder } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
+import BackButton from "../../../../SemiComponents/BackButton";
 
 const AddFolderHeader: React.FC<any> = ({ navigation })=>{
 
@@ -22,11 +22,11 @@ const AddFolderHeader: React.FC<any> = ({ navigation })=>{
         navigation.goBack();
     };
     
-    return <View style = {StyleAddFolderHeader.header}>
+    return <View >
             <View style = {StyleAddFolderHeader.addFolderHeaderConteiner}>
-                <TouchableOpacity onPress={()=>navigation.goBack()} ><Text>but</Text></TouchableOpacity>
-                <Text>New folder</Text>
-                <TouchableOpacity onPress={addItem} ><Text>Done</Text></TouchableOpacity>
+                <TouchableOpacity style = {StyleAddFolderHeader.backButt} onPress={()=>navigation.goBack()} ><BackButton></BackButton></TouchableOpacity>
+                <View style={StyleAddFolderHeader.NewFolderArticleConteiner}><Text>New folder</Text></View>
+                <TouchableOpacity style ={StyleAddFolderHeader.DoneButton} onPress={addItem} ><Text>Done</Text></TouchableOpacity>
             </View>
     </View>
 }

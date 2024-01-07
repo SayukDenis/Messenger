@@ -4,7 +4,7 @@ import StyleEditCenter from './StyleEditCenter';
 
 const EditCenter: React.FC<any> = ({ navigation })=>{
     return <View style ={StyleEditCenter.conteiner}>
-        <Image style={StyleEditCenter.avatar} source={{uri:'https://www.meme-arsenal.com/memes/a297a80a2839282005e0a60135421919.jpg'}}></Image>
+        <Image style={StyleEditCenter.avatar} source={{uri:'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1'}}></Image>
         <TouchableOpacity style={StyleEditCenter.editPhotoButt}><Text>Edit photo</Text></TouchableOpacity>
         <View style ={StyleEditCenter.box}></View>
         <Text style ={StyleEditCenter.paragTextStyle}>Name</Text>

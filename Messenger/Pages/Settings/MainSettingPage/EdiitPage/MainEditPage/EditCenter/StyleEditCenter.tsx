@@ -12,8 +12,8 @@ const StyleEditCenter = StyleSheet.create({
     },
     
     avatar:{
-        height:100,
-        width:100,
+        height:windowWidth*0.35,
+        width:windowWidth*0.35,
         borderRadius:100000000,
         marginTop:'3%'
     },

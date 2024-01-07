@@ -103,7 +103,7 @@ async function executeSql(sqlCode: string) {
         () => {
           LogWriter.log('Successful executing SQL');
         },
-        (_, error) => {
+        (_: any, error: any) => {
           LogWriter.error(`Error executing SQL: ${error}`);
           return true;
         }

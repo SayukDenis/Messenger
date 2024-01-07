@@ -30,6 +30,7 @@
     "expo-navigation-bar": "~2.3.0",
     "expo-sqlite": "~11.3.3",
     "expo-status-bar": "~1.6.0",
+    "force": "^0.0.3",
     "i": "^0.3.7",
     "nativewind": "^2.0.11",
     "react": "^18.2.0",

@@ -15,7 +15,8 @@ const StyleEditPageHeader = StyleSheet.create({
         backgroundColor: '#E7E6E4',
         alignItems:'center',
         borderColor : '#A19C91',
-        borderWidth:1
+        borderWidth:1,
+        opacity:0,
     },
 
     backButt:{
