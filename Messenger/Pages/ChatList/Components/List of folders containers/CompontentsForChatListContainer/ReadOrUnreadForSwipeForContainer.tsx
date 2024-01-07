@@ -1,4 +1,4 @@
-// ReadOrUnreadForSwipeForContainer.tsx
+
 import React from "react";
 import { Animated } from "react-native";
 import { connect } from "react-redux";
@@ -62,7 +62,7 @@ const ReadOrUnreadForSwipeForContainer: React.FC<ReadOrUnreadForSwipeForContaine
             justifyContent: "center",
           }}
         >
-          {!haveUnreadMessagesBool ? (
+          {haveUnreadMessagesBool ? (
             <ReadForSwipeableSvg
               width={screenWidth * 0.085}
               height={screenHeight * 0.05}
@@ -81,7 +81,7 @@ const ReadOrUnreadForSwipeForContainer: React.FC<ReadOrUnreadForSwipeForContaine
               alignSelf: "center",
             }}
           >
-            Read
+            Unread
           </Animated.Text>
         </Animated.View>
       </Animated.View>

@@ -6,6 +6,7 @@ import {
   screenHeight,
   screenWidth,
 } from "../../Constants/ConstantsForChatlist";
+
 import { headerstyles } from "../../Styles/HeaderStyle";
 
 interface HeaderForCreateChannelAndGroupOrWriteMessageProps {
@@ -27,7 +28,6 @@ const HeaderForCreateChannelAndGroupOrWriteMessage: React.FC<
           {
             width: screenWidth * 0.96,
             height: screenHeight * 0.08,
-
             flexDirection: "row",
           },
         ]}

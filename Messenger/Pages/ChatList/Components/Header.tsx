@@ -38,6 +38,7 @@ const Header:React.FC<HeaderProps>=({navigation})=> {
   };
   useEffect(() => {
     if (!isTouchableForHeader && animationStateForTouchHamburger == 0) {
+      
       onHamburgerPress();
     }
   }, [isTouchableForHeader]);

@@ -5,12 +5,10 @@ import UnViewedMessage from "../../SVG/UnViewedMessage";
 import ViewedMessageIcon from "../../SVG/ViewedMessageIcon";
 import { listOfChatsStyle } from "../../../Styles/ListOfChatsStyle";
 import Chat from "../../../../../dao/Models/Chats/Chat";
-import Dialogue from "../../../../../dao/Models/Chats/Dialogue";
 import SelfProfile from "../../../../../dao/Models/SelfProfile";
 import { CountOfMessages } from "../Functions/CountOfMessages";
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
-import getNameOfChat from "../Functions/GetNameOfChat";
-import Group from "../../../../../dao/Models/Chats/Group";
+
 
 
 interface LastMessageStatusProps {
@@ -39,7 +37,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
           <UnViewedMessage />
         </View>
       );
-    } else if (true) {
+    } else{
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
           <ViewedMessageIcon
@@ -51,8 +49,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
   } else if (lastMessageId) {
     const countOfMessage: number = chat.messages.length - lastMessageId;
     if (countOfMessage === 0) return null;
-    //console.log(getNameOfChat(chat,selfProfile) +" "+lastMessageId+ ":"+chat.messages.length)
-    content = CountOfMessages(countOfMessage);
+    content = CountOfMessages(countOfMessage,"#FFFFFF","black",0.6,13);
   }
 
   return content;

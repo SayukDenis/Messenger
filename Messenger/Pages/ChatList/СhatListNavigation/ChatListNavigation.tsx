@@ -5,6 +5,7 @@ import SearchForAllPages from "../Components/SearchForAllPages";
 import ContactsPage from "../Components/ContactsPage";
 import { ChatFolderPageNAvigator } from "../../Settings/NavigationForSettings";
 import CreateChannelAndGroupOrWriteMessage from "../Components/CreateChannelAndGroupOrWriteMessage";
+import CreateGroupPage from "../Components/CreateGroupPage";
 
 const ChatListNavigation = () => {
   return (
@@ -39,6 +40,7 @@ const CreateChannelAndGroupOrWriteMessageNavigation = () => {
         name="Create channel and group or write navigation"
         component={CreateChannelAndGroupOrWriteMessage}
       />
+      <Stack.Screen name="Create Group Page" component={CreateGroupPage}/>
     </Stack.Navigator>
   );
 };

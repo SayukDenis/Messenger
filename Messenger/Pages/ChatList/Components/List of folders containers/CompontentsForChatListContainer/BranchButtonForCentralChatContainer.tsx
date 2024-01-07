@@ -19,12 +19,12 @@ export function BranchButtonForCentralChatContainer({
     >
       <View
         style={{
-          backgroundColor: "blue",
+          //backgroundColor: "blue",
           height: screenHeight * 0.045,
           width: screenWidth * 0.15,
         }}
       >
-        <BranchesSVG width={screenWidth} height={screenWidth} />
+        <BranchesSVG />
       </View>
     </TouchableOpacity>
   );
