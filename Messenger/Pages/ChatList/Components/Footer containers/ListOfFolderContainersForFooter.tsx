@@ -1,12 +1,8 @@
 // ListOfFolderContainersForFooter.tsx
 import React, { Ref } from "react";
-import { View, ScrollView, Platform } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import SelfProfile from "../../../../dao/Models/SelfProfile";
-import FolderContainer from "./FolderContainer";
-import { footerstyles } from "../../Styles/FooterStyle";
+import {  ScrollView} from "react-native";
 import FolderIndicator from "./FolderIndicator";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import ListOfFoldersButtons from "./ListOfFoldersButtons";
 import ContainerForListOfFolderContainersAndFolderIndicator from "./ContainerForListOfFolderContainersAndFolderIndicator";
 

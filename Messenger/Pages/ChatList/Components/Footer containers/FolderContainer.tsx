@@ -12,6 +12,7 @@ import { footerstyles } from "../../Styles/FooterStyle";
 import { connect, useSelector } from "react-redux";
 import Folder from "../../../../dao/Models/Folder";
 import { booleanForLogging } from "../../ChatList";
+import CountOfUnreadMessageOnFolderComponent from "./CountOfUnreadMessageOnFolderComponent";
 
 interface FolderProps {
   folder: Folder;
@@ -45,22 +46,23 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
         activeOpacity={1}
         onPress={OnPressRef.current}
         onLongPress={OnLongPressRef.current}
+        style={{ flexDirection: "row" }}
       >
-        <View
-          style={[
-            footerstyles.folderContainer,
-            isSelected ? footerstyles.selectedFolderContainer : null,
-          ]}
-        >
+        <View style={[]}>
           <Text
-            style={
-              isSelected && isSelectedThere
-                ? footerstyles.selectedText
-                : footerstyles.folder
-            }
+            style={[
+              footerstyles.textPosition,
+              isSelected && isSelectedThere ? footerstyles.selectedText : null,
+            ]}
           >
             {folder.folderName}
           </Text>
+        </View>
+        <View style={{flexDirection:"row",marginRight:5}}>
+          <CountOfUnreadMessageOnFolderComponent
+            folder={folder}
+            isSelected={isSelected && isSelectedThere}
+          />
         </View>
       </TouchableOpacity>
     );
