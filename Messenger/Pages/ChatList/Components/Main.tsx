@@ -50,7 +50,6 @@ const Main: React.FC<MainProps> = ({navigation}) => {
   const [positionXInContainer, setPositionXInContainer] = useState<number>(0);
   const dispatch = useDispatch();
   const animationState = useSelector((state: any) => {
-    //console.log(state.chatListReducer.animationForChatListFolder)
     return state.chatListReducer.animationForChatListFolder
       .animationForChatListFolder;
   });
@@ -148,6 +147,7 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     const updatedWidths = [...widths.current];
     updatedWidths[index] = width;
     widths.current = updatedWidths;
+
   });
   useEffect(() => {
     if (booleanForLogging) {
@@ -205,7 +205,7 @@ const Main: React.FC<MainProps> = ({navigation}) => {
         selectedFolder={selectFolder}
         positionX={positionX}
         positionXInContainer={positionXInContainer}
-        widths={widths.current}
+        widths={widths}
         setAnimation={setAnimation}
         handlePress={handlePress}
         handlePressOut={handlePressOut}

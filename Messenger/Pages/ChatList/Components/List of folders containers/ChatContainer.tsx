@@ -2,6 +2,7 @@ import React, {
   MutableRefObject,
   Ref,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -26,6 +27,8 @@ import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import ListOfBranches from "./ListOfBranches";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
+import { CountOfUnreadMessages } from "./Functions/CountOfUnreadMessage";
+import getNameOfChat from "./Functions/GetNameOfChat";
 
 interface ChatProps {
   chat: Chat;
@@ -58,22 +61,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
     }
     return;
   }
-  const haveUnreadMessages = (chat:Chat) => {
-    const lastMessage: Message|null =
-      chat.messages.length > 0
-        ? chat.messages[chat.messages.length - 1]
-        :null;
-
-    let id: number | undefined =0;
   
-    if (lastMessage !== undefined)
-      if (lastMessage?.author.userId !== selfProfile.userId) {
-        if (id && lastMessage?.messageId!==undefined && lastMessage?.messageId > id) {
-          return true;
-        }
-      }
-    return false;
-  };
   const onBranchPress: () => void = () => {
     if (!IsBranchesOpenBoolean) {
       setBranchPressOpen();
@@ -95,8 +83,11 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
     useState<number | null>(null);
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
-
-  const haveUnreadMessagesBool = haveUnreadMessages(chat);
+  const CountOfUnreadMessage = useMemo(() => {
+    return CountOfUnreadMessages(selfProfile, chat);
+  }, [chat.lastWatchedMessage]);
+  const haveUnreadMessagesBool =CountOfUnreadMessage!=null&&CountOfUnreadMessage>0 ;
+ // console.log(getNameOfChat(chat,selfProfile)+":"+haveUnreadMessagesBool)
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
     if(chat instanceof Dialogue){

@@ -3,7 +3,7 @@ import { listOfChatsStyle } from "../../../Styles/ListOfChatsStyle";
 import { screenHeight, screenWidth } from "../../../Constants/ConstantsForChatlist";
 import React, { ReactNode } from "react";
 import { formatNumber } from "./FormatNumberOfUnreadMessages";
-export function CountOfMessages(countOfMessage: number): ReactNode {
+export function CountOfMessages(countOfMessage: number,backgroundColorOfContainer:string,colorOfText:string,opacityOfBackgroundContainer:number): ReactNode {
     let containerStyle: ViewStyle = listOfChatsStyle.fourCharcontainer;
     let formatText: string = formatNumber(countOfMessage);
     if (formatText.length == 1)
@@ -21,13 +21,13 @@ export function CountOfMessages(countOfMessage: number): ReactNode {
         <View
           style={{
             position: "absolute",
-            backgroundColor: "#FFFFFF",
-            opacity: 0.6,
+            backgroundColor: backgroundColorOfContainer,
+            opacity: opacityOfBackgroundContainer,
             height: screenHeight,
             width: screenWidth,
           }}
         />
-        <Text style={listOfChatsStyle.countOfUnReadMessagesContent}>
+        <Text style={[listOfChatsStyle.countOfUnReadMessagesContent,{color:colorOfText}]}>
           {formatText}
         </Text>
       </View>

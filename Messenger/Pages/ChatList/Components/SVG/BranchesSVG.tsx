@@ -22,7 +22,8 @@ const BranchesSVG: React.FC<BranchesSVGProps> = ({}) => {
         fill="#2B1D1D"
         fill-opacity="0.78"
         stroke="white"
-        stroke-width="0.2"
+        strokeOpacity={0.54}
+       
       />
     </Svg>
   );

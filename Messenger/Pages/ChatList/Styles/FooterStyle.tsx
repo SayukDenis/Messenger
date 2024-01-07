@@ -20,16 +20,15 @@ export const footerstyles = StyleSheet.create({
     marginLeft: screenWidth * 0.04,
     width: screenWidth * 0.92,
   },
-  folderContainer: {},
-  selectedFolderContainer: {},
-  folder: {
-    fontSize: screenHeight * 0.017,
-    padding: screenWidth * 0.017,
-  },
+
   selectedText: {
     color: "#5A0085",
+  },
+  textPosition: {
     fontSize: screenHeight * 0.017,
-    padding: screenWidth * 0.017,
+    paddingLeft: screenWidth * 0.017,
+    marginRight:3,
+    paddingVertical: screenWidth * 0.017,
   },
   selectedFolder: {
     height: screenHeight * 0.005,

@@ -39,7 +39,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
           <UnViewedMessage />
         </View>
       );
-    } else if (true) {
+    } else{
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
           <ViewedMessageIcon
@@ -51,8 +51,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
   } else if (lastMessageId) {
     const countOfMessage: number = chat.messages.length - lastMessageId;
     if (countOfMessage === 0) return null;
-    //console.log(getNameOfChat(chat,selfProfile) +" "+lastMessageId+ ":"+chat.messages.length)
-    content = CountOfMessages(countOfMessage);
+    content = CountOfMessages(countOfMessage,"#FFFFFF","black",0.6);
   }
 
   return content;
