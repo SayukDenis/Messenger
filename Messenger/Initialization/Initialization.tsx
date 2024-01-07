@@ -273,7 +273,7 @@ function addBranch(count: number, mainChat: MainChat) {
 }
 function addMessages(chat: Chat, count: number, users: User[], texts: string[] = []) {
   let idMessageToCreate = 0
-  if (chat.messages.length > 0) idMessageToCreate = chat.messages?.at(-1)?.messageId! + 1;
+  if (chat.messages.length > 0) idMessageToCreate = chat.messages[chat.messages.length - 1].messageId! + 1;
 
   if (users.length === 0) throw new Error("must be more than 1 users");
 
@@ -286,12 +286,13 @@ function addMessages(chat: Chat, count: number, users: User[], texts: string[] =
       content = texts[getRandomNumber(texts.length)];
     
     const message = new Message(users[getRandomNumber(users.length)], content, new Date(), EMessageType.text);
-    message.messageId = idMessageToCreate++;
+    message.messageId = idMessageToCreate;
     // Additional properties can be set if needed
-    message.messageResponseId = i - 1; // Set response ID to the previous message ID
+    if (Math.random() < 0.15)  message.messageResponseId = i - 1; // Set response ID to the previous message ID
     message.isEdited = i % 2 === 0; // Set isEdited based on the index
     // Add the message to the array
     chat.messages.push(message);
+    idMessageToCreate++;
   }
 }
 function initializationLastWatchedMessageChat(chat: MainChat) {
