@@ -5,9 +5,10 @@ import UnViewedMessage from "../../SVG/UnViewedMessage";
 import ViewedMessageIcon from "../../SVG/ViewedMessageIcon";
 import { listOfChatsStyle } from "../../../Styles/ListOfChatsStyle";
 import Chat from "../../../../../dao/Models/Chats/Chat";
-import Dialogue from "../../../../../dao/Models/Chats/Dialogue";
 import SelfProfile from "../../../../../dao/Models/SelfProfile";
 import { CountOfMessages } from "../Functions/CountOfMessages";
+import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
+
 
 
 interface LastMessageStatusProps {
@@ -19,25 +20,16 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
   chat,
   selfProfile,
 }) => {
-  const lastMessageId: number =0/* chat.lastWathedMessage.find(
-    (value: ILastWathedMessage) => {
-      return value.user.userId === selfProfile.userId;
+  const listOfLastWatchedMessage:ILastWatchedMessage[]=chat.lastWatchedMessage;
+  const ILastMessage: ILastWatchedMessage | undefined = (listOfLastWatchedMessage===undefined?null:listOfLastWatchedMessage)?.find(
+    (value: ILastWatchedMessage) => {
+      return value.user.userId == selfProfile.userId;
     }
-  )?.value.messageId;
-  console.log(
-    selfProfile.userId + " " + chat?.lastWathedMessage[0]?.user.userId
   );
-  console.log(lastMessageId);
-  let content: ReactNode;
-  if (chat instanceof Dialogue) {
-    let dialogue: Dialogue = chat as Dialogue;
-    console.log(
-      selfProfile.userId + " " + dialogue?.lastWathedMessage[0]?.user.userId
-    );
-  }*/
+  const  lastMessageId:number|undefined=(ILastMessage?.value!==undefined?ILastMessage.value:null)?.messageId
+  
   let content: ReactNode;
   const lastMessage = chat.messages[chat.messages.length - 1];
-
   if (lastMessage.author.userId === selfProfile.userId) {
     if (lastMessageId && lastMessage.author.userId!==undefined && lastMessage?.author.userId < lastMessageId) {
       content = (
@@ -45,7 +37,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
           <UnViewedMessage />
         </View>
       );
-    } else if (true) {
+    } else{
       content = (
         <View style={listOfChatsStyle.checkMarkercontainerStyle}>
           <ViewedMessageIcon
@@ -57,7 +49,7 @@ const LastMessageStatus: React.FC<LastMessageStatusProps> = ({
   } else if (lastMessageId) {
     const countOfMessage: number = chat.messages.length - lastMessageId;
     if (countOfMessage === 0) return null;
-    content = CountOfMessages(countOfMessage);
+    content = CountOfMessages(countOfMessage,"#FFFFFF","black",0.6,13);
   }
 
   return content;

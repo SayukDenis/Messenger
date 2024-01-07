@@ -192,7 +192,7 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
       group.adminUser.push(selfUser);
       group.title = "Admin Group" + i;
     }
-    group.users.push(SelfProfile);
+    group.users.push(selfUser);
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
     group.users.push(...getRandomElementsFromArray<User>(users));
     addMessages(group, 100, users, messageGroupsAndChannels);
@@ -219,7 +219,7 @@ function createChannel(count: number, selfUser: SelfProfile, users: User[]): Cha
       channel.title = "Admin Channel " + i;
     }
     channel.linkToPhoto = images[getRandomNumber(images.length)];
-    channel.users.push(SelfProfile);
+    channel.users.push(selfUser);
     addMessages(channel, 100, users, messageGroupsAndChannels);
     channel.adminUser.push(...getRandomElementsFromArray<User>(users));
     channel.users.push(...getRandomElementsFromArray<User>(users));
@@ -273,7 +273,7 @@ function addBranch(count: number, mainChat: MainChat) {
 }
 function addMessages(chat: Chat, count: number, users: User[], texts: string[] = []) {
   let idMessageToCreate = 0
-  if (chat.messages.length > 0) idMessageToCreate = chat.messages?.at(-1)?.messageId! + 1;
+  if (chat.messages.length > 0) idMessageToCreate = chat.messages[chat.messages.length - 1].messageId! + 1;
 
   if (users.length === 0) throw new Error("must be more than 1 users");
 
@@ -286,16 +286,17 @@ function addMessages(chat: Chat, count: number, users: User[], texts: string[] =
       content = texts[getRandomNumber(texts.length)];
     
     const message = new Message(users[getRandomNumber(users.length)], content, new Date(), EMessageType.text);
-    message.messageId = idMessageToCreate++;
+    message.messageId = idMessageToCreate;
     // Additional properties can be set if needed
-    message.messageResponseId = i - 1; // Set response ID to the previous message ID
+    if (Math.random() < 0.15)  message.messageResponseId = i - 1; // Set response ID to the previous message ID
     message.isEdited = i % 2 === 0; // Set isEdited based on the index
     // Add the message to the array
     chat.messages.push(message);
+    idMessageToCreate++;
   }
 }
 function initializationLastWatchedMessageChat(chat: MainChat) {
-  if (chat.branches != null) {
+  if (chat.branches.length>0) {
     for (let branch of chat.branches) {
       initializationLastWatchedMessageBranch(branch, chat.users);
     }
@@ -307,7 +308,7 @@ function initializationLastWatchedMessageChat(chat: MainChat) {
 
 }
 function initializationLastWatchedMessageBranch(chat: Chat, users: User[]) {
-  if (chat.branches != null) {
+  if (chat.branches.length>0) {
     for (let branch of chat.branches) {
       initializationLastWatchedMessageBranch(branch, users)
     }

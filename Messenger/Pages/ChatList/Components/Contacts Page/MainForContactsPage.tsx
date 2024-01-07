@@ -35,9 +35,9 @@ const MainForContactsPage: React.FC<MainForContactsPageProps> = () => {
     <BackGroundGradientView>
       <ScrollView>
         <View style={{ height: heightOfHeader, width: screenWidth }} />
-        {contacts.map((contact) => {
+        {contacts.map((contact,index:number) => {
           return (
-            <>
+            <View key={index}>
               <ContactContainer contact={contact} />
               <View
                 style={{
@@ -48,7 +48,7 @@ const MainForContactsPage: React.FC<MainForContactsPageProps> = () => {
                 }}
               />
           
-            </>
+            </View>
           );
         })}
          <View

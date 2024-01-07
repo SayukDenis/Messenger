@@ -3,10 +3,9 @@ import { View, TouchableOpacity, Text } from "react-native";
 import BackButton from "../../../SemiComponents/BackButton";
 import HeaderContainer from "../../../SemiComponents/HeaderContainer";
 import {
-  screenHeight,
   screenWidth,
 } from "../../Constants/ConstantsForChatlist";
-import { headerstyles } from "../../Styles/HeaderStyle";
+import DefaultContainerInHeader from "../../../SemiComponents/DefaultContainerInHeader";
 
 interface HeaderForCreateChannelAndGroupOrWriteMessageProps {
   navigation: any;
@@ -21,17 +20,7 @@ const HeaderForCreateChannelAndGroupOrWriteMessage: React.FC<
 
   return (
     <HeaderContainer>
-      <View
-        style={[
-          headerstyles.header,
-          {
-            width: screenWidth * 0.96,
-            height: screenHeight * 0.08,
-
-            flexDirection: "row",
-          },
-        ]}
-      >
+      <DefaultContainerInHeader>
         <TouchableOpacity
           onPress={pressOnBackButton.current}
           style={{ alignSelf: "center", width: screenWidth * 0.2 }}
@@ -49,7 +38,7 @@ const HeaderForCreateChannelAndGroupOrWriteMessage: React.FC<
             {"Create and write"}
           </Text>
         </View>
-      </View>
+      </DefaultContainerInHeader>
     </HeaderContainer>
   );
 };

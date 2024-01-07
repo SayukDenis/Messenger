@@ -15,7 +15,6 @@ const Navigation=()=>{
                 <Stack.Screen name="NavigationForSettings" component={NavigationForSettings}/>
                 <Stack.Screen name="DialogueNavigation" component={DialogueNavigation}/>
             </Stack.Navigator>
-            
         </NavigationContainer>
     )
 }

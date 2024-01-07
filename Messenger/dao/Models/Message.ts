@@ -17,6 +17,7 @@ export default class Message extends Model {
     content!: string;
     sendingTime!: Date
     messageType!: EMessageType;
+    numberInChat!: number;
     //
     messageResponseId?: number;
     messageForwardId?: number;
@@ -31,6 +32,7 @@ export default class Message extends Model {
             author: { type: 'class', objectType: User },
             sendingTime: 'date',
             messageType: { type: 'enum', objectType: EMessageType },
+            numberInChat: 'integer',
             messageResponseId: 'integer?',
             messageForwardId: 'integer?',
             isEdited: { type: 'boolean', default: false },

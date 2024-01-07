@@ -5,28 +5,32 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const StyleAddFolderHeader = StyleSheet.create({
-    header :{
+
+    addFolderHeaderConteiner:{
         display: "flex",
         flexDirection: 'row',
-        alignItems:'center',
-        width: "100%",
-        height: Platform.OS=="android"?windowHeight * 0.08+StatusBar.currentHeight:windowHeight * 0.08+Constants.statusBarHeight,
-        borderBottomLeftRadius:40,
-        borderBottomRightRadius:40,
-        backgroundColor: '#E7E6E4',
-        borderWidth:1,
-        borderColor : '#A19C91'
+        width: '100%',
+        height:windowHeight*0.07,
+        paddingLeft:'2%',
+        paddingRight:'2%',
     },
-    addFolderHeaderConteiner:{
+    backButt:{
+        alignSelf:'flex-end',
+        paddingBottom:'4%',
+        width:"10%"
+    },
+
+    NewFolderArticleConteiner:{
         display:'flex',
-        width:'100%',
-        height:"40%",
-        alignItems:'flex-end',
-        flexDirection:'row',
-        paddingLeft:'3%',
-        paddingRight:'3%',
-        justifyContent:'space-between'
-    }
+        width:'80%',
+        paddingBottom:'2%',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    DoneButton:{
+        justifyContent:'center',
+    },
+
 });
 
 export default StyleAddFolderHeader;
