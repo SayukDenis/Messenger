@@ -5,8 +5,8 @@ import { listOfChatsStyle } from "../../../Styles/ListOfChatsStyle";
 import Message from "../../../../../dao/Models/Message";
 
 interface LastMessageContentProps {
-  lastMessage: Message; 
-  content: string;
+  lastMessage: Message|undefined; 
+  content: string|undefined;
 }
 
 const LastMessageContentForChatListContainer: React.FC<LastMessageContentProps> = ({ content }) => {

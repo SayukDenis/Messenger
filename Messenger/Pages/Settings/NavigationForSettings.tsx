@@ -54,7 +54,7 @@ export const ConfidentialityPageNavigator = () => {
     </Stack.Navigator>
   );
 };
-export const EditPageNavigator = () => {
+const EditPageNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="EditPage"

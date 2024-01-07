@@ -19,9 +19,9 @@ const HeaderForSearchForAllPages: React.FC<HeaderForSearchForAllPagesProps> = ({
     navigation.goBack();
   });
   const inputRef = useRef<TextInput>(null);
-  useEffect(()=>{
-    inputRef.current.focus()
-  },[])
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
   return (
     <HeaderContainer>
       <View
@@ -30,7 +30,6 @@ const HeaderForSearchForAllPages: React.FC<HeaderForSearchForAllPagesProps> = ({
           {
             width: screenWidth * 0.96,
             height: screenHeight * 0.08,
-            //justifyContent: "center",
             flexDirection: "row",
           },
         ]}
@@ -46,7 +45,7 @@ const HeaderForSearchForAllPages: React.FC<HeaderForSearchForAllPagesProps> = ({
             ref={inputRef}
             style={{
               width: screenWidth * 0.8,
-              height: screenHeight * 0.045,
+              height: screenHeight * 0.0415,
               backgroundColor: "#272727",
               alignSelf: "center",
               color: "white",

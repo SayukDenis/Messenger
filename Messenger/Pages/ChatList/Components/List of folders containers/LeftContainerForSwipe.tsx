@@ -40,14 +40,10 @@ const LeftContainerForSwipe: React.FC<LeftContainerForSwipeProps> = ({
       <ReadOrUnreadForSwipeForContainer
         scale1ForLeft={scale1ForLeft}
         procentOfSwipe={procentOfSwipe}
-        screenHeight={screenHeight}
-        screenWidth={screenWidth}
         haveUnreadMessagesBool={haveUnreadMessagesBool}
       />
       <SelectForLeftChatContainer
         scaleForNotRender={scaleForNotRender}
-        screenWidth={screenWidth}
-        screenHeight={screenHeight}
         procentOfSwipe={procentOfSwipe}
       />
     </Animated.View>

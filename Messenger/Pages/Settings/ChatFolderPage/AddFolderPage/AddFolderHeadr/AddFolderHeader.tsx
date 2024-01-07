@@ -22,7 +22,7 @@ const AddFolderHeader: React.FC<any> = ({ navigation })=>{
         navigation.goBack();
     };
     
-    return <View style = {StyleAddFolderHeader.header}>
+    return <View >
             <View style = {StyleAddFolderHeader.addFolderHeaderConteiner}>
                 <TouchableOpacity onPress={()=>navigation.goBack()} ><Text>but</Text></TouchableOpacity>
                 <Text>New folder</Text>

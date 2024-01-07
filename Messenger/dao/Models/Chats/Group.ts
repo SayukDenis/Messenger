@@ -1,7 +1,7 @@
 import User from '../User';
 import Message from '../Message';
 import MainChat from './MainChat';
-import ILastWathedMessage from './ILastWathedMessage';
+import ILastWatchedMessage from './ILastWatchedMessage';
 import Branch from './Branch';
 import Role from './Role';
 
@@ -26,7 +26,7 @@ export default class Group extends MainChat {
             pinnedMessageForAll: { type: 'list', objectType: Message },
             branches: { type: 'list', objectType: Branch },
             roles: { type: 'list', objectType: Role },
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
             linkToPhoto: 'text?',
         },
         primaryKey: 'groupId',

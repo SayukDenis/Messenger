@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 
 const StyleChatFolderCenter = StyleSheet.create({
     articleFolderTextStyle:{
-        marginTop:'3%',
+        marginTop:'8%',
         marginLeft:"3%"
     },
     newFodlerButton:{
@@ -18,10 +18,10 @@ const StyleChatFolderCenter = StyleSheet.create({
         marginLeft:"5%",
         marginTop:'3%',
         backgroundColor:'white',
-        borderWidth:0.4,
-        borderBottomWidth:0,
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
+        borderTopLeftRadius:17,
+        borderTopRightRadius:17,
+        borderBottomLeftRadius:1,
+        borderBottomRightRadius:1,
         opacity:0.13,
     },
     foldersButt:{

@@ -4,16 +4,16 @@ import IUserReaction from './IUserReaction ';
 import Model from './Model';
 
 export default class Message extends Model {
-    constructor(author: User, content: string, sendingTime: Date, massegeType: EMessageType) {
+    constructor(author: User, content: string, sendingTime: Date, massageType: EMessageType) {
         super();
         this.author = author;
         this.content = content;
         this.sendingTime = sendingTime;
-        this.messageType = massegeType;
+        this.messageType = massageType;
     }
     messageId?: number;
     author!: User;
-    //Indormation about message
+    //Information about message
     content!: string;
     sendingTime!: Date
     messageType!: EMessageType;
@@ -31,10 +31,10 @@ export default class Message extends Model {
             author: { type: 'class', objectType: User },
             sendingTime: 'date',
             messageType: { type: 'enum', objectType: EMessageType },
-            messaeResponseId: { type: 'integer', optional: true },
-            messageForwardId: { type: 'integer', optional: true },
-            isEdited: { type: 'bool', default: false },
-            isDeleted: { type: 'bool', default: false },
+            messageResponseId: 'integer?',
+            messageForwardId: 'integer?',
+            isEdited: { type: 'boolean', default: false },
+            isDeleted: { type: 'boolean', default: false },
             reactionOnMessage: { type: 'list', objectType: {} as IUserReaction },
         },
         primaryKey: 'messageId',

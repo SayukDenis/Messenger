@@ -1,8 +1,17 @@
 import { Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BackGroundGradientView from "../../../SemiComponents/BackGroundGradientView";
-import Contacts from 'react-native-contacts';
-import { screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
+import * as Contacts from "expo-contacts";
+import {
+  heightOfHeader,
+  screenHeight,
+  screenWidth,
+} from "../../Constants/ConstantsForChatlist";
+import { ScrollView } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
+import UserContainerForSearching from "./UserContainerForSearching";
 
 interface MainForSearchForAllPagesProps {}
 
@@ -19,11 +28,19 @@ const MainForSearchForAllPages: React.FC<
  
   return (
     <BackGroundGradientView>
-      {contacts.map((contact)=>{
-        return (<View >
-       
-        </View>)
-      })}
+      <View style={{ height: heightOfHeader, width: screenWidth }} />
+      <View
+        style={{
+          height: screenHeight * 0.08 + 10 + 5 + 14,
+          width: screenWidth,
+        }}
+      >
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {chats.map((chat, index) => (
+            <UserContainerForSearching dialogue={chat} key={index} />
+          ))}
+        </ScrollView>
+      </View>
     </BackGroundGradientView>
   );
 };

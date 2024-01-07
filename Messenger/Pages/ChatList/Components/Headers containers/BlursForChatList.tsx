@@ -36,7 +36,7 @@ const BlursForChatList: React.FC<BlursForChatListProps> = ({
     setBlurStatePrev(blurState);
   }
 
-  const setContent = (blurState: EnumForChatListBlurs) => {
+  const setContent = (blurState: EnumForChatListBlurs):ReactNode => {
     let content: ReactNode = null;
     switch (blurState) {
       case EnumForChatListBlurs.None: {

@@ -1,5 +1,5 @@
 // NotificationStatusContainerForRightContainerForSwipe.tsx
-import React from "react";
+import React, { MutableRefObject, useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,14 +10,17 @@ import { screenHeight, screenWidth } from "../../../Constants/ConstantsForChatli
 interface NotificationStatusContainerProps {
   procentOfSwipe: number;
   scaleForNotRender:any
-  randomBoolean: any;
 }
 
 const NotificationStatusContainerForRightContainerForSwipe: React.FC<NotificationStatusContainerProps> = ({
   procentOfSwipe,
   scaleForNotRender,
-  randomBoolean,
+
 }) => {
+  const   randomBoolean:MutableRefObject<boolean>=useRef(false)
+  useEffect(() => {
+    randomBoolean.current = Math.random() < 0.5;
+  }, []);
   return (
     <Animated.View
       style={{

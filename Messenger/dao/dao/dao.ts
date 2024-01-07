@@ -1,19 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
-const fs = require('fs');
+import * as FileSystem from 'expo-file-system';
+import DataBase from './Database';
 
-const {
-    databaseName,
-    databaseVersion
-} = JSON.parse(fs.readFileSync('../config.json', 'utf8'));
-export const database = SQLite.openDatabase(databaseName, databaseVersion);
+const db = await (await DataBase.getInstance()).openDatabase();
 
-
-function Open() {
-    const database = SQLite.openDatabase(databaseName, databaseVersion);
-    const [isLoading, setIsLoading] = useState(true);
-
-    if (isLoading) {
-
-    }
-}

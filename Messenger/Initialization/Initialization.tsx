@@ -63,9 +63,9 @@ const images: string[] = [
 const numberOfUsersToCreate = 20;
 const numberOfFolderToCreate = 5;
 const numberOfTabToCreate = 4;
-const numberOfDialogueToCreate = 4;
-const numberOfGroupeToCreate = 10;
-const numberOfChannelToCreate = 10;
+const numberOfDialogueToCreate = 15;
+const numberOfGroupeToCreate = 3;
+const numberOfChannelToCreate = 3;
 
 //id
 let idUsersToCreate = 1;
@@ -122,7 +122,8 @@ export function initialization(): SelfProfile {
 
   return selfProfile;
 }
-function getRandomNumber(max, min = 0): number {
+
+function getRandomNumber(max:number, min = 0): number {
   const randomDecimal = Math.random();
   // Scale the random decimal to the desired range [0, max)
   const randomNumber = Math.floor(randomDecimal * max) + min;
@@ -135,6 +136,7 @@ function getRandomElementsFromArray<T>(arr: T[], max = arr.length): T[] {
   const shuffledArray = arr.slice().sort(() => Math.random() - 0.5); // Перемішуємо копію масиву
   return shuffledArray.slice(0, randomCount);
 }
+
 function createUsers(count: number): User[] {
   const users: User[] = [];
 
@@ -152,66 +154,86 @@ function createUsers(count: number): User[] {
 
   return users;
 }
+//Create chats:
 function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Dialogue[] {
   const dialogues: Dialogue[] = [];
-  if (users.length <= 1)
-    throw Error("must be minimum 2 users ")
+
+  if (users.length < 1) throw Error("must be minimum 1 users ")
+
   for (let i = 0; i < count; i++) {
     const user = users[getRandomNumber(users.length)];
 
     const dialogue = new Dialogue(selfUser, user);
+
     dialogue.dialogueId = idDialogueToCreate++;
-    addMessages(dialogue, 100, dialogue.users,messageDialog);
-    if (Math.random() < 0.10) addBranch(getRandomNumber(5), dialogue);
-    dialogue.linkToPhoto = images[getRandomNumber(images.length)];
+    dialogue.linkToPhoto = user.linkToPhoto;
+
+    addMessages(dialogue, 100, dialogue.users, messageDialog);
+    if (Math.random() < 0.10) addBranch(getRandomNumber(5), dialogue); //branches
+    initializationLastWatchedMessageChat(dialogue);
+
     dialogues.push(dialogue);
   }
+
   return dialogues;
 }
 function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group[] {
   const groups: Group[] = [];
-  if (users.length == 0)
-    throw Error("must be minimum 1 users");
+
+  if (users.length == 0) throw Error("must be minimum 1 users");
+
   for (let i = 0; i < count; i++) {
     const group = new Group("Group " + i);
+
     group.groupId = idGroupeToCreate++;
+    group.linkToPhoto = images[getRandomNumber(images.length)];
+
     if (Math.random() < 0.4) {
       group.adminUser.push(selfUser);
       group.title = "Admin Group" + i;
     }
-    group.users.push(SelfProfile);
+    group.users.push(selfUser);
     group.adminUser.push(...getRandomElementsFromArray<User>(users));
-    group.users.push(...getRandomElementsFromArray<User>(users))
+    group.users.push(...getRandomElementsFromArray<User>(users));
     addMessages(group, 100, users, messageGroupsAndChannels);
+
     if (Math.random() < 0.1) addBranch(getRandomNumber(5), group);
-    group.linkToPhoto = images[getRandomNumber(images.length)];
+    initializationLastWatchedMessageChat(group);
+
     groups.push(group);
   }
   return groups;
 }
 function createChannel(count: number, selfUser: SelfProfile, users: User[]): Channel[] {
   const channels: Channel[] = [];
-  if (users.length == 0)
-    throw Error("must be minimum 1 users")
+
+  if (users.length == 0) throw Error("must be minimum 1 users");
+
   for (let i = 0; i < count; i++) {
     const channel = new Channel("Channel " + i);
+
     channel.channelId = idChannelToCreate++;
+
     if (Math.random() < 0.4) {
       channel.adminUser.push(selfUser);
       channel.title = "Admin Channel " + i;
     }
-    channel.users.push(SelfProfile)
+    channel.linkToPhoto = images[getRandomNumber(images.length)];
+    channel.users.push(selfUser);
     addMessages(channel, 100, users, messageGroupsAndChannels);
     channel.adminUser.push(...getRandomElementsFromArray<User>(users));
-    channel.users.push(...getRandomElementsFromArray<User>(users))
+    channel.users.push(...getRandomElementsFromArray<User>(users));
+
     if (Math.random() < 0.15) addBranch(getRandomNumber(5), channel);
-    channel.linkToPhoto = images[getRandomNumber(images.length)];
+    initializationLastWatchedMessageChat(channel);
+
     channels.push(channel);
   }
   return channels;
 }
 function createFolder(count: number): Folder[] {
   const folders: Folder[] = [];
+
   for (let i = 0; i < count; i++) {
     const folder = new Folder("Folder " + i);
     folder.folderId = idFolderToCreate++;
@@ -221,6 +243,7 @@ function createFolder(count: number): Folder[] {
 }
 function createTab(count: number): Tab[] {
   const tabs: Tab[] = [];
+
   for (let i = 0; i < count; i++) {
     const tab = new Tab("Tab " + i);
     tab.tabId = idTabToCreate++;
@@ -237,26 +260,31 @@ function addBranch(count: number, mainChat: MainChat) {
   for (let i = 0; i < count; i++) {
     const branch = new Branch("Name branch " + i);
     branch.branchId = idBranchToCrate++;
-    addMessages(branch, 100 ,mainChat.users, messageGroupsAndChannels);
+
+    addMessages(branch, 100, mainChat.users, messageGroupsAndChannels);
     if (Math.random() < 0.3) branch.branches.push(new Branch("Interanl branch " + i));
+
     branch.pinnedMessage.push(...getRandomElementsFromArray<Message>(branch.messages));
     branch.pinnedMessageForAll.push(...getRandomElementsFromArray<Message>(branch.messages));
     branch.haveAccess.push(...getRandomElementsFromArray(mainChat.roles));
+
     mainChat.branches.push(branch);
   }
 }
 function addMessages(chat: Chat, count: number, users: User[], texts: string[] = []) {
   let idMessageToCreate = 0
-  if (chat.messages.length > 0) idMessageToCreate = chat.messages.at(-1).messageId + 1;
+  if (chat.messages.length > 0) idMessageToCreate = chat.messages?.at(-1)?.messageId! + 1;
 
   if (users.length === 0) throw new Error("must be more than 1 users");
 
   for (let i = 1; i <= count; i++) {
     let content: string;
+
     if (texts.length == 0)
       content = `Random message content ${idMessageToCreate}`;
     else
       content = texts[getRandomNumber(texts.length)];
+    
     const message = new Message(users[getRandomNumber(users.length)], content, new Date(), EMessageType.text);
     message.messageId = idMessageToCreate++;
     // Additional properties can be set if needed
@@ -265,4 +293,28 @@ function addMessages(chat: Chat, count: number, users: User[], texts: string[] =
     // Add the message to the array
     chat.messages.push(message);
   }
+}
+function initializationLastWatchedMessageChat(chat: MainChat) {
+  if (chat.branches.length>0) {
+    for (let branch of chat.branches) {
+      initializationLastWatchedMessageBranch(branch, chat.users);
+    }
+  } else {
+    for (let user of chat.users) {
+      chat.lastWatchedMessage.push({ user: user, value: chat.messages[getRandomNumber(chat.messages.length)] })
+    }
+  }
+
+}
+function initializationLastWatchedMessageBranch(chat: Chat, users: User[]) {
+  if (chat.branches.length>0) {
+    for (let branch of chat.branches) {
+      initializationLastWatchedMessageBranch(branch, users)
+    }
+  } else {
+    for (let user of users) {
+      chat.lastWatchedMessage.push({ user: user, value: chat.messages[getRandomNumber(chat.messages.length)] })
+    }
+  }
+
 }
