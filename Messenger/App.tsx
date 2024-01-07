@@ -7,7 +7,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./Navigation/Navigation";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-
   return (
     <SafeAreaProvider>
       <StatusBar translucent backgroundColor="transparent" />

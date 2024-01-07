@@ -6,18 +6,17 @@ import { screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist"
 
 interface MainForSearchForAllPagesProps {}
 
-const MainForSearchForAllPages: React.FC<MainForSearchForAllPagesProps> = () => {
-  const [contacts, setContacts] = useState([] as any[]); // Initialize contacts state
-
-  useEffect(() => {
-    fetchContacts();
-  }, []);
-
-  const fetchContacts = () => {
-    Contacts.getAll().then((contacts)=>{
-      setContacts(contacts)
-    })
-  };
+const MainForSearchForAllPages: React.FC<
+  MainForSearchForAllPagesProps
+> = () => {
+  const selfProfile: SelfProfile = useSelector((state: any) => {
+    const self: SelfProfile = state.selfProfileUser;
+    return self;
+  });
+  const chats = selfProfile.tabs[0].folders[0].chats.filter(
+    (chat) => chat instanceof Dialogue
+  ) as Dialogue[];
+ 
   return (
     <BackGroundGradientView>
       {contacts.map((contact)=>{
