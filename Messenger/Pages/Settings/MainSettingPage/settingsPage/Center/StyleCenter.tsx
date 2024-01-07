@@ -25,7 +25,7 @@ const StyleCentre = StyleSheet.create({
         justifyContent:'center',
         marginTop:"4%",
         marginRight:"10%",
-        borderRadius:15,
+        borderRadius:14,
         height:windowHeight*0.05,
         width:windowHWidth*0.3,
         backgroundColor:'white',
