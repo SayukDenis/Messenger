@@ -17,8 +17,8 @@ function responsiveHeight(baseHeight: number) {
 
 const StyleHeaderCountrySelection = StyleSheet.create({
    headerConteiner:{
-        position: "absolute",
-        top: 0, 
+      position:  "absolute",
+         top: 0, 
         left: 0,
         right: 0,
         display: "flex",
@@ -31,7 +31,7 @@ const StyleHeaderCountrySelection = StyleSheet.create({
         backgroundColor: '#E7E6E4',
         borderWidth: responsiveWidth(1),
         borderColor:'#A19C91',
-        justifyContent:"center"
+        justifyContent:"center",
     },
 
     svgConteiner:{

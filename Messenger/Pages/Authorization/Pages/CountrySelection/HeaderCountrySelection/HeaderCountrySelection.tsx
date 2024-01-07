@@ -30,5 +30,3 @@ const HeaderCountrySelection = ({ navigation, handleSearch }) => {
 };
 
 export default HeaderCountrySelection;
-
-

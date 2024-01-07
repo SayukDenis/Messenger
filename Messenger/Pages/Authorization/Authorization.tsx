@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, Image, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { styles } from './Style/Style';
-import countries from './Pages/CountrySelection/CenterCountrySelection/CenterCountrySelection';
+import { useFormattedPhoneNumber } from './FormattedPhoneNumber/FormattedPhoneNumber';
 
 export default function Authorization({ route, navigation }) {
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const { phoneNumber, handlePhoneNumberChange } = useFormattedPhoneNumber();
 
   useEffect(() => {
     if (route.params && route.params.selectedCountry !== undefined) {
@@ -13,7 +14,7 @@ export default function Authorization({ route, navigation }) {
   }, [route.params]);
 
   const navigateToRegistration = () => {
-    navigation.navigate('Registration', { selectedCountry });
+      navigation.navigate('Registration', { selectedCountry, phoneNumber });
   };
 
   const navigateToPhoneCodeRegistration = () => {
@@ -45,7 +46,11 @@ export default function Authorization({ route, navigation }) {
           <View style={styles.row}>
             <Text style={styles.headerText} onPress={navigateToCountrySelection}>{selectedCountry !== null ? selectedCountry.code : '+380'}</Text>
             <View style={styles.verticalLine} />
-            <TextInput style={styles.input} placeholder="00 000 00 00" />
+            <TextInput style={styles.input} placeholder="00 000 00 00" 
+             maxLength={12} 
+             keyboardType="numeric"
+             value={phoneNumber}
+             onChangeText={handlePhoneNumberChange}/>
           </View>
           <View style={styles.line} />
         </View>
@@ -63,4 +68,3 @@ export default function Authorization({ route, navigation }) {
     </ImageBackground>
   );
 }
-

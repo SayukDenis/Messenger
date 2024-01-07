@@ -18,8 +18,9 @@ export default function CountrySelection({ route, navigation }) {
 
   return (
     <ImageBackground source={require('../Image/Background.png')} style={styles.backgroundImage}>
-      <CenterCountrySelection handleCountrySelect={handleCountrySelect} searchQuery={searchQuery} />
+        <CenterCountrySelection handleCountrySelect={handleCountrySelect} searchQuery={searchQuery} />
       <HeaderCountrySelection navigation={navigation} handleSearch={handleSearch} />
+    
     </ImageBackground>
   );
 }

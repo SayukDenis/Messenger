@@ -12,6 +12,20 @@ function responsiveHeight(baseHeight: number) {
   return baseHeight * heightRatio;
 }
 
-export const styles = StyleSheet.create({
- 
+export const styleRegistration = StyleSheet.create({
+  syncContainer: {
+    flex: 1,
+    justifyContent: 'space-between',  
+    alignItems:'center',
+    flexDirection: 'row',  
+    marginBottom: responsiveHeight(10),
+    marginTop: responsiveHeight(-5),
+  },
+  line: {
+    flex: 0,
+    width:responsiveWidth(80),
+  },
+  switchContainer: {
+    transform: [{ scale:  responsiveHeight(0.8) }],
+  },
 });

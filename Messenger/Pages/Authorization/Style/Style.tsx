@@ -122,4 +122,5 @@ export const styles = StyleSheet.create({
     marginRight: responsiveWidth(7),
     marginLeft: responsiveWidth(11),
   },
+
 });

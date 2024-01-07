@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ImageBackground, View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import { styles } from '../Style/Style';
 import { stylesPhoneCodeRegistration } from '../Style/StylePhoneCodeRegistration';
@@ -11,6 +11,12 @@ export default function PhoneCodeRegistration({navigation}) {
   };
   const navigateToCodePassword = () => {
     navigation.navigate('CodePassword');
+  };
+  const [code, setCode] = useState('');
+  const handleCodeChange = (input) => {
+    // Фільтруємо лише цифрові символи
+    const numericInput = input.replace(/[^\d]/g, '');
+    setCode(numericInput);
   };
   return (
     <ImageBackground source={require('../Image/Background.png')} style={styles.backgroundImage}>
@@ -32,7 +38,12 @@ export default function PhoneCodeRegistration({navigation}) {
       <View style={styles.row}>
         <Text style={styles.headerText}>Code</Text>
         <View style={styles.verticalLine} />
-        <TextInput style={styles.input} placeholder="1111" />
+        <TextInput style={styles.input} 
+        placeholder="1111" 
+        maxLength={4}  
+      keyboardType="numeric" 
+      value={code}
+      onChangeText={handleCodeChange}/>
       </View>
 
       <View style={styles.line} />
