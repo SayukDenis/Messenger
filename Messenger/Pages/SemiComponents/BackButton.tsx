@@ -1,10 +1,9 @@
 import React from "react";
 import Svg, { Path, G } from "react-native-svg";
 import { connect } from "react-redux";
-import { Dimensions } from "react-native";
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+import { screenHeight, screenWidth } from "../ChatList/Constants/ConstantsForChatlist";
 
-const BackButtonSVG = () => {
+const BackButton = () => {
   return (
     <Svg
       width={screenWidth * 0.1}
@@ -30,4 +29,4 @@ const BackButtonSVG = () => {
   );
 };
 
-export default connect(null)(BackButtonSVG);
+export default connect(null)(BackButton);
