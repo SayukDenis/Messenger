@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { heightOfHeader, screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
 import ButtonForSettings from "../../../SemiComponents/ButtonForSettings";
 
-interface MainForCreateChannelAngGroupOrWriteMessageProps {}
+interface MainForCreateChannelAngGroupOrWriteMessageProps {
+  navigation:any
+}
 
 const MainForCreateChannelAngGroupOrWriteMessage: React.FC<
   MainForCreateChannelAngGroupOrWriteMessageProps
-> = ({}) => {
+> = ({navigation}) => {
     const marginTop=15;
     const marginLeft=screenWidth*0.03;
+    const PressOnCreateGroup=useRef(()=>{
+      navigation.navigate("Create Group Page")
+    })
   return (
     <View style={{ marginTop: heightOfHeader + marginTop }}>
       <Text style={{ fontSize: 16, marginLeft ,marginBottom:10}}>
@@ -18,7 +23,7 @@ const MainForCreateChannelAngGroupOrWriteMessage: React.FC<
       <TouchableOpacity style={{marginBottom:2}}>
         <ButtonForSettings text="Create channel"/>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={PressOnCreateGroup.current}>
         <ButtonForSettings text="Create group"/>
       </TouchableOpacity>
       <Text style={{ fontSize: 16, marginLeft ,marginBottom:10,marginTop}}>

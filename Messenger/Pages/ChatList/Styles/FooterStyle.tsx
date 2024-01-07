@@ -25,7 +25,7 @@ export const footerstyles = StyleSheet.create({
     color: "#5A0085",
   },
   textPosition: {
-    fontSize: screenHeight * 0.017,
+    fontSize: 17,
     paddingLeft: screenWidth * 0.017,
     marginRight:3,
     paddingVertical: screenWidth * 0.017,

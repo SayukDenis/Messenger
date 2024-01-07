@@ -5,6 +5,7 @@ import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { CountOfUnreadMessages } from "../List of folders containers/Functions/CountOfUnreadMessage";
 import { CountOfMessages } from "../List of folders containers/Functions/CountOfMessages";
 import { View } from "react-native";
+import { screenWidth } from "../../Constants/ConstantsForChatlist";
 
 interface CountOfUnreadMessageOnFolderComponentProps {
   folder: Folder;
@@ -45,7 +46,8 @@ isSelected
           CountOfUnreadMessageOnFolderComponent,
           backgroundColorOfContainer,
           colorOfText,
-          opacityOfBackgroundContainer
+          opacityOfBackgroundContainer,
+          14
         )}
       </View>
     )

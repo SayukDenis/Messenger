@@ -216,6 +216,10 @@ const Main: React.FC<MainProps> = ({navigation}) => {
       />
       <FlatList
         data={selfProfile.tabs[currentTab].folders}
+        /*onContentSizeChange={(width,height)=>{
+          console.log(width+":"+height)
+        }}
+        */
         horizontal
         pagingEnabled
         ref={scrollViewRef}
@@ -230,8 +234,8 @@ const Main: React.FC<MainProps> = ({navigation}) => {
           <ListOfFolder key={index} currentFolder={index} navigation={navigation} />
         )}
         onScroll={handleHorizontalScroll}
-        windowSize={8}
-        initialNumToRender={8}
+        windowSize={10}
+        initialNumToRender={1}
       />
       <Footer
         isTouchableForHeader={isTouchableForHeader}

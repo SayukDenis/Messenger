@@ -30,7 +30,7 @@ const UserContainerForSearching: React.FC<UserContainerForSearchingProps> = ({
   return (
     <View style={{ marginHorizontal: 5, marginTop: 10,flex:1,height:radiusOfImage+5}}>
       <View style={{position:"absolute",zIndex:10,right:-5}}>
-      {countOfMessage!==null?CountOfMessages(countOfMessage,"#99AFFF","#2B1D1D",1):null}
+      {countOfMessage!==null?CountOfMessages(countOfMessage,"#99AFFF","#2B1D1D",1,14):null}
       </View>
       <Image
         source={{ uri: otherUser?.linkToPhoto }}
