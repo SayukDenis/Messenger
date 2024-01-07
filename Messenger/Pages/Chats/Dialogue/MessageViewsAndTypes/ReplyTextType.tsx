@@ -20,7 +20,7 @@ interface ReplyTextType {
 }
 
 let size:any[] = [];
-const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author}:ReplyTextType) => {
+const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author}:ReplyTextType) => {
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -78,7 +78,7 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
             >
               <View style={[styles.messageTypeTextUser, styles.replyMessagePos]}>
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!.content.length>=20?replyMessage!.content.replace('\n', '').slice(0,20)+'...':replyMessage!.content}
+                  {replyMessage!=undefined&&replyMessage?.content?.length>=20?replyMessage?.content.replace('\n', '').slice(0,20)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -90,7 +90,7 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
             <TouchableOpacity style={{flex:1}} activeOpacity={1}>
               <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos]}>
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!.content.length>=20?replyMessage!.content.replace('\n', '').slice(0,20)+'...':replyMessage!.content}
+                  {replyMessage!=undefined&&replyMessage?.content.length>=20?replyMessage?.content.replace('\n', '').slice(0,20)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -101,10 +101,10 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
           >
             <View 
               onLayout={(event) => onLayout(event)}
-              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}, message.content.length>40&&styles.longMessage]}
+              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}, message?.content.length>40&&styles.longMessage]}
             >
-              <Text>{wrapText(message.content, 40)}</Text>
-              <Text style={message.content.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+              <Text>{wrapText(message?.content, 40)}</Text>
+              <Text style={message?.content.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}
                 {new Date(message.sendingTime).getHours().toString().padStart(2, '0')}:
                 {new Date(message.sendingTime).getMinutes().toString().padStart(2, '0')}
@@ -117,6 +117,6 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
         <Text>Reply</Text>
       </View>
     </ScrollView>
-)});
+)};
 
-export default replyTextType;
+export default memo(replyTextType);

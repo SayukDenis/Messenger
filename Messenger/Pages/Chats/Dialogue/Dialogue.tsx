@@ -26,25 +26,25 @@ let coord:Layout;
 let messageID:number=-1;
 let msgs:MessageProps[];
 
+const user:SelfProfile = {
+  userId: 0,
+  name: 'Denis',
+  numberPhone: '',
+  nickname: 'Denis',
+  description: '',
+  linkToPhoto: '',
+  password: 'asdoapwd',
+  email: 'dopawdjpa',
+  timeLastEntry: new Date(),
+  tabs: new Array(),
+  schema: {} as any
+}
+
 const Dialogue = ({ navigation, route }:any) => {
   const dialogue:DialogueModel.default=route.params.chat as DialogueModel.default;
 
   // const user = useSelector((state: any) => state.selfProfileUser);
   // console.log('userId', user.userId);
-
-  const user:SelfProfile = {
-    userId: 0,
-    name: 'Denis',
-    numberPhone: '',
-    nickname: 'Denis',
-    description: '',
-    linkToPhoto: '',
-    password: 'asdoapwd',
-    email: 'dopawdjpa',
-    timeLastEntry: new Date(),
-    tabs: new Array(),
-    schema: {} as any
-  }
 
   // console.log(dialogue.messages.map((m, index) => {
   //   const mes = {
@@ -66,7 +66,7 @@ const Dialogue = ({ navigation, route }:any) => {
   const [messageMenuVisisbleAppearence, setMessageMenuVisisbleAppearence] = useState(false);
   const [listOfMessages, setListOfMessages] = useState([] as MessageProps[]);
   useEffect(() => {
-    setListOfMessages(dialogue.messages);
+    setListOfMessages(dialogue.messages.reverse());
   }, [])
   
   const [isReply, setIsReply] = useState(false);
@@ -125,7 +125,7 @@ const Dialogue = ({ navigation, route }:any) => {
       setListOfMessages([...listOfMessages]);
     }
     else {
-      setListOfMessages([...listOfMessages, mes]);
+      setListOfMessages([mes, ...listOfMessages]);
     }
   }, [listOfMessages]);
 

@@ -17,7 +17,7 @@ interface DefaultTextMessageProps {
 }
 
 let size:any[] = [];
-const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id, author}:DefaultTextMessageProps) => {
+const DefaultTextType = ({messages, message, setMessageMenuVisible, id, author}:DefaultTextMessageProps) => {
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -78,6 +78,6 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id, aut
       </TouchableOpacity>
     </ScrollView>
   );
-});
+};
 
-export default DefaultTextType;
+export default memo(DefaultTextType);
