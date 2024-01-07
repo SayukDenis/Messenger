@@ -4,6 +4,7 @@ import {
   screenHeight,
   screenWidth,
 } from "../ChatList/Constants/ConstantsForChatlist";
+import BackGroundColorForComponents from "./BackGroundColorForComponents";
 
 interface ContainerForButtonForSettingsProps {
   children?: React.ReactNode;
@@ -12,7 +13,7 @@ interface ContainerForButtonForSettingsProps {
 const ContainerForButtonForSettings: React.FC<
   ContainerForButtonForSettingsProps
 > = ({ children }) => {
-  const heightOfContainer = screenHeight * 0.05;
+  const heightOfContainer = screenHeight * 0.06;
   const widthOfContainer = screenWidth * 0.94;
   return (
     <View
@@ -27,15 +28,9 @@ const ContainerForButtonForSettings: React.FC<
       }}
     >
       {children}
-      <View
-        style={{
-          height: heightOfContainer,
-          width: widthOfContainer,
-          position: "absolute",
-          backgroundColor: "white",
-          zIndex: -1,
-          opacity: 0.11,
-        }}
+      <BackGroundColorForComponents
+        height={heightOfContainer}
+        width={widthOfContainer}
       />
     </View>
   );

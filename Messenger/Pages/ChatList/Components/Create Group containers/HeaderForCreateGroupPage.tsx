@@ -1,10 +1,14 @@
 import React, { useRef } from "react";
-import HeaderContainer from "../../../SemiComponents/HeaderContainer";
-
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { heightOfHeader, screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
+import { View, TouchableOpacity, Text } from "react-native";
 import BackButton from "../../../SemiComponents/BackButton";
-import { View, Text } from "react-native";
+import HeaderContainer from "../../../SemiComponents/HeaderContainer";
+import {
+  screenHeight,
+  screenWidth,
+} from "../../Constants/ConstantsForChatlist";
+
+import { headerstyles } from "../../Styles/HeaderStyle"
+import DefaultContainerInHeader from "../../../SemiComponents/DefaultContainerInHeader";
 
 interface HeaderForCreateGroupPageProps {
   navigation: any;
@@ -13,39 +17,39 @@ interface HeaderForCreateGroupPageProps {
 const HeaderForCreateGroupPage: React.FC<HeaderForCreateGroupPageProps> = ({
   navigation,
 }) => {
-  const pressOnBackButton = useRef(() => {
-    navigation.goBack();
-  });
-  return (
-    <HeaderContainer>
-
-        <TouchableOpacity
-          onPress={pressOnBackButton.current}
-          style={{
-            //marginTop:heightOfHeader-screenHeight*0.08,
-            alignSelf: "flex-end",
-           // width: screenWidth * 0.2,
-           // justifyContent: "center",
-          //  flexDirection: "row",
-          backgroundColor:"red"
-          }}
-        >
-          <BackButton />
-        </TouchableOpacity>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            marginRight: screenWidth * 0.2,
-          }}
-        >
-          <Text style={{ alignSelf: "center", fontSize: 20 }}>
-            {"Create and write"}
-          </Text>
-        </View>
   
-    </HeaderContainer>
-  );
+    const pressOnBackButton = useRef(() => {
+        navigation.goBack();
+      });
+    
+      return (
+        <HeaderContainer>
+          <DefaultContainerInHeader
+          >
+            <TouchableOpacity
+              onPress={pressOnBackButton.current}
+              style={{ alignSelf: "center", width: screenWidth * 0.2 }}
+            >
+              <BackButton />
+            </TouchableOpacity>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+              
+              }}
+            >
+              <Text style={{ alignSelf: "center", fontSize: 20 }}>
+                {"Create group"}
+              </Text>
+            </View>
+            <TouchableOpacity style={{alignSelf: "center", width: screenWidth * 0.2 }}>
+                <Text style={{alignSelf:"flex-end",fontSize:18,paddingRight:15,color:"#734CA5"}}> 
+                    {"Done"}
+                </Text>
+            </TouchableOpacity>
+          </DefaultContainerInHeader>
+        </HeaderContainer>)
 };
 
 export default HeaderForCreateGroupPage;
