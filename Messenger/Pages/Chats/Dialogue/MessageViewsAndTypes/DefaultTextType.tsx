@@ -1,24 +1,23 @@
 import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView } from 'react-native';
 import { memo, useCallback, useRef, useState } from 'react';
-import {Message, messages} from '../tmpdata';
 import { styles } from './Styles/DefaultTextType';
 import React from 'react';
+import { MessageProps } from '../GeneralInterfaces/IMessage';
+import User from '../../../../dao/Models/User';
+import { wrapText } from './HelperFunctions/wrapText';
 
 const {width, height} = Dimensions.get('window');
 
 interface DefaultTextMessageProps {
-  messages:Message[];
-  message:Message;
+  messages:MessageProps[];
+  message:MessageProps;
   setMessageMenuVisible:(arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
   id:number;
+  author: User;
 }
 
-const arr = new Array(messages.length);
-for(let i = 0; i < messages.length; i++)
-  arr[i] = [0];
-
 let size:any[] = [];
-const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:DefaultTextMessageProps) => {
+const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id, author}:DefaultTextMessageProps) => {
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -44,33 +43,6 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
 
   //console.log('DefaultTextType-arr:', arr);
 
-  const wrapText = (text:string, maxLength:number) => {
-    const words = text.split(' ');
-    let currentLine = '';
-    const lines = [];
-  
-    words.forEach((word) => {
-      if (word.length > maxLength) {
-        // Break the long word into chunks of maxLength characters
-        if(currentLine.length)
-          lines.push(currentLine.trim());
-        currentLine = '';
-        for (let i = 0; i < word.length; i += maxLength) {
-          lines.push(word.slice(i, i + maxLength).trim());
-        }
-      } else if ((currentLine + word).length > maxLength) {
-        lines.push(currentLine.trim());
-        currentLine = word + ' ';
-      } else {
-        currentLine += word + ' ';
-      }
-    });
-  
-    lines.push(currentLine.trim());
-
-    return lines.join('\n').trim();
-  };
-
   return (
     <ScrollView 
       horizontal={true} 
@@ -85,17 +57,17 @@ const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:Def
         activeOpacity={1} 
         onPress={(event) => {setMessageMenuVisible(handlePress(event), true)}}
       >
-        <View style={[styles.messageBlockContainer, message.isUser&&{ justifyContent:'flex-end' }]}>
+        <View style={[styles.messageBlockContainer, message.author.userId==author.userId&&{ justifyContent:'flex-end' }]}>
           <View style={styles.messageContainer}>
             <View 
               onLayout={onLayout}
-              style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.text.length>40&&styles.longMessage]}
+              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>40&&styles.longMessage]}
             >
-              <Text>{wrapText(message.text, 40)}</Text>
-              <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                {message.edited?'edited ':''}
-                {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
+              <Text>{wrapText(message.content, 40)}</Text>
+              <Text style={message.content.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+                {message.isEdited?'edited ':''}
+                {message.sendingTime.getHours().toString().padStart(2, '0')}:
+                {message.sendingTime.getMinutes().toString().padStart(2, '0')}
               </Text>
             </View>
           </View>

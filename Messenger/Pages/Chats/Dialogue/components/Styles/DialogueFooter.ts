@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
 
   footer: {
     paddingVertical: 5,
-    paddingHorizontal: 10,
     //backgroundColor: 'rgb(231, 230, 228)',
     display: 'flex',
     flexDirection: 'row',
@@ -28,13 +27,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    justifyContent: 'space-between'
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   },
   
   messageInput: {
     borderWidth: 0,
-    borderRadius: 10,
-    backgroundColor: 'rgb(39, 39, 39)',
+    borderRadius: 9999,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     color: 'rgb(137, 130, 130)',
     paddingVertical: 3,
     paddingHorizontal: 15,

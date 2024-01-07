@@ -4,11 +4,12 @@ import React from 'react';
 import { messageMenuProps } from "./interfaces/IMessageMenu";
 import { styles } from './Styles/MessageMenu';
 import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { connect } from "react-redux";
 
 const {width, height} = Dimensions.get('window');
 
 let size:{ width:number, height:number } = { width: 0, height: 0 };
-const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEditPress, isUser, onDeletePress}:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEditPress, isUser, onDeletePress}:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -232,10 +233,8 @@ const messageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
   };
 
   const handleMenuPosition = () => {
-    console.log((coord?coord.pageY:0))
     if(isUser) {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
-        console.log((coord?coord.pageY:0), height-screenHeight*0.06-size.height)
         return { top:(coord?coord.pageY:0), left:(coord?width-coord.width-10:0)-size.width-5 }
       }
       else {
@@ -353,4 +352,4 @@ const footerstyles = StyleSheet.create({
   },
 });
 
-export default messageMenu;
+export default connect(null)(MessageMenu);

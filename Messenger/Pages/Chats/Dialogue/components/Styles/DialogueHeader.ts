@@ -38,10 +38,12 @@ const styles = StyleSheet.create({
   },
   
   chatUserInfoImg: {
-    width: 30,
-    height: 30,
-    borderWidth: 0,
-    borderRadius: 15
+    height: screenHeight * 0.08 * 0.7,
+    aspectRatio: 1,
+    borderRadius: 1000,
+    borderWidth: 1,
+    borderColor: "#2B1D1D",
+    marginRight: 12
   },
   
   chatUserInfoDiv: {
