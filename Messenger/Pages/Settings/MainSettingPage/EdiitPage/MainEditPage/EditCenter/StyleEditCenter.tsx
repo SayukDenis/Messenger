@@ -25,12 +25,9 @@ const StyleEditCenter = StyleSheet.create({
         marginTop:'5%',
         width:'25%',
         height:'4%',
-        backgroundColor:'#DAB671',
+        backgroundColor:'white',
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
-        borderTopWidth:1,
-        borderLeftWidth:1,
-        borderRightWidth:1,
     },
 
     box:{
