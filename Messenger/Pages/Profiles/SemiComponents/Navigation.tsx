@@ -32,6 +32,7 @@ import AuditLogScreen from "../ChannelProfile/AuditLogScreen/AuditLogScreen";
 import RolesScreen from "../ChannelProfile/RoleScreen/RolesScreen";
 import NewRoleScreen from "../ChannelProfile/RoleScreen/NewRoleScreen";
 import PermissionRoleScreen from "../ChannelProfile/PermissionRoleScreen/PermissionRoleScreen";
+import GroupSettingsScreen from "../GroupProfile/SettingsMenu/SettingsBranchesButton";
 
 const Stack = createStackNavigator();
 
@@ -110,12 +111,25 @@ const GroupNavigation = () => {
     >
       <Stack.Screen name="MainGroupPage" component={MainGroupPage} />
       <Stack.Screen name="SettingsMenu" component={SettingsMenu} />
+      <Stack.Screen
+        name="GroupSettingsScreen"
+        component={GroupSettingsScreen}
+      />
       <Stack.Screen name="AuditLog" component={AuditLog} />
-      <Stack.Screen name="Branches" component={Branches} />
+      <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
       <Stack.Screen name="Role" component={Role} />
       <Stack.Screen name="EditGroup" component={EditGroup} />
       <Stack.Screen name="CreateRole" component={CreateRole} />
       <Stack.Screen name="RolePermission" component={RolePermission} />
+      <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
+      <Stack.Screen
+        name="ChangeBranchParentScreen"
+        component={ChangeBranchParentScreen}
+      />
+      <Stack.Screen
+        name="ChangeBranchChildScreen"
+        component={ChangeBranchChildScreen}
+      />
     </Stack.Navigator>
   );
 };
