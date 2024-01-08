@@ -17,7 +17,7 @@ const MainForCreateChannelAngGroupOrWriteMessage: React.FC<
     })
   return (
     <View style={{ marginTop: heightOfHeader + marginTop }}>
-      <Text style={{ fontSize: 16, marginLeft ,marginBottom:10}}>
+      <Text style={{ fontSize: 17, marginLeft ,marginBottom:10}}>
         {"Create group/channel"}
       </Text>
       <TouchableOpacity style={{marginBottom:2}}>
@@ -26,7 +26,7 @@ const MainForCreateChannelAngGroupOrWriteMessage: React.FC<
       <TouchableOpacity onPress={PressOnCreateGroup.current}>
         <ButtonForSettings text="Create group"/>
       </TouchableOpacity>
-      <Text style={{ fontSize: 16, marginLeft ,marginBottom:10,marginTop}}>
+      <Text style={{ fontSize: 17, marginLeft ,marginBottom:10,marginTop}}>
         {"Message"}
       </Text>
       <TouchableOpacity>

@@ -72,6 +72,7 @@
     "@types/react": "~18.2.14",
     "@types/react-native": "^0.72.7",
     "@types/redux": "^3.6.0",
+    "@types/semver": "^7.5.6",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "babel-eslint": "^10.1.0",

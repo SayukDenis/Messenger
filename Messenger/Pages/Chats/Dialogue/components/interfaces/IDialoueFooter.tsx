@@ -1,23 +1,26 @@
-import { Message } from "../../tmpdata";
+import SelfProfile from "../../../../../dao/Models/SelfProfile";
+import { MessageProps } from "../../GeneralInterfaces/IMessage";
 
 export interface DialogueFooterProps {
-  messages:Message[], 
-  setMessages:(arg0: Message)=>void, 
+  author: SelfProfile|undefined,
+  messages:MessageProps[], 
+  setMessages:(arg0: MessageProps)=>void, 
   isReply:boolean, 
-  replyMessage:Message, 
+  replyMessage:MessageProps, 
   onSendMessageOrCancelReplyAndEdit:()=>void, 
   isEdit:boolean, 
-  editMessage:Message, 
+  editMessage:MessageProps, 
   messageID:number,
 }
 
 export interface sendMessageProps {
-  text:string, 
-  setText:(arg0: string)=>void,
-  messages:Message[], 
-  setMessages:(arg0: Message)=>void, 
-  replyMessage:Message, 
-  onSendMessageOrCancelReplyAndEdit:()=>void, 
-  editMessage:Message, 
-  messageID:number,
+  text: string; 
+  setText: (arg0: string)=>void;
+  messages: MessageProps[]; 
+  setMessages: (arg0: MessageProps)=>void; 
+  replyMessage: MessageProps; 
+  onSendMessageOrCancelReplyAndEdit: ()=>void; 
+  editMessage: MessageProps; 
+  messageID: number;
+  author: SelfProfile|undefined;
 }

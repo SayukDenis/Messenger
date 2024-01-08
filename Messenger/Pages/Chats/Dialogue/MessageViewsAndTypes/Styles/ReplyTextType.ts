@@ -81,4 +81,8 @@ export const styles = StyleSheet.create({
   longMessageTimeStamp: {
     marginRight: 0,
   },
+  longMessage: {
+    paddingHorizontal: 10,
+    flexDirection: 'column',
+  },
 });
