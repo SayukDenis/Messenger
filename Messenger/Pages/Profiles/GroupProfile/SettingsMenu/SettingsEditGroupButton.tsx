@@ -1,7 +1,6 @@
 import React from "react";
-import { SafeAreaView, TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { styles } from "../EditGroup/ProfileGroupStyles";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Path, Rect } from "react-native-svg";
 

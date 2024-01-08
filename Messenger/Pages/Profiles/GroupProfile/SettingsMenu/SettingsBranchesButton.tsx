@@ -1,25 +1,19 @@
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { styles } from "../../ChannelProfile/SettingsScreen/Styles";
-import Header from "../../SemiComponents/Header";
-import { StackNavigationProp } from "@react-navigation/stack";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
-import Group from "../../../../dao/Models/Chats/Group";
-import { branchMode } from "../../SemiComponents/DBUser";
 
-type GroupSettingsScreenProps = {
-  navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
-};
+interface SettingsBranchesButtonProps {
+  onPress: () => void;
+}
 
-const GroupSettingsScreen: React.FC<GroupSettingsScreenProps> = ({
-  navigation,
-}) => {
+const SettingsBranchesButton: React.FC<SettingsBranchesButtonProps> = (
+  props
+) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        branchMode.mode = "group";
-        alert("aboba");
-        navigation.navigate("AuditLog" as never);
+        props.onPress();
       }}
       style={styles.settingOption}
     >
@@ -29,4 +23,4 @@ const GroupSettingsScreen: React.FC<GroupSettingsScreenProps> = ({
   );
 };
 
-export default GroupSettingsScreen;
+export default SettingsBranchesButton;
