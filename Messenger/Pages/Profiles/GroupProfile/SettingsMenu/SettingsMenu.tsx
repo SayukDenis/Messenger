@@ -8,7 +8,7 @@ import AuditLogButton from "./SettingsAuditLogButton";
 import BranchesButton from "./SettingsBranchesButton";
 import RoleButton from "./SettingsRoleButton";
 import Svg, { Path, Rect } from "react-native-svg";
-import Header from "../../SemiComponents/Header";
+import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 interface SettingsMenuProps {

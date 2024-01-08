@@ -3,7 +3,7 @@
 import React from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { BlurView } from "expo-blur";
-import { styles } from "./ProfileStyles";
+import { styles } from "./Styles";
 
 interface BlurProps {
   visibleWhen: boolean;

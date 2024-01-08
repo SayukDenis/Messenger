@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
-import { styles } from "./MainScreen/Styles";
+import { styles } from "../MainScreen/Styles";
 
 interface TopMenuWhenSelectionProps {
   isVisible: boolean;

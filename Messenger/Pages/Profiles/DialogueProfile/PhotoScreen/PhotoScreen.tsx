@@ -10,7 +10,7 @@ import PhotoToolBar from "../../SemiComponents/PhotoScreen/PhotoToolBar";
 import EyeIcon from "../../SemiComponents/MainScreen/Icons/EyeIcon";
 import DownArrowIcon from "../../SemiComponents/MainScreen/Icons/DownArrowIcon";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
-import Blur from "../../SemiComponents/Blur";
+import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import ForwardContactIcon from "../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
 
 type PhotoScreenProps = {

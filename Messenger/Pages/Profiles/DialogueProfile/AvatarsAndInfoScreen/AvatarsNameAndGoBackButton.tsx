@@ -5,7 +5,7 @@ import { View, Image, TouchableWithoutFeedback } from "react-native";
 import { styles } from "./Styles";
 import { PhotoOrVideo, user } from "../../SemiComponents/DBUser";
 import Name from "../../SemiComponents/MainScreen/Name";
-import GoBackButton from "../../SemiComponents/GoBackButton";
+import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
 
 interface AvatarsNameAndGoBackButtonProps {
   onGoBackPress: () => void;

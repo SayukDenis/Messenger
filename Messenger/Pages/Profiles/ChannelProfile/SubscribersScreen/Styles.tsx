@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
     height: 0.05 * screenHeight,
     borderRadius: 40,
     backgroundColor: "rgb(39, 39, 39)",
-    top: 0.0145 * screenHeight,
+    top: 0.012 * screenHeight,
     left: -0.05 * screenWidth,
     justifyContent: "center",
     paddingLeft: 0.02 * screenWidth,

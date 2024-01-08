@@ -7,7 +7,7 @@ import { tempUser } from "../../SemiComponents/DBUser";
 import { user, PhotoOrVideo } from "../../SemiComponents/DBUser";
 import { styles } from "./Styles";
 import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
-import Header from "../../SemiComponents/Header";
+import Header from "../../SemiComponents/GeneralComponents/Header";
 
 interface GalleryWhileAddingNewPhotoProps {
   navigation: StackNavigationProp<{}>;

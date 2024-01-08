@@ -10,7 +10,7 @@ import Voice from "./Voice";
 import Links from "./Links";
 import Albums from "./Albums";
 import { Album, PhotoOrVideo, user } from "../../DBUser";
-import Blur from "../../Blur";
+import Blur from "../../GeneralComponents/Blur";
 import { GestureResponderEvent } from "react-native-modal";
 
 interface MultimediaProps {

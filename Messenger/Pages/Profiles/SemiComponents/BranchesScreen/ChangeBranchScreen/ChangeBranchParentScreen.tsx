@@ -11,8 +11,8 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "../Styles";
-import Blur from "../../Blur";
-import Header from "../../Header";
+import Blur from "../../GeneralComponents/Blur";
+import Header from "../../GeneralComponents/Header";
 import {
   character,
   tempCharacter,

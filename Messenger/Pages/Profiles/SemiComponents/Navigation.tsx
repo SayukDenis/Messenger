@@ -29,6 +29,9 @@ import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersSc
 import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen/AddSubscriberScreen";
 import ChannelSettingsScreen from "../ChannelProfile/SettingsScreen/ChannelSettingsScreen";
 import AuditLogScreen from "../ChannelProfile/AuditLogScreen/AuditLogScreen";
+import RolesScreen from "../ChannelProfile/RoleScreen/RolesScreen";
+import NewRoleScreen from "../ChannelProfile/RoleScreen/NewRoleScreen";
+import PermissionRoleScreen from "../ChannelProfile/PermissionRoleScreen/PermissionRoleScreen";
 
 const Stack = createStackNavigator();
 
@@ -147,6 +150,12 @@ const ChannelNavigation = () => {
         component={ChangeBranchChildScreen}
       />
       <Stack.Screen name="AuditLogScreen" component={AuditLogScreen} />
+      <Stack.Screen name="RolesScreen" component={RolesScreen} />
+      <Stack.Screen name="NewRoleScreen" component={NewRoleScreen} />
+      <Stack.Screen
+        name="PermissionRoleScreen"
+        component={PermissionRoleScreen}
+      />
     </Stack.Navigator>
   );
 };

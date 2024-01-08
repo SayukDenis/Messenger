@@ -10,39 +10,28 @@ import {
   ScrollView,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import Header from "../../GeneralComponents/Header";
-import { styles } from "../Styles";
-import EmojiAndColorButtons from "./EmojiAndColorButtons";
-import ColorSelection from "./ColorSelection";
-import EmojiSelection from "./EmojiSelection";
-import Blur from "../../GeneralComponents/Blur";
-import BranchColorPicker from "./BranchColorPicker";
-import BranchAppearance from "./BranchAppearance";
-import {
-  BranchParent,
-  BranchChild,
-  character,
-  tempCharacter,
-} from "../../DBUser";
+import Header from "../../SemiComponents/GeneralComponents/Header";
+import { styles } from "./Styles";
+import EmojiAndColorButtons from "../../SemiComponents/BranchesScreen/NewBranchScreen/EmojiAndColorButtons";
+import ColorSelection from "../../SemiComponents/BranchesScreen/NewBranchScreen/ColorSelection";
+import EmojiSelection from "../../SemiComponents/BranchesScreen/NewBranchScreen/EmojiSelection";
+import Blur from "../../SemiComponents/GeneralComponents/Blur";
+import BranchColorPicker from "../../SemiComponents/BranchesScreen/NewBranchScreen/BranchColorPicker";
+import BranchAppearance from "../../SemiComponents/BranchesScreen/NewBranchScreen/BranchAppearance";
+import { Role, channel, tempRole } from "../../SemiComponents/DBUser";
+import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 
-type NewBranchProps = {
+interface NewRoleScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
-};
+}
 
 const screenWidth: number = Dimensions.get("screen").width;
 const screenHeight: number = Dimensions.get("screen").height;
 
-const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
-  const newBranchTitle: string = "New Branch";
-  const nameTitle: string = "Name";
-  const branchNamePlaceHolder: string = "Name Branch";
-  const designBranchTitle: string = "Design branch";
-  const doneTitle: string = "Done";
-  const noNameWarningTitle: string = "You have to enter a name";
-  const nameIsBusyTitle: string = "This name is already taken";
+const NewRoleScreen: React.FC<NewRoleScreenProps> = (props) => {
   var isValid: boolean = true;
 
-  const [branchName, setBranchName] = useState("");
+  const [roleName, setRoleName] = useState("");
   const [pickedEmoji, setPickedEmoji] = useState("");
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
@@ -57,67 +46,54 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
         onPress={() => {
           setIsSpecialColorSelectionVisible(false);
         }}
-        style={styles.blurEffect}
       />
 
       <Header
-        primaryTitle={newBranchTitle}
+        primaryTitle="New role"
         onGoBackPress={() => {
-          navigation.goBack();
+          props.navigation.goBack();
         }}
       />
 
       <TouchableOpacity
         style={styles.doneButtonContainer}
         onPress={() => {
-          if (branchName.length == 0) {
+          if (roleName.length == 0) {
             isValid = false;
-            alert(noNameWarningTitle);
+            alert("You have to enter a name");
           }
 
-          character().branchParents.map((branch) => {
-            if (branch.name == branchName) {
+          channel.roles.map((role) => {
+            if (role.name == roleName) {
               isValid = false;
-              alert(nameIsBusyTitle);
+              alert("This name is already taken");
             }
-
-            branch.children.map((child) => {
-              if (child.name == branchName) {
-                isValid = false;
-                alert(nameIsBusyTitle);
-              }
-            });
           });
 
           if (isValid) {
-            if (tempCharacter().selectedBranchParent == null) {
-              character().branchParents.push(
-                new BranchParent(
-                  branchName,
-                  pickedEmoji,
-                  pickedColor,
-                  new Array<BranchChild>()
-                )
-              );
+            channel.roles.push(
+              new Role(
+                roleName,
+                pickedEmoji,
+                pickedColor,
+                tempRole.removeMembersPermission,
+                tempRole.blockMembersPermission,
+                tempRole.manageRolesPermission,
+                tempRole.manageBranchesPermission,
+                tempRole.seeTheAuditLogPermission,
+                tempRole.considerChannelsPermission,
+                tempRole.considerBranchPermission,
+                tempRole.manageTheServerPermission,
+                tempRole.sendAMessagePermission,
+                tempRole.sendAVoiceMessagePermission
+              )
+            );
 
-              character().branchParents.sort((a, b) =>
-                a.name.localeCompare(b.name)
-              );
-            } else {
-              tempCharacter().selectedBranchParent.children.push(
-                new BranchChild(branchName, pickedEmoji, pickedColor)
-              );
-
-              tempCharacter().selectedBranchParent.children.sort((a, b) =>
-                a.name.localeCompare(b.name)
-              );
-            }
-
-            navigation.goBack();
+            props.navigation.goBack();
           }
         }}
       >
-        <Text style={styles.doneButtonTitle}>{doneTitle}</Text>
+        <Text style={styles.doneButtonTitle}>Done</Text>
       </TouchableOpacity>
 
       <BranchColorPicker
@@ -137,25 +113,25 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
         >
           {/* Title for name input */}
           <View style={styles.containerForSettingTitle}>
-            <Text style={styles.settingTitle}>{nameTitle}</Text>
+            <Text style={styles.settingTitle}>Name</Text>
           </View>
 
-          {/* Branch name input */}
+          {/* Role name input */}
           <View style={styles.settingOption}>
             <TextInput
-              style={styles.newBranchNameInput}
+              style={styles.newRoleNameInput}
               onChangeText={(text: string) => {
-                setBranchName(text);
+                setRoleName(text);
               }}
-              value={branchName}
-              placeholder={branchNamePlaceHolder}
+              value={roleName}
+              placeholder="Name role"
               maxLength={25}
             />
           </View>
 
-          {/* Title for designing branch */}
+          {/* Title for designing role */}
           <View style={styles.containerForSettingTitle}>
-            <Text style={styles.settingTitle}>{designBranchTitle}</Text>
+            <Text style={styles.settingTitle}>Design role</Text>
           </View>
           <EmojiAndColorButtons
             isVisible={!isEmojiSelectionVisible && !isColorSelectionVisible}
@@ -193,7 +169,7 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
 
           <BranchAppearance
             emoji={pickedEmoji}
-            name={branchName}
+            name={roleName}
             color={pickedColor}
             style={{
               top:
@@ -202,10 +178,43 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
                   : 0.04 * screenHeight,
             }}
           />
+
+          {/* Permission */}
+          <View
+            style={[
+              styles.containerForSettingTitle,
+              {
+                top:
+                  !isEmojiSelectionVisible && !isColorSelectionVisible
+                    ? 0.08 * screenHeight
+                    : 0.04 * screenHeight,
+              },
+            ]}
+          >
+            <Text style={styles.settingTitle}>Permission</Text>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("PermissionRoleScreen" as never);
+            }}
+            style={[
+              styles.settingOption,
+              {
+                top:
+                  !isEmojiSelectionVisible && !isColorSelectionVisible
+                    ? 0.08 * screenHeight
+                    : 0.04 * screenHeight,
+              },
+            ]}
+          >
+            <Text style={styles.settingOptionTitle}>Permission role</Text>
+            <RightArrow style={styles.settingOptionRightArrow} />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
   );
 };
 
-export default NewBranchScreen;
+export default NewRoleScreen;

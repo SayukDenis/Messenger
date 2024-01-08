@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
-import Header from "../../SemiComponents/Header";
+import Header from "../../SemiComponents/GeneralComponents/Header";
 import { user, Album, PhotoOrVideo } from "../../SemiComponents/DBUser";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 import { tempUser } from "../../SemiComponents/DBUser";

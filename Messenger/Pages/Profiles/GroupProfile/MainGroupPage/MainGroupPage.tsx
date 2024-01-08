@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, ScrollView, Dimensions } from "react-native";
-import { styles } from "../../SemiComponents/ProfileStyles";
+import { styles } from "../../SemiComponents/GeneralComponents/Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/Blur";
+import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import BioAndLink from "./BioAndLink";

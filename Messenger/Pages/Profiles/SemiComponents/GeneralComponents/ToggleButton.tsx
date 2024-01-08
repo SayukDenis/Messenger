@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { View, TouchableOpacity, Animated, Dimensions } from "react-native";
-import { styles } from "./Styles";
+import { styles } from "../../DialogueProfile/PermissionScreen/Styles";
 
 const screenWidth: number = Dimensions.get("screen").width;
 const screenHeight: number = Dimensions.get("screen").height;

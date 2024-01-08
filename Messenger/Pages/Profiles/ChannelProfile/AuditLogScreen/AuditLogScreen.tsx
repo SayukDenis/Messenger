@@ -3,7 +3,7 @@
 import React from "react";
 import { View, ScrollView, Image, Text } from "react-native";
 import { styles } from "./Styles";
-import Header from "../../SemiComponents/Header";
+import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { channel } from "../../SemiComponents/DBUser";
 import DeletedUserIcon from "./Icons/DeletedUserIcon";

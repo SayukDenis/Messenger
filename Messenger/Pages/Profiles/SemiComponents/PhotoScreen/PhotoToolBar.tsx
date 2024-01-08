@@ -3,7 +3,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "../MainScreen/Styles";
-import GoBackButton from "../GoBackButton";
+import GoBackButton from "../GeneralComponents/GoBackButton";
 import ElseFeaturesIcon from "../MainScreen/Icons/ElseFeaturesIcon";
 
 const screenHeight = Dimensions.get("screen").height;

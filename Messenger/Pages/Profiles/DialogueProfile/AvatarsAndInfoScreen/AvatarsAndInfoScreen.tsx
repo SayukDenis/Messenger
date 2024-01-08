@@ -6,7 +6,7 @@ import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/Blur";
+import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import {
   Album,
@@ -17,7 +17,7 @@ import {
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
 import AvatarsNameAndGoBackButton from "./AvatarsNameAndGoBackButton";
-import TopMenuWhenSelection from "../../SemiComponents/TopMenuWhenSelection";
+import TopMenuWhenSelection from "../../SemiComponents/GeneralComponents/TopMenuWhenSelection";
 import NumberUsernameAndBio from "./NumberUsernameAndBio";
 import CurrentAvatarBar from "./CurrentAvatarBar";
 import AnimatedMessageAboutCopying from "./AnimatedMessageAboutCopying";

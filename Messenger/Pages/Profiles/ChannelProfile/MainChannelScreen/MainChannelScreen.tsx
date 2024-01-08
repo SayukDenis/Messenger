@@ -8,7 +8,7 @@ import { useIsFocused } from "@react-navigation/native";
 import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
 import AvatarWithCallingButtons from "../../SemiComponents/MainScreen/AvatarWithCallingButtons";
 import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/Blur";
+import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import {
@@ -127,7 +127,7 @@ const MainChannelScreen: React.FC<MainChannelScreenProps> = (props) => {
       {/* Top tool bar with buttons*/}
       <TopToolBar
         primaryTitle={user.profileName}
-        secondaryTitle={user.lastTimeOnline}
+        secondaryTitle="2 members"
         onElseFeaturesPress={() => {
           setIsElseFeaturesVisible(true);
         }}

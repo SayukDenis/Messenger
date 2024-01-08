@@ -51,7 +51,7 @@ export const user: UserProps = {
   selectedInterval: 0,
   isMuted: false,
   isBlocked: false,
-  profileName: "Longjj profile namejjjjj",
+  profileName: "My name",
   lastTimeOnline: "Був online давно",
   MembersCount: "10 members",
   isEmergencyMessagesEnabled: false,
@@ -493,17 +493,81 @@ export const AuditLog: AuditLogProps = {
   ],
 };
 
+export class Role {
+  name: string;
+  emoji: string;
+  color: string;
+  removeMembersPermission: boolean;
+  blockMembersPermission: boolean;
+  manageRolesPermission: boolean;
+  manageBranchesPermission: boolean;
+  seeTheAuditLogPermission: boolean;
+  considerChannelsPermission: boolean;
+  considerBranchPermission: boolean;
+  manageTheServerPermission: boolean;
+  sendAMessagePermission: boolean;
+  sendAVoiceMessagePermission: boolean;
+
+  constructor(
+    name: string,
+    emoji: string,
+    color: string,
+    removeMembersPermission: boolean,
+    blockMembersPermission: boolean,
+    manageRolesPermission: boolean,
+    manageBranchesPermission: boolean,
+    seeTheAuditLogPermission: boolean,
+    considerChannelsPermission: boolean,
+    considerBranchPermission: boolean,
+    manageTheServerPermission: boolean,
+    sendAMessagePermission: boolean,
+    sendAVoiceMessagePermission: boolean
+  ) {
+    this.name = name;
+    this.emoji = emoji;
+    this.color = color;
+    this.removeMembersPermission = removeMembersPermission;
+    this.blockMembersPermission = blockMembersPermission;
+    this.manageRolesPermission = manageRolesPermission;
+    this.manageBranchesPermission = manageBranchesPermission;
+    this.seeTheAuditLogPermission = seeTheAuditLogPermission;
+    this.considerChannelsPermission = considerChannelsPermission;
+    this.considerBranchPermission = considerBranchPermission;
+    this.manageTheServerPermission = manageTheServerPermission;
+    this.sendAMessagePermission = sendAMessagePermission;
+    this.sendAVoiceMessagePermission = sendAVoiceMessagePermission;
+  }
+}
+
+export const tempRole: Role = {
+  name: "",
+  emoji: "",
+  color: "",
+  removeMembersPermission: true,
+  blockMembersPermission: true,
+  manageRolesPermission: true,
+  manageBranchesPermission: true,
+  seeTheAuditLogPermission: true,
+  considerChannelsPermission: true,
+  considerBranchPermission: true,
+  manageTheServerPermission: true,
+  sendAMessagePermission: true,
+  sendAVoiceMessagePermission: true,
+};
+
 export interface ChannelProps {
   subscribersQuantity: number;
   subscribers: Array<Contact>;
   branchParents: Array<BranchParent>;
   events: Array<ChannelEvent>;
+  roles: Array<Role>;
 }
 
 export const channel: ChannelProps = {
   subscribersQuantity: 1002313,
   subscribers: [],
   branchParents: new Array<BranchParent>(),
+  roles: new Array<Role>(),
   events: [
     {
       author: {
@@ -709,11 +773,13 @@ export class ChannelEvent {
 interface tempChannelProps {
   selectedBranchParent: BranchParent;
   selectedBranchChild: BranchChild;
+  selectedRole: Role;
 }
 
 export const tempChannel: tempChannelProps = {
   selectedBranchParent: null,
   selectedBranchChild: null,
+  selectedRole: null,
 };
 
 export class Contact {

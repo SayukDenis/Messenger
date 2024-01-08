@@ -2,8 +2,8 @@
 
 import React from "react";
 import { View, TextStyle } from "react-native";
-import { styles } from "./ProfileStyles";
-import Name from "./MainScreen/Name";
+import { styles } from "./Styles";
+import Name from "../MainScreen/Name";
 import GoBackButton from "./GoBackButton";
 
 interface HeaderProps {

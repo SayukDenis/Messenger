@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import Header from "../../SemiComponents/Header";
+import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CheckmarkIcon from "./Icons/CheckMarkIcon";
 import { user } from "../../SemiComponents/DBUser";
-import ToggleButton from "./ToggleButton";
+import ToggleButton from "../../SemiComponents/GeneralComponents/ToggleButton";
 
 type PermissionScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation

@@ -3,10 +3,9 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import Header from "../../SemiComponents/Header";
+import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
-import Group from "../../../../dao/Models/Chats/Group";
 import { branchMode } from "../../SemiComponents/DBUser";
 
 type ChannelSettingsScreenProps = {
@@ -48,7 +47,7 @@ const ChannelSettingsScreen: React.FC<ChannelSettingsScreenProps> = ({
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => alert("Aboba")}
+        onPress={() => navigation.navigate("RolesScreen" as never)}
         style={styles.settingOption}
       >
         <Text style={styles.settingOptionTitle}>Role</Text>
