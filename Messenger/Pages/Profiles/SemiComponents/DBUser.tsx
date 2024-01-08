@@ -706,6 +706,16 @@ export class ChannelEvent {
   text: string;
 }
 
+interface tempGroupProps {
+  selectedBranchParent: BranchParent;
+  selectedBranchChild: BranchChild;
+}
+
+export const tempGroup: tempGroupProps = {
+  selectedBranchParent: null,
+  selectedBranchChild: null,
+};
+
 interface tempChannelProps {
   selectedBranchParent: BranchParent;
   selectedBranchChild: BranchChild;
@@ -756,13 +766,19 @@ export const contacts: Array<Contact> = [
   { avatar: "https://picsum.photos/id/1/5000/3333", name: "Dmytro", id: 19 },
 ];
 
+export interface groupProps {
+  branchParents: Array<BranchParent>;
+}
+
+export const group: groupProps = { branchParents: new Array<BranchParent>() };
+
 export const character = () => {
   switch (branchMode.mode) {
     case "user": {
       return user;
     }
     case "group": {
-      return null;
+      return group;
     }
     case "channel": {
       return channel;
@@ -776,7 +792,7 @@ export const tempCharacter = () => {
       return tempUser;
     }
     case "group": {
-      return null;
+      return tempGroup;
     }
     case "channel": {
       return tempChannel;

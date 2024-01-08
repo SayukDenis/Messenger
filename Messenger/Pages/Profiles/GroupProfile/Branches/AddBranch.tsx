@@ -5,6 +5,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { styles } from "../EditGroup/ProfileGroupStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { branchMode } from "../../SemiComponents/DBUser";
 
 export const AddBranch = () => {
   const navigation = useNavigation();
@@ -14,9 +15,16 @@ export const AddBranch = () => {
   };
 
   return (
-    <TouchableOpacity style={styles.SettingsButtons}>
+    <TouchableOpacity
+      onPress={() => {
+        branchMode.mode = "group";
+
+        navigation.navigate("BranchesScreen" as never);
+      }}
+      style={styles.SettingsButtons}
+    >
       <Text style={styles.SettingsText} onPress={handleEditGroupPress}>
-        Branch
+        + Branch
       </Text>
     </TouchableOpacity>
   );
