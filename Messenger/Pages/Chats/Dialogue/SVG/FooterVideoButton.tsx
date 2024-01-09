@@ -5,13 +5,15 @@ import { screenHeight, screenWidth } from "../../../ChatList/Constants/Constants
 function FooterVideoButton() {
   return (
     <Svg
-      width={screenWidth * 0.1} 
-      height={screenHeight * 0.02}
-      viewBox="0 0 15 10"
+      width={screenHeight*0.03}
+      height={screenHeight*0.03}
+      viewBox="-1.5 0 15 9"
       fill="none"
     >
-      <Path d="M7.637 5l5.318-3.778V8.78L7.637 5z" fill="#AF59CE" />
-      <Path fill="#AF59CE" d="M0.545898 0.636719H9.409538V9.363989H0.545898z" />
+      <Path
+        d="M0 1.833C0 1.098.648.5 1.444.5h5.778c.797 0 1.445.598 1.445 1.333v5.334c0 .735-.648 1.333-1.445 1.333H1.444C.648 8.5 0 7.902 0 7.167V1.833zm12.619-.587a.662.662 0 01.381.587v5.334c0 .245-.147.47-.381.587a.772.772 0 01-.743-.033L9.709 6.388l-.32-.198V2.81l.32-.198 2.167-1.333a.777.777 0 01.743-.033z"
+        fill="#AF59CE"
+      />
     </Svg>
   );
 }

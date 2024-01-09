@@ -43,7 +43,7 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
       'keyboardDidHide',
       () => {
         setKeyboardHeight(0);
-      }
+      } 
     );
 
     // Clean up the event listeners when the component is unmounted
@@ -54,7 +54,7 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
   }, []);
 
   const keyExtractor = (item:any) => {
-    return item.messageId.toString();
+    return item.messageId?.toString();
   }
 
   const setCoordsYHandler = (newCoordsY:any) => {
@@ -72,7 +72,7 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
       messageID={messageID}
       setCoordsY={setCoordsYHandler}
     />);
-  const memoizedItem = useMemo(() => renderItem, []);
+  const memoizedItem = useMemo(() => renderItem, [listOfMessages]);
 
   const ListHeaderComponent = () => (
     <View style={{ height: screenHeight * 0.03+(isReply||isEdit?screenHeight*0.05:0) }} />
@@ -95,8 +95,8 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
         windowSize={20}
         keyExtractor={keyExtractor}
         renderItem={memoizedItem}
-        ListHeaderComponent={ListHeaderComponent}//<View style={{ backgroundColor: 'transparent', height: screenHeight * 0.08 + Constants.statusBarHeight }} />
-        ListFooterComponent={ListFooterComponent} //<View style={{ height: screenHeight * 0.03 }} />
+        ListHeaderComponent={ListHeaderComponent}
+        ListFooterComponent={ListFooterComponent} 
       />
     </View>
   );

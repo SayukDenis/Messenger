@@ -126,12 +126,13 @@ const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSend
   const messageToEdit = messages.find(m => m.messageId == messageID);
 
   if(text == '') {
+    Alert.alert('dasda')
     onSendMessageOrCancelReplyAndEdit();
     return;
   }
   if(replyMessage?.content) {
     setMessages({
-      messageId: messages.length + 1,
+      messageId: messages.length,
       author: (author as User), // SelfProgile == User ?
       content: text,
       sendingTime: new Date(),
@@ -142,12 +143,14 @@ const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSend
       reactionOnMessage: []
     });
   } else if(editMessage?.content&&text!=messageToEdit?.content) {
-    messageToEdit!.content = text;
-    messageToEdit!.isEdited = true;
+    if(messageToEdit!==undefined) {
+      messageToEdit.content = text;
+      messageToEdit.isEdited = true;
+    }
     setMessages({} as MessageProps);
   } else {
     setMessages({
-      messageId: messages.length + 1,
+      messageId: messages.length,
       author: (author as User),
       content: text,
       sendingTime: new Date(),

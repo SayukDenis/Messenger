@@ -5,6 +5,13 @@ import { messageMenuProps } from "./interfaces/IMessageMenu";
 import { styles } from './Styles/MessageMenu';
 import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
+import MessageMenuSelectButton from "../SVG/MessageMenuSelectButton";
+import MessageMenuDeleteButton from "../SVG/MessageMenuDeleteButton";
+import MessageMenuForwardButton from "../SVG/MessageMenuForwardButton";
+import MessageMenuPinButton from "../SVG/MessageMenuPinButton";
+import MessageMenuCopyButton from "../SVG/MessageMenuCopyButton";
+import MessageMenuEditButton from "../SVG/MessageMenuEditButton";
+import MessageMenuReplyButton from "../SVG/MessageMenuReplyButton";
 
 const {width, height} = Dimensions.get('window');
 
@@ -17,31 +24,38 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
     {
       text: 'Reply',
       action: onReplyPress,
+      svg: <MessageMenuReplyButton />
     },
     {
       text: 'Edit',
       action: onEditPress,
+      svg: <MessageMenuEditButton />
     },
     {
       text: 'Copy',
       action: () => {},
+      svg: <MessageMenuCopyButton />
     },
     {
       text: 'Pin',
       action: () => {},
+      svg: <MessageMenuPinButton />
     },
     {
       text: 'Forward',
       action: () => {},
+      svg: <MessageMenuForwardButton />
     },
     {
       text: 'Delete',
-      color: 'darkred',
-      action: onDeletePress
+      color: 'red',
+      action: onDeletePress,
+      svg: <MessageMenuDeleteButton />
     },
     {
       text: 'Select',
       action: () => {},
+      svg: <MessageMenuSelectButton />
     },
   ];
 
@@ -303,7 +317,8 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
               activeOpacity={1} 
               style={styles.button}
             >
-              <Text style={{color:button.color}}>{button.text}</Text>
+              {button.svg}
+              <Text style={{color:button.color, marginLeft: 5}}>{button.text}</Text>
             </TouchableOpacity>
             {button.text==='Select'&&(coord?coord.pageY:0) > height-screenHeight*0.06-size.height?
             <View
@@ -338,7 +353,7 @@ const footerstyles = StyleSheet.create({
   positionOfModalWindowRightBottom: {
     transform: [{ rotate: "-100deg" }],
     bottom: screenHeight * 0.009,
-    left: screenWidth * 0.17,
+    left: screenWidth * 0.22,
   },
   positionOfModalWindowLeftTop: {
     transform: [{ rotate: "322.5deg" }],
@@ -348,7 +363,7 @@ const footerstyles = StyleSheet.create({
   positionOfModalWindowRightTop: {
     transform: [{ rotate: "-322.5deg" }],
     bottom: -screenHeight * 0.006,
-    left: screenWidth * 0.18,
+    left: screenWidth * 0.23,
   },
 });
 
