@@ -1,28 +1,22 @@
-import React, { useEffect, useRef } from "react";
-import { View, TouchableOpacity, TextInput } from "react-native";
+import React, { useRef } from "react";
 import HeaderContainer from "../../../SemiComponents/HeaderContainer";
-import {
-  screenHeight,
-  screenWidth,
-} from "../../Constants/ConstantsForChatlist";
-import BackButton from "../../../SemiComponents/BackButton";
 import DefaultContainerInHeader from "../../../SemiComponents/DefaultContainerInHeader";
+import { TextInput, TouchableOpacity } from "react-native";
+import BackButton from "../../../SemiComponents/BackButton";
+import { View } from "react-native";
+import { screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
 
-interface HeaderForContactsProps {
+interface HeaderForWriteMessageProps {
   navigation: any;
 }
 
-const HeaderForContacts: React.FC<HeaderForContactsProps> = ({
+const HeaderForWriteMessage: React.FC<HeaderForWriteMessageProps> = ({
   navigation,
 }) => {
+    const inputRef = useRef<TextInput>(null);
   const pressOnBackButton = useRef(() => {
     navigation.goBack();
   });
-  const inputRef = useRef<TextInput>(null);
-  useEffect(() => {
-    //inputRef.current?.focus();
-  }, []);
-
   return (
     <HeaderContainer>
       <DefaultContainerInHeader>
@@ -36,8 +30,8 @@ const HeaderForContacts: React.FC<HeaderForContactsProps> = ({
           <TextInput
             ref={inputRef}
             style={{
-              width: screenWidth * 0.8,
-              height: screenHeight * 0.0415,
+              width: screenWidth* 0.8,
+              height: screenHeight* 0.0415,
               backgroundColor: "#272727",
               alignSelf: "center",
               color: "white",
@@ -45,7 +39,7 @@ const HeaderForContacts: React.FC<HeaderForContactsProps> = ({
               borderRadius: 100,
               fontSize: 16,
             }}
-            placeholder="Search in Telentik"
+            placeholder="Search to write"
             placeholderTextColor={"#888282"}
             keyboardAppearance="dark"
           />
@@ -55,4 +49,4 @@ const HeaderForContacts: React.FC<HeaderForContactsProps> = ({
   );
 };
 
-export default HeaderForContacts;
+export default HeaderForWriteMessage;
