@@ -1,6 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
 import LogWriter from './LogWriter';
+import { createTables } from './generate/createTables';
+import { createTriggers } from './generate/createTriggers';
 
 async function ReadConfigFile() {
     //path to configuration file
@@ -16,7 +18,6 @@ async function ReadConfigFile() {
             };
         } catch (error) {
             console.error('Error reading the file:', error);
-            return null;
         }
     };
 
@@ -35,13 +36,16 @@ export default class DataBase {
         }
         return this.instance;
     }
-    
+
     public async openDatabase() {
         try {
-            if (this.database === null) {
-                const { databasePath, databaseVersion } = await ReadConfigFile();
+            const config = await ReadConfigFile();
+            if (config) {
+                const { databasePath, databaseVersion } = config;
                 this.database = SQLite.openDatabase(databasePath, databaseVersion);
-            }
+            } else
+                throw Error("can`t read configuration file");
+
             return this.database;
         } catch (error) {
             LogWriter.error(`Error opening the database: ${error}`);
@@ -50,23 +54,38 @@ export default class DataBase {
 
     public async dropDatabase(): Promise<boolean> {
         try {
-            const { databasePath } = await ReadConfigFile();
-            const fullPath = FileSystem.documentDirectory + `SQLite/${databasePath}`;
+            const config = await ReadConfigFile();
+            if (config) {
+                const { databasePath } = config;
+                const fullPath = FileSystem.documentDirectory + `SQLite/${databasePath}`;
 
-            if ((await FileSystem.getInfoAsync(fullPath)).exists) {
-                await FileSystem.deleteAsync(fullPath);
+                if ((await FileSystem.getInfoAsync(fullPath)).exists) {
+                    await FileSystem.deleteAsync(fullPath);
+                }
                 return true;
-            }
+            } else
+                throw Error("can`t read configuration file");
         } catch (error) {
             LogWriter.error(`Error dropping the database: ${error}`);
             return false;
         }
     }
 
+    public async createDatabase(dropDatabase = false) {
+        if (dropDatabase) {
+            const result = await this.dropDatabase();
+            if (!result)
+            LogWriter.error('Error dropping database');
+        }
+
+        await createTables();
+        await createTriggers();
+    }
+
     public async dropTables(): Promise<boolean> {
         try {
             const db = await this.openDatabase();
-            db.transaction(tx => {
+            db?.transaction(tx => {
                 tx.executeSql('SELECT name FROM sqlite_master WHERE type="table"', [], (tx, results) => {
                     const len = results.rows.length;
                     for (let i = 0; i < len; i++) {
@@ -81,6 +100,7 @@ export default class DataBase {
             return false;
         }
     }
+
 }
 
 

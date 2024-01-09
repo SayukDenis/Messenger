@@ -12,28 +12,42 @@ import Branch from '../../Models/Chats/Branch';
 import Role from '../../Models/Chats/Role';
 import LogWriter from '../LogWriter';
 import DataBase from '../Database';
+import { SQLiteDatabase } from 'expo-sqlite';
 
-const db = await DataBase.getInstance();
 
-export function createTables() {
+export async function createTables() {
   //add schemes of all classes
   initializeClasses();
   //create Sql code of each classes
   const models: Map<string, string> = generateTableCreationQueries();
 
-
   for (const model of models)
-    LogWriter.log(`\nName table: ${model[0]}\nhave sql code:\n${model[1]}\n`)
+    LogWriter.log(`\n--Table: ${model[0]}\n${model[1]}\n`)
   LogWriter.log("\ndao_generate_main: End of main\n\n");
 
+  const database = await DataBase.getInstance().then(db =>db.openDatabase());
 
   //create all table in database 
-  for (const model of models) {
-    executeSql(model[1]);
-    LogWriter.log(`Table "${model[0]}" was created`);
-  }
+  if (database)
+    for (const model of models) {
+      await executeSql(database, model[1]);
+      LogWriter.log(`Table "${model[0]}" was created`);
+    }
 
 }
+
+export async function executeSql(database: SQLiteDatabase | undefined, sqlCode: string) {
+  if (database == undefined)
+    LogWriter.error('Error executing SQL: Database is undefined');
+  else {
+    await database.transactionAsync( async tx => {
+       await tx.executeSqlAsync(
+        sqlCode, undefined
+      );
+    });
+  }
+}
+
 function initializeClasses() {
   const creator = Creator.getInstance();
   creator.clean();
@@ -80,7 +94,6 @@ function generateTableCreationQueries(): Map<string, string> {
 
   return modelsSqlMap;
 }
-// A function for sorting an array of strings
 function sortingRows(a: string, b: string): number {
   if (a.includes("PRIMARY KEY") && !b.includes("PRIMARY KEY"))
     return 1;
@@ -92,24 +105,4 @@ function sortingRows(a: string, b: string): number {
     return -1;
   else
     return 0;
-}
-async function executeSql(sqlCode: string) {
-  try {
-    const database = await db.openDatabase();
-
-    await database!.transaction(tx => {
-      tx.executeSql(
-        sqlCode, undefined,
-        () => {
-          LogWriter.log('Successful executing SQL');
-        },
-        (_: any, error: any) => {
-          LogWriter.error(`Error executing SQL: ${error}`);
-          return true;
-        }
-      );
-    });
-  } catch (error) {
-    LogWriter.error(`Error opening database: ${error}`);
-  }
 }

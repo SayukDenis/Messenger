@@ -32,7 +32,7 @@ export default class Message extends Model {
             author: { type: 'class', objectType: User },
             sendingTime: 'date',
             messageType: { type: 'enum', objectType: EMessageType },
-            numberInChat: 'integer',
+            numberInChat: 'integer?',
             messageResponseId: 'integer?',
             messageForwardId: 'integer?',
             isEdited: { type: 'boolean', default: false },

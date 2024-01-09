@@ -7,7 +7,7 @@ export function printSelfProfile() {
     const selfProfile: SelfProfile = initialization();
     for (const key in selfProfile) {
         if (selfProfile.hasOwnProperty(key)) {
-            const value = selfProfile[key];
+            const value = selfProfile[key as keyof SelfProfile];
 
             if (Array.isArray(value)) {
                 console.log(`${key}: ${value.length} elements`);
