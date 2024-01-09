@@ -24,6 +24,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal:10, 
     paddingVertical:5, 
     borderRadius:15, 
-    width:width*0.2
+    width:width*0.25,
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 })

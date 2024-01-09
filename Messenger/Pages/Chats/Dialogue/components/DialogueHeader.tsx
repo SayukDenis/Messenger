@@ -7,10 +7,14 @@ import HeaderBackButton from '../SVG/HeaderBackButton';
 import HeaderBranchButton from '../SVG/HeaderBranchButton';
 import { connect } from 'react-redux';
 
-let userName = 'Denis';
-let wasOnline = 'Online recently';
+interface DialogueHeaderProps {
+  navigation: any;
+  picture: string | undefined;
+  displayName: string | undefined;
+  activityTime: string | Date;
+}
 
-const DialogueHeader = ({ navigation }:{ navigation:any }) => {
+const DialogueHeader = ({ navigation, picture, displayName, activityTime }:DialogueHeaderProps) => {
   return(
     <HeaderContainer>
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
@@ -24,12 +28,12 @@ const DialogueHeader = ({ navigation }:{ navigation:any }) => {
           </TouchableOpacity>
           <View style={styles.chatUserInfo}>
             <Image 
-              source={{ uri: 'https://cdn140.picsart.com/361453903080211.png' }} 
+              source={{ uri: picture }} 
               style={styles.chatUserInfoImg}
             />
             <View style={styles.chatUserInfoDiv}>
-              <Text style={styles.chatUserInfoUserName}>{userName}</Text>
-              <Text style={styles.chatUserInfoUserWasOnline}>{wasOnline}</Text>
+              <Text style={styles.chatUserInfoUserName}>{displayName}</Text>
+              <Text style={styles.chatUserInfoUserWasOnline}>{activityTime.toString()}</Text>
             </View>
           </View>
           <HeaderBranchButton />

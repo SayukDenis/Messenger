@@ -89,6 +89,8 @@ const Dialogue = ({ navigation, route }:any) => {
   const sendMessageOrCancelReplyAndEditHandler = useCallback(() => {
     setIsEdit(false);
     setIsReply(false);
+    setEditMessage({} as MessageProps);
+    setReplyMessage({} as MessageProps);
   },[]);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -120,12 +122,23 @@ const Dialogue = ({ navigation, route }:any) => {
     }
   }, []);
 
+  // asdad
+  const updateMessageContent = (messageId: number|undefined, newContent: string|undefined) => {
+    if(messageId&&newContent)
+      setListOfMessages(prevMessages =>
+        prevMessages.map(message =>
+          message.messageId === messageId ? { ...message, content: newContent } : message
+        )
+      );
+  };
+
   const setMessages = useCallback((mes:MessageProps) => {
-    if(isEdit) {
-      setListOfMessages([...listOfMessages]);
-    }
-    else {
+    if(mes.messageId){
       setListOfMessages([mes, ...listOfMessages]);
+    }
+    else{
+      const m = msgs.find(m => m.messageId==messageID);
+      updateMessageContent(m?.messageId, m?.content)
     }
   }, [listOfMessages]);
 
@@ -164,7 +177,12 @@ const Dialogue = ({ navigation, route }:any) => {
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
           />
-          <DialogueHeader navigation={navigation} />
+          <DialogueHeader 
+            navigation={navigation} 
+            picture={dialogue.linkToPhoto}
+            displayName={dialogue.users[1].name}
+            activityTime={'Online recently'} // Last activity from user
+          />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
             messageMenuVisisbleAppearence={messageMenuVisisbleAppearence} 

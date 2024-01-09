@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
   },
   messageTypeTextUser: {
-    backgroundColor: 'rgb(102, 191, 255)',
+    //backgroundColor: 'rgb(102, 191, 255)',
     marginLeft: 'auto',
     fontSize: 10,
     display: 'flex',
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     minWidth: '15%'
   },
   messageTypeTextNotUser: {
-    backgroundColor: 'rgb(231, 230, 228)',
+    //backgroundColor: 'rgb(231, 230, 228)',
     marginRight: 'auto',
     fontSize: 10,
     display: 'flex',

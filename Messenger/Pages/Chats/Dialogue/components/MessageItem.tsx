@@ -12,12 +12,13 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, scrollViewRe
       return <ReplyTextType key={message.messageId} messages={listOfMessages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={message.messageId!} scrollView={scrollViewRef} cordsY={coordsY} author={author}/>;
     }
     else if(message.messageType == EMessageType.text) {
-      return <DefaultTextType key={message.messageId} messages={listOfMessages} message={message} setMessageMenuVisible={setMessageMenuVisible} id={message.messageId!} author={author}/>;
+      return <DefaultTextType key={message.messageId} message={message} setMessageMenuVisible={setMessageMenuVisible} id={message.messageId!} author={author}/>;
     }
   };
 
   return (
     <View
+      key={item.messageId}
       onLayout={(event) => {
         const newCoordsY = { ...coordsY };
         newCoordsY[item.messageId] = [event.nativeEvent.layout.y, event.nativeEvent.layout.height];
