@@ -1,4 +1,4 @@
-import React, {  useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import {
   heightOfHeader,
@@ -10,33 +10,21 @@ import ContainerForButtonForSettings from "../../../SemiComponents/ContainerForB
 import TextInputValidateForCountOfText from "../../../SemiComponents/TextInputValidateForCountOfText";
 import AddMemberSVG from "../../../SemiComponents/AddMemberSVG";
 import CameraSVG from "../../../SemiComponents/CameraSVG";
-import { connect, useDispatch, useSelector } from "react-redux";
 
-interface MainForCreateGroupPageProps {
+interface MainForCreateChannelPageProps {
   navigation: any;
 }
 
-const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
+const MainForCreateChannelPage: React.FC<MainForCreateChannelPageProps> = ({
   navigation,
 }) => {
   const [inputTextForName, setInputTextForName] = useState<string>("");
   const [inputTextForBio, setInputTextForBio] = useState<string>("");
-  const dispatch=useDispatch()
   const radiusOfPhotoContiner = screenWidth * 0.33;
+  //const radiusOfPhotoContiner=screenHeight*0.15
   const marginTop = 15;
   const marginLeft = screenWidth * 0.03;
   const marginBottom = 10;
-  const PressOnAddMembers = useRef(() => {
-    navigation.navigate("Add Member Page");
-  });
-  const props = useSelector((state: any) => {
-    return state.chatListReducer.createGroupOrChannel;
-    //console.log(props);
-  });
-  useEffect(()=>{
-    console.log(props)
-  },[props])
-
   return (
     <ScrollView scrollEnabled={false} style={{ marginTop: heightOfHeader }}>
       <View
@@ -62,10 +50,10 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
       </View>
       <ContainerForButtonForSettings>
         <TextInputValidateForCountOfText
-          placeHolder={"Group name"}
+          placeHolder={"Channel name"}
           maxNumberOfChars={43}
-          inputText={inputTextForName}
           setInputText={setInputTextForName}
+          inputText={inputTextForName}
         />
       </ContainerForButtonForSettings>
       <View style={{ marginTop, marginLeft }}>
@@ -75,18 +63,18 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
       </View>
       <ContainerForButtonForSettings>
         <TextInputValidateForCountOfText
-          placeHolder={"Group bio"}
+          placeHolder={"Channel bio"}
           maxNumberOfChars={100}
-          inputText={inputTextForBio}
           setInputText={setInputTextForBio}
+          inputText={inputTextForBio}
         />
       </ContainerForButtonForSettings>
       <View style={{ marginTop, marginLeft }}>
         <Text style={{ color: "#2B1D1D", fontSize: 17, marginBottom }}>
-          {"Members"}
+          {"Users"}
         </Text>
       </View>
-      <TouchableOpacity onPress={PressOnAddMembers.current}>
+      <TouchableOpacity>
         <ContainerForButtonForSettings>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View
@@ -107,7 +95,7 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
                 //backgroundColor: "red",
               }}
             >
-              {"Member"}
+              {"Users"}
             </Text>
           </View>
         </ContainerForButtonForSettings>
@@ -116,4 +104,4 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
   );
 };
 
-export default connect(null)(MainForCreateGroupPage);
+export default MainForCreateChannelPage;

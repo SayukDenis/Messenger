@@ -6,6 +6,10 @@ import ContactsPage from "../Components/ContactsPage";
 import { ChatFolderPageNAvigator } from "../../Settings/NavigationForSettings";
 import CreateChannelAndGroupOrWriteMessage from "../Components/CreateChannelAndGroupOrWriteMessage";
 import CreateGroupPage from "../Components/CreateGroupPage";
+import CreateChannelPage from "../Components/CreateChannelPage";
+import WriteMessagePage from "../Components/WriteMessagePage";
+import { AddMember } from "../../Profiles/GroupProfile/EditGroup/AddMember";
+import AddMemberPage from "../Components/CreateChannelAndGroupOrWriteMessage/Add member/AddMemberPage";
 
 const ChatListNavigation = () => {
   return (
@@ -40,7 +44,10 @@ const CreateChannelAndGroupOrWriteMessageNavigation = () => {
         name="Create channel and group or write navigation"
         component={CreateChannelAndGroupOrWriteMessage}
       />
-      <Stack.Screen name="Create Group Page" component={CreateGroupPage}/>
+      <Stack.Screen name="Create Group Page" component={CreateGroupPage} />
+      <Stack.Screen name="Create Channel Page" component={CreateChannelPage} />
+      <Stack.Screen name= "Write Message Page" component={WriteMessagePage}/>
+      <Stack.Screen name="Add Member Page" component={AddMemberPage}/>
     </Stack.Navigator>
   );
 };

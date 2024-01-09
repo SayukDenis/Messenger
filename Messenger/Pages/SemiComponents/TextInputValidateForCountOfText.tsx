@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import ValidTextSVG from "./ValidTextSVG";
 import InValidTextSVG from "./InValidTextSVG";
@@ -10,14 +10,15 @@ import {
 interface TextInputValidateForCountOfTextProps {
   placeHolder: string;
   maxNumberOfChars: number;
+  inputText:string;
+  setInputText:Dispatch<SetStateAction<string>>;
 }
 
 const TextInputValidateForCountOfText: React.FC<
   TextInputValidateForCountOfTextProps
-> = ({ placeHolder, maxNumberOfChars }) => {
+> = ({ placeHolder, maxNumberOfChars,inputText,setInputText }) => {
   const marginLeft = screenWidth * 0.03;
   const textInputRef = useRef<TextInput>(null);
-  const [inputText, setInputText] = useState<string>("");
   return (
     <>
       <TextInput
