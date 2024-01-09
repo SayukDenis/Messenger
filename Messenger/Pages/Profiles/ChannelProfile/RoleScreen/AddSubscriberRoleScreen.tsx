@@ -1,29 +1,38 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import {
   View,
-  Text,
-  TouchableOpacity,
   TextInput,
-  Dimensions,
   Image,
+  TouchableOpacity,
+  Dimensions,
+  FlatList,
+  Text,
+  ScrollView,
 } from "react-native";
+import { styles } from "./Styles";
+import {
+  addFunction,
+  channel,
+  selectedRole,
+} from "../../SemiComponents/DBUser";
+import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { styles } from "../Styles";
-import { useIsFocused } from "@react-navigation/native";
-import GoBackButton from "../../../SemiComponents/GeneralComponents/GoBackButton";
-import { channel, contacts } from "../../../SemiComponents/DBUser";
-import { ScrollView } from "react-native-gesture-handler";
-import CheckmarkIcon from "../../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
+import CheckmarkIcon from "../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
 
-interface AddMemberScreenProps {
+interface AddSubscriberRoleScreenProps {
   navigation: StackNavigationProp<{}>;
 }
 
-const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
+const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
+  props
+) => {
   const [searchedName, setSearchedName] = useState("");
-  const [subscribers, setSubscribers] = useState(channel.subscribers);
+  const [subscribers, setSubscribers] = useState(
+    selectedRole.selectedRole.subscribers
+  );
 
   const isFocused = useIsFocused();
 
@@ -33,7 +42,7 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
     <View style={styles.mainContainer}>
       <View style={styles.topToolBar}>
         {/* Going back button */}
-        <GoBackButton onPress={() => navigation.goBack()} />
+        <GoBackButton onPress={() => props.navigation.goBack()} />
 
         {/* Search in chat view */}
         <View style={styles.searchInChatContainer}>
@@ -53,8 +62,9 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
         <TouchableOpacity
           style={styles.doneButtonContainer}
           onPress={() => {
-            channel.subscribers = subscribers;
-            navigation.goBack();
+            selectedRole.selectedRole.subscribers = subscribers;
+
+            props.navigation.goBack();
           }}
         >
           <Text style={styles.doneButtonTitle}>Done</Text>
@@ -75,14 +85,23 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
             zIndex: 0,
           }}
         >
-          {contacts.map((item, index) => {
+          {channel.subscribers.map((item, index) => {
             return (
               (!searchedName || item.name.startsWith(searchedName)) && (
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    if (!channel.subscribers.includes(item)) {
+                    if (!subscribers.includes(item)) {
                       setSubscribers(subscribers.concat([item]));
+
+                      addFunction(() => {
+                        selectedRole.selectedRole.subscribers =
+                          selectedRole.selectedRole.subscribers.filter(
+                            (subscriber) => {
+                              subscriber != item;
+                            }
+                          );
+                      });
                     }
                   }}
                   style={[
@@ -117,4 +136,4 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
   );
 };
 
-export default AddMemberScreen;
+export default AddSubscriberRoleScreen;

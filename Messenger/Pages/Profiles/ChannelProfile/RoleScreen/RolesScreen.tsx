@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -13,20 +13,49 @@ import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import PlusIcon from "../../SemiComponents/BranchesScreen/Icons/PlusIcon";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
-import { channel } from "../../SemiComponents/DBUser";
+import {
+  Role,
+  channel,
+  selectedRole,
+  tempRole,
+} from "../../SemiComponents/DBUser";
 import { useIsFocused } from "@react-navigation/native";
+import Blur from "../../SemiComponents/GeneralComponents/Blur";
+import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 
 interface RolesScreenProps {
   navigation: StackNavigationProp<{}>;
 }
 
 const RolesScreen: React.FC<RolesScreenProps> = (props) => {
+  const [roleToRemove, setRoleToRemove] = useState(null);
+
   const isFocused = useIsFocused();
 
   useEffect(() => {}, [isFocused]);
 
   return (
     <View style={styles.mainContainer}>
+      <Blur
+        visibleWhen={roleToRemove?.name != null}
+        onPress={() => {
+          setRoleToRemove(null);
+        }}
+      />
+
+      <RemovalApproval
+        isVisible={roleToRemove?.name != null}
+        onAnyPress={() => {
+          setRoleToRemove(null);
+        }}
+        onAgreePress={() => {
+          channel.roles = channel.roles.filter(
+            (item) => item.name !== roleToRemove?.name
+          );
+        }}
+        text={"Do you really want to delete " + roleToRemove?.name + "?"}
+      />
+
       <Header
         primaryTitle="Roles"
         onGoBackPress={() => {
@@ -37,6 +66,7 @@ const RolesScreen: React.FC<RolesScreenProps> = (props) => {
       <ScrollView>
         <TouchableOpacity
           onPress={() => {
+            selectedRole.selectedRole = null;
             props.navigation.navigate("NewRoleScreen" as never);
           }}
           style={styles.settingOption}
@@ -56,30 +86,30 @@ const RolesScreen: React.FC<RolesScreenProps> = (props) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  //tempCharacter().selectedBranchParent = item;
-                  //navigation.navigate("ChangeBranchParentScreen" as never);
+                  selectedRole.selectedRole = item;
+                  props.navigation.navigate("ChangeRoleScreen" as never);
                 }}
-                style={styles.settingOption}
+                style={styles.roleAppearanceContainer}
               >
                 <View
                   style={[
-                    styles.roleAvatarInList,
-                    {
-                      backgroundColor: item.color,
-                    },
+                    styles.roleTitleContainerWhileCreating,
+                    { left: 0.04 * Dimensions.get("screen").width },
                   ]}
                 >
-                  <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
+                  <Text style={{ fontSize: 28 }}>{item.emoji}</Text>
                 </View>
-                <View style={styles.roleTitleContainer}>
-                  <Text numberOfLines={1} style={styles.roleTitleInList}>
+                <View style={styles.roleTitleContainerWhileCreating}>
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.roleTitle, { color: item.color }]}
+                  >
                     {item.name}
                   </Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    //setIsDeleteBranchPressed(true);
-                    //setBranchNameToRemove(item.name);
+                    setRoleToRemove(item);
                   }}
                   style={styles.binIconContainer}
                 >

@@ -3,17 +3,20 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function ChooseAuthor() {
   const navigation = useNavigation();
 
   return (
-    <View>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       {/* Group */}
       <TouchableOpacity
         style={{
           height: "33.333%",
-          backgroundColor: "blue",
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -28,7 +31,6 @@ export default function ChooseAuthor() {
       <TouchableOpacity
         style={{
           height: "33.333%",
-          backgroundColor: "yellow",
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -43,7 +45,6 @@ export default function ChooseAuthor() {
       <TouchableOpacity
         style={{
           height: "33.333%",
-          backgroundColor: "magenta",
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -53,6 +54,6 @@ export default function ChooseAuthor() {
       >
         <Text style={{ fontSize: 40 }}>Channel</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }

@@ -108,7 +108,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: 0.02 * screenWidth,
   },
-  newBranchNameInput: {
+  contactNameInput: {
     width: "90%",
     fontSize: 17,
     fontFamily: "JacquesFrancois-Regular",

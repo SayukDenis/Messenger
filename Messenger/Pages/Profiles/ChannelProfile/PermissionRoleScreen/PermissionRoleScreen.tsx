@@ -6,7 +6,11 @@ import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import PermissionOption from "./PermissionOption";
-import { tempRole } from "../../SemiComponents/DBUser";
+import {
+  addFunction,
+  roleCharacter,
+  selectedRole,
+} from "../../SemiComponents/DBUser";
 
 interface PermissionRoleScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -21,52 +25,52 @@ interface Permission {
 const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
   const [permissions, setPermissions] = useState<Permission[]>([
     {
-      state: tempRole.removeMembersPermission,
+      state: roleCharacter().removeMembersPermission,
       toggle: () => togglePermission(0),
       text: "Remove members",
     },
     {
-      state: tempRole.blockMembersPermission,
+      state: roleCharacter().blockMembersPermission,
       toggle: () => togglePermission(1),
       text: "Block members",
     },
     {
-      state: tempRole.manageRolesPermission,
+      state: roleCharacter().manageRolesPermission,
       toggle: () => togglePermission(2),
       text: "Manage roles",
     },
     {
-      state: tempRole.manageBranchesPermission,
+      state: roleCharacter().manageBranchesPermission,
       toggle: () => togglePermission(3),
       text: "Manage branches",
     },
     {
-      state: tempRole.seeTheAuditLogPermission,
+      state: roleCharacter().seeTheAuditLogPermission,
       toggle: () => togglePermission(4),
       text: "See the audit log",
     },
     {
-      state: tempRole.considerChannelsPermission,
+      state: roleCharacter().considerChannelsPermission,
       toggle: () => togglePermission(5),
       text: "Consider channels",
     },
     {
-      state: tempRole.considerBranchPermission,
+      state: roleCharacter().considerBranchPermission,
       toggle: () => togglePermission(6),
       text: "Consider branch",
     },
     {
-      state: tempRole.manageTheServerPermission,
+      state: roleCharacter().manageTheServerPermission,
       toggle: () => togglePermission(7),
       text: "Manage the server",
     },
     {
-      state: tempRole.sendAMessagePermission,
+      state: roleCharacter().sendAMessagePermission,
       toggle: () => togglePermission(8),
       text: "Send a message",
     },
     {
-      state: tempRole.sendAVoiceMessagePermission,
+      state: roleCharacter().sendAVoiceMessagePermission,
       toggle: () => togglePermission(9),
       text: "Send a voice message",
     },
@@ -76,6 +80,51 @@ const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
     const updatedPermissions = [...permissions];
     updatedPermissions[index].state = !updatedPermissions[index].state;
     setPermissions(updatedPermissions);
+    addFunction(() => {
+      switch (index) {
+        case 0:
+          selectedRole.selectedRole.removeMembersPermission =
+            !selectedRole.selectedRole.removeMembersPermission;
+          break;
+        case 1:
+          selectedRole.selectedRole.blockMembersPermission =
+            !selectedRole.selectedRole.blockMembersPermission;
+          break;
+        case 2:
+          selectedRole.selectedRole.manageRolesPermission =
+            !selectedRole.selectedRole.manageRolesPermission;
+          break;
+        case 3:
+          selectedRole.selectedRole.manageBranchesPermission =
+            !selectedRole.selectedRole.manageBranchesPermission;
+          break;
+        case 4:
+          selectedRole.selectedRole.seeTheAuditLogPermission =
+            !selectedRole.selectedRole.seeTheAuditLogPermission;
+          break;
+        case 5:
+          selectedRole.selectedRole.considerChannelsPermission =
+            !selectedRole.selectedRole.considerChannelsPermission;
+          break;
+        case 6:
+          selectedRole.selectedRole.considerBranchPermission =
+            !selectedRole.selectedRole.considerBranchPermission;
+          break;
+        case 7:
+          selectedRole.selectedRole.manageTheServerPermission =
+            !selectedRole.selectedRole.manageTheServerPermission;
+          break;
+        case 8:
+          selectedRole.selectedRole.sendAMessagePermission =
+            !selectedRole.selectedRole.sendAMessagePermission;
+          break;
+        case 9:
+          selectedRole.selectedRole.sendAVoiceMessagePermission =
+            !selectedRole.selectedRole.sendAVoiceMessagePermission;
+          break;
+      }
+      updatedPermissions[index].state = !updatedPermissions[index].state;
+    });
   };
 
   return (
@@ -83,16 +132,16 @@ const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
       <Header
         primaryTitle="Permission"
         onGoBackPress={() => {
-          tempRole.removeMembersPermission = permissions[0].state;
-          tempRole.blockMembersPermission = permissions[1].state;
-          tempRole.manageRolesPermission = permissions[2].state;
-          tempRole.manageBranchesPermission = permissions[3].state;
-          tempRole.seeTheAuditLogPermission = permissions[4].state;
-          tempRole.considerChannelsPermission = permissions[5].state;
-          tempRole.considerBranchPermission = permissions[6].state;
-          tempRole.manageTheServerPermission = permissions[7].state;
-          tempRole.sendAMessagePermission = permissions[8].state;
-          tempRole.sendAVoiceMessagePermission = permissions[9].state;
+          roleCharacter().removeMembersPermission = permissions[0].state;
+          roleCharacter().blockMembersPermission = permissions[1].state;
+          roleCharacter().manageRolesPermission = permissions[2].state;
+          roleCharacter().manageBranchesPermission = permissions[3].state;
+          roleCharacter().seeTheAuditLogPermission = permissions[4].state;
+          roleCharacter().considerChannelsPermission = permissions[5].state;
+          roleCharacter().considerBranchPermission = permissions[6].state;
+          roleCharacter().manageTheServerPermission = permissions[7].state;
+          roleCharacter().sendAMessagePermission = permissions[8].state;
+          roleCharacter().sendAVoiceMessagePermission = permissions[9].state;
 
           props.navigation.goBack();
         }}
@@ -112,7 +161,7 @@ const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
               text={permission.text}
             />
             {index === 6 && (
-              <View key={index ^ 2} style={styles.containerForSettingTitle}>
+              <View key={-index} style={styles.containerForSettingTitle}>
                 <Text style={styles.settingTitle}>For members</Text>
               </View>
             )}

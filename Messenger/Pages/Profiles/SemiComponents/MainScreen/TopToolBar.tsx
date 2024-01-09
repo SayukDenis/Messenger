@@ -25,98 +25,96 @@ interface TopToolBarProps {
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   const blockStatusTitle: string = "Blocked";
   return (
-    <>
-      <View style={styles.topToolBar}>
-        {!props.isMediaSelectionVisible && (
-          <>
-            {/* Main name */}
-            <Name
-              primaryTitle={props.primaryTitle}
-              isMuted={props.isMuted}
-              style={styles.profileTitle}
-            />
+    <View style={[styles.topToolBar, { backgroundColor: "white" }]}>
+      {!props.isMediaSelectionVisible && (
+        <>
+          {/* Main name */}
+          <Name
+            primaryTitle={props.primaryTitle}
+            isMuted={props.isMuted}
+            style={styles.profileTitle}
+          />
 
-            {/* if blocked */}
-            {props.isBlocked && (
-              <Text style={styles.blockStatus}>
-                {props.isBlocked ? blockStatusTitle : ""}
-              </Text>
-            )}
+          {/* if blocked */}
+          {props.isBlocked && (
+            <Text style={styles.blockStatus}>
+              {props.isBlocked ? blockStatusTitle : ""}
+            </Text>
+          )}
 
-            {/* Going back button */}
-            <GoBackButton onPress={() => props.onGoBackPress()} />
+          {/* Going back button */}
+          <GoBackButton onPress={() => props.onGoBackPress()} />
 
-            {/* Secondary title */}
-            <Text style={styles.secondaryTitle}>{props.secondaryTitle}</Text>
+          {/* Secondary title */}
+          <Text style={styles.secondaryTitle}>{props.secondaryTitle}</Text>
 
-            {/* Search message button */}
-            {props.isSearchButtonVisible && (
-              <TouchableOpacity
-                onPress={() => {
-                  alert("Searching...");
-                }}
-                style={styles.searchMessagesButton}
-              >
-                <SearchIcon />
-              </TouchableOpacity>
-            )}
-
-            {/* Else features button */}
+          {/* Search message button */}
+          {props.isSearchButtonVisible && (
             <TouchableOpacity
               onPress={() => {
-                props?.onElseFeaturesPress();
+                alert("Searching...");
               }}
-              style={styles.elseFeaturesButton}
+              style={styles.searchMessagesButton}
             >
-              <ElseFeaturesIcon />
+              <SearchIcon />
             </TouchableOpacity>
-          </>
-        )}
-        {props.isMediaSelectionVisible && (
-          <>
-            {/* Delete all button */}
-            <TouchableOpacity
-              style={[
-                styles.doneButtonContainer,
-                { left: 0.06 * Dimensions.get("screen").width },
-              ]}
-              onPress={() => {
-                props.onDeleteAllPress();
-              }}
-            >
-              <Text style={[styles.doneButtonTitle, { color: "red" }]}>
-                Delete all
-              </Text>
-            </TouchableOpacity>
+          )}
 
-            {/* Number of selected albums */}
-            <View
-              style={[
-                styles.doneButtonContainer,
-                { left: 0.4 * Dimensions.get("screen").width },
-              ]}
-            >
-              <Text style={styles.doneButtonTitle}>
-                Select({props.quantityOfSelectedItems})
-              </Text>
-            </View>
+          {/* Else features button */}
+          <TouchableOpacity
+            onPress={() => {
+              props?.onElseFeaturesPress();
+            }}
+            style={styles.elseFeaturesButton}
+          >
+            <ElseFeaturesIcon />
+          </TouchableOpacity>
+        </>
+      )}
+      {props.isMediaSelectionVisible && (
+        <>
+          {/* Delete all button */}
+          <TouchableOpacity
+            style={[
+              styles.doneButtonContainer,
+              { left: 0.06 * Dimensions.get("screen").width },
+            ]}
+            onPress={() => {
+              props.onDeleteAllPress();
+            }}
+          >
+            <Text style={[styles.doneButtonTitle, { color: "red" }]}>
+              Delete all
+            </Text>
+          </TouchableOpacity>
 
-            {/* Cancel button */}
-            <TouchableOpacity
-              style={[
-                styles.doneButtonContainer,
-                { right: -0.075 * Dimensions.get("screen").width },
-              ]}
-              onPress={() => {
-                props.onCancelPress();
-              }}
-            >
-              <Text style={styles.doneButtonTitle}>Cancel</Text>
-            </TouchableOpacity>
-          </>
-        )}
-      </View>
-    </>
+          {/* Number of selected albums */}
+          <View
+            style={[
+              styles.doneButtonContainer,
+              { left: 0.4 * Dimensions.get("screen").width },
+            ]}
+          >
+            <Text style={styles.doneButtonTitle}>
+              Select({props.quantityOfSelectedItems})
+            </Text>
+          </View>
+
+          {/* Cancel button */}
+          <TouchableOpacity
+            style={[
+              styles.doneButtonContainer,
+              { right: -0.075 * Dimensions.get("screen").width },
+            ]}
+            onPress={() => {
+              props.onCancelPress();
+            }}
+          >
+            <Text style={styles.doneButtonTitle}>Cancel</Text>
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
   );
 };
 

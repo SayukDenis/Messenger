@@ -507,6 +507,7 @@ export class Role {
   manageTheServerPermission: boolean;
   sendAMessagePermission: boolean;
   sendAVoiceMessagePermission: boolean;
+  subscribers: Array<Contact>;
 
   constructor(
     name: string,
@@ -521,7 +522,8 @@ export class Role {
     considerBranchPermission: boolean,
     manageTheServerPermission: boolean,
     sendAMessagePermission: boolean,
-    sendAVoiceMessagePermission: boolean
+    sendAVoiceMessagePermission: boolean,
+    subscribers: Array<Contact>
   ) {
     this.name = name;
     this.emoji = emoji;
@@ -536,6 +538,7 @@ export class Role {
     this.manageTheServerPermission = manageTheServerPermission;
     this.sendAMessagePermission = sendAMessagePermission;
     this.sendAVoiceMessagePermission = sendAVoiceMessagePermission;
+    this.subscribers = subscribers;
   }
 }
 
@@ -553,6 +556,23 @@ export const tempRole: Role = {
   manageTheServerPermission: true,
   sendAMessagePermission: true,
   sendAVoiceMessagePermission: true,
+  subscribers: new Array<Contact>(),
+};
+
+interface selectedRoleProps {
+  selectedRole: Role;
+}
+
+export const selectedRole: selectedRoleProps = {
+  selectedRole: null,
+};
+
+export const roleCharacter = () => {
+  if (selectedRole.selectedRole) {
+    return selectedRole.selectedRole;
+  } else {
+    return tempRole;
+  }
 };
 
 export interface ChannelProps {
@@ -865,3 +885,20 @@ export const tempCharacter = () => {
     }
   }
 };
+
+// It is created to return all acts if user goes back after changing role instead of pressing 'Done'
+type MyFunction = () => void;
+type FunctionArray = Array<MyFunction>;
+var functions: FunctionArray = [];
+
+export function addFunction(func: MyFunction): void {
+  functions.push(func);
+}
+
+export function executeFunctions(): void {
+  functions.forEach((func) => func());
+}
+
+export function clearFunctions(): void {
+  functions = [];
+}

@@ -33,6 +33,8 @@ import RolesScreen from "../ChannelProfile/RoleScreen/RolesScreen";
 import NewRoleScreen from "../ChannelProfile/RoleScreen/NewRoleScreen";
 import PermissionRoleScreen from "../ChannelProfile/PermissionRoleScreen/PermissionRoleScreen";
 import GroupSettingsScreen from "../GroupProfile/SettingsMenu/SettingsBranchesButton";
+import ChangeRoleScreen from "../ChannelProfile/RoleScreen/ChangeRoleScreen";
+import AddSubscriberRoleScreen from "../ChannelProfile/RoleScreen/AddSubscriberRoleScreen";
 
 const Stack = createStackNavigator();
 
@@ -169,6 +171,11 @@ const ChannelNavigation = () => {
       <Stack.Screen
         name="PermissionRoleScreen"
         component={PermissionRoleScreen}
+      />
+      <Stack.Screen name="ChangeRoleScreen" component={ChangeRoleScreen} />
+      <Stack.Screen
+        name="AddSubscriberRoleScreen"
+        component={AddSubscriberRoleScreen}
       />
     </Stack.Navigator>
   );
