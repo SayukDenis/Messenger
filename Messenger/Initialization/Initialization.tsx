@@ -277,7 +277,7 @@ function addMessages(chat: Chat, count: number, users: User[], texts: string[] =
 
   if (users.length === 0) throw new Error("must be more than 1 users");
 
-  for (let i = 1; i <= count; i++) {
+  for (let i = 0; i < count; i++) {
     let content: string;
 
     if (texts.length == 0)
@@ -286,13 +286,12 @@ function addMessages(chat: Chat, count: number, users: User[], texts: string[] =
       content = texts[getRandomNumber(texts.length)];
     
     const message = new Message(users[getRandomNumber(users.length)], content, new Date(), EMessageType.text);
-    message.messageId = idMessageToCreate;
+    message.messageId = idMessageToCreate++;
     // Additional properties can be set if needed
-    if (Math.random() < 0.15)  message.messageResponseId = i - 1; // Set response ID to the previous message ID
-    message.isEdited = i % 2 === 0; // Set isEdited based on the index
+    if (Math.random() < 0.15)  message.messageResponseId = idMessageToCreate - 2; // Set response ID to the previous message ID
+    if (Math.random() < 0.35) message.isEdited = true; // Set isEdited 
     // Add the message to the array
     chat.messages.push(message);
-    idMessageToCreate++;
   }
 }
 function initializationLastWatchedMessageChat(chat: MainChat) {
