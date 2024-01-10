@@ -122,5 +122,10 @@ export const styles = StyleSheet.create({
     marginRight: responsiveWidth(7),
     marginLeft: responsiveWidth(11),
   },
-
+  headerTextСountryСode: {
+    fontSize: responsiveWidth(18),
+    color: '#fff',
+    width: responsiveWidth(50),
+    marginRight: responsiveWidth(-9),
+  },
 });

@@ -16,6 +16,14 @@ const HeaderCountrySelection = ({ navigation, handleSearch }) => {
       >
         <Icon name="chevron-left" style={StyleHeaderCountrySelection.backButtonText} />
       </TouchableOpacity>
+      <View style={StyleHeaderCountrySelection.searchContainer}>
+      <Image
+        source={require('../Image/SearchIcon.png')}
+        style={StyleHeaderCountrySelection.searchIcon}
+      />
+       
+       </View>
+       <View style={StyleHeaderCountrySelection.verticalLine} />
       <TextInput
         style={StyleHeaderCountrySelection.textInput}
         placeholder="Search"

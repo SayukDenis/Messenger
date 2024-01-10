@@ -65,6 +65,21 @@ const StyleHeaderCountrySelection = StyleSheet.create({
       fontSize: responsiveWidth(20),
       color: '#402B2B',
     },
+
+    searchContainer:{
+      flex: 1,
+    },
+    searchIcon: {
+      width: responsiveWidth(11),
+      height: responsiveHeight(11),
+    },
+    verticalLine: {
+      height: '40%',
+      width: responsiveWidth(0.5),
+      backgroundColor: '#fff',
+      marginHorizontal: responsiveWidth(10),
+      marginRight: responsiveWidth(-20),
+    },
 });
 
 export default StyleHeaderCountrySelection;

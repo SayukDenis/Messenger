@@ -22,7 +22,7 @@ const [selectedCountry, setSelectedCountry] = useState(null);
   }, [route.params.phoneNumber]);
   
   const navigateToCountrySelection = () => {
-    navigation.navigate('CountrySelection', { originScreen: 'Authorization', selectedCountry });
+    navigation.navigate('CountrySelection', { originScreen: 'Registration', selectedCountry });
   };
   const navigateToPhoneCodeRegistration = () => {
     navigation.navigate('PhoneCodeRegistration', { selectedCountry });
@@ -54,7 +54,7 @@ const [selectedCountry, setSelectedCountry] = useState(null);
        <View style={styles.line} />
 
        <View style={styles.row}>
-            <Text style={styles.headerText} onPress={navigateToCountrySelection}>{selectedCountry !== null ? selectedCountry.code : '+380'}</Text>
+       <Text style={styles.headerText} onPress={navigateToCountrySelection}>{selectedCountry !== null ? selectedCountry.code : '+380'}</Text>
             <View style={styles.verticalLine} />
             <TextInput style={styles.input} 
             placeholder="00 000 00 00"
@@ -68,7 +68,7 @@ const [selectedCountry, setSelectedCountry] = useState(null);
       </View>
 
       <View style={styleRegistration.syncContainer}>
-          <Text style={styles.headerText}>Synchronize contacts</Text>
+          <Text style={styles.headerTextСountryСode}>Synchronize contacts</Text>
           <View style={styleRegistration.line} />
           <Switch
             style={styleRegistration.switchContainer} 

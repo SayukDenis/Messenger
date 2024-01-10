@@ -5,7 +5,7 @@ import StyleCenterCountrySelection from "./StyleCenterCountrySelection";
 const countries = [
   { id: 1, name: 'Ukraine', code: '+380', flag: require('../Image/UkraineFlag.png') },
   { id: 2, name: 'United States', code: '+1', flag: require('../Image/UkraineFlag.png') },
-  { id: 3, name: 'Australia', code: '+61', flag: require('../Image/UkraineFlag.png') },
+  { id: 3, name: 'Australia', code: '+61', flag: require('../Image/AustraliaFlag.png') },
   { id: 4, name: 'Ukraine', code: '+380', flag: require('../Image/UkraineFlag.png') },
   { id: 5, name: 'United States', code: '+1', flag: require('../Image/UkraineFlag.png') },
   { id: 6, name: 'Australia', code: '+61', flag: require('../Image/UkraineFlag.png') },
@@ -27,7 +27,6 @@ const countries = [
   { id: 22, name: 'Ukraine', code: '+380', flag: require('../Image/UkraineFlag.png') },
   { id: 23, name: 'United States', code: '+1', flag: require('../Image/UkraineFlag.png') },
   { id: 24, name: 'Australia', code: '+61', flag: require('../Image/UkraineFlag.png') },
-  // Додайте інші країни за необхідністю
 ];
 
 const CountryItem = ({ item, handleCountrySelect }) => (

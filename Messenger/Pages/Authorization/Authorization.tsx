@@ -44,7 +44,7 @@ export default function Authorization({ route, navigation }) {
           <View style={styles.line} />
 
           <View style={styles.row}>
-            <Text style={styles.headerText} onPress={navigateToCountrySelection}>{selectedCountry !== null ? selectedCountry.code : '+380'}</Text>
+          <Text style={styles.headerTextСountryСode} onPress={navigateToCountrySelection}>{selectedCountry !== null ? selectedCountry.code : '+380'}</Text>
             <View style={styles.verticalLine} />
             <TextInput style={styles.input} placeholder="00 000 00 00" 
              maxLength={12} 
