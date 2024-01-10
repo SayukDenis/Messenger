@@ -43,10 +43,10 @@ export const user: UserProps = {
   username: "@myUsername",
   bio: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
   MembersName: [
-    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
-    { name: "Aboba ABOBA aboba ABOBA AboBA" },
-    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB Abob" },
-    { name: "Viktor" },
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB", Vissible: 1 },
+    { name: "Aboba ABOBA aboba ABOBA AboBA", Vissible: 0 },
+    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB Abob", Vissible: 0 },
+    { name: "Viktor", Vissible: 1 },
   ],
   selectedInterval: 0,
   isMuted: false,
@@ -460,6 +460,7 @@ export class Album {
 
 export class Nicknames {
   name: string;
+  Vissible: number;
 
   constructor(name: string) {
     this.name = name;
@@ -471,27 +472,6 @@ export interface AuditLogProps {
   Descriptions: Array<Nicknames>;
   Photo: Array<PhotoOrVideo>;
 }
-
-export const AuditLog: AuditLogProps = {
-  MembersName: [
-    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB" },
-    { name: "Aboba ABOBA aboba ABOBA AboBA" },
-    { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB Abob" },
-    { name: "Viktor" },
-  ],
-  Descriptions: [
-    { name: " A Deleted b" },
-    { name: " A Deleted b" },
-    { name: " A Deleted b" },
-    { name: " A Deleted b" },
-  ],
-  Photo: [
-    { url: "https://picsum.photos/id/2/5000/3333" },
-    { url: "https://picsum.photos/id/2/5000/3333" },
-    { url: "https://picsum.photos/id/2/5000/3333" },
-    { url: "https://picsum.photos/id/2/5000/3333" },
-  ],
-};
 
 export class Role {
   name: string;
