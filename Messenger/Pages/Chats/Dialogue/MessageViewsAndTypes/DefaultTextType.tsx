@@ -130,7 +130,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTe
               style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
-              <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
+              <Text style={{ fontSize: 14 }}>{wrapText(message.content, CHARS_PER_LINE)}</Text>
               <Text style={message.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}
                 {message.sendingTime.getHours().toString().padStart(2, '0')}:

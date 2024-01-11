@@ -26,7 +26,6 @@ interface Layout {
 }
 
 let coord:Layout;
-let messageID:number=-1;
 let msgs:MessageProps[];
 
 const user:SelfProfile = {
@@ -45,6 +44,8 @@ const user:SelfProfile = {
 
 const Dialogue = ({ navigation, route }:any) => {
   const dialogue:DialogueModel.default=route.params.chat as DialogueModel.default;
+
+  const [messageID, setMessageID] = useState(-1);
 
   // const user = useSelector((state: any) => state.selfProfileUser);
   // console.log('userId', user.userId);
@@ -115,27 +116,27 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed: boolean) => {
     coord = coordinations;
-    if(coord)
-      console.log('Dialogue-coord', JSON.stringify({
-        ID: coord.ID,
-        componentPageX: coord.componentPageX,
-        componentPageY: coord.componentPageY,
-        pageX: coord.pageX,
-        pageY: coord.pageY,
-        width: coord.width,
-        height: coord.height,
-        message: {
-          messageId: coord.message?.messageId,
-          content: coord.message?.content,
-          replyId: coord.message?.messageResponseId
-        },
-      }, null, 2))
+    // if(coord)
+    //   console.log('Dialogue-coord', JSON.stringify({
+    //     ID: coord.ID,
+    //     componentPageX: coord.componentPageX,
+    //     componentPageY: coord.componentPageY,
+    //     pageX: coord.pageX,
+    //     pageY: coord.pageY,
+    //     width: coord.width,
+    //     height: coord.height,
+    //     message: {
+    //       messageId: coord.message?.messageId,
+    //       content: coord.message?.content,
+    //       replyId: coord.message?.messageResponseId
+    //     },
+    //   }, null, 2))
     if(pressed) {
       setMessageMenuVisible(true);
       setMessageMenuVisisbleAppearence(true);
-      messageID = coordinations.ID;
+      setMessageID(coordinations.ID);
     } else {
-      messageID = coordinations.ID;
+      setMessageID(coordinations.ID);
       replyHandler();
     }
   }, []);
@@ -179,8 +180,12 @@ const Dialogue = ({ navigation, route }:any) => {
     setMessageMenuVisible(false);
     setMessageMenuVisisbleAppearence(false);
   }, []);
-  
-  const mes = listOfMessages.find(m => m.messageId==messageID);
+  if(msgs) {
+    const aboba = msgs.find(m => m.messageId==messageID);
+    console.log('msgs.message', aboba?.messageId, aboba?.content);
+    console.log('messageID', messageID);
+  }
+  const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>
         <BackGroundGradinetView>

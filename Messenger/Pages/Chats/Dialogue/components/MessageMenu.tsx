@@ -17,6 +17,15 @@ import DefaultTextDummyMessage from "../MessageMenuDummyMessages/DefaultTextDumm
 const {width, height} = Dimensions.get('window');
 
 let size:{ width:number, height:number } = { width: 0, height: 0 };
+
+const containerWidth = new Animated.Value(0); 
+const firstContainerTranslate = new Animated.Value(0); 
+const secondContainerTranslate = new Animated.Value(0);
+const thirdContainerTranslate = new Animated.Value(0);
+const fourthContainerTranslate = new Animated.Value(0);
+const fifthContainerTranslate = new Animated.Value(0);
+const sixthContainerTranslate = new Animated.Value(0);
+
 const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEditPress, isUser, onDeletePress}:messageMenuProps) => {
   if(!isVisible) 
       return null;
@@ -60,13 +69,6 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
     },
   ];
 
-  const containerWidth = new Animated.Value(0); 
-  const firstContainerTranslate = new Animated.Value(0); 
-  const secondContainerTranslate = new Animated.Value(0);
-  const thirdContainerTranslate = new Animated.Value(0);
-  const fourthContainerTranslate = new Animated.Value(0);
-  const fifthContainerTranslate = new Animated.Value(0);
-  const sixthContainerTranslate = new Animated.Value(0);
   const durationOfAnimation: number = 10;
   const [state, setState] = useState(1);
   const easing: EasingFunction = Easing.linear;
@@ -291,21 +293,6 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
       }
     }
   }
-  if(coord)
-    console.log('coord', JSON.stringify({
-      ID: coord.ID,
-      componentPageX: coord.componentPageX,
-      componentPageY: coord.componentPageY,
-      pageX: coord.pageX,
-      pageY: coord.pageY,
-      width: coord.width,
-      height: coord.height,
-      message: {
-        messageId: coord.message?.messageId,
-        content: coord.message?.content,
-        replyId: coord.message?.messageResponseId
-      },
-    }, null, 2))
 
   return (
     <TouchableOpacity 

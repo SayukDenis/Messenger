@@ -24,8 +24,8 @@ const DefaultTextDummyMessage = ({ message, id, isUser}:DefaultTextMessageProps)
         <View 
           style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
         >
-          <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
-          <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
+          <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
+          <Text style={message.content.length<=CHARS_PER_LINE&&{ height: 16 }}>{wrapText(message.content, CHARS_PER_LINE)}</Text>
           <Text style={message.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
             {message.isEdited?'edited ':''}
             {message.sendingTime.getHours().toString().padStart(2, '0')}:

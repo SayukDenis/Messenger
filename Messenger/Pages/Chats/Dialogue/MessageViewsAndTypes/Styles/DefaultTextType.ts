@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
     width: width
   },
   messageContainer: {
-    maxWidth: width*0.65,
     marginRight: 10,
     marginLeft: 10,
   },
