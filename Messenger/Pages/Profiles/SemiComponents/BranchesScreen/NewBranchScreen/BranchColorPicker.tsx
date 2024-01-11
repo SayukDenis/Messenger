@@ -49,14 +49,7 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
             ]}
           >
             <View style={styles.circleAroundColorPicker}>
-              <View
-                style={[
-                  styles.colorPickerElement,
-                  {
-                    right: 0.005 * Dimensions.get("screen").width,
-                  },
-                ]}
-              >
+              <View style={[styles.colorPickerElement]}>
                 <ColorPicker
                   onColorChange={(color) => {
                     setColor(color);
