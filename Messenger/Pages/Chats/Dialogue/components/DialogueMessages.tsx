@@ -1,4 +1,4 @@
-import { View, Dimensions, ScrollView, Keyboard, KeyboardEvent, FlatList } from 'react-native';
+import { View, Dimensions, ScrollView, Keyboard, KeyboardEvent, FlatList, Animated } from 'react-native';
 import { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import styles from './Styles/DialogueMessages'
 import React from 'react';
@@ -30,20 +30,31 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
     return 0;
   } 
 
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  // In the future make animation using 'react-native-keyboard-controller' library
+  const keyboardHeight = new Animated.Value(0);
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       (event: KeyboardEvent) => {
-        setKeyboardHeight(event.endCoordinates.height);
+        Animated.timing(keyboardHeight, {
+          toValue: -event.endCoordinates.height,
+          duration: 200,
+          useNativeDriver: false, // Adjust based on your requirements
+        }).start();
       }
     );
 
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        setKeyboardHeight(0);
-      } 
+        Animated.timing(keyboardHeight, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false, // Adjust based on your requirements
+        }).start();
+      }
     );
 
     // Clean up the event listeners when the component is unmounted
@@ -51,7 +62,7 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, []);
+  }, [keyboardHeight]);
 
   const keyExtractor = (item:any) => {
     return item.messageId?.toString();
@@ -85,7 +96,7 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
   )
 
   return(
-    <View style={[styles.mainContainer, { height: screenHeight * 0.94 + (checkForSoftMenuBar()?insets.top:0) - keyboardHeight, zIndex:0 }]}>
+    <Animated.View style={[styles.mainContainer, { height: screenHeight * 0.94 + (checkForSoftMenuBar()?insets.top:0), zIndex:0, transform: [{ translateY: keyboardHeight }] }]}>
       <FlatList
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
@@ -98,7 +109,7 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
         ListHeaderComponent={ListHeaderComponent}
         ListFooterComponent={ListFooterComponent} 
       />
-    </View>
+    </Animated.View>
   );
 };
 

@@ -16,10 +16,13 @@ import User from '../../../dao/Models/User';
 
 interface Layout {
   ID: number;
+  componentPageX: number;
+  componentPageY: number;
   pageX: number;
   pageY: number;
   width: number;
   height: number;  
+  message: MessageProps|undefined;
 }
 
 let coord:Layout;
@@ -111,9 +114,24 @@ const Dialogue = ({ navigation, route }:any) => {
   }
 
   const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed: boolean) => {
+    coord = coordinations;
+    if(coord)
+      console.log('Dialogue-coord', JSON.stringify({
+        ID: coord.ID,
+        componentPageX: coord.componentPageX,
+        componentPageY: coord.componentPageY,
+        pageX: coord.pageX,
+        pageY: coord.pageY,
+        width: coord.width,
+        height: coord.height,
+        message: {
+          messageId: coord.message?.messageId,
+          content: coord.message?.content,
+          replyId: coord.message?.messageResponseId
+        },
+      }, null, 2))
     if(pressed) {
       setMessageMenuVisible(true);
-      coord = coordinations;
       setMessageMenuVisisbleAppearence(true);
       messageID = coordinations.ID;
     } else {
@@ -153,7 +171,6 @@ const Dialogue = ({ navigation, route }:any) => {
 
   // якогось хуя useRef не працює якщо useState з boolean
   const onDeletePress = () => {
-    console.log('hohnpjopo');
     setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
     setDeleting(!deleting);
   }
@@ -163,7 +180,6 @@ const Dialogue = ({ navigation, route }:any) => {
     setMessageMenuVisisbleAppearence(false);
   }, []);
   
-  console.log('djapowjdpoa');
   const mes = listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>

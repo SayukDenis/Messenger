@@ -21,7 +21,7 @@ interface ReplyTextType {
 let size:any[] = [];
 
 const FONT_SIZE = 10;
-const CHARS_PER_LINE = Math.round(width*0.65 / FONT_SIZE);
+const CHARS_PER_LINE = Math.round(height*0.5 / FONT_SIZE);
 const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author}:ReplyTextType) => {
 
   const onLayout = (event:any) => {
@@ -30,7 +30,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
   };
   
   const handlePress = useCallback((event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
-    if(!event) return { ID: id, pageX: 0, pageY: 0, width: 0, height: 0 };
+    if(!event) return { ID: id, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
 
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
@@ -43,6 +43,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
       pageY: pageY, //(pageY<(height/12)?(height/12):pageY)>(height*5/7)?(height*5/7):pageY
       width: component.layout.width,
       height: component.layout.height,
+      message: message
     };
   }, []);
 
@@ -111,7 +112,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
             >
               <View style={[styles.messageTypeTextUser, styles.replyMessagePos]}>
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content?.length>=20?replyMessage?.content.replace('\n', '').slice(0,20)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content?.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -123,7 +124,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
             <TouchableOpacity style={{flex:1}} activeOpacity={1}>
               <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos]}>
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content.length>=20?replyMessage?.content.replace('\n', '').slice(0,20)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>

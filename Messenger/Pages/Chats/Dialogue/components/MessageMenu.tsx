@@ -12,6 +12,7 @@ import MessageMenuPinButton from "../SVG/MessageMenuPinButton";
 import MessageMenuCopyButton from "../SVG/MessageMenuCopyButton";
 import MessageMenuEditButton from "../SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "../SVG/MessageMenuReplyButton";
+import DefaultTextDummyMessage from "../MessageMenuDummyMessages/DefaultTextDummyMessage";
 
 const {width, height} = Dimensions.get('window');
 
@@ -290,6 +291,21 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
       }
     }
   }
+  if(coord)
+    console.log('coord', JSON.stringify({
+      ID: coord.ID,
+      componentPageX: coord.componentPageX,
+      componentPageY: coord.componentPageY,
+      pageX: coord.pageX,
+      pageY: coord.pageY,
+      width: coord.width,
+      height: coord.height,
+      message: {
+        messageId: coord.message?.messageId,
+        content: coord.message?.content,
+        replyId: coord.message?.messageResponseId
+      },
+    }, null, 2))
 
   return (
     <TouchableOpacity 
@@ -300,6 +316,9 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
         setTimeout(() => onOverlayPress(), 100)
       }}
     >
+      <View style={{ top: coord.componentPageY, height: coord.height }}>
+        <DefaultTextDummyMessage message={coord.message} id={coord.message?.messageId} isUser={isUser} />
+      </View>
       <View 
         onLayout={onLayout}
         style={[styles.buttonsContainer, handleMenuPosition()]}
