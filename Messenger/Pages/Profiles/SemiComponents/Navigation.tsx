@@ -26,7 +26,7 @@ import ChangeBranchChildScreen from "./BranchesScreen/ChangeBranchScreen/ChangeB
 import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
 import MainChannelScreen from "../ChannelProfile/MainChannelScreen/MainChannelScreen";
 import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
-import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen/AddSubscriberScreen";
+import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen";
 import ChannelSettingsScreen from "../ChannelProfile/SettingsScreen/ChannelSettingsScreen";
 import AuditLogScreen from "../ChannelProfile/AuditLogScreen/AuditLogScreen";
 import RolesScreen from "../ChannelProfile/RoleScreen/RolesScreen";

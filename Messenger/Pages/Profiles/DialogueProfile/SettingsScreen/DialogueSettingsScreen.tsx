@@ -1,64 +1,64 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
-import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
-import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 import { branchMode } from "../../SemiComponents/DBUser";
+import { LinearGradient } from "expo-linear-gradient";
+import SettingOption from "../../SemiComponents/GeneralComponents/SettingOption";
 
-type DialogueSettingsScreenProps = {
+interface DialogueSettingsScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
-};
+}
 
-const DialogueSettingsScreen: React.FC<DialogueSettingsScreenProps> = ({
-  navigation,
-}) => {
-  const settingsTitle: string = "Settings";
-  const branchesTitle: string = "Branches";
-  const editWallpaperTitle: string = "Edit wallpaper";
-  const permissionTitle: string = "Permission";
+const DialogueSettingsScreen: React.FC<DialogueSettingsScreenProps> = (
+  props
+) => {
+  const SettingOptions = [
+    {
+      text: "Branches",
+      onPress: () => {
+        branchMode.mode = "user";
+
+        props.navigation.navigate("BranchesScreen" as never);
+      },
+    },
+    {
+      text: "Edit wallpaper",
+      onPress: () => {
+        alert("Edit wallpaper");
+      },
+    },
+    {
+      text: "Permission",
+      onPress: () => {
+        props.navigation.navigate("PermissionScreen" as never);
+      },
+    },
+  ];
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Header
-        primaryTitle={settingsTitle}
+        primaryTitle="Settings"
         onGoBackPress={() => {
-          navigation.goBack();
+          props.navigation.goBack();
         }}
       />
 
-      <TouchableOpacity
-        onPress={() => {
-          branchMode.mode = "user";
-
-          navigation.navigate("BranchesScreen" as never);
-        }}
-        style={styles.settingOption}
-      >
-        <Text style={styles.settingOptionTitle}>{branchesTitle}</Text>
-        <RightArrow style={styles.settingOptionRightArrow} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          alert("Edit wallpaper");
-        }}
-        style={styles.settingOption}
-      >
-        <Text style={styles.settingOptionTitle}>{editWallpaperTitle}</Text>
-        <RightArrow style={styles.settingOptionRightArrow} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate("PermissionScreen" as never)}
-        style={styles.settingOption}
-      >
-        <Text style={styles.settingOptionTitle}>{permissionTitle}</Text>
-        <RightArrow style={styles.settingOptionRightArrow} />
-      </TouchableOpacity>
-    </View>
+      {SettingOptions.map((item, index) => (
+        <SettingOption
+          key={index}
+          text={item.text}
+          onPress={() => {
+            item.onPress();
+          }}
+        />
+      ))}
+    </LinearGradient>
   );
 };
 

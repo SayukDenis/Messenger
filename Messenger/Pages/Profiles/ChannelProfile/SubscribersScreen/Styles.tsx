@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
   },
   doneButtonContainer: {
     position: "absolute",
-    top: 0.064 * screenHeight - 7.09,
+    top: 0.058 * screenHeight,
     right: 0,
     width: 0.2 * screenWidth,
   },

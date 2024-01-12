@@ -10,12 +10,12 @@ import {
   Image,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { styles } from "../Styles";
+import { styles } from "./Styles";
 import { useIsFocused } from "@react-navigation/native";
-import GoBackButton from "../../../SemiComponents/GeneralComponents/GoBackButton";
-import { channel, contacts } from "../../../SemiComponents/DBUser";
+import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
+import { channel, contacts } from "../../SemiComponents/DBUser";
 import { ScrollView } from "react-native-gesture-handler";
-import CheckmarkIcon from "../../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
+import CheckmarkIcon from "../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
 
 interface AddMemberScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -48,18 +48,18 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
             placeholderTextColor="rgb(136, 130, 130)"
           />
         </View>
-
-        {/* Done button */}
-        <TouchableOpacity
-          style={styles.doneButtonContainer}
-          onPress={() => {
-            channel.subscribers = subscribers;
-            navigation.goBack();
-          }}
-        >
-          <Text style={styles.doneButtonTitle}>Done</Text>
-        </TouchableOpacity>
       </View>
+
+      {/* Done button */}
+      <TouchableOpacity
+        style={styles.doneButtonContainer}
+        onPress={() => {
+          channel.subscribers = subscribers;
+          navigation.goBack();
+        }}
+      >
+        <Text style={styles.doneButtonTitle}>Done</Text>
+      </TouchableOpacity>
 
       <View style={styles.separatingLine} />
 

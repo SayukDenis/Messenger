@@ -21,6 +21,7 @@ import {
 import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CheckmarkIcon from "../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface AddSubscriberRoleScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -39,7 +40,10 @@ const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
   useEffect(() => {}, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <View style={styles.topToolBar}>
         {/* Going back button */}
         <GoBackButton onPress={() => props.navigation.goBack()} />
@@ -57,19 +61,19 @@ const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
             placeholderTextColor="rgb(136, 130, 130)"
           />
         </View>
-
-        {/* Done button */}
-        <TouchableOpacity
-          style={styles.doneButtonContainer}
-          onPress={() => {
-            selectedRole.selectedRole.subscribers = subscribers;
-
-            props.navigation.goBack();
-          }}
-        >
-          <Text style={styles.doneButtonTitle}>Done</Text>
-        </TouchableOpacity>
       </View>
+
+      {/* Done button */}
+      <TouchableOpacity
+        style={styles.doneButtonContainer}
+        onPress={() => {
+          selectedRole.selectedRole.subscribers = subscribers;
+
+          props.navigation.goBack();
+        }}
+      >
+        <Text style={styles.doneButtonTitle}>Done</Text>
+      </TouchableOpacity>
 
       <View style={styles.separatingLine} />
 
@@ -132,7 +136,7 @@ const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

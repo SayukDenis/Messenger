@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import { styles } from "./ProfileGroupStyles";
-import { UserProps } from "../../SemiComponents/DBUser";
+import { UserProps, user } from "../../SemiComponents/DBUser";
 import { PersonMenu } from "./PersonMenu";
 
 export const User: React.FC<UserProps> = (props) => {
   const [visibleState, setVisibleState] = useState(
-    props.MembersName.map(() => true)
+    props.members.map(() => true)
   );
   const [whatMenuVisible, setWhatMenuVisible] = useState(-1);
 
@@ -24,7 +24,7 @@ export const User: React.FC<UserProps> = (props) => {
 
   return (
     <View>
-      {props.MembersName.map((item, index) => {
+      {props.members.map((item, index) => {
         // Перевірка видимості для кожного конкретного юзера
         if (!visibleState[index]) {
           return null;

@@ -3,7 +3,6 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import { StackNavigationProp } from "@react-navigation/stack";
 import OffNotificationIcon from "./Icons/OffNotificationIcon";
 import OnNotificationIcon from "./Icons/OnNotificationIcon";
 import BinIcon from "./Icons/BinIcon";
@@ -11,7 +10,6 @@ import SettingsIcon from "./Icons/SettingsIcon";
 import ForwardContactIcon from "./Icons/ForwardContactIcon";
 import BlockIcon from "./Icons/BlockIcon";
 import UnblockIcon from "./Icons/UnblockIcon";
-import EyeIcon from "./Icons/EyeIcon";
 import ExitDoorIcon from "./Icons/ExitIcon";
 import ClearChatIcon from "./Icons/ClearChatIcon";
 import LockIcon from "./Icons/LockIcon";
@@ -30,50 +28,50 @@ interface ElseFeaturesButtonsProps {
 }
 
 const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
+  const additionalFeaturesForEachProfile = [
+    {
+      onPress: () => {
+        props.onSettingsPress();
+        props.setIsVisible(false);
+      },
+      icon: <SettingsIcon style={styles.additionalFeatureIcon} />,
+      title: "Settings",
+    },
+    {
+      onPress: () => {
+        props.onMutePress(!props.isMuted);
+        props.setIsVisible(false);
+      },
+      icon: props.isMuted ? (
+        <OnNotificationIcon style={styles.additionalFeatureIcon} />
+      ) : (
+        <OffNotificationIcon style={styles.additionalFeatureIcon} />
+      ),
+      title: props.isMuted ? "On notification" : "Off notification",
+    },
+    {
+      onPress: () => {
+        props.onClearChatPress();
+      },
+      icon: <ClearChatIcon style={styles.additionalFeatureIcon} />,
+      title: "Clear chat",
+    },
+  ];
+
   return (
     <>
       {props.isVisible && (
         <View style={styles.elseFeaturesButtonsContainer}>
-          {/* Settings button */}
-          <TouchableOpacity
-            onPress={() => {
-              props.onSettingsPress();
-              props.setIsVisible(false);
-            }}
-            style={styles.additionalFeatureButton}
-          >
-            <SettingsIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Settings</Text>
-          </TouchableOpacity>
-
-          {/* Toggle Notification button */}
-          <TouchableOpacity
-            onPress={() => {
-              props.onMutePress(!props.isMuted);
-              props.setIsVisible(false);
-            }}
-            style={styles.additionalFeatureButton}
-          >
-            {props.isMuted ? (
-              <OnNotificationIcon style={styles.additionalFeatureIcon} />
-            ) : (
-              <OffNotificationIcon style={styles.additionalFeatureIcon} />
-            )}
-            <Text style={styles.additionalFeatureTitle}>
-              {props.isMuted ? "On notification" : "Off notification"}
-            </Text>
-          </TouchableOpacity>
-
-          {/* Clear chat button */}
-          <TouchableOpacity
-            onPress={() => {
-              props.onClearChatPress();
-            }}
-            style={styles.additionalFeatureButton}
-          >
-            <ClearChatIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Clear chat</Text>
-          </TouchableOpacity>
+          {additionalFeaturesForEachProfile.map((feature, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={feature.onPress}
+              style={styles.additionalFeatureButton}
+            >
+              {feature.icon}
+              <Text style={styles.additionalFeatureTitle}>{feature.title}</Text>
+            </TouchableOpacity>
+          ))}
 
           {/* For user */}
           {props.mode === "user" && (
@@ -111,12 +109,6 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {/* For group */}
           {props.mode === "group" && (
             <>
-              {/* View member button */}
-              <TouchableOpacity style={styles.additionalFeatureButton}>
-                <EyeIcon style={styles.additionalFeatureIcon} />
-                <Text style={styles.additionalFeatureTitle}>View member</Text>
-              </TouchableOpacity>
-
               {/* Delete group button */}
               <TouchableOpacity style={styles.additionalFeatureButton}>
                 <BinIcon style={styles.additionalFeatureIcon} />

@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   FlatList,
@@ -27,16 +27,15 @@ interface PhotosProps {
 
 const Photos: React.FC<PhotosProps> = (props) => {
   return (
-    <View style={styles.mediaContainer}>
+    <View style={[styles.mediaContainer, { opacity: 1 }]}>
       <FlatList
         data={props.data}
         keyExtractor={(item) => props.data.indexOf(item).toString()}
         horizontal={false}
         numColumns={3}
         contentContainerStyle={{
-          gap: 0.002 * Dimensions.get("screen").height,
-          paddingBottom: 0.65 * Dimensions.get("screen").height,
-          backgroundColor: "rgb(174, 174, 174)",
+          gap: 0.002 * screenHeight,
+          paddingBottom: 0.65 * screenHeight,
         }}
         scrollEnabled={false}
         renderItem={({ item }) => {
@@ -48,10 +47,7 @@ const Photos: React.FC<PhotosProps> = (props) => {
               style={[
                 styles.photo,
                 {
-                  left:
-                    0.005 *
-                    Dimensions.get("screen").width *
-                    (props.data.indexOf(item) % 3),
+                  left: 0.005 * screenWidth * (props.data.indexOf(item) % 3),
                 },
               ]}
             >

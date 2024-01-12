@@ -19,7 +19,7 @@ export interface UserProps {
   phoneNumber: string;
   username: string;
   bio: string;
-  MembersName: Array<Nicknames>;
+  members: Array<Nicknames>;
   selectedInterval: number;
   isMuted: boolean;
   isBlocked: boolean;
@@ -42,7 +42,7 @@ export const user: UserProps = {
   phoneNumber: "+380 12 345 67 89",
   username: "@myUsername",
   bio: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-  MembersName: [
+  members: [
     { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB", Vissible: 1 },
     { name: "Aboba ABOBA aboba ABOBA AboBA", Vissible: 0 },
     { name: "Aboba ABOBA aboba ABOBA AboBA BaoBAB Abob", Vissible: 0 },
@@ -78,6 +78,24 @@ export const user: UserProps = {
     },
   ],
   photosAndVideos: [
+    {
+      url: "https://www.creativeboom.com/uploads/articles/e8/e8e93075801e9f3b444d2f0173ce5f17c8182112_1620.jpg",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/1027/200/300.jpg?hmac=WCxdERZ7sgk4jhwpfIZT0M48pctaaDcidOi3dKSHJYY",
+    },
+    {
+      url: "https://www.techsmith.com/blog/wp-content/uploads/2016/11/what-is-high-res.jpg",
+    },
+    {
+      url: "https://www.creativeboom.com/uploads/articles/e8/e8e93075801e9f3b444d2f0173ce5f17c8182112_1620.jpg",
+    },
+    {
+      url: "https://fastly.picsum.photos/id/1027/200/300.jpg?hmac=WCxdERZ7sgk4jhwpfIZT0M48pctaaDcidOi3dKSHJYY",
+    },
+    {
+      url: "https://www.techsmith.com/blog/wp-content/uploads/2016/11/what-is-high-res.jpg",
+    },
     {
       url: "https://www.creativeboom.com/uploads/articles/e8/e8e93075801e9f3b444d2f0173ce5f17c8182112_1620.jpg",
     },

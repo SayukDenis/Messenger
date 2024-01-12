@@ -54,10 +54,10 @@ const BranchColorPicker: React.FC<BranchColorPickerProps> = (props) => {
                   onColorChange={(color) => {
                     setColor(color);
                   }}
-                  thumbSize={0.11 * Dimensions.get("screen").width}
+                  thumbSize={0.13 * Dimensions.get("screen").width}
                   sliderSize={27}
                   row={true}
-                  gapSize={0.015 * Dimensions.get("screen").width}
+                  gapSize={0.01 * Dimensions.get("screen").width}
                   swatches={false}
                   color={color}
                   shadeSliderThumb={true}

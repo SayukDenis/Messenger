@@ -28,7 +28,7 @@ const screenWidth: number = Dimensions.get("screen").width;
 
 const Albums: React.FC<AlbumsProps> = (props) => {
   return (
-    <View style={styles.mediaContainer}>
+    <View style={[styles.mediaContainer, { opacity: 1 }]}>
       <FlatList
         data={user.albums}
         keyExtractor={(item) => user.albums.indexOf(item).toString()}

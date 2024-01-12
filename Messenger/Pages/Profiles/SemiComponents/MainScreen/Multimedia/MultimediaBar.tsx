@@ -5,6 +5,7 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "../Styles";
 import Photos from "./Photos";
 import { user } from "../../DBUser";
+import { LinearGradient } from "expo-linear-gradient";
 
 class Button {
   name: string;
@@ -122,6 +123,13 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
           { width: maxQuantitiesTitleWidth + 20 },
         ]}
       >
+        <LinearGradient
+          colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+          style={[
+            styles.linearGradientForQuantitiesContainer,
+            { width: maxQuantitiesTitleWidth + 20 },
+          ]}
+        />
         {pressedMultimediaButton === "Photos" && (
           <Text
             style={styles.multimediaQuantityTitle}

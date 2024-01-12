@@ -7,6 +7,7 @@ import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 import { branchMode } from "../../SemiComponents/DBUser";
+import { LinearGradient } from "expo-linear-gradient";
 
 type ChannelSettingsScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -16,7 +17,10 @@ const ChannelSettingsScreen: React.FC<ChannelSettingsScreenProps> = ({
   navigation,
 }) => {
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Header
         primaryTitle="Settings"
         onGoBackPress={() => {
@@ -61,7 +65,7 @@ const ChannelSettingsScreen: React.FC<ChannelSettingsScreenProps> = ({
         <Text style={styles.settingOptionTitle}>Edit channel</Text>
         <RightArrow style={styles.settingOptionRightArrow} />
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };
 

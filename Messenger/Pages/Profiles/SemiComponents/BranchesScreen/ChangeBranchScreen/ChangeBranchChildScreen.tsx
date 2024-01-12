@@ -20,6 +20,7 @@ import ColorSelection from "../NewBranchScreen/ColorSelection";
 import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
 import { tempCharacter, BranchChild } from "../../DBUser";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface ChangeBranchChildScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -55,7 +56,10 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
     useState(false);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Blur
         visibleWhen={isSpecialColorSelectionVisible}
         onPress={() => {
@@ -212,7 +216,7 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
           />
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

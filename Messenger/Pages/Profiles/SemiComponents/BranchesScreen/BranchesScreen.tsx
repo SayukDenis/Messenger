@@ -12,6 +12,7 @@ import RemovalApproval from "../MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { character, tempCharacter } from "../DBUser";
+import { LinearGradient } from "expo-linear-gradient";
 
 type BranchesScreenProps = {
   navigation: StackNavigationProp<{}>;
@@ -26,7 +27,10 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
   useEffect(() => {}, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Blur
         visibleWhen={isDeleteBranchPressed}
         onPress={() => {
@@ -118,7 +122,7 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

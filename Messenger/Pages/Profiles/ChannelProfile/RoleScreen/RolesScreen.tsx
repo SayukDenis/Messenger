@@ -22,6 +22,7 @@ import {
 import { useIsFocused } from "@react-navigation/native";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface RolesScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -35,7 +36,10 @@ const RolesScreen: React.FC<RolesScreenProps> = (props) => {
   useEffect(() => {}, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Blur
         visibleWhen={roleToRemove?.name != null}
         onPress={() => {
@@ -120,7 +124,7 @@ const RolesScreen: React.FC<RolesScreenProps> = (props) => {
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

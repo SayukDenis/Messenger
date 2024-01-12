@@ -29,6 +29,7 @@ import {
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 import PlusIcon from "../../SemiComponents/BranchesScreen/Icons/PlusIcon";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface ChangeBranchParentScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -74,7 +75,10 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
   }, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Blur
         visibleWhen={isSpecialColorSelectionVisible}
         onPress={() => {
@@ -386,7 +390,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

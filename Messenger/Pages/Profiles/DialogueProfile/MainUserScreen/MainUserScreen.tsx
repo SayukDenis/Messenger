@@ -20,6 +20,7 @@ import {
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
 import { GestureResponderEvent } from "react-native-modal";
+import { LinearGradient } from "expo-linear-gradient";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -74,7 +75,10 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
   ];
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       {/* General blur with zIndex 1 */}
       <Blur
         visibleWhen={
@@ -274,7 +278,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
           }}
         />
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

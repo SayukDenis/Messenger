@@ -9,6 +9,7 @@ import { channel } from "../../SemiComponents/DBUser";
 import DeletedUserIcon from "./Icons/DeletedUserIcon";
 import AddedUserIcon from "./Icons/AddedUserIcon";
 import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface AuditLogScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -16,7 +17,10 @@ interface AuditLogScreenProps {
 
 const AuditLogScreen: React.FC<AuditLogScreenProps> = (props) => {
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Header
         primaryTitle="Audit log"
         onGoBackPress={() => {
@@ -57,7 +61,7 @@ const AuditLogScreen: React.FC<AuditLogScreenProps> = (props) => {
           );
         })}
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import { styles } from "./ProfileGroupStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { GroupHead } from "./GroupHeadProfile";
@@ -21,12 +21,14 @@ export default function EditGroup() {
     <GestureHandlerRootView style={styles.wrapper}>
       <SafeAreaView style={styles.container}>
         <GroupHead GroupHeadName={groupHeadName} BioText={BioText} />
-        <EditGroupPhoto />
-        <GroupNameInput
-          setGroupHeadName={(value: string) => setGroupHeadName(value)}
-        />
-        <GroupBio setBioText={(value: string) => setBioText(value)} />
-        <User {...user} />
+        <ScrollView>
+          <EditGroupPhoto />
+          <GroupNameInput
+            setGroupHeadName={(value: string) => setGroupHeadName(value)}
+          />
+          <GroupBio setBioText={(value: string) => setBioText(value)} />
+          <User {...user} />
+        </ScrollView>
       </SafeAreaView>
     </GestureHandlerRootView>
   );

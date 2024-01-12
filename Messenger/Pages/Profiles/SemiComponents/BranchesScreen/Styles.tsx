@@ -105,6 +105,9 @@ export const styles = StyleSheet.create({
   colorPickerElement: {
     width: "100%",
     height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    left: (0.75 / 19) * screenWidth,
   },
   circleAroundColorPicker: {
     borderRadius: 100,
@@ -244,10 +247,6 @@ export const styles = StyleSheet.create({
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
     color: "rgb(92, 64, 129)",
-  },
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "rgb(227, 192, 124)",
   },
   settingOption: {
     top: 0.04 * screenHeight,

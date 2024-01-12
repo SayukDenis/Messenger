@@ -19,6 +19,7 @@ import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import BranchColorPicker from "../../SemiComponents/BranchesScreen/NewBranchScreen/BranchColorPicker";
 import { Contact, Role, channel, tempRole } from "../../SemiComponents/DBUser";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface NewRoleScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -52,7 +53,10 @@ const NewRoleScreen: React.FC<NewRoleScreenProps> = (props) => {
   };
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Blur
         visibleWhen={isSpecialColorSelectionVisible}
         onPress={() => {
@@ -249,7 +253,7 @@ const NewRoleScreen: React.FC<NewRoleScreenProps> = (props) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

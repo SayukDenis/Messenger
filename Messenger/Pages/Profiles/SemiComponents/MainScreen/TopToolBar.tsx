@@ -7,6 +7,7 @@ import GoBackButton from "../GeneralComponents/GoBackButton";
 import SearchIcon from "./Icons/SearchIcon";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon";
 import Name from "./Name";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface TopToolBarProps {
   onElseFeaturesPress?: () => void;
@@ -25,9 +26,13 @@ interface TopToolBarProps {
 const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   const blockStatusTitle: string = "Blocked";
   return (
-    <View style={[styles.topToolBar, { backgroundColor: "white" }]}>
+    <View style={styles.topToolBar}>
       {!props.isMediaSelectionVisible && (
         <>
+          <LinearGradient
+            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+            style={styles.linearGradient}
+          />
           {/* Main name */}
           <Name
             primaryTitle={props.primaryTitle}

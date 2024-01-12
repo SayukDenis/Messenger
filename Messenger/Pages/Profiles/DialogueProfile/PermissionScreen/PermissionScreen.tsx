@@ -8,6 +8,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import CheckmarkIcon from "./Icons/CheckMarkIcon";
 import { user } from "../../SemiComponents/DBUser";
 import ToggleButton from "../../SemiComponents/GeneralComponents/ToggleButton";
+import { LinearGradient } from "expo-linear-gradient";
 
 type PermissionScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -40,7 +41,10 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
   });
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Header
         primaryTitle={permissionTitle}
         onGoBackPress={() => {
@@ -85,7 +89,7 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
           )}
         </TouchableOpacity>
       ))}
-    </View>
+    </LinearGradient>
   );
 };
 

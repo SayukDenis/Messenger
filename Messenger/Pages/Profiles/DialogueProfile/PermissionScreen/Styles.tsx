@@ -9,10 +9,6 @@ const figmaHeightPixelConverter = screenHeight / 648;
 const figmaWidthPixelConverter = screenWidth / 356;
 
 export const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "rgb(227, 192, 124)",
-  },
   settingOption: {
     top: 0.04 * screenHeight,
     width: 0.9 * screenWidth,

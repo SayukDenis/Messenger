@@ -24,6 +24,7 @@ import {
   character,
   tempCharacter,
 } from "../../DBUser";
+import { LinearGradient } from "expo-linear-gradient";
 
 type NewBranchProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -51,7 +52,10 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
     useState(false);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Blur
         visibleWhen={isSpecialColorSelectionVisible}
         onPress={() => {
@@ -204,7 +208,7 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
           />
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

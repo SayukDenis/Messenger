@@ -26,6 +26,7 @@ import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
 import BranchChildrenList from "./BranchChildrenList";
 import RemovalApproval from "../../MainScreen/RemovalApproval";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface ChangeBranchParentScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -64,7 +65,10 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
   const [branchNameToRemove, setBranchNameToRemove] = useState("");
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Blur
         visibleWhen={isSpecialColorSelectionVisible}
         onPress={() => {
@@ -276,7 +280,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           />
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
