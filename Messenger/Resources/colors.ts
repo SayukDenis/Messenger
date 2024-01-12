@@ -50,4 +50,10 @@ export default {
   gradient_light: {},
 
   gradient_dark: {},
+
+  gradient: {
+    start: { x: 1, y: 0 },
+    end: { x: 0, y: 1 },
+    colors: ["#D7B168", "#D783FF"],
+  },
 };

@@ -4,7 +4,13 @@ import { globalStyles } from "./styles";
 
 export default function Test() {
   return (
-    <View style={{ flex: 1, justifyContent: "space-between" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "space-between",
+        backgroundColor: "#E3C07C",
+      }}
+    >
       <View style={globalStyles.header}>
         <Text>Random text, lol</Text>
       </View>

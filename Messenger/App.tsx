@@ -8,6 +8,7 @@ import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./Navigation/Navigation";
 import Test from "./Resources/Test";
+import Look from "./Pages/Look/Look";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
 
@@ -16,7 +17,7 @@ export default function App() {
       <StatusBar translucent backgroundColor="transparent" />
       <Provider store={store}>
         <SafeAreaView style={{ flex: 1, backgroundColor: "blue" }}>
-          <Test />
+          <Navigation />
         </SafeAreaView>
       </Provider>
     </SafeAreaProvider>
