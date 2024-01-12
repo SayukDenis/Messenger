@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     alignItems: "center",
-    height: 75 * figmaHeightPixelConverter,
+    height: 77 * figmaHeightPixelConverter,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 37,
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   },
   goBackFromProfileButton: {
     position: "absolute",
-    top: 0.045 * screenHeight,
+    top: 0.05 * screenHeight,
     alignSelf: "flex-start",
     left: 0.045 * screenWidth,
     width: 30 * figmaWidthPixelConverter,

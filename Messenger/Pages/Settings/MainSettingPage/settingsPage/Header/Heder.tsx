@@ -1,14 +1,14 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import StyleHeadr from "./StyleHeadr";
+import BackButton from "../../../../SemiComponents/BackButton";
 
-const Header = () => {
-    return <View style ={StyleHeadr.header}>
+const Header:React.FC<any> = ({navigation}) => {
+    return <View>
          <View style ={StyleHeadr.container}>
-         <View><TouchableOpacity><Text>Back</Text></TouchableOpacity></View>
-               <Text style = {StyleHeadr.tag}>tag</Text>
-               <Text style = {StyleHeadr.userName}>Name</Text>
-               <Text style = {StyleHeadr.phoneNumber}>phone</Text></View>
+                <View style={StyleHeadr.backButt}><TouchableOpacity onPress ={()=> navigation.goBack()}><BackButton></BackButton></TouchableOpacity></View>
+                <View style = {StyleHeadr.userNameConteiner}><Text style={StyleHeadr.userNameText}>Name</Text></View>
+          </View>     
     </View>
 }
 

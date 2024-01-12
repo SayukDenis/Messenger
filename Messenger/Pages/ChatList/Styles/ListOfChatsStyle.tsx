@@ -1,13 +1,10 @@
-import { StyleSheet,Platform,StatusBar, Dimensions } from "react-native";
-import Constants from 'expo-constants';
-
+import { StyleSheet, Dimensions } from "react-native";
+import { heightOfHeader } from "../Constants/ConstantsForChatlist";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const listOfChatsStyle = StyleSheet.create({
   container: {
-    //backgroundColor:"red",
     marginTop: screenHeight * 0.05,
   },
-
   helpContainer: {
     backgroundColor: "blue",
     opacity: 0,
@@ -47,7 +44,7 @@ export const listOfChatsStyle = StyleSheet.create({
     left: screenHeight * 0.02,
   },
   gapContainerHigh: {
-    height: Platform.OS=="android"?screenHeight * 0.08+StatusBar.currentHeight:screenHeight * 0.08+Constants.statusBarHeight,
+    height: heightOfHeader
   },
   
   containerForOther: {
@@ -55,16 +52,18 @@ export const listOfChatsStyle = StyleSheet.create({
     //backgroundColor:"white",
     marginLeft: screenWidth * 0.01,
     justifyContent: "flex-end",
+
   },
   containerForContent: {
     width: screenWidth * 0.7,
     //backgroundColor:"white",
     flex: 1,
     marginTop: screenHeight * 0.005,
+    //backgroundColor: "blue",
   },
   namecontainer: {
     width: screenWidth * 0.6,
-
+    //backgroundColor: "red",
     paddingTop: screenHeight * 0.005,
     alignSelf: "flex-end",
 
@@ -76,6 +75,7 @@ export const listOfChatsStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-end",
+    //backgroundColor:"yellow"
   },
   highcontainer: {
     flexDirection: "row",
@@ -99,7 +99,7 @@ export const listOfChatsStyle = StyleSheet.create({
   },
   timeStyle: {
     alignSelf: "flex-end",
-    fontSize: screenHeight * 0.014,
+    fontSize: 13,
     color: "#2B1D1D",
     marginRight: screenWidth * 0.01,
     fontWeight: "500",
@@ -112,33 +112,14 @@ export const listOfChatsStyle = StyleSheet.create({
     marginRight: screenWidth * 0.01,
   },
   countOfUnreadMessagescontainer: {
-    //backgroundColor: "#FFFFFF",
-    textAlign: "center",
     borderRadius: 100,
-    
-    maxWidth: "100%",
     justifyContent: "center",
-    overflow:"hidden"
+    overflow:"hidden",
+   
     //opacity:0.95
   },
-  oneCharcontainer: {
-    width: screenHeight * 0.018,
-    aspectRatio:1,
-    //alignSelf:"flex-end"
-    paddingTop:0,
-    
-  },
-  twoCharcontainer: {
-    width: screenHeight * 0.03,
-  },
-  threeCharcontainer: {
-    width: screenHeight * 0.04,
-  },
-  fourCharcontainer: {
-    width: screenHeight * 0.05,
-  },
   countOfUnReadMessagesContent: {
-    fontSize: screenHeight * 0.013,
+  
     color: "#2B1D1D",
     alignSelf: "center",
     //opacity:0.95

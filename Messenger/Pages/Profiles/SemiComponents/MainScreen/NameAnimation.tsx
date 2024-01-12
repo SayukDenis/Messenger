@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Animated, Dimensions, Text, TextStyle } from "react-native";
 
+const screenWidth: number = Dimensions.get("screen").width;
+const screenHeight: number = Dimensions.get("screen").height;
+
 interface NameAnimationProps {
   textWidth: number;
   primaryTitle: string;
@@ -9,7 +12,6 @@ interface NameAnimationProps {
 
 const NameAnimation: React.FC<NameAnimationProps> = (props) => {
   const [isFirstAnimation, setIsFirstAnimation] = useState(true);
-  const screenWidth: number = Dimensions.get("screen").width;
 
   const animatedValueOne = useRef(new Animated.Value(0)).current;
   const animatedValueTwo = useRef(new Animated.Value(0)).current;
@@ -93,7 +95,10 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
           ],
         }}
       >
-        <Text numberOfLines={1} style={props.style}>
+        <Text
+          numberOfLines={1}
+          style={[props.style, { height: props.style.fontSize * 1.3 }]}
+        >
           {props.primaryTitle}
         </Text>
       </Animated.View>
@@ -112,7 +117,7 @@ const NameAnimation: React.FC<NameAnimationProps> = (props) => {
             props.style,
             {
               position: "absolute",
-              top: -0.03 * Dimensions.get("screen").height,
+              top: -props.style.fontSize * 1.3,
             },
           ]}
         >

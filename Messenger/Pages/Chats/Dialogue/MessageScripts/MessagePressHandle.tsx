@@ -28,6 +28,7 @@ const buttons = [
 ];
 
 export default function messagePressHandle() {
+  console.log('messagePressHandle');
   return (
     <TouchableOpacity style={{width: width, height: height, zIndex:999, backgroundColor:'rgba(255,255,255,0.5)'}}> 
       <View style={{zIndex:1000}}>

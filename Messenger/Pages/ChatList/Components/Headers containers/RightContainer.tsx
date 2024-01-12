@@ -1,23 +1,39 @@
-import React, { useEffect, useRef } from 'react';
-import { View,Animated, Dimensions } from 'react-native';
-import ContactsSvg from '../SVG/ContactsSvg';
-import AddChatSvg from '../SVG/AddChatSvg';
-import AddFolderSvg from '../SVG/AddFolderSvg';
-import WriteMessageSvg from '../SVG/WriteMessageSvg';
-import UserIconSvg from '../SVG/UserIconSvg';
-import { connect } from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import NavigationForSettings from '../../../Settings/NavigationForSettings';
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const RightContainer = ({navigation}) => {
-   const kefForSizeOfSvg: number = 0.073;
-   useEffect(()=>{
-    console.log("Rerender Right Container")
-   })
-   const PressOnUserIcon=useRef(()=>{
-    console.log(10)
+import React, { useEffect, useRef } from "react";
+import { View, Animated, Dimensions } from "react-native";
+import ContactsSvg from "../SVG/ContactsSvg";
+import AddFolderSvg from "../SVG/AddFolderSvg";
+import WriteMessageSvg from "../SVG/WriteMessageSvg";
+import UserIconSvg from "../SVG/UserIconSvg";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
+import { setBooleanForTouchOnHamburgerInHeaderChatList } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+
+const RightContainer = ({ navigation }: any) => {
+  const dispatch = useDispatch();
+  const PressForDispatch = () => {
+    setTimeout(()=>
+    dispatch(
+      setBooleanForTouchOnHamburgerInHeaderChatList(false)
+    ),350)
+  };
+  const kefForSizeOfSvg: number = 0.073;
+  const PressOnUserIcon = useRef(() => {
     navigation.navigate("NavigationForSettings");
-   })
+    PressForDispatch()
+  })
+  const PressOnContactsIcon = useRef(() => {
+    navigation.navigate("ContactsPage");
+    PressForDispatch()
+  });
+  const PressaOnAddFolderIcon = useRef(() => {
+    navigation.navigate("Chat folders");
+    PressForDispatch()
+  });
+  const PressOnWriteMessage = useRef(() => {
+    navigation.navigate("Create channel and group or write message");
+    PressForDispatch()
+  });
   return (
     <Animated.View
       style={[
@@ -34,33 +50,36 @@ const RightContainer = ({navigation}) => {
           justifyContent: "center",
         }}
       >
-        <View
+        <TouchableOpacity
+          onPress={PressOnContactsIcon.current}
           style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}
         >
           <ContactsSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}
+          onPress={PressaOnAddFolderIcon.current}
         >
           <AddFolderSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={PressOnWriteMessage.current}
           style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}
         >
           <WriteMessageSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
-      onPress={PressOnUserIcon.current}
+        onPress={PressOnUserIcon.current}
         style={{
           alignSelf: "center",
         }}
@@ -74,4 +93,4 @@ const RightContainer = ({navigation}) => {
   );
 };
 
-export default connect(null)( RightContainer);
+export default connect(null)(RightContainer);

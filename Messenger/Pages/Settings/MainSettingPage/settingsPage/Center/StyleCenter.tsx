@@ -1,41 +1,37 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Dimensions } from 'react-native'
+
+const windowHeight = Dimensions.get('window').height;
+const windowHWidth = Dimensions.get('window').width;
 
 const StyleCentre = StyleSheet.create({
     
     conteiner:{
         display:'flex',
         flex: 1,
-        backgroundColor:'#E3C07C',
         justifyContent: 'center',
         alignItems: 'center',
     },
     
     imgStyle :{
-        height:150,
-        width:150,
+        marginTop:'20%',
+        height:windowHWidth*0.4,
+        width:windowHWidth*0.4,
         borderRadius:10000000
     },
 
-    button:{
+    editButton:{
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
         marginTop:"4%",
-        borderLeftWidth:1,
-        borderRightWidth:1,
-        borderTopWidth:1,
-        borderColor:'#858585',
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
-        width:'30%',
-        height:'4%'
+        marginRight:"10%",
+        borderRadius:14,
+        height:windowHeight*0.05,
+        width:windowHWidth*0.3,
+        backgroundColor:'white',
+        opacity:0.13
     },
 
-    box:{
-        width : '90%',
-        height:1,
-        backgroundColor:'#858585',
-    },
 
     text:{
         marginTop:"2%",
@@ -45,20 +41,20 @@ const StyleCentre = StyleSheet.create({
         alignSelf:'flex-start'
     },
 
-    editButton:{
+    exitButton:{
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
         marginTop:"5%",
-        height:"5%",
-        width:"20%",
-        borderWidth:1,
-        borderColor:'black',
-        borderRadius:15
+        height:windowHeight*0.05,
+        width:windowHWidth*0.3,
+        backgroundColor:'#FFFFFF',
+        borderRadius:15,
+        opacity:0.13
     },
 
     editButtonText:{
-        color:'red'
+        color:'#6A38AD',
     },
 
     conteinreModalwindow:{
@@ -75,7 +71,7 @@ const StyleCentre = StyleSheet.create({
         height:'17%',
         width:'80%',
         borderWidth:1,
-        borderRadius:30
+        borderRadius:35
     },
 
     modalTextConteiner:{
@@ -104,7 +100,7 @@ const StyleCentre = StyleSheet.create({
         height:"100%",
         backgroundColor:'#DCDCDC',
         borderTopWidth:1,
-        borderBottomLeftRadius:30,
+        borderBottomLeftRadius:37,
     },
 
     agreeButtonText:{
@@ -119,7 +115,7 @@ const StyleCentre = StyleSheet.create({
         width:"50%",
         height:"100%",
         backgroundColor:'#DCDCDC',
-        borderBottomRightRadius:30
+        borderBottomRightRadius:40
     },
 
     disagreeButtonText:{

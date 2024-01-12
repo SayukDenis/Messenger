@@ -4,7 +4,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const headerstyles = StyleSheet.create({
 
   container: {
-    height: Platform.OS=="android"?screenHeight * 0.08+StatusBar.currentHeight:screenHeight * 0.08+Constants.statusBarHeight,
+    height: Platform.OS=="android"?screenHeight * 0.08+(StatusBar.currentHeight==undefined?0:StatusBar.currentHeight):screenHeight * 0.08+Constants.statusBarHeight,
    // backgroundColor: "#E7E6E4",
    backgroundColor:"white",
     borderBottomLeftRadius: 30,
@@ -21,7 +21,7 @@ export const headerstyles = StyleSheet.create({
     
     marginHorizontal: screenWidth * 0.02,
     overflow:"hidden",
-    justifyContent:"space-between",
+    //justifyContent:"space-between",
    // backgroundColor:"black"
   },
 
@@ -48,6 +48,7 @@ export const headerstyles = StyleSheet.create({
     borderRadius: 1000,
     borderWidth: 1,
     borderColor: "#2B1D1D",
+    marginLeft:12,
   },
   modeactivity: {
     height: screenHeight * 0.015,
@@ -58,12 +59,12 @@ export const headerstyles = StyleSheet.create({
     left: screenHeight * 0.02,
   },
   middleheader: {
-    display: "flex",
-    justifyContent: "center",
+   
+    //justifyContent: "center",
     flexDirection: "row",
   },
   ViewOfModeOfEmployment: {
-    width: screenHeight * 0.2,
+    marginRight:screenWidth * 0.031+10,
     flexDirection: "row",
     alignSelf: "center",
     position: "relative",

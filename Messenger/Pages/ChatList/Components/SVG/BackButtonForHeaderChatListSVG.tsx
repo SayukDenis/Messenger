@@ -1,7 +1,6 @@
 import React from 'react';
-import Svg, { Rect, Path } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 import { connect } from 'react-redux';
-import { View } from "react-native";
 import { Dimensions } from 'react-native';
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 

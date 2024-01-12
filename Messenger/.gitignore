@@ -1,1 +1,4 @@
-
+node_modules
+**/android
+package-lock.json
+package.json

@@ -1,8 +1,13 @@
-import React, { Ref, useEffect, useRef, useState } from "react";
+import React, {
+  MutableRefObject,
+  Ref,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
-  Image,
-  Text,
   TouchableOpacity,
   Dimensions,
   Animated,
@@ -12,69 +17,87 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import { mySelfUser } from "../../1HelpFullFolder/Initialization";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
-import Message from "../../1HelpFullFolder/Message";
-import Chat from "../../1HelpFullFolder/Chat";
 import RightContainersForSwipe from "./RightContainersForSwipe";
 import LeftContainerForSwipe from "./LeftContainerForSwipe";
 import CentralChatContainer from "./CentralChatContainer";
-import { connect } from "react-redux";
-import { BlurView } from "expo-blur";
+import { connect, useSelector } from "react-redux";
+import Chat from "../../../../dao/Models/Chats/Chat";
+import Message from "../../../../dao/Models/Message";
+import SelfProfile from "../../../../dao/Models/SelfProfile";
+import ListOfBranches from "./ListOfBranches";
+import Dialogue from "../../../../dao/Models/Chats/Dialogue";
+import { CountOfUnreadMessages } from "./Functions/CountOfUnreadMessage";
+import getNameOfChat from "./Functions/GetNameOfChat";
 
 interface ChatProps {
   chat: Chat;
-  isCurrent: boolean;
+  nesting: number;
+  navigation:any;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
+const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
+  const selfProfile: SelfProfile = useSelector((state: any) => {
+    const self: SelfProfile = state.selfProfileUser;
+    return self;
+  });
+
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
-    useState<number>(null);
-  let randomBoolean = useRef(null);
-  const timeForAnimation: number = 150;
+    useState<number|null>(null);
+  
+  const [IsBranchesOpenBoolean, setIsBranchesOpenBoolean] = useState(false);
+  const [stateForBranchesShow, setStateForBranchesShow] = useState(false);
   const [isSwiped, setIsSwiped] = useState(false);
   const [isSwipedFromRight, setIsSwipedFromRight] = useState(false);
   const [isSwipedFromLeft, setIsSwipedFromLeft] = useState(false);
   const [positionXForSwipeable, setPositionXForSwipeable] =
     useState<number>(screenWidth);
-
-  const haveUnreadMessages = (chat) => {
-    const lastMessage: Message =
-      chat.listOfMessages.length > 0
-        ? chat.listOfMessages[chat.listOfMessages.length - 1]
-        : undefined;
-    const id: number | undefined = chat.dictionary?.get(mySelfUser.id);
-    if (!lastMessage)
-      if (lastMessage?.sender !== mySelfUser) {
-        if (id && lastMessage.id > id) {
-          return true;
-        }
-      }
-    return false;
+  useEffect(() => {});
+  function obhod(chat: Chat) {
+    for (let index = 0; index < chat.branches.length; index++) {
+      console.log(chat.branches[index].title);
+      obhod(chat.branches[index]);
+    }
+    return;
+  }
+  
+  const onBranchPress: () => void = () => {
+    if (!IsBranchesOpenBoolean) {
+      setBranchPressOpen();
+    }
+    setStateForBranchesShow(!stateForBranchesShow);
   };
-  useEffect(() => {
-    randomBoolean.current = Math.random() < 0.5;
-    haveUnreadMessagesBoolf.current = haveUnreadMessages(chat);
-  }, []);
+  const setBranchPressOpen: () => void = () => {
+    setIsBranchesOpenBoolean(!IsBranchesOpenBoolean);
+  };
+  
+
   const rightDragXposition = useState(new Animated.Value(screenWidth));
   const leftDragXposition = useState(new Animated.Value(0));
-  const [rightDragXpositionForRerender,setRightDragXpositionForRerender] = useState(screenWidth);
-  const [leftDragXpositionForRerender,setLeftDragXpositionForRerender] = useState(0);
+  const [rightDragXpositionForRerender, setRightDragXpositionForRerender] =
+    useState(screenWidth);
+  const [leftDragXpositionForRerender, setLeftDragXpositionForRerender] =
+    useState(0);
   const [stateForSwipeDirection, setStateForSwipeDirection] =
-    useState<number>(null);
-  useEffect(() => {
-    //console.log(chat.name)
-  });
+    useState<number | null>(null);
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
-
-  const haveUnreadMessagesBoolf = useRef(null);
+  const CountOfUnreadMessage = useMemo(() => {
+    return CountOfUnreadMessages(selfProfile, chat);
+  }, [chat.lastWatchedMessage]);
+  const haveUnreadMessagesBool =CountOfUnreadMessage!=null&&CountOfUnreadMessage>0 ;
+ // console.log(getNameOfChat(chat,selfProfile)+":"+haveUnreadMessagesBool)
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
+    if(chat instanceof Dialogue){
+      navigation.navigate("DialogueNavigation",{chat:(chat as Dialogue)})
+    }
+  
+    
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
-    console.log(chat.name);
+    console.log("Кнопку зажали");
   });
   const handleScrollToRightEnd = () => {
     const scrollVarible = positionXForStartOfSwipeable == screenWidth;
@@ -109,21 +132,21 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
     }
   };
   const scrollToRight40Percents = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth * 1.4 });
+    scrollViewRef.current?.scrollTo({ x: screenWidth * 1.4 });
   };
   const scrollToLeft40Percents = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth * 0.6 });
+    scrollViewRef.current?.scrollTo({ x: screenWidth * 0.6 });
   };
   const scrollToRightBound = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth });
+    scrollViewRef.current?.scrollTo({ x: screenWidth });
   };
   const scrollToLeftBound = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth * 2 });
+    scrollViewRef.current?.scrollTo({ x: screenWidth * 2 });
   };
   const scrollToZeroPosition = () => {
-    scrollViewRef.current.scrollTo({ x: 0 });
+    scrollViewRef.current?.scrollTo({ x: 0 });
   };
-  const handleScroll = (event) => {
+  const handleScroll = (event:any) => {
     const { nativeEvent } = event;
     const currentXOffset = nativeEvent.contentOffset.x;
     if (stateForSwipeDirection == 1 && currentXOffset > screenWidth) {
@@ -190,11 +213,10 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
   ) => {
     const positionX = e.nativeEvent.contentOffset.x;
     setPositionXForSwipeable(positionX);
-    setRightDragXpositionForRerender(positionX)
+    setRightDragXpositionForRerender(positionX);
     Animated.timing(rightDragXposition[0], {
       toValue: positionX,
       duration: 0,
-
       useNativeDriver: false,
     }).start();
   };
@@ -210,6 +232,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
       useNativeDriver: false,
     }).start();
   };
+
   if (Platform.OS == "android") {
     return (
       <>
@@ -217,6 +240,8 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
           chat={chat}
           handlePress={handlePress}
           onLongPressChat={onLongPressChat}
+          onBranchPress={onBranchPress}
+          nesting={nesting}
         />
         <View
           style={{
@@ -226,73 +251,115 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, isCurrent }) => {
             backgroundColor: "gray",
           }}
         />
+        {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
+          <ListOfBranches
+            chat={chat}
+            nesting={nesting + 1}
+            setBranchOpen={setBranchPressOpen}
+            stateForBranchesShow={stateForBranchesShow}
+            navigation={navigation}
+          />
+        ) : null}
       </>
     );
   }
-  useEffect(()=>{
-    
-   // console.log(((leftDragXpositionForRerender)/screenWidth))
-  })
   return (
-    <Animated.View>
-      <View style={{backgroundColor:null,position:"absolute",height:screenHeight*0.08,width:!isSwipedFromLeft?0:screenWidth*(1-(leftDragXpositionForRerender)/screenWidth),top:0,left:0,bottom:0,zIndex:10}}/>
-      <View style={{backgroundColor:null,position:"absolute",direction:"rtl",height:screenHeight*0.08,width:!isSwipedFromRight?0:screenWidth*(rightDragXpositionForRerender-screenWidth)/screenWidth,top:0,right:0,bottom:0,zIndex:10}}/>
-      <TouchableOpacity
-        style={listOfChatsStyle.helpContainer}
-        onPress={handlePress.current}
-        onLongPress={onLongPressChat.current}
-        activeOpacity={0.1}
-      />
-      
-      <Animated.ScrollView
-        ref={scrollViewRef}
-        pagingEnabled={true}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{
-          width: screenWidth,
-          flexDirection: "row",
-          zIndex: isSwiped ? 2 : 0,
-        }}
-        decelerationRate={0.1}
-        scrollEventThrottle={1}
-        contentOffset={{ x: screenWidth, y: 0 }}
-        onScrollBeginDrag={(e: NativeSyntheticEvent<NativeScrollEvent>) => {
-          setIsSwiped(true);
-          setPositionXForStartOfSwipeable(e.nativeEvent.contentOffset.x);
-        }}
-        onMomentumScrollBegin={handleScrollEnd}
-        onScroll={handleScroll}
-        onScrollEndDrag={handleScrollEnd}
-      >
-        
-        <LeftContainerForSwipe
-          leftDragXposition={leftDragXposition[0]}
-          leftDragXpositionForRerender={leftDragXpositionForRerender}
-          haveUnreadMessagesBoolf={haveUnreadMessagesBoolf}
+    <View>
+      <Animated.View>
+        <View
+          style={{
+            position: "absolute",
+            height: screenHeight * 0.08,
+            width: !isSwipedFromLeft
+              ? 0
+              : screenWidth * (1 - leftDragXpositionForRerender / screenWidth),
+            top: 0,
+            left: 0,
+            bottom: 0,
+            zIndex: 10,
+          }}
         />
-        
-        
-        <CentralChatContainer
+        <View
+          style={{
+
+            position: "absolute",
+            direction: "rtl",
+            height: screenHeight * 0.08,
+            width: !isSwipedFromRight
+              ? 0
+              : (screenWidth * (rightDragXpositionForRerender - screenWidth)) /
+                screenWidth,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 10,
+          }}
+        />
+        <TouchableOpacity
+          style={listOfChatsStyle.helpContainer}
+          onPress={handlePress.current}
+          onLongPress={onLongPressChat.current}
+          activeOpacity={0.1}
+        />
+
+        <Animated.ScrollView
+          ref={scrollViewRef}
+          pagingEnabled={true}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{
+            width: screenWidth,
+            flexDirection: "row",
+            zIndex: isSwiped ? 2 : 0,
+          }}
+          decelerationRate={0.1}
+          scrollEventThrottle={1}
+          contentOffset={{ x: screenWidth, y: 0 }}
+          onScrollBeginDrag={(e: NativeSyntheticEvent<NativeScrollEvent>) => {
+            setIsSwiped(true);
+            setPositionXForStartOfSwipeable(e.nativeEvent.contentOffset.x);
+          }}
+          onMomentumScrollBegin={handleScrollEnd}
+          onScroll={handleScroll}
+          onScrollEndDrag={handleScrollEnd}
+        >
+          <LeftContainerForSwipe
+            leftDragXposition={leftDragXposition[0]}
+            leftDragXpositionForRerender={leftDragXpositionForRerender}
+            haveUnreadMessagesBool={haveUnreadMessagesBool}
+          />
+
+          <CentralChatContainer
+            chat={chat}
+            handlePress={handlePress}
+            onLongPressChat={onLongPressChat}
+            onBranchPress={onBranchPress}
+            nesting={nesting}
+          />
+          <RightContainersForSwipe
+            rightDragXposition={rightDragXposition[0]}
+            rightDragXpositionForRerender={rightDragXpositionForRerender}
+          />
+        </Animated.ScrollView>
+        <View
+          style={{
+            width: screenWidth,
+            height: 2,
+            opacity: 0.1,
+            backgroundColor: "gray",
+          }}
+        />
+      </Animated.View>
+      {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
+        <ListOfBranches
           chat={chat}
-          handlePress={handlePress}
-          onLongPressChat={onLongPressChat}
+          nesting={nesting + 1}
+          setBranchOpen={setBranchPressOpen}
+          stateForBranchesShow={stateForBranchesShow}
+          navigation={navigation}
         />
-        <RightContainersForSwipe
-          randomBoolean={randomBoolean}
-          rightDragXposition={rightDragXposition[0]}
-          rightDragXpositionForRerender={rightDragXpositionForRerender}
-        />
-      </Animated.ScrollView>
-      <View
-        style={{
-          width: screenWidth,
-          height: 2,
-          opacity: 0.1,
-          backgroundColor: "gray",
-        }}
-      />
-    </Animated.View>
+      ) : null}
+    </View>
   );
 };
 

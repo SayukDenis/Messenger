@@ -9,57 +9,62 @@ import {
   GestureResponderEvent,
 } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
-import Folder from "../../1HelpFullFolder/Folder";
 import { connect, useSelector } from "react-redux";
+import Folder from "../../../../dao/Models/Folder";
+import { booleanForLogging } from "../../ChatList";
+import CountOfUnreadMessageOnFolderComponent from "./CountOfUnreadMessageOnFolderComponent";
 
 interface FolderProps {
-  containerStyle?: StyleProp<ViewStyle>; // Стиль для контейнера
-  textStyle?: StyleProp<TextStyle>; // Стиль для тексту
   folder: Folder;
-  isSelected: boolean; 
+  isSelected: boolean;
   onPress: any;
   handleLongPress: any;
-  index:number;
-
+  index: number;
 }
 
 const FolderContainer: React.FC<FolderProps> = React.memo(
-  ({
-    containerStyle,
-    textStyle,
-    folder,
-    isSelected,
-    onPress,
-    handleLongPress,
-    index,
+  ({ folder, isSelected, onPress, handleLongPress, index }) => {
+    useEffect(() => {
+      if (booleanForLogging) {
+        console.log("RERENDER FOLDER CONTAINER IN FOOTER " + folder.folderName);
+      }
+    });
+    const OnPressRef = useRef((event: any) => {
+      onPress.current(event, index);
+    });
+    const isSelectedThere = useSelector((state: any) => {
+      return state.chatListReducer.folderSelectedArray.folderSelectedArray[
+        index
+      ];
+    });
+    const OnLongPressRef = useRef((event: any) => {
+      handleLongPress.current(event, index);
+    });
 
-  }) => {
-    
-    const OnPressRef=useRef((event:any)=>{
-      onPress.current(event,index)
-    })
-    const isSelectedThere=useSelector((state:any)=>{
-   //  console.log(folder.name+":"+state.folderSelectedArray.folderSelectedArray[index])
-      return state.chatListReducer.folderSelectedArray.folderSelectedArray[index]
-    })
-    const OnLongPressRef=useRef((event:any)=>{
-      handleLongPress.current(event,index)
-    })
-    
     return (
-      <>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={OnPressRef.current}
-          onLongPress={OnLongPressRef.current}
-        >
-          <View style={[containerStyle,isSelected?footerstyles.selectedFolderContainer:null,]}>
-            <Text style={isSelected &&isSelectedThere? footerstyles.selectedText : textStyle}>
-              {folder.name}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={OnPressRef.current}
+        onLongPress={OnLongPressRef.current}
+        style={{ flexDirection: "row" }}
+      >
+        <View style={[]}>
+          <Text
+            style={[
+              footerstyles.textPosition,
+              isSelected && isSelectedThere ? footerstyles.selectedText : null,
+            ]}
+          >
+            {folder.folderName}
+          </Text>
+        </View>
+        <View style={{flexDirection:"row",marginRight:5}}>
+          <CountOfUnreadMessageOnFolderComponent
+            folder={folder}
+            isSelected={isSelected && isSelectedThere}
+          />
+        </View>
+      </TouchableOpacity>
     );
   }
 );

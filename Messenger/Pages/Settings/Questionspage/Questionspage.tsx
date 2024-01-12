@@ -5,7 +5,6 @@ import StyleQuestionsPage from "./StyleQuestionsPage";
 
 const QuestionPage: React.FC<any> = ({ navigation })=>{
     return<View style={StyleQuestionsPage.conteiner}>
-    <StatusBar hidden={true}/>
     <QuestionsHeader navigation = {navigation}></QuestionsHeader>
     <ScrollView style ={StyleQuestionsPage.textConteinre}>
         <Text>Telintik Social Network Documentation</Text>

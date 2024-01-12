@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
     alignItems: "center",
-    height: 75 * figmaHeightPixelConverter,
+    height: 77 * figmaHeightPixelConverter,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 37,
@@ -26,6 +26,12 @@ export const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
+  },
+  blurEffect: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    zIndex: 1,
   },
   profileTitle: {
     fontSize: 20,
@@ -36,7 +42,7 @@ export const styles = StyleSheet.create({
     color: "#808080",
     alignSelf: "center",
     fontFamily: "JacquesFrancois-Regular",
-    top: 28 * figmaHeightPixelConverter,
+    top: 29 * figmaHeightPixelConverter,
   },
   blockStatus: {
     fontSize: 14,
@@ -44,13 +50,13 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "JacquesFrancois-Regular",
     position: "absolute",
-    top: 46 * figmaHeightPixelConverter,
+    top: 50.5 * figmaHeightPixelConverter,
   },
   searchMessagesButton: {
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.155 * screenWidth,
-    top: 0.045 * screenHeight,
+    top: 0.055 * screenHeight,
     width: 25 * figmaWidthPixelConverter,
     height: 25 * figmaWidthPixelConverter,
   },
@@ -58,7 +64,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     right: 0.03 * screenWidth,
-    top: 0.0225 * screenHeight,
+    top: 0.033 * screenHeight,
     width: 40 * figmaWidthPixelConverter,
     height: 40 * figmaWidthPixelConverter,
   },
@@ -148,8 +154,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     right: 0.06 * screenWidth,
     top: 0.065 * screenHeight,
-    width: 200,
-    height: 200,
+    width: 0.51 * screenWidth,
     zIndex: 2,
   },
   additionalFeatureButton: {
@@ -184,7 +189,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: 0.04 * screenHeight,
+    top: 0.05 * screenHeight,
     gap: 0.02 * screenWidth,
     width: screenWidth * 0.6,
   },
@@ -198,7 +203,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: 0.04 * screenHeight,
+    top: 0.05 * screenHeight,
     gap: 0.015 * screenWidth,
   },
   mutedIcon: {
@@ -270,11 +275,11 @@ export const styles = StyleSheet.create({
   },
   photo: {
     width: 0.33 * screenWidth,
-    height: 0.15 * screenHeight,
+    height: 0.16 * screenHeight,
   },
   fileContainer: {
     width: "100%",
-    height: 0.0475 * screenHeight,
+    height: 0.05 * screenHeight,
     backgroundColor: "rgb(227, 192, 124)",
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
@@ -284,7 +289,7 @@ export const styles = StyleSheet.create({
   },
   fileFormatContainer: {
     width: "13%",
-    height: 0.0475 * screenHeight,
+    height: 0.05 * screenHeight,
     backgroundColor: "rgb(227, 192, 124)",
     borderWidth: 0.5,
     borderColor: "black",
@@ -315,8 +320,8 @@ export const styles = StyleSheet.create({
   },
   downloadFileIcon: { width: 0.04 * screenWidth, height: 0.04 * screenHeight },
   microphoneIcon: {
-    width: 0.04 * screenWidth,
-    height: 0.04 * screenHeight,
+    width: 0.09 * screenWidth,
+    height: 0.09 * screenHeight,
   },
   voiceTimeAndDateContainer: {
     width: "50%",
@@ -328,22 +333,9 @@ export const styles = StyleSheet.create({
   },
   allAlbumsContainer: {
     backgroundColor: "rgb(174, 174, 174)",
-    paddingBottom: 0.08 * screenHeight,
+    paddingBottom: 0.5 * screenHeight,
     gap: 0.01 * screenHeight,
-    height:
-      (user.albums.length + 1) % 2 == 0
-        ? 0.15 * screenHeight +
-            Math.ceil(user.albums.length / 2) * 0.205 * screenHeight >
-          0.65 * screenHeight
-          ? 0.15 * screenHeight +
-            Math.ceil(user.albums.length / 2) * 0.205 * screenHeight
-          : 0.65 * screenHeight
-        : 0.15 * screenHeight +
-            (Math.ceil(user.albums.length / 2) - 1) * 0.205 * screenHeight >
-          0.65 * screenHeight
-        ? 0.15 * screenHeight +
-          (Math.ceil(user.albums.length / 2) - 1) * 0.205 * screenHeight
-        : 0.65 * screenHeight,
+    height: Math.ceil(user.albums.length / 2) * 0.305 * screenHeight,
   },
   albumContainer: {
     width: 0.5 * screenWidth,
@@ -364,6 +356,69 @@ export const styles = StyleSheet.create({
   albumNameText: { fontSize: 16, fontFamily: "JacquesFrancois-Regular" },
   albumPhotosAndVideosQuantityText: { fontSize: 13, color: "dimgrey" },
   plusAlbumIcon: { width: 0.12 * screenWidth, height: 0.12 * screenWidth },
+  checkmarkContainerForPhoto: {
+    width: 0.055 * screenWidth,
+    height: 0.055 * screenWidth,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: "white",
+    backgroundColor: "rgb(102, 191, 255)",
+    position: "absolute",
+    right: 0.025 * screenWidth,
+    bottom: 0.025 * screenWidth,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkmarkIcon: { width: 0.037 * screenWidth, height: 0.037 * screenWidth },
+  checkmarkContainerForAlbum: {
+    width: 0.055 * screenWidth,
+    height: 0.055 * screenWidth,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: "white",
+    backgroundColor: "rgb(102, 191, 255)",
+    position: "absolute",
+    right: 0.01 * screenHeight,
+    bottom: 0.055 * screenHeight,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  doneButtonContainer: {
+    position: "absolute",
+    top: 0.058 * screenHeight,
+    right: 0,
+    width: 0.3 * screenWidth,
+  },
+  doneButtonTitle: {
+    fontSize: 21,
+    fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(92, 64, 129)",
+  },
+  bottomToolBar: {
+    backgroundColor: "rgb(231, 230,	228)",
+    width: "100%",
+    alignItems: "center",
+    height: 0.08 * screenHeight,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    borderWidth: 1.5,
+    borderColor: "rgb(161, 156, 145)",
+    justifyContent: "flex-start",
+    position: "absolute",
+    bottom: 0,
+    zIndex: 2,
+    flexDirection: "row",
+  },
+  binIcon: {
+    width: 0.06 * screenWidth,
+    height: 0.06 * screenHeight,
+  },
+  arrowEastIcon: {
+    width: 0.09 * screenWidth,
+    height: 0.04 * screenHeight,
+  },
 });
 
 export default styles;

@@ -1,12 +1,14 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
-import { styles } from "./Styles.tsx";
-import PhoneIcon from "./Icons/PhoneIcon.tsx";
-import VideoCameraIcon from "./Icons/VideoCameraIcon.tsx";
+import { View, TouchableOpacity, Image, Dimensions } from "react-native";
+import { styles } from "./Styles";
+import PhoneIcon from "./Icons/PhoneIcon";
+import VideoCameraIcon from "./Icons/VideoCameraIcon";
 
-interface AvatarWithCallingButtonsProps {}
+interface AvatarWithCallingButtonsProps {
+  onAvatarPress: () => void;
+}
 
 const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
   props
@@ -18,7 +20,7 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
       {/* Touchable avatar image */}
       <TouchableOpacity
         onPress={() => {
-          alert("avatar press");
+          props.onAvatarPress();
         }}
         style={styles.mainAvatarImage}
       >
