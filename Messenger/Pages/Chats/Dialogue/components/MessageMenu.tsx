@@ -304,7 +304,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
       }}
     >
       <View style={{ top: coord.componentPageY, height: coord.height }}>
-        <DefaultTextDummyMessage message={coord.message} id={coord.message?.messageId} isUser={isUser} />
+        <DefaultTextDummyMessage message={coord.message} id={coord.message?.messageId} isUser={isUser} height={coord.height} />
       </View>
       <View 
         onLayout={onLayout}

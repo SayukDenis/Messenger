@@ -1,4 +1,4 @@
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, PixelRatio } from 'react-native';
 import { styles } from './../MessageViewsAndTypes/Styles/DefaultTextType';
 import React from 'react';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
@@ -12,11 +12,12 @@ interface DefaultTextMessageProps {
   message:MessageProps|undefined;
   id:number|undefined;
   isUser: boolean;
+  height:number;
 }
 
-const FONT_SIZE = 10;
-const CHARS_PER_LINE = Math.round(height*0.5 / FONT_SIZE);
-const DefaultTextDummyMessage = ({ message, id, isUser}:DefaultTextMessageProps) => {
+const FONT_SIZE = 14 * PixelRatio.getFontScale();
+const CHARS_PER_LINE = Math.round(width*1 / FONT_SIZE);
+const DefaultTextDummyMessage = ({ message, id, isUser, height}:DefaultTextMessageProps) => {
   if(!message) return null;
   return (
     <View style={[styles.messageBlockContainer, isUser&&{ justifyContent:'flex-end' }]}>
@@ -25,7 +26,7 @@ const DefaultTextDummyMessage = ({ message, id, isUser}:DefaultTextMessageProps)
           style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
         >
           <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
-          <Text style={message.content.length<=CHARS_PER_LINE&&{ height: 16 }}>{wrapText(message.content, CHARS_PER_LINE)}</Text>
+          <Text style={{ height: Math.floor(height-11)-(message.content.length>CHARS_PER_LINE?9.3:0) }}>{wrapText(message.content, CHARS_PER_LINE)}</Text>
           <Text style={message.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
             {message.isEdited?'edited ':''}
             {message.sendingTime.getHours().toString().padStart(2, '0')}:

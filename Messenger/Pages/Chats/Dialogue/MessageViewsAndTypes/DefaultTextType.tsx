@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView, PixelRatio } from 'react-native';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { styles } from './Styles/DefaultTextType';
 import React from 'react';
@@ -20,8 +20,8 @@ let size:any[] = [];
 
 let measures = 0;
 
-const FONT_SIZE = 10;
-const CHARS_PER_LINE = Math.round(height*0.5 / FONT_SIZE);
+const FONT_SIZE = 14 * PixelRatio.getFontScale();;
+const CHARS_PER_LINE = Math.round(width*1 / FONT_SIZE);
 const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTextMessageProps) => {
 
   const onLayout = (event:any) => {
@@ -130,7 +130,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTe
               style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
-              <Text style={{ fontSize: 14 }}>{wrapText(message.content, CHARS_PER_LINE)}</Text>
+              <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
               <Text style={message.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}
                 {message.sendingTime.getHours().toString().padStart(2, '0')}:
