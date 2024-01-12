@@ -14,6 +14,7 @@ export interface messageMenuProps {
     height: number;
     message: MessageProps|undefined;
   };
+  messages: MessageProps[];
   onReplyPress:()=>void;
   onEditPress:()=>void;
   isUser:boolean;

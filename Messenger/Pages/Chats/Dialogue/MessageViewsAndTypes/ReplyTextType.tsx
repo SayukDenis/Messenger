@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ScrollView, PixelRatio } from 'react-native';
 import { MutableRefObject, memo, useCallback, useEffect, useRef, useState, } from 'react';
 import { styles } from './Styles/ReplyTextType';
 import React from 'react';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
 import User from '../../../../dao/Models/User';
 import { wrapText } from './HelperFunctions/wrapText';
+import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,7 +21,7 @@ interface ReplyTextType {
 
 let size:any[] = [];
 
-const FONT_SIZE = 10;
+const FONT_SIZE = 14 * PixelRatio.getFontScale()
 const CHARS_PER_LINE = Math.round(height*0.5 / FONT_SIZE);
 const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author}:ReplyTextType) => {
 
@@ -28,19 +29,42 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     const { width, height } = event.nativeEvent.layout;
     size = [...size, { ID: id, layout: { width, height }}];
   };
+
+  const measureHandler = async () => {
+    return new Promise((resolve) => {
+      if (componentRef.current) {
+        componentRef.current.measure(
+          async (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+            resolve({ X: pageX, Y: pageY });
+          }
+        );
+      } else {
+        resolve({ X: 0, Y: 0 });
+      }
+    });
+  };
   
-  const handlePress = useCallback((event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
-    if(!event) return { ID: id, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
+  interface componentPageProps {
+    X: number;
+    Y: number;
+  }
+  
+  const handlePress = useCallback(async (event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
+    if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
 
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
 
     const component = size.find(c => c.ID === id);
 
+    const componentPage = await measureHandler();
+    
     return { 
       ID: id,
-      pageX: pageX, //(pageX<(width/8)?(width/8):pageX)>(width*0.6)?(width*0.6):pageX
-      pageY: pageY, //(pageY<(height/12)?(height/12):pageY)>(height*5/7)?(height*5/7):pageY
+      componentPageX: (componentPage as componentPageProps).X,
+      componentPageY: (componentPage as componentPageProps).Y,
+      pageX: pageX,
+      pageY: pageY,
       width: component.layout.width,
       height: component.layout.height,
       message: message
@@ -55,14 +79,16 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
 
 
 
-  const onScrollEndDrag = (event:any) => {
+  const onScrollEndDrag = async (event:any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const contentWidth = event.nativeEvent.contentSize.width;
     const scrollViewWidth = event.nativeEvent.layoutMeasurement.width;
 
     if (Math.round(contentOffsetX + scrollViewWidth) >= Math.round(contentWidth)) {
       scrollViewRef.current!.scrollTo({y:0,animated:true})
-      setMessageMenuVisible(handlePress(null), false);
+      await handlePress(null).then((layout) => {
+        setMessageMenuVisible(layout, false);
+      });
     }
   };
   const scrollViewRef = useRef<ScrollView>(null);
@@ -72,6 +98,8 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     locationY_In: number;
   }
   const [pressCoordinations, setPressCoordinations] = useState({} as coordProps);
+  const componentRef = useRef<TouchableOpacity>(null);
+
   return (
     <ScrollView 
       horizontal={true} 
@@ -86,19 +114,23 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     >
       <View style={styles.replyContainer} >
         <TouchableOpacity 
+          ref={componentRef}
           style={styles.innerReplyContainer}
-          activeOpacity={1}
+          activeOpacity={1} 
           onPressIn={(event) => {
             const { locationX, locationY } = event.nativeEvent;
             setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
           }}
-          onPressOut={(event) => {
+          onPressOut={async (event) => {
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = pressCoordinations;
             
-            if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3)
-              setMessageMenuVisible(handlePress(event), true)
-          }} 
+            if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+              await handlePress(event).then((layout) => {
+                setMessageMenuVisible(layout, true);
+              });
+            }
+          }}
         >
           <Text style={[styles.replyUserNameFont, message.author.userId==author.userId&&{ alignSelf: 'flex-end' }]}>
             {message.author.userId==author.userId?'You':'Denis'}
@@ -108,9 +140,10 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
             <TouchableOpacity 
               activeOpacity={1} 
               onPress={() => {handleLinkTo(message!.messageResponseId)}}
-              hitSlop={{ top: 10 }}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
             >
-              <View style={[styles.messageTypeTextUser, styles.replyMessagePos]}>
+              <View style={[styles.messageTypeTextUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
+                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:'#E09EFF' }} /> 
                 <Text style={styles.replyMessageFont}>
                   {replyMessage!=undefined&&replyMessage?.content?.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
@@ -121,8 +154,14 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
           :
           <View style={styles.replyMessageContainer}>
             <View style={styles.replyMessageLine}/>
-            <TouchableOpacity style={{flex:1}} activeOpacity={1}>
-              <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos]}>
+            <TouchableOpacity 
+              activeOpacity={1}
+              style={{ flex:1 }}
+              onPress={() => {handleLinkTo(message!.messageResponseId)}}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
+            >
+              <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
+                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:'#fff' }} /> 
                 <Text style={styles.replyMessageFont}>
                   {replyMessage!=undefined&&replyMessage?.content.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
@@ -135,18 +174,22 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
               const { locationX, locationY } = event.nativeEvent;
               setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
             }}
-            onPressOut={(event) => {
+            onPressOut={async (event) => {
               const { locationX, locationY } = event.nativeEvent;
               const { locationX_In, locationY_In } = pressCoordinations;
               
-              if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3)
-                setMessageMenuVisible(handlePress(event), true)
+              if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+                await handlePress(event).then((layout) => {
+                  setMessageMenuVisible(layout, true);
+                });
+              }
             }}
           >
             <View 
               onLayout={(event) => onLayout(event)}
-              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}, message?.content.length>CHARS_PER_LINE&&styles.longMessage]}
+              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginTop:Math.ceil(FONT_SIZE)+1}, message?.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
+              <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
               <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
               <Text style={message?.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}

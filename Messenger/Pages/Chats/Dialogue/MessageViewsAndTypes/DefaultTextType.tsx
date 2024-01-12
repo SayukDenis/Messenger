@@ -20,7 +20,7 @@ let size:any[] = [];
 
 let measures = 0;
 
-const FONT_SIZE = 14 * PixelRatio.getFontScale();;
+const FONT_SIZE = 14 * PixelRatio.getFontScale();
 const CHARS_PER_LINE = Math.round(width*1 / FONT_SIZE);
 const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTextMessageProps) => {
 
@@ -117,7 +117,6 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTe
           
           if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
             await handlePress(event).then((layout) => {
-              console.log('layout', layout.componentPageY);
               setMessageMenuVisible(layout, true);
             });
           }

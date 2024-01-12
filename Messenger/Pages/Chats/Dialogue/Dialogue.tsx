@@ -180,11 +180,11 @@ const Dialogue = ({ navigation, route }:any) => {
     setMessageMenuVisible(false);
     setMessageMenuVisisbleAppearence(false);
   }, []);
-  if(msgs) {
-    const aboba = msgs.find(m => m.messageId==messageID);
-    console.log('msgs.message', aboba?.messageId, aboba?.content);
-    console.log('messageID', messageID);
-  }
+  // if(msgs) {
+  //   const aboba = msgs.find(m => m.messageId==messageID);
+  //   console.log('msgs.message', aboba?.messageId, aboba?.content);
+  //   console.log('messageID', messageID);
+  // }
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>
@@ -194,6 +194,7 @@ const Dialogue = ({ navigation, route }:any) => {
             isVisible={messageMenuVisible} 
             onOverlayPress={handleMessageMenuPress} 
             coord={coord} 
+            messages={listOfMessages}
             onReplyPress={replyHandler} 
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 

@@ -13,6 +13,7 @@ import MessageMenuCopyButton from "../SVG/MessageMenuCopyButton";
 import MessageMenuEditButton from "../SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "../SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "../MessageMenuDummyMessages/DefaultTextDummyMessage";
+import ReplyTextDummyMessage from "../MessageMenuDummyMessages/ReplyTextDummyMessage";
 
 const {width, height} = Dimensions.get('window');
 
@@ -26,7 +27,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEditPress, isUser, onDeletePress}:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, isUser, onDeletePress}:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -304,7 +305,8 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
       }}
     >
       <View style={{ top: coord.componentPageY, height: coord.height }}>
-        <DefaultTextDummyMessage message={coord.message} id={coord.message?.messageId} isUser={isUser} height={coord.height} />
+        {coord.message?.messageResponseId?<ReplyTextDummyMessage message={coord.message} messages={messages} isUser={isUser} height={coord.height} />:
+        <DefaultTextDummyMessage message={coord.message} id={coord.message?.messageId} isUser={isUser} height={coord.height} />}
       </View>
       <View 
         onLayout={onLayout}
