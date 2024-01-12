@@ -26,6 +26,8 @@ interface Layout {
 }
 
 let coord:Layout;
+let messageIdForReplyAndEdit:number;
+let msgForReply:MessageProps;
 let msgs:MessageProps[];
 
 const user:SelfProfile = {
@@ -79,11 +81,11 @@ const Dialogue = ({ navigation, route }:any) => {
   const replyHandler = useCallback(() => {
     setIsReply(!isReply);
     setReplyMessageHandler();
-  },[]);
+  },[messageID]);
 
   const setReplyMessageHandler = () => {
     if(!isReply) {
-      setReplyMessage(msgs.find(m => m.messageId==messageID));
+      setReplyMessage(msgs.find(m => m.messageId==messageIdForReplyAndEdit));
       setEditMessage({} as MessageProps);
     }
     else
@@ -135,8 +137,10 @@ const Dialogue = ({ navigation, route }:any) => {
       setMessageMenuVisible(true);
       setMessageMenuVisisbleAppearence(true);
       setMessageID(coordinations.ID);
+      messageIdForReplyAndEdit = coordinations.ID;
     } else {
       setMessageID(coordinations.ID);
+      messageIdForReplyAndEdit = coordinations.ID;
       replyHandler();
     }
   }, []);
@@ -222,7 +226,7 @@ const Dialogue = ({ navigation, route }:any) => {
             messageID={messageID} 
             isEdit={isEdit} 
             editMessage={editMessage} 
-            replyMessage={replyMessage} 
+            replyMessage={isReply?msgs.find(m => m.messageId==messageIdForReplyAndEdit)!:{} as MessageProps} 
             onSendMessageOrCancelReplyAndEdit={sendMessageOrCancelReplyAndEditHandler} 
           />
           <DeleteMessageModal 
