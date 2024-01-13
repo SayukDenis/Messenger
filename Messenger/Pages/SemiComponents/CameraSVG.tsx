@@ -6,16 +6,12 @@ import {
 } from "../ChatList/Constants/ConstantsForChatlist";
 
 const CameraSVG: React.FC = () => {
-  const x = -screenWidth* 0.047;
-  const y=-screenWidth*0.04;
-  const width = screenWidth* 0.33;
-  const kef=1
-  const kefOfViewBox=1.6
+  const width = screenWidth* 0.154;
   return (
     <Svg
-      width={width * kef}
-      height={width * kef}
-      viewBox={`${x} ${y} ${width/kefOfViewBox} ${width/kefOfViewBox}`}
+      width={width }
+      height={width }
+      viewBox='0 0 44 40'
       fill="none"
     >
       <Path

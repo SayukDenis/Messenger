@@ -4,16 +4,17 @@ import {
   screenHeight,
   screenWidth,
 } from "../ChatList/Constants/ConstantsForChatlist";
-
-const AddMemberSVG: React.FC = () => {
-  const widthOfStroke = 1.8;
+interface AddMemberSVGProps{
+  kef:number,
+  widthOfStroke?:number
+}
+const AddMemberSVG: React.FC<AddMemberSVGProps> = ({kef,widthOfStroke = 1.8}) => {
   const width = screenWidth * 0.05;
-  const kef=1.3
   return (
     <Svg
       width={width * kef}
       height={width * kef}
-      viewBox={`0 -2 ${width} ${width}`}
+      viewBox={`0 0 17 18`}
     >
       <Path
         d="M16 9.06677L1 9.06677"

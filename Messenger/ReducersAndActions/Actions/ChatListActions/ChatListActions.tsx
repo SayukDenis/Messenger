@@ -41,29 +41,14 @@ export const setLayoutOfModeOfEmployment=(layoutOfModeOfEmployment:any)=>({
   type:"SET_LAYOUT_OF_MODE_OF_EMPLOYMENT",
   layoutOfModeOfEmployment
 })
-export const SET_TITLE_FOR_CREATE_GROUP_OR_CHANNEL = "SET_TITLE_FOR_CREATE_GROUP_OR_CHANNEL";
-export const SET_BIO_FOR_CREATE_GROUP_OR_CHANNEL = "SET_BIO_FOR_CREATE_GROUP_OR_CHANNEL";
-export const SET_LINK_TO_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL = "SET_LINK_TO_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL";
-export const SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL = "ADD_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL";
 
-export const setTitleForCreateGroupOrChannel = (title: string) => ({
-  type: SET_TITLE_FOR_CREATE_GROUP_OR_CHANNEL as typeof SET_TITLE_FOR_CREATE_GROUP_OR_CHANNEL,
-  payload: title,
-});
+export const SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL = "SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL";
 
-export const setBioForCreateGroupOrChannel = (bio: string) => ({
-  type: SET_BIO_FOR_CREATE_GROUP_OR_CHANNEL as typeof SET_BIO_FOR_CREATE_GROUP_OR_CHANNEL,
-  payload: bio,
-});
 
-export const setLinkToPhotoForCreateGroupOrChannel = (linkToPhoto: string) => ({
-  type: SET_LINK_TO_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL as typeof SET_LINK_TO_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL,
-  payload: linkToPhoto,
-});
 
-export const addUserForCreateGroupOrChannel = (user: User) => ({
-  type: SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL as typeof SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL,
-  payload: user,
+export const addUserForCreateGroupOrChannel = (user: User[]) => ({
+  type: SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL,
+  selectedUsers: user,
 });
 
 

@@ -6,12 +6,15 @@ import {
 } from "../../../Constants/ConstantsForChatlist";
 import { Image, Text } from "react-native";
 import { View } from "react-native";
+import SelectedForAddMember from "./SelectedForAddMemberl";
 interface AddMemberContainerForUserProps {
   user: User;
+  isSelected: boolean;
 }
 
 const AddMemberContainerForUser: React.FC<AddMemberContainerForUserProps> = ({
   user,
+  isSelected,
 }) => {
   const height = screenHeight * 0.06;
   const width = screenWidth;
@@ -50,9 +53,22 @@ const AddMemberContainerForUser: React.FC<AddMemberContainerForUserProps> = ({
             borderRadius: height,
             borderWidth: 0.5,
             borderColor: "#AF95CF",
-            overflow:"hidden"
+            overflow: "hidden",
+            justifyContent: "center",
           }}
         >
+          {isSelected && (
+            <View
+              style={{
+                alignSelf: "center",
+                marginLeft: screenWidth * 0.002,
+                marginTop: screenHeight * 0.003,
+              }}
+            >
+              <SelectedForAddMember radius={screenHeight * 0.026} />
+            </View>
+          )}
+
           <View
             style={{
               height: screenHeight * 0.026,
@@ -60,6 +76,7 @@ const AddMemberContainerForUser: React.FC<AddMemberContainerForUserProps> = ({
               position: "absolute",
               backgroundColor: "#FEE0A3",
               opacity: 0.5,
+              zIndex:-1
             }}
           />
         </View>

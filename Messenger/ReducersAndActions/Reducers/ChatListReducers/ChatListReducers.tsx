@@ -2,12 +2,11 @@ import { combineReducers } from "redux";
 import { selfProfileUser } from "../../UserReducersAndActions/Reducers/UserReducers";
 import { EnumForChatListBlurs } from "../../../Pages/ChatList/Components/Enums/EnumsForChatListBlurs";
 import {
-  SET_TITLE_FOR_CREATE_GROUP_OR_CHANNEL,
-  SET_BIO_FOR_CREATE_GROUP_OR_CHANNEL,
-  SET_LINK_TO_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL,
+
   SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL,
 } from "../../Actions/ChatListActions/ChatListActions";
 import { propsForCreate } from "../../../Pages/ChatList/Constants/ConstantsForChatlist";
+import User from "../../../dao/Models/User";
 
 const currentTab: number = 0;
 const animationForChatListFolderReducer = (
@@ -139,18 +138,12 @@ const layoutOfModeOfEmploymentReducer = (
   }
 };
 const createGroupOrChannelReducer = (
-  state: propsForCreate = {title:"",linkToPhoto:"",users:[],bio:""},
+  state = { selectedUsers: [] },
   action: any
 ) => {
   switch (action.type) {
-    case SET_TITLE_FOR_CREATE_GROUP_OR_CHANNEL:
-      return { ...state, title: action.payload };
-    case SET_BIO_FOR_CREATE_GROUP_OR_CHANNEL:
-      return { ...state, bio: action.payload };
-    case SET_LINK_TO_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL:
-      return { ...state, linkToPhoto: action.payload };
     case SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL:
-      return { ...state, users: [...state.users, action.payload] };
+      return { ...state, selectedUsers: action.selectedUsers };
     default:
       return state;
   }

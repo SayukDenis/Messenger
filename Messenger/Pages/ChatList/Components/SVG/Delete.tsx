@@ -5,7 +5,7 @@ import Svg, { Path, Line } from "react-native-svg";
 interface SvgProps {
   width: number;
   height: number;
-  color:string;
+  color?:string;
 }
 
 const DeleteSvg: React.FC<SvgProps> = ({ width, height,color="#FF0000"}) => {
