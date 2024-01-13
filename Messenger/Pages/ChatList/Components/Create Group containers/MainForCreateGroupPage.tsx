@@ -1,7 +1,8 @@
-import React, {  useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import {
   heightOfHeader,
+  screenHeight,
   screenWidth,
 } from "../../Constants/ConstantsForChatlist";
 import EditButton from "../../../SemiComponents/EditButton";
@@ -11,6 +12,11 @@ import TextInputValidateForCountOfText from "../../../SemiComponents/TextInputVa
 import AddMemberSVG from "../../../SemiComponents/AddMemberSVG";
 import CameraSVG from "../../../SemiComponents/CameraSVG";
 import { connect, useDispatch, useSelector } from "react-redux";
+import User from "../../../../dao/Models/User";
+import ContainerOfSelectedMembers from "./ContainerOfSelectedMembers";
+import TheFooterIfMoreThan3SelectedMembers from "./TheFooterIfMoreThan3SelectedMembers";
+import AddMembersForZeroSelected from "./AddMembersForZeroSelected";
+import AddMembersForMoreThanZeroSelected from "./AddMembersForMoreThanZeroSelected";
 
 interface MainForCreateGroupPageProps {
   navigation: any;
@@ -21,7 +27,8 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
 }) => {
   const [inputTextForName, setInputTextForName] = useState<string>("");
   const [inputTextForBio, setInputTextForBio] = useState<string>("");
-  const dispatch=useDispatch()
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const radiusOfPhotoContiner = screenWidth * 0.33;
   const marginTop = 15;
   const marginLeft = screenWidth * 0.03;
@@ -29,16 +36,31 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
   const PressOnAddMembers = useRef(() => {
     navigation.navigate("Add Member Page");
   });
-  const props = useSelector((state: any) => {
-    return state.chatListReducer.createGroupOrChannel;
-    //console.log(props);
+  const selectedUsers: User[] = useSelector((state: any) => {
+    return state.chatListReducer.createGroupOrChannel.selectedUsers;
   });
-  useEffect(()=>{
-    console.log(props)
-  },[props])
-
+  const onFooterArrowForListOfMembersTouch = useRef(() => {
+    setIsOpen((prev) => !prev);
+  });
+  useEffect(() => {
+    selectedUsers.map((user: User, index: number) => {
+      console.log(user.name);
+    });
+  }, [selectedUsers]);
+  useEffect(() => {
+    setIsOpen(false);
+  }, [selectedUsers.length <= 3]);
+  const displayNumberOfContainers = (selectedUsersLength: number): number => {
+    let numberToDisplay: number = selectedUsersLength;
+    if (isOpen) {
+      return selectedUsersLength;
+    } else if (!isOpen) {
+      return 3;
+    }
+    return numberToDisplay;
+  };
   return (
-    <ScrollView scrollEnabled={false} style={{ marginTop: heightOfHeader }}>
+    <ScrollView scrollEnabled={isOpen} style={{ marginTop: heightOfHeader }}>
       <View
         style={{
           alignSelf: "center",
@@ -50,7 +72,9 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
           justifyContent: "center",
         }}
       >
-        <CameraSVG />
+        <View style={{ alignSelf: "center" }}>
+          <CameraSVG />
+        </View>
       </View>
       <TouchableOpacity>
         <EditButton />
@@ -86,32 +110,27 @@ const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
           {"Members"}
         </Text>
       </View>
-      <TouchableOpacity onPress={PressOnAddMembers.current}>
-        <ContainerForButtonForSettings>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <View
-              style={{
-                //backgroundColor: "white",
-                alignSelf: "center",
-                justifyContent: "center",
-                marginLeft: marginLeft - 3,
-              }}
-            >
-              <AddMemberSVG />
-            </View>
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: 16,
-                paddingLeft: 3,
-                //backgroundColor: "red",
-              }}
-            >
-              {"Member"}
-            </Text>
-          </View>
-        </ContainerForButtonForSettings>
-      </TouchableOpacity>
+      <View style={{marginBottom:2}}>
+        {selectedUsers.length > 0 ? (
+          <AddMembersForMoreThanZeroSelected onMemberTouch={PressOnAddMembers}/>
+        ) : (
+          <AddMembersForZeroSelected marginLeft={marginLeft} onMemberTouch={PressOnAddMembers}/>
+        )}
+      </View>
+      {selectedUsers
+        .slice(0, displayNumberOfContainers(selectedUsers.length))
+        .map((user: User, index: number) => (
+          <ContainerOfSelectedMembers user={user} key={index} />
+        ))}
+      {selectedUsers.length > 3 && (
+        <TouchableOpacity
+          onPress={onFooterArrowForListOfMembersTouch.current}
+          activeOpacity={0.8}
+        >
+          <TheFooterIfMoreThan3SelectedMembers isOpen={isOpen} />
+        </TouchableOpacity>
+      )}
+      <View style={{ height: screenHeight * 0.05, width: screenWidth }} />
     </ScrollView>
   );
 };
