@@ -11,25 +11,30 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "../Styles";
-import Blur from "../../GeneralComponents/Blur";
-import Header from "../../GeneralComponents/Header";
-import { user } from "../../DBUser";
+import Blur from "../../../GeneralComponents/Blur";
+import Header from "../../../GeneralComponents/Header";
+import {
+  BranchParent,
+  BranchChild,
+} from "../../../DatabaseSimulation/DBClasses";
 import EmojiAndColorButtons from "../NewBranchScreen/EmojiAndColorButtons";
 import BranchColorPicker from "../NewBranchScreen/BranchColorPicker";
 import ColorSelection from "../NewBranchScreen/ColorSelection";
 import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
-import { tempCharacter, BranchChild } from "../../DBUser";
+import BranchChildrenList from "./BranchChildrenList";
+import RemovalApproval from "../../MainScreen/RemovalApproval";
 import { LinearGradient } from "expo-linear-gradient";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
-interface ChangeBranchChildScreenProps {
+interface ChangeBranchParentScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 }
 
 const screenWidth: number = Dimensions.get("screen").width;
 const screenHeight: number = Dimensions.get("screen").height;
 
-const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
+const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
   props
 ) => {
   const newBranchTitle: string = "New Branch";
@@ -42,18 +47,21 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
   var isValid: boolean = true;
 
   const [branchName, setBranchName] = useState(
-    tempCharacter().selectedBranchChild.name
+    GetProfile().selectedBranchParent.name
   );
   const [pickedEmoji, setPickedEmoji] = useState(
-    tempCharacter().selectedBranchChild.emoji
+    GetProfile().selectedBranchParent.emoji
   );
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
   const [pickedColor, setPickedColor] = useState(
-    tempCharacter().selectedBranchChild.color
+    GetProfile().selectedBranchParent.color
   );
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
+
+  const [isDeleteBranchPressed, setIsDeleteBranchPressed] = useState(false);
+  const [branchNameToRemove, setBranchNameToRemove] = useState("");
 
   return (
     <LinearGradient
@@ -68,9 +76,18 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
         style={styles.blurEffect}
       />
 
+      <Blur
+        visibleWhen={isDeleteBranchPressed}
+        onPress={() => {
+          setIsDeleteBranchPressed(false);
+        }}
+        style={styles.blurEffect}
+      />
+
       <Header
         primaryTitle={newBranchTitle}
         onGoBackPress={() => {
+          GetProfile().selectedBranchParent = null;
           props.navigation.goBack();
         }}
       />
@@ -83,10 +100,10 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
             alert(noNameWarningTitle);
           }
 
-          user.branchParents.map((branch) => {
+          GetProfile().branchParents.map((branch) => {
             if (
               branch.name == branchName &&
-              branch.name != tempCharacter().selectedBranchChild.name
+              branch.name != GetProfile().selectedBranchParent.name
             ) {
               isValid = false;
               alert(nameIsBusyTitle);
@@ -95,7 +112,7 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
             branch.children.map((child) => {
               if (
                 child.name == branchName &&
-                child.name != tempCharacter().selectedBranchChild.name
+                child.name != GetProfile().selectedBranchParent.name
               ) {
                 isValid = false;
                 alert(nameIsBusyTitle);
@@ -104,26 +121,29 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
           });
 
           if (isValid) {
-            const branchToRemove =
-              tempCharacter().selectedBranchParent.children.find(
-                (branch) =>
-                  branch.name === tempCharacter().selectedBranchChild.name
-              );
+            const branchToRemove = GetProfile().branchParents.find(
+              (branch) => branch.name === GetProfile().selectedBranchParent.name
+            );
 
             if (branchToRemove) {
-              tempCharacter().selectedBranchParent.children.splice(
-                tempCharacter().selectedBranchParent.children.indexOf(
-                  branchToRemove
-                ),
+              GetProfile().branchParents.splice(
+                GetProfile().branchParents.indexOf(branchToRemove),
                 1
               );
             }
 
-            tempCharacter().selectedBranchParent.children.push(
-              new BranchChild(branchName, pickedEmoji, pickedColor)
+            GetProfile().branchParents.push(
+              new BranchParent(
+                branchName,
+                pickedEmoji,
+                pickedColor,
+                GetProfile().selectedBranchParent.children
+              )
             );
 
-            user.branchParents.sort((a, b) => a.name.localeCompare(b.name));
+            GetProfile().branchParents.sort((a, b) =>
+              a.name.localeCompare(b.name)
+            );
 
             props.navigation.goBack();
           }
@@ -131,6 +151,31 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
       >
         <Text style={styles.doneButtonTitle}>{doneTitle}</Text>
       </TouchableOpacity>
+
+      <RemovalApproval
+        onAnyPress={() => {
+          setIsDeleteBranchPressed(false);
+        }}
+        onAgreePress={() => {
+          const branchToRemoveNow =
+            GetProfile().selectedBranchParent.children.find(
+              (branch) => branch.name === branchNameToRemove
+            );
+
+          if (branchToRemoveNow) {
+            GetProfile().selectedBranchParent.children.splice(
+              GetProfile().selectedBranchParent.children.indexOf(
+                branchToRemoveNow
+              ),
+              1
+            );
+          }
+
+          setBranchNameToRemove("");
+        }}
+        isVisible={isDeleteBranchPressed}
+        text={"Do you really want to delete " + branchNameToRemove + "?"}
+      />
 
       <BranchColorPicker
         isVisible={isSpecialColorSelectionVisible}
@@ -144,7 +189,6 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
         <View
           style={{
             top: -0.04 * screenWidth,
-            height: Dimensions.get("screen").height,
           }}
         >
           {/* Title for name input */}
@@ -173,6 +217,7 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
           <View style={styles.emojiAndColorButtonsContainer}>
             <Text style={styles.settingTitle}>{designBranchTitle}</Text>
           </View>
+
           <EmojiAndColorButtons
             isVisible={!isEmojiSelectionVisible && !isColorSelectionVisible}
             onColorPress={() => setIsColorSelectionVisible(true)}
@@ -218,10 +263,27 @@ const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
                   : 0.04 * screenHeight,
             }}
           />
+
+          <BranchChildrenList
+            onPlusBranchPress={() =>
+              props.navigation.navigate("NewBranchScreen" as never)
+            }
+            isSomeSelectionVisible={
+              isColorSelectionVisible || isEmojiSelectionVisible
+            }
+            onBinPress={(value: string) => {
+              setIsDeleteBranchPressed(true);
+              setBranchNameToRemove(value);
+            }}
+            onChildBranchPress={(child: BranchChild) => {
+              GetProfile().selectedBranchChild = child;
+              props.navigation.navigate("ChangeBranchChildScreen" as never);
+            }}
+          />
         </View>
       </ScrollView>
     </LinearGradient>
   );
 };
 
-export default ChangeBranchChildScreen;
+export default ChangeBranchParentScreen;

@@ -8,7 +8,7 @@ import {
   Text,
   Dimensions,
 } from "react-native";
-import { user } from "../../DBUser";
+import { user } from "../../../DatabaseSimulation/DBUser";
 import styles from "../Styles";
 import DownArrowIcon from "../Icons/DownArrowIcon";
 

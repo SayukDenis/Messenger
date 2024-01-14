@@ -3,7 +3,7 @@
 import React from "react";
 import { View, TextStyle, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import Name from "../MainScreen/Name";
+import Name from "../Screens/MainScreen/Name";
 import GoBackButton from "./GoBackButton";
 import { LinearGradient } from "expo-linear-gradient";
 

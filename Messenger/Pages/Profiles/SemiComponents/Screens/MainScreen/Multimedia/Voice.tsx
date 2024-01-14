@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { user } from "../../DBUser";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 import styles from "../Styles";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 
@@ -18,8 +18,8 @@ const Voice: React.FC<VoiceProps> = (props) => {
   return (
     <View style={styles.mediaContainer}>
       <FlatList
-        data={user.voice}
-        keyExtractor={(item) => user.voice.indexOf(item).toString()}
+        data={GetProfile().voice}
+        keyExtractor={(item) => GetProfile().voice.indexOf(item).toString()}
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{

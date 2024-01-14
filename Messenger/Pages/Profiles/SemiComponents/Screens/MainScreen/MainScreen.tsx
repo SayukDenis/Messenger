@@ -1,42 +1,44 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, Dimensions } from "react-native";
+import { ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
-import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
-import AvatarWithCallingButtons from "../../SemiComponents/MainScreen/AvatarWithCallingButtons";
-import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
-import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
-import {
-  Album,
-  PhotoOrVideo,
-  tempUser,
-  user,
-} from "../../SemiComponents/DBUser";
-import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
-import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
+import TopToolBar from "./TopToolBar";
+import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
+import Multimedia from "./Multimedia/Multimedia";
+import Blur from "../../GeneralComponents/Blur";
+import ElseFeaturesButtons from "./ElseFeaturesButtons";
+import RemovalApproval from "./RemovalApproval";
+import { Album, PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
+import AlbumLongPressedMenu from "./Multimedia/AlbumLongPressedMenu";
+import BottomToolBar from "./ButtomToolBar";
 import { GestureResponderEvent } from "react-native-modal";
 import { LinearGradient } from "expo-linear-gradient";
+import { pickedProfile } from "../../DatabaseSimulation/DBVariables";
+import { user } from "../../DatabaseSimulation/DBUser";
+import { group } from "../../DatabaseSimulation/DBGroup";
+import { channel } from "../../DatabaseSimulation/DBChannel";
 
 const screenHeight = Dimensions.get("screen").height;
 
-type MainUserScreenProps = {
+type MainScreenProps = {
   navigation: StackNavigationProp<{}>;
 };
 
-const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
+const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const [removalApprovalText, setRemovalApprovalText] = useState("");
   const [pressedMultimediaButton, setPressedMultimediaButton] =
     useState("Photos");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isPhotoAlbumSelectionVisible, setIsPhotoAlbumSelectionVisible] =
     useState(false);
-  const [isMuted, setIsMuted] = useState(user.isMuted);
-  const [isBlocked, setIsBlocked] = useState(user.isBlocked);
+  const [isMuted, setIsMuted] = useState(GetProfile().isMuted);
+  const [isBlocked, setIsBlocked] = useState(
+    pickedProfile.current == "user" ? GetProfile().isBlocked : false
+  );
   const [longPressedAlbum, setLongPressedAlbum] = useState(null);
   const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
     useState(0);
@@ -58,16 +60,19 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
       alert("Agree");
     },
     () => {
-      user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
+      GetProfile().albums.splice(
+        GetProfile().albums.indexOf(longPressedAlbum),
+        1
+      );
       setLongPressedAlbum(null);
     },
     () => {
-      user.albums = Array<Album>();
+      GetProfile().albums = Array<Album>();
       setIsAlbumSelectionVisible(false);
     },
     () => {
       selectedAlbums.forEach((album) => {
-        user.albums.splice(user.albums.indexOf(album), 1);
+        GetProfile().albums.splice(GetProfile().albums.indexOf(album), 1);
       });
       setSelectedAlbums(Array<Album>());
       setIsAlbumSelectionVisible(false);
@@ -126,8 +131,14 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
 
       {/* Top tool bar with buttons*/}
       <TopToolBar
-        primaryTitle={user.profileName}
-        secondaryTitle={user.lastTimeOnline}
+        primaryTitle={GetProfile().profileName}
+        secondaryTitle={
+          pickedProfile.current == "user"
+            ? user.lastTimeOnline
+            : pickedProfile.current == "group"
+            ? group.members.length.toString() + " members"
+            : channel.subscribers.length.toString() + " subscribers"
+        }
         onElseFeaturesPress={() => {
           setIsElseFeaturesVisible(true);
         }}
@@ -163,10 +174,8 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
         onClearChatPress={() => {
           setRemovalApprovalText("clear the chat");
         }}
-        onSettingsPress={() =>
-          navigation.navigate("DialogueSettingsScreen" as never)
-        }
-        mode="user"
+        onSettingsPress={() => navigation.navigate("SettingsScreen" as never)}
+        mode={pickedProfile.current}
       />
 
       <AlbumLongPressedMenu
@@ -234,7 +243,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
             setPressedMultimediaButton(value);
           }}
           onPhotoPress={(photo: PhotoOrVideo) => {
-            tempUser.selectedPhoto = photo;
+            GetProfile().selectedPhoto = photo;
             navigation.navigate("PhotoScreen" as never);
           }}
           onAlbumPress={(item: Album) => {
@@ -247,7 +256,7 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
                 );
               }
             } else {
-              tempUser.selectedAlbum = item;
+              GetProfile().selectedAlbum = item;
               navigation.navigate("Album" as never);
             }
           }}
@@ -282,4 +291,4 @@ const MainUserScreen: React.FC<MainUserScreenProps> = ({ navigation }) => {
   );
 };
 
-export default MainUserScreen;
+export default MainScreen;

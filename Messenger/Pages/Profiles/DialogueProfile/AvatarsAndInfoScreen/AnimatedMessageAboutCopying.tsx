@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Animated, Easing, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import CopyIcon from "../../SemiComponents/MainScreen/Icons/CopyIcon";
+import CopyIcon from "../../SemiComponents/Screens/MainScreen/Icons/CopyIcon";
 
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;

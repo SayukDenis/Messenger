@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DBUser";
+import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DatabaseSimulation/DBUser";
 
 export const setNewAlbumName = (value: string) => ({
   type: "SET_NEW_ALBUM_NAME",

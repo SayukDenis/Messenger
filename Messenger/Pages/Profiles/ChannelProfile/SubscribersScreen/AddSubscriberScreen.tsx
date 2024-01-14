@@ -13,7 +13,10 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import { useIsFocused } from "@react-navigation/native";
 import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
-import { channel, contacts } from "../../SemiComponents/DBUser";
+import {
+  channel,
+  contacts,
+} from "../../SemiComponents/DatabaseSimulation/DBUser";
 import { ScrollView } from "react-native-gesture-handler";
 import CheckmarkIcon from "../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
 

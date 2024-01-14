@@ -2,7 +2,10 @@
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import { styles } from "./ProfileGroupStyles";
-import { UserProps, user } from "../../SemiComponents/DBUser";
+import {
+  UserProps,
+  user,
+} from "../../SemiComponents/DatabaseSimulation/DBUser";
 import { PersonMenu } from "./PersonMenu";
 
 export const User: React.FC<UserProps> = (props) => {

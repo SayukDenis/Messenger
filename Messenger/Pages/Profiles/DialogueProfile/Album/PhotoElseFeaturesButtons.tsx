@@ -3,11 +3,11 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import ForwardContactIcon from "../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
-import SelectIcon from "../../SemiComponents/MainScreen/Icons/SelectIcon";
-import CopyIcon from "../../SemiComponents/MainScreen/Icons/CopyIcon";
-import StarIcon from "../../SemiComponents/MainScreen/Icons/StarIcon";
+import ForwardContactIcon from "../../SemiComponents/Screens/MainScreen/Icons/ForwardContactIcon";
+import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
+import SelectIcon from "../../SemiComponents/Screens/MainScreen/Icons/SelectIcon";
+import CopyIcon from "../../SemiComponents/Screens/MainScreen/Icons/CopyIcon";
+import StarIcon from "../../SemiComponents/Screens/MainScreen/Icons/StarIcon";
 
 interface PhotoElseFeaturesButtonsProps {
   isVisible: boolean;

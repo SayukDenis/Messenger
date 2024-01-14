@@ -6,9 +6,10 @@ import { styles } from "../Styles";
 import { useIsFocused } from "@react-navigation/native";
 import PlusIcon from "../Icons/PlusIcon";
 import BinIcon from "../../MainScreen/Icons/BinIcon";
-import { BranchChild, tempCharacter } from "../../DBUser";
-import ButtonWithPlus from "../../GeneralComponents/ButtonWithPlus";
+import { BranchChild } from "../../../DatabaseSimulation/DBClasses";
+import ButtonWithPlus from "../../../GeneralComponents/ButtonWithPlus";
 import { LinearGradient } from "expo-linear-gradient";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
 interface BranchChildrenListProps {
   onPlusBranchPress: () => void;
@@ -57,14 +58,12 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
           top: 0.015 * screenHeight,
         }}
       >
-        {tempCharacter().selectedBranchParent.children.map((item, index) => {
+        {GetProfile().selectedBranchParent.children.map((item, index) => {
           return (
             <>
               <View
                 key={
-                  index +
-                  tempCharacter().selectedBranchParent.children.length +
-                  1
+                  index + GetProfile().selectedBranchParent.children.length + 1
                 }
                 style={{
                   height: 0.005 * screenHeight,

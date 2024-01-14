@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, View } from "react-native";
-import { user } from "../../SemiComponents/DBUser";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 import * as Clipboard from "expo-clipboard";
 import Modal from "react-native-modal";
 

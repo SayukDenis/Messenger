@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import { user } from "../../DBUser";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 import styles from "../Styles";
 
 interface LinksProps {}
@@ -18,8 +18,8 @@ const Links: React.FC<LinksProps> = (props) => {
   return (
     <View style={styles.mediaContainer}>
       <FlatList
-        data={user.links}
-        keyExtractor={(item) => user.links.indexOf(item).toString()}
+        data={GetProfile().links}
+        keyExtractor={(item) => GetProfile().links.indexOf(item).toString()}
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{

@@ -4,14 +4,14 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { tempUser, user } from "../../SemiComponents/DBUser";
+import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
 import ImageViewer from "react-native-image-zoom-viewer";
-import PhotoToolBar from "../../SemiComponents/PhotoScreen/PhotoToolBar";
-import EyeIcon from "../../SemiComponents/MainScreen/Icons/EyeIcon";
-import DownArrowIcon from "../../SemiComponents/MainScreen/Icons/DownArrowIcon";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
+import PhotoToolBar from "../../SemiComponents/Screens/PhotoScreen/PhotoToolBar";
+import EyeIcon from "../../SemiComponents/Screens/MainScreen/Icons/EyeIcon";
+import DownArrowIcon from "../../SemiComponents/Screens/MainScreen/Icons/DownArrowIcon";
+import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import ForwardContactIcon from "../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
+import ForwardContactIcon from "../../SemiComponents/Screens/MainScreen/Icons/ForwardContactIcon";
 
 type PhotoScreenProps = {
   navigation: StackNavigationProp<{}>;
@@ -19,9 +19,9 @@ type PhotoScreenProps = {
 
 const PhotoScreen: React.FC<PhotoScreenProps> = (props) => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(
-    user.photosAndVideos.indexOf(tempUser.selectedPhoto) < 0
-      ? user.photosAndVideos.length - 1
-      : user.photosAndVideos.indexOf(tempUser.selectedPhoto)
+    GetProfile().photosAndVideos.indexOf(GetProfile().selectedPhoto) < 0
+      ? GetProfile().photosAndVideos.length - 1
+      : GetProfile().photosAndVideos.indexOf(GetProfile().selectedPhoto)
   );
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isToolBarVisible, setIsToolBarVisible] = useState(true);
@@ -48,13 +48,13 @@ const PhotoScreen: React.FC<PhotoScreenProps> = (props) => {
           title={
             (currentPhotoIndex + 1).toString() +
             " of " +
-            user.photosAndVideos.length.toString()
+            GetProfile().photosAndVideos.length.toString()
           }
         />
       )}
 
       <ImageViewer
-        imageUrls={user.photosAndVideos.map((image) => ({
+        imageUrls={GetProfile().photosAndVideos.map((image) => ({
           url: image.url,
         }))}
         index={currentPhotoIndex}
@@ -83,7 +83,7 @@ const PhotoScreen: React.FC<PhotoScreenProps> = (props) => {
       <TouchableOpacity
         style={styles.rightOpacityToSeePreviousPhoto}
         onPress={() => {
-          if (currentPhotoIndex != user.photosAndVideos.length - 1) {
+          if (currentPhotoIndex != GetProfile().photosAndVideos.length - 1) {
             const index = currentPhotoIndex;
             setCurrentPhotoIndex(index + 1);
           }
@@ -129,13 +129,13 @@ const PhotoScreen: React.FC<PhotoScreenProps> = (props) => {
           <TouchableOpacity
             style={styles.additionalFeatureButton}
             onPress={() => {
-              user.photosAndVideos.splice(currentPhotoIndex, 1);
+              GetProfile().photosAndVideos.splice(currentPhotoIndex, 1);
               setIsElseFeaturesVisible(false);
               props.navigation.goBack();
 
-              if (user.photosAndVideos.length != 0) {
-                tempUser.selectedPhoto =
-                  user.photosAndVideos[currentPhotoIndex];
+              if (GetProfile().photosAndVideos.length != 0) {
+                GetProfile().selectedPhoto =
+                  GetProfile().photosAndVideos[currentPhotoIndex];
 
                 props.navigation.navigate("PhotoScreen" as never);
               }

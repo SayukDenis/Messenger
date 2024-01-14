@@ -10,30 +10,28 @@ import {
   ScrollView,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import Header from "../../GeneralComponents/Header";
-import { styles } from "../Styles";
-import EmojiAndColorButtons from "./EmojiAndColorButtons";
-import ColorSelection from "./ColorSelection";
-import EmojiSelection from "./EmojiSelection";
-import Blur from "../../GeneralComponents/Blur";
-import BranchColorPicker from "./BranchColorPicker";
-import BranchAppearance from "./BranchAppearance";
-import {
-  BranchParent,
-  BranchChild,
-  character,
-  tempCharacter,
-} from "../../DBUser";
+import styles from "../Styles";
+import Blur from "../../../GeneralComponents/Blur";
+import Header from "../../../GeneralComponents/Header";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
+import EmojiAndColorButtons from "../NewBranchScreen/EmojiAndColorButtons";
+import BranchColorPicker from "../NewBranchScreen/BranchColorPicker";
+import ColorSelection from "../NewBranchScreen/ColorSelection";
+import EmojiSelection from "../NewBranchScreen/EmojiSelection";
+import BranchAppearance from "../NewBranchScreen/BranchAppearance";
+import { BranchChild } from "../../../DatabaseSimulation/DBClasses";
 import { LinearGradient } from "expo-linear-gradient";
 
-type NewBranchProps = {
+interface ChangeBranchChildScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
-};
+}
 
 const screenWidth: number = Dimensions.get("screen").width;
 const screenHeight: number = Dimensions.get("screen").height;
 
-const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
+const ChangeBranchChildScreen: React.FC<ChangeBranchChildScreenProps> = (
+  props
+) => {
   const newBranchTitle: string = "New Branch";
   const nameTitle: string = "Name";
   const branchNamePlaceHolder: string = "Name Branch";
@@ -43,11 +41,17 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
   const nameIsBusyTitle: string = "This name is already taken";
   var isValid: boolean = true;
 
-  const [branchName, setBranchName] = useState("");
-  const [pickedEmoji, setPickedEmoji] = useState("");
+  const [branchName, setBranchName] = useState(
+    GetProfile().selectedBranchChild.name
+  );
+  const [pickedEmoji, setPickedEmoji] = useState(
+    GetProfile().selectedBranchChild.emoji
+  );
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
-  const [pickedColor, setPickedColor] = useState("rgb(124, 79, 145)");
+  const [pickedColor, setPickedColor] = useState(
+    GetProfile().selectedBranchChild.color
+  );
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
 
@@ -67,7 +71,7 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
       <Header
         primaryTitle={newBranchTitle}
         onGoBackPress={() => {
-          navigation.goBack();
+          props.navigation.goBack();
         }}
       />
 
@@ -79,14 +83,20 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
             alert(noNameWarningTitle);
           }
 
-          character()?.branchParents.map((branch) => {
-            if (branch.name == branchName) {
+          GetProfile().branchParents.map((branch) => {
+            if (
+              branch.name == branchName &&
+              branch.name != GetProfile().selectedBranchChild.name
+            ) {
               isValid = false;
               alert(nameIsBusyTitle);
             }
 
             branch.children.map((child) => {
-              if (child.name == branchName) {
+              if (
+                child.name == branchName &&
+                child.name != GetProfile().selectedBranchChild.name
+              ) {
                 isValid = false;
                 alert(nameIsBusyTitle);
               }
@@ -94,30 +104,30 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
           });
 
           if (isValid) {
-            if (tempCharacter()?.selectedBranchParent == null) {
-              character()?.branchParents.push(
-                new BranchParent(
-                  branchName,
-                  pickedEmoji,
-                  pickedColor,
-                  new Array<BranchChild>()
-                )
+            const branchToRemove =
+              GetProfile().selectedBranchParent.children.find(
+                (branch) =>
+                  branch.name === GetProfile().selectedBranchChild.name
               );
 
-              character()?.branchParents.sort((a, b) =>
-                a.name.localeCompare(b.name)
-              );
-            } else {
-              tempCharacter()?.selectedBranchParent.children.push(
-                new BranchChild(branchName, pickedEmoji, pickedColor)
-              );
-
-              tempCharacter()?.selectedBranchParent.children.sort((a, b) =>
-                a.name.localeCompare(b.name)
+            if (branchToRemove) {
+              GetProfile().selectedBranchParent.children.splice(
+                GetProfile().selectedBranchParent.children.indexOf(
+                  branchToRemove
+                ),
+                1
               );
             }
 
-            navigation.goBack();
+            GetProfile().selectedBranchParent.children.push(
+              new BranchChild(branchName, pickedEmoji, pickedColor)
+            );
+
+            GetProfile().branchParents.sort((a, b) =>
+              a.name.localeCompare(b.name)
+            );
+
+            props.navigation.goBack();
           }
         }}
       >
@@ -216,4 +226,4 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
   );
 };
 
-export default NewBranchScreen;
+export default ChangeBranchChildScreen;

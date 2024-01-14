@@ -5,7 +5,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { styles } from "../EditGroup/ProfileGroupStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { branchMode } from "../../SemiComponents/DBUser";
+import { branchMode } from "../../SemiComponents/DatabaseSimulation/DBUser";
 
 export const AddBranch = () => {
   const navigation = useNavigation();

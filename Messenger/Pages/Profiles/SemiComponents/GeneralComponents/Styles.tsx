@@ -107,4 +107,15 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "white",
   },
+  doneButtonContainer: {
+    position: "absolute",
+    top: 0.058 * screenHeight,
+    right: 0,
+    width: 0.3 * screenWidth,
+  },
+  doneButtonTitle: {
+    fontSize: 21,
+    fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(92, 64, 129)",
+  },
 });

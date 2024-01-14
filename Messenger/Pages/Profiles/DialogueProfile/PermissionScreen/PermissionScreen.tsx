@@ -6,7 +6,7 @@ import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CheckmarkIcon from "./Icons/CheckMarkIcon";
-import { user } from "../../SemiComponents/DBUser";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 import ToggleButton from "../../SemiComponents/GeneralComponents/ToggleButton";
 import { LinearGradient } from "expo-linear-gradient";
 import { Dimensions } from "react-native";

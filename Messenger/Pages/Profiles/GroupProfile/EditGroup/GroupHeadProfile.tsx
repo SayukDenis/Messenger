@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Path, Rect } from "react-native-svg";
 import { styles } from "./ProfileGroupStyles";
-import { user } from "../../SemiComponents/DBUser";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 
 interface GroupHeadProps {
   GroupHeadName: string;

@@ -1,7 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Text } from "react-native";
-import { styles } from "../../ChannelProfile/SettingsScreen/Styles";
-import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
+import SettingOption from "../../SemiComponents/GeneralComponents/SettingOption";
 
 interface SettingsBranchesButtonProps {
   onPress: () => void;
@@ -11,15 +9,12 @@ const SettingsBranchesButton: React.FC<SettingsBranchesButtonProps> = (
   props
 ) => {
   return (
-    <TouchableOpacity
+    <SettingOption
       onPress={() => {
         props.onPress();
       }}
-      style={styles.settingOption}
-    >
-      <Text style={styles.settingOptionTitle}>Branches</Text>
-      <RightArrow style={styles.settingOptionRightArrow} />
-    </TouchableOpacity>
+      text="Branches"
+    />
   );
 };
 

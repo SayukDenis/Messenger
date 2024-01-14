@@ -11,19 +11,20 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
-import { user, PhotoOrVideo } from "../../SemiComponents/DBUser";
-import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
-import { tempUser } from "../../SemiComponents/DBUser";
-import Name from "../../SemiComponents/MainScreen/Name";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
+import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
+import Photos from "../../SemiComponents/Screens/MainScreen/Multimedia/Photos";
+import Name from "../../SemiComponents/Screens/MainScreen/Name";
 import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import ElseFeaturesIcon from "../../SemiComponents/MainScreen/Icons/ElseFeaturesIcon";
+import ElseFeaturesIcon from "../../SemiComponents/Screens/MainScreen/Icons/ElseFeaturesIcon";
 import AlbumElseFeaturesButtons from "./AlbumElseFeaturesButtons";
-import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
 import AddingPhotoMenu from "./AddingPhotoMenu";
 import { useIsFocused } from "@react-navigation/native";
 import PhotoElseFeaturesButtons from "./PhotoElseFeaturesButtons";
-import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
+import BottomToolBar from "../../SemiComponents/Screens/MainScreen/ButtomToolBar";
+import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
 
 interface AlbumFillingProps {
   navigation: StackNavigationProp<{}>;
@@ -51,18 +52,18 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
   ];
   const removalApprovalsOnPress: (() => void)[] = [
     () => {
-      user.albums.splice(user.albums.indexOf(tempUser.selectedAlbum), 1);
+      user.albums.splice(user.albums.indexOf(GetProfile().selectedAlbum), 1);
       setIsPhotoSelectionVisible(false);
       props.navigation.goBack();
     },
     () => {
-      tempUser.selectedAlbum.photosAndVideos = [];
+      GetProfile().selectedAlbum.photosAndVideos = [];
       setIsPhotoSelectionVisible(false);
     },
     () => {
       selectedPhotosAndVideos.forEach((photo) => {
-        tempUser.selectedAlbum.photosAndVideos.splice(
-          tempUser.selectedAlbum.photosAndVideos.indexOf(photo),
+        GetProfile().selectedAlbum.photosAndVideos.splice(
+          GetProfile().selectedAlbum.photosAndVideos.indexOf(photo),
           1
         );
       });
@@ -167,7 +168,7 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
           <>
             {/* Main name */}
             <Name
-              primaryTitle={tempUser.selectedAlbum.name}
+              primaryTitle={GetProfile().selectedAlbum.name}
               style={styles.headerTitle}
             />
 
@@ -216,8 +217,8 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
           alert("copy");
         }}
         onDeletePress={() => {
-          tempUser.selectedAlbum.photosAndVideos.splice(
-            tempUser.selectedAlbum.photosAndVideos.indexOf(pressedPhoto),
+          GetProfile().selectedAlbum.photosAndVideos.splice(
+            GetProfile().selectedAlbum.photosAndVideos.indexOf(pressedPhoto),
             1
           );
         }}
@@ -225,7 +226,7 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
           alert("forward");
         }}
         onMakeMainPhotoPress={() => {
-          tempUser.selectedAlbum.mainPhoto = pressedPhoto;
+          GetProfile().selectedAlbum.mainPhoto = pressedPhoto;
         }}
         onSelectPress={() => {
           setIsPhotoSelectionVisible(true);
@@ -248,7 +249,7 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
         <Photos
           selectedPhotosAndVideos={selectedPhotosAndVideos}
           isPhotoSelectionVisible={isPhotoSelectionVisible}
-          data={tempUser.selectedAlbum.photosAndVideos}
+          data={GetProfile().selectedAlbum.photosAndVideos}
           onPress={(photo: PhotoOrVideo) => {
             if (isPhotoSelectionVisible) {
               if (!selectedPhotosAndVideos?.includes(photo)) {
@@ -290,7 +291,7 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
           setIsAddNewPhotoPressed(value);
         }}
         onPhotoPress={(value: PhotoOrVideo) => {
-          tempUser.selectedAlbum.photosAndVideos.push(value);
+          GetProfile().selectedAlbum.photosAndVideos.push(value);
           setIsAddNewPhotoPressed(false);
         }}
         onGalleryButtonPress={() => {

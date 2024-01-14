@@ -4,7 +4,10 @@ import { styles } from "./ProfileGroupStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { GroupHead } from "./GroupHeadProfile";
 import { GroupBio } from "./GroupBio";
-import { UserProps, user } from "../../SemiComponents/DBUser";
+import {
+  UserProps,
+  user,
+} from "../../SemiComponents/DatabaseSimulation/DBUser";
 import { GroupNameInput } from "./GroupNameInput";
 import { EditGroupPhoto } from "./EditGroupPhoto";
 import { User } from "./UserProfile";

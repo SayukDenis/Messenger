@@ -5,17 +5,16 @@ import { View, ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
-import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
+import Multimedia from "../../SemiComponents/Screens/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
+import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
 import {
   Album,
   PhotoOrVideo,
-  tempUser,
-  user,
-} from "../../SemiComponents/DBUser";
-import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
-import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
+} from "../../SemiComponents/DatabaseSimulation/DBClasses";
+import AlbumLongPressedMenu from "../../SemiComponents/Screens/MainScreen/Multimedia/AlbumLongPressedMenu";
+import BottomToolBar from "../../SemiComponents/Screens/MainScreen/ButtomToolBar";
 import AvatarsNameAndGoBackButton from "./AvatarsNameAndGoBackButton";
 import TopMenuWhenSelection from "../../SemiComponents/GeneralComponents/TopMenuWhenSelection";
 import NumberUsernameAndBio from "./NumberUsernameAndBio";
@@ -43,7 +42,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
     useState(0);
   const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
   const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
-  const [currentAvatar, setCurrentAvatar] = useState(user.avatars[0]);
+  const [currentAvatar, setCurrentAvatar] = useState(GetProfile().avatars[0]);
   const [isAnyTextCopied, setIsAnyTextCopied] = useState(false);
   const [phoneUsernameOrBioCopied, setPhoneUsernameOrBioCopied] = useState("");
   const [isNumberPressed, setIsNumberPressed] = useState(false);
@@ -63,16 +62,19 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
   ];
   const removalApprovalsOnPress: (() => void)[] = [
     () => {
-      user.albums.splice(user.albums.indexOf(longPressedAlbum), 1);
+      GetProfile().albums.splice(
+        GetProfile().albums.indexOf(longPressedAlbum),
+        1
+      );
       setLongPressedAlbum(null);
     },
     () => {
-      user.albums = Array<Album>();
+      GetProfile().albums = Array<Album>();
       setIsAlbumSelectionVisible(false);
     },
     () => {
       selectedAlbums.forEach((album) => {
-        user.albums.splice(user.albums.indexOf(album), 1);
+        GetProfile().albums.splice(GetProfile().albums.indexOf(album), 1);
       });
       setSelectedAlbums(Array<Album>());
       setIsAlbumSelectionVisible(false);
@@ -202,17 +204,18 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
           currentAvatar={currentAvatar}
           onRightPress={() => {
             setCurrentAvatar(
-              user.avatars[
-                (user.avatars.indexOf(currentAvatar) + 1) % user.avatars.length
+              GetProfile().avatars[
+                (GetProfile().avatars.indexOf(currentAvatar) + 1) %
+                  GetProfile().avatars.length
               ]
             );
           }}
           onLeftPress={() => {
             setCurrentAvatar(
-              user.avatars[
-                user.avatars.indexOf(currentAvatar) - 1 > -1
-                  ? user.avatars.indexOf(currentAvatar) - 1
-                  : user.avatars.length - 1
+              GetProfile().avatars[
+                GetProfile().avatars.indexOf(currentAvatar) - 1 > -1
+                  ? GetProfile().avatars.indexOf(currentAvatar) - 1
+                  : GetProfile().avatars.length - 1
               ]
             );
           }}
@@ -239,7 +242,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
             setPressedMultimediaButton(value);
           }}
           onPhotoPress={(photo: PhotoOrVideo) => {
-            tempUser.selectedPhoto = photo;
+            GetProfile().selectedPhoto = photo;
             navigation.navigate("PhotoScreen" as never);
           }}
           onAlbumPress={(item: Album) => {
@@ -252,7 +255,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
                 );
               }
             } else {
-              tempUser.selectedAlbum = item;
+              GetProfile().selectedAlbum = item;
               navigation.navigate("Album" as never);
             }
           }}

@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Dimensions, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { tempUser } from "../../SemiComponents/DBUser";
-import { user, PhotoOrVideo } from "../../SemiComponents/DBUser";
+import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
 import { styles } from "./Styles";
-import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
+import Photos from "../../SemiComponents/Screens/MainScreen/Multimedia/Photos";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 
 interface GalleryWhileAddingNewPhotoProps {
@@ -18,10 +18,10 @@ const GalleryWhileAddingNewPhoto: React.FC<GalleryWhileAddingNewPhotoProps> = (
 ) => {
   const [selectedPhotosAndVideos, setSelectedPhotosAndVideos] = useState<
     Array<PhotoOrVideo>
-  >(tempUser.selectedAlbum.photosAndVideos);
+  >(GetProfile().selectedAlbum.photosAndVideos);
 
   useEffect(() => {
-    tempUser.selectedAlbum.photosAndVideos = selectedPhotosAndVideos;
+    GetProfile().selectedAlbum.photosAndVideos = selectedPhotosAndVideos;
   });
 
   return (
@@ -58,7 +58,7 @@ const GalleryWhileAddingNewPhoto: React.FC<GalleryWhileAddingNewPhotoProps> = (
             }
           }}
           isPhotoSelectionVisible={true}
-          data={user.photosAndVideos}
+          data={GetProfile().photosAndVideos}
         />
       </ScrollView>
     </View>

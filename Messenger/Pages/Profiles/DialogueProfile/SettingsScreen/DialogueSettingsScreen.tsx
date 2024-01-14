@@ -4,7 +4,6 @@ import React from "react";
 import { Dimensions, View } from "react-native";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { branchMode } from "../../SemiComponents/DBUser";
 import { LinearGradient } from "expo-linear-gradient";
 import SettingOption from "../../SemiComponents/GeneralComponents/SettingOption";
 
@@ -19,8 +18,6 @@ const DialogueSettingsScreen: React.FC<DialogueSettingsScreenProps> = (
     {
       text: "Branches",
       onPress: () => {
-        branchMode.mode = "user";
-
         props.navigation.navigate("BranchesScreen" as never);
       },
     },

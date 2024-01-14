@@ -11,17 +11,12 @@ import {
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
-import PlusIcon from "../../SemiComponents/BranchesScreen/Icons/PlusIcon";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
-import {
-  Role,
-  channel,
-  selectedRole,
-  tempRole,
-} from "../../SemiComponents/DBUser";
+import PlusIcon from "../../SemiComponents/Screens/BranchesScreen/Icons/PlusIcon";
+import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
+import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import { useIsFocused } from "@react-navigation/native";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface RolesScreenProps {
@@ -70,7 +65,7 @@ const RolesScreen: React.FC<RolesScreenProps> = (props) => {
       <ScrollView>
         <TouchableOpacity
           onPress={() => {
-            selectedRole.selectedRole = null;
+            channel.selectedRole = null;
             props.navigation.navigate("NewRoleScreen" as never);
           }}
           style={styles.settingOption}
@@ -90,7 +85,7 @@ const RolesScreen: React.FC<RolesScreenProps> = (props) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  selectedRole.selectedRole = item;
+                  channel.selectedRole = item;
                   props.navigation.navigate("ChangeRoleScreen" as never);
                 }}
                 style={styles.roleAppearanceContainer}

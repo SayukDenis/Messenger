@@ -10,7 +10,7 @@ import {
   addFunction,
   roleCharacter,
   selectedRole,
-} from "../../SemiComponents/DBUser";
+} from "../../SemiComponents/DatabaseSimulation/DBUser";
 
 interface PermissionRoleScreenProps {
   navigation: StackNavigationProp<{}>;

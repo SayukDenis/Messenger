@@ -13,11 +13,8 @@ import {
   ScrollView,
 } from "react-native";
 import { styles } from "./Styles";
-import {
-  addFunction,
-  channel,
-  selectedRole,
-} from "../../SemiComponents/DBUser";
+import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
+import { addFunction } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
 import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CheckmarkIcon from "../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
@@ -32,7 +29,7 @@ const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
 ) => {
   const [searchedName, setSearchedName] = useState("");
   const [subscribers, setSubscribers] = useState(
-    selectedRole.selectedRole.subscribers
+    channel.selectedRole.subscribers
   );
 
   const isFocused = useIsFocused();
@@ -67,7 +64,7 @@ const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
       <TouchableOpacity
         style={styles.doneButtonContainer}
         onPress={() => {
-          selectedRole.selectedRole.subscribers = subscribers;
+          channel.selectedRole.subscribers = subscribers;
 
           props.navigation.goBack();
         }}
@@ -99,8 +96,8 @@ const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
                       setSubscribers(subscribers.concat([item]));
 
                       addFunction(() => {
-                        selectedRole.selectedRole.subscribers =
-                          selectedRole.selectedRole.subscribers.filter(
+                        channel.selectedRole.subscribers =
+                          channel.selectedRole.subscribers.filter(
                             (subscriber) => {
                               subscriber != item;
                             }

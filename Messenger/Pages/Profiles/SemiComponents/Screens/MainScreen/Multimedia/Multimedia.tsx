@@ -9,9 +9,10 @@ import Files from "./Files";
 import Voice from "./Voice";
 import Links from "./Links";
 import Albums from "./Albums";
-import { Album, PhotoOrVideo, user } from "../../DBUser";
-import Blur from "../../GeneralComponents/Blur";
+import { Album, PhotoOrVideo } from "../../../DatabaseSimulation/DBClasses";
+import Blur from "../../../GeneralComponents/Blur";
 import { GestureResponderEvent } from "react-native-modal";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
 interface MultimediaProps {
   isPhotoAlbumSelectionVisible: boolean;
@@ -56,7 +57,7 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
       {props.pressedMultimediaButton == "Photos" && (
         <Photos
           isPhotoSelectionVisible={false}
-          data={user.photosAndVideos}
+          data={GetProfile().photosAndVideos}
           onPress={(photo: PhotoOrVideo) => {
             props.onPhotoPress(photo);
           }}

@@ -2,21 +2,21 @@ import React, { useState, useEffect } from "react";
 import { View, Image, ScrollView, Dimensions } from "react-native";
 import { styles } from "../../SemiComponents/GeneralComponents/Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
-import TopToolBar from "../../SemiComponents/MainScreen/TopToolBar";
-import Multimedia from "../../SemiComponents/MainScreen/Multimedia/Multimedia";
+import TopToolBar from "../../SemiComponents/Screens/MainScreen/TopToolBar";
+import Multimedia from "../../SemiComponents/Screens/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import ElseFeaturesButtons from "../../SemiComponents/MainScreen/ElseFeaturesButtons";
-import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import ElseFeaturesButtons from "../../SemiComponents/Screens/MainScreen/ElseFeaturesButtons";
+import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
 import BioAndLink from "./BioAndLink";
 import {
   Album,
   PhotoOrVideo,
-  tempUser,
-  user,
-} from "../../SemiComponents/DBUser";
+} from "../../SemiComponents/DatabaseSimulation/DBClasses";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 import { GestureResponderEvent } from "react-native-modal";
 import { useIsFocused } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+``;
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -169,7 +169,7 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
             setPressedMultimediaButton(value);
           }}
           onPhotoPress={(photo: PhotoOrVideo) => {
-            tempUser.selectedPhoto = photo;
+            user.selectedPhoto = photo;
             navigation.navigate("PhotoScreen" as never);
           }}
           onAlbumPress={(item: Album) => {
@@ -182,7 +182,7 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
                 );
               }
             } else {
-              tempUser.selectedAlbum = item;
+              user.selectedAlbum = item;
               navigation.navigate("Album" as never);
             }
           }}
@@ -217,4 +217,4 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
   );
 };
 
-export default MainGroupPage;
+//export default MainGroupPage;

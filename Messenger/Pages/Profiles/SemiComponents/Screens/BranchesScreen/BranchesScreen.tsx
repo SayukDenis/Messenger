@@ -4,16 +4,15 @@ import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
-import Header from "../GeneralComponents/Header";
-import PlusIcon from "./Icons/PlusIcon";
+import Header from "../../GeneralComponents/Header";
 import BinIcon from "../MainScreen/Icons/BinIcon";
-import Blur from "../GeneralComponents/Blur";
+import Blur from "../../GeneralComponents/Blur";
 import RemovalApproval from "../MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-import { character, tempCharacter } from "../DBUser";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 import { LinearGradient } from "expo-linear-gradient";
-import ButtonWithPlus from "../GeneralComponents/ButtonWithPlus";
+import ButtonWithPlus from "../../GeneralComponents/ButtonWithPlus";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -52,13 +51,13 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
           setIsDeleteBranchPressed(false);
         }}
         onAgreePress={() => {
-          const branchToRemoveNow = character().branchParents.find(
+          const branchToRemoveNow = GetProfile().branchParents.find(
             (branch) => branch.name === branchNameToRemove
           );
 
           if (branchToRemoveNow) {
-            character().branchParents.splice(
-              character().branchParents.indexOf(branchToRemoveNow),
+            GetProfile().branchParents.splice(
+              GetProfile().branchParents.indexOf(branchToRemoveNow),
               1
             );
           }
@@ -84,19 +83,17 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
             top: 0.04 * screenHeight,
           }}
         >
-          {character().branchParents.map((item, index) => {
+          {GetProfile().branchParents.map((item, index) => {
             return (
-              <>
+              <View key={index}>
                 <View
-                  key={index + character().branchParents.length}
                   style={{
                     height: 0.005 * screenHeight,
                   }}
                 />
                 <TouchableOpacity
-                  key={index}
                   onPress={() => {
-                    tempCharacter().selectedBranchParent = item;
+                    GetProfile().selectedBranchParent = item;
                     navigation.navigate("ChangeBranchParentScreen" as never);
                   }}
                   style={[styles.settingOption, { top: 0 }]}
@@ -132,7 +129,7 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
                     <BinIcon style={styles.binIcon} />
                   </TouchableOpacity>
                 </TouchableOpacity>
-              </>
+              </View>
             );
           })}
         </View>

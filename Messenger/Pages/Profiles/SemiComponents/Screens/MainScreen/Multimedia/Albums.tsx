@@ -9,11 +9,12 @@ import {
   Dimensions,
   Text,
 } from "react-native";
-import { Album, user } from "../../DBUser";
+import { Album } from "../../../DatabaseSimulation/DBClasses";
 import styles from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
 import { GestureResponderEvent } from "react-native-modal";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
 interface AlbumsProps {
   onNewAlbumPress: () => void;
@@ -30,19 +31,21 @@ const Albums: React.FC<AlbumsProps> = (props) => {
   return (
     <View style={[styles.mediaContainer, { opacity: 1 }]}>
       <FlatList
-        data={user.albums}
-        keyExtractor={(item) => user.albums.indexOf(item).toString()}
+        data={GetProfile().albums}
+        keyExtractor={(item) => GetProfile().albums.indexOf(item).toString()}
         horizontal={false}
         numColumns={2}
         contentContainerStyle={[
           styles.allAlbumsContainer,
           {
             height:
-              user.albums.length < 3
-                ? user.albums.length == 1
+              GetProfile().albums.length < 3
+                ? GetProfile().albums.length == 1
                   ? 0.8 * screenHeight
                   : 0.7 * screenHeight
-                : Math.ceil(user.albums.length / 2) * 0.355 * screenHeight,
+                : Math.ceil(GetProfile().albums.length / 2) *
+                  0.355 *
+                  screenHeight,
           },
         ]}
         scrollEnabled={false}
@@ -92,15 +95,17 @@ const Albums: React.FC<AlbumsProps> = (props) => {
           {
             position: "absolute",
             top:
-              user.albums.length % 2 == 0
+              GetProfile().albums.length % 2 == 0
                 ? 0.02 * screenHeight +
-                  Math.ceil(user.albums.length / 2) * 0.205 * screenHeight
+                  Math.ceil(GetProfile().albums.length / 2) *
+                    0.205 *
+                    screenHeight
                 : 0.02 * screenHeight +
-                  (Math.ceil(user.albums.length / 2) - 1) *
+                  (Math.ceil(GetProfile().albums.length / 2) - 1) *
                     0.205 *
                     screenHeight,
             left:
-              user.albums.length % 2 == 0
+              GetProfile().albums.length % 2 == 0
                 ? 0.075 * screenWidth
                 : 0.575 * screenWidth,
           },

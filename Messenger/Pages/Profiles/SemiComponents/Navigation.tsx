@@ -1,30 +1,27 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import MainGroupPage from "../GroupProfile/MainGroupPage/MainGroupPage";
 import ChooseAuthor from "../SemiComponents/AuthorChoose";
-import MainUserScreen from "../DialogueProfile/MainUserScreen/MainUserScreen";
+import MainScreen from "./Screens/MainScreen/MainScreen";
 import SettingsMenu from "../GroupProfile/SettingsMenu/SettingsMenu";
 import EditGroup from "../GroupProfile/EditGroup/EditGroup";
 import AuditLog from "../GroupProfile/AuditLog/AuditLog";
-import Branches from "../GroupProfile/Branches/Branches";
 import Role from "../GroupProfile/Role/Role";
 import CreateRole from "../GroupProfile/Role/CreateRole/CreateRole";
 import RolePermission from "../GroupProfile/Role/CreateRole/RolePermission/RolePermission";
 import DialogueSettingsScreen from "../DialogueProfile/SettingsScreen/DialogueSettingsScreen";
 import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen";
-import BranchesScreen from "./BranchesScreen/BranchesScreen";
-import NewBranchScreen from "./BranchesScreen/NewBranchScreen/NewBranchScreen";
+import BranchesScreen from "./Screens/BranchesScreen/BranchesScreen";
+import NewBranchScreen from "./Screens/BranchesScreen/NewBranchScreen/NewBranchScreen";
 import NewAlbumScreen from "../DialogueProfile/NewAlbumScreen/NewAlbumScreen";
 import GalleryScreen from "../DialogueProfile/NewAlbumScreen/GalleryScreen";
 import { useFonts } from "expo-font";
-import ChangeBranchParentScreen from "./BranchesScreen/ChangeBranchScreen/ChangeBranchParentScreen";
+import ChangeBranchParentScreen from "./Screens/BranchesScreen/ChangeBranchScreen/ChangeBranchParentScreen";
 import Album from "../DialogueProfile/Album/Album";
 import GalleryWhileAddingNewPhoto from "../DialogueProfile/Album/GalleryWhileAddingNewPhoto";
 import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
-import ChangeBranchChildScreen from "./BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
+import ChangeBranchChildScreen from "./Screens/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
 import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
-import MainChannelScreen from "../ChannelProfile/MainChannelScreen/MainChannelScreen";
 import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
 import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen";
 import ChannelSettingsScreen from "../ChannelProfile/SettingsScreen/ChannelSettingsScreen";
@@ -70,11 +67,8 @@ const UserNavigation = () => {
         animationEnabled: false,
       }}
     >
-      <Stack.Screen name="MainUserScreen" component={MainUserScreen} />
-      <Stack.Screen
-        name="DialogueSettingsScreen"
-        component={DialogueSettingsScreen}
-      />
+      <Stack.Screen name="MainUserScreen" component={MainScreen} />
+      <Stack.Screen name="SettingsScreen" component={DialogueSettingsScreen} />
       <Stack.Screen name="PermissionScreen" component={PermissionScreen} />
       <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
       <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
@@ -105,14 +99,14 @@ const UserNavigation = () => {
 const GroupNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="MainGroupPage"
+      initialRouteName="MainGroupScreen"
       screenOptions={{
         headerShown: false,
         animationEnabled: false,
       }}
     >
-      <Stack.Screen name="MainGroupPage" component={MainGroupPage} />
-      <Stack.Screen name="SettingsMenu" component={SettingsMenu} />
+      <Stack.Screen name="MainGroupScreen" component={MainScreen} />
+      <Stack.Screen name="SettingsScreen" component={SettingsMenu} />
       <Stack.Screen
         name="GroupSettingsScreen"
         component={GroupSettingsScreen}
@@ -132,6 +126,7 @@ const GroupNavigation = () => {
         name="ChangeBranchChildScreen"
         component={ChangeBranchChildScreen}
       />
+      <Stack.Screen name="PhotoScreen" component={PhotoScreen} />
     </Stack.Navigator>
   );
 };
@@ -145,16 +140,13 @@ const ChannelNavigation = () => {
         animationEnabled: false,
       }}
     >
-      <Stack.Screen name="MainChannelScreen" component={MainChannelScreen} />
+      <Stack.Screen name="MainChannelScreen" component={MainScreen} />
       <Stack.Screen name="SubscribersScreen" component={SubscribersScreen} />
       <Stack.Screen
         name="AddSubscriberScreen"
         component={AddSubscriberScreen}
       />
-      <Stack.Screen
-        name="ChannelSettingsScreen"
-        component={ChannelSettingsScreen}
-      />
+      <Stack.Screen name="SettingsScreen" component={ChannelSettingsScreen} />
       <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
       <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
       <Stack.Screen
@@ -177,6 +169,7 @@ const ChannelNavigation = () => {
         name="AddSubscriberRoleScreen"
         component={AddSubscriberRoleScreen}
       />
+      <Stack.Screen name="PhotoScreen" component={PhotoScreen} />
     </Stack.Navigator>
   );
 };

@@ -5,9 +5,9 @@ import { View, Dimensions, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
-import { user, PhotoOrVideo } from "../../SemiComponents/DBUser";
-import Photos from "../../SemiComponents/MainScreen/Multimedia/Photos";
-import { tempUser } from "../../SemiComponents/DBUser";
+import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import Photos from "../../SemiComponents/Screens/MainScreen/Multimedia/Photos";
+import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
 
 interface GalleryScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -16,10 +16,10 @@ interface GalleryScreenProps {
 const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
   const [selectedPhotosAndVideos, setSelectedPhotosAndVideos] = useState<
     Array<PhotoOrVideo>
-  >(tempUser.selectedPhotosAndVideos);
+  >(GetProfile().selectedPhotosAndVideos);
 
   useEffect(() => {
-    tempUser.selectedPhotosAndVideos = selectedPhotosAndVideos;
+    GetProfile().selectedPhotosAndVideos = selectedPhotosAndVideos;
   });
 
   return (
@@ -45,7 +45,7 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
         <Photos
           selectedPhotosAndVideos={selectedPhotosAndVideos}
           isPhotoSelectionVisible={true}
-          data={user.photosAndVideos}
+          data={GetProfile().photosAndVideos}
           onPress={(photo: PhotoOrVideo) => {
             if (!selectedPhotosAndVideos?.includes(photo)) {
               setSelectedPhotosAndVideos(

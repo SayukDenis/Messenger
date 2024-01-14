@@ -1,13 +1,11 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
-import { styles } from "./Styles";
+import { View, Dimensions } from "react-native";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
-import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
-import { branchMode } from "../../SemiComponents/DBUser";
 import { LinearGradient } from "expo-linear-gradient";
+import SettingOption from "../../SemiComponents/GeneralComponents/SettingOption";
 
 type ChannelSettingsScreenProps = {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -16,6 +14,33 @@ type ChannelSettingsScreenProps = {
 const ChannelSettingsScreen: React.FC<ChannelSettingsScreenProps> = ({
   navigation,
 }) => {
+  const SettingOptions = [
+    {
+      text: "Audit log",
+      onPress: () => {
+        navigation.navigate("AuditLogScreen" as never);
+      },
+    },
+    {
+      text: "Branches",
+      onPress: () => {
+        navigation.navigate("BranchesScreen" as never);
+      },
+    },
+    {
+      text: "Role",
+      onPress: () => {
+        navigation.navigate("RolesScreen" as never);
+      },
+    },
+    {
+      text: "Edit channel",
+      onPress: () => {
+        alert("Edit channel");
+      },
+    },
+  ];
+
   return (
     <LinearGradient
       colors={["#cf9b95", "#c98bb8", "#c37adb"]}
@@ -28,43 +53,17 @@ const ChannelSettingsScreen: React.FC<ChannelSettingsScreenProps> = ({
         }}
       />
 
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("AuditLogScreen" as never);
-        }}
-        style={styles.settingOption}
-      >
-        <Text style={styles.settingOptionTitle}>Audit log</Text>
-        <RightArrow style={styles.settingOptionRightArrow} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          branchMode.mode = "channel";
-
-          navigation.navigate("BranchesScreen" as never);
-        }}
-        style={styles.settingOption}
-      >
-        <Text style={styles.settingOptionTitle}>Branches</Text>
-        <RightArrow style={styles.settingOptionRightArrow} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate("RolesScreen" as never)}
-        style={styles.settingOption}
-      >
-        <Text style={styles.settingOptionTitle}>Role</Text>
-        <RightArrow style={styles.settingOptionRightArrow} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => alert("Aboba")}
-        style={styles.settingOption}
-      >
-        <Text style={styles.settingOptionTitle}>Edit channel</Text>
-        <RightArrow style={styles.settingOptionRightArrow} />
-      </TouchableOpacity>
+      {SettingOptions.map((item, index) => (
+        <View key={index}>
+          <SettingOption
+            text={item.text}
+            onPress={() => {
+              item.onPress();
+            }}
+          />
+          <View style={{ height: 0.005 * Dimensions.get("screen").height }} />
+        </View>
+      ))}
     </LinearGradient>
   );
 };

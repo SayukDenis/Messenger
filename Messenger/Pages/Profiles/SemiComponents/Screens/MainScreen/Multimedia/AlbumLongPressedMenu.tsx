@@ -2,11 +2,12 @@
 
 import React from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
-import { Album, user } from "../../DBUser";
+import { Album } from "../../../DatabaseSimulation/DBClasses";
 import styles from "../Styles";
 import ForwardContactIcon from "../Icons/ForwardContactIcon";
 import SelectIcon from "../Icons/SelectIcon";
 import BinIcon from "../Icons/BinIcon";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
@@ -28,7 +29,7 @@ const AlbumLongPressedMenu: React.FC<AlbumLongPressedMenuProps> = (props) => {
             styles.elseFeaturesButtonsContainer,
             {
               left:
-                user.albums.indexOf(props.longPressedAlbum) % 2 == 1
+                GetProfile().albums.indexOf(props.longPressedAlbum) % 2 == 1
                   ? 0.425 * screenWidth
                   : 0.075 * screenWidth,
               top:

@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "../Styles";
-import Photos from "./Photos";
-import { user } from "../../DBUser";
 import { LinearGradient } from "expo-linear-gradient";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
 class Button {
   name: string;
@@ -54,22 +53,22 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
     {
       name: "Albums",
       title: albumsButtonTitle,
-      quantity: user.albums.length,
+      quantity: GetProfile().albums.length,
     },
     {
       name: "Files",
       title: filesButtonTitle,
-      quantity: user.files.length,
+      quantity: GetProfile().files.length,
     },
     {
       name: "Voice",
       title: voiceButtonTitle,
-      quantity: user.voice.length,
+      quantity: GetProfile().voice.length,
     },
     {
       name: "Links",
       title: linksButtonTitle,
-      quantity: user.links.length,
+      quantity: GetProfile().links.length,
     },
   ];
 

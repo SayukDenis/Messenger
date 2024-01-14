@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import { user } from "../../SemiComponents/DBUser";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 import * as Clipboard from "expo-clipboard";
 
 const screenHeight = Dimensions.get("screen").height;

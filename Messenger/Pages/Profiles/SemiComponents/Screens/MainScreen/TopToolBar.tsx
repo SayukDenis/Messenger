@@ -3,7 +3,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import GoBackButton from "../GeneralComponents/GoBackButton";
+import GoBackButton from "../../GeneralComponents/GoBackButton";
 import SearchIcon from "./Icons/SearchIcon";
 import ElseFeaturesIcon from "./Icons/ElseFeaturesIcon";
 import Name from "./Name";

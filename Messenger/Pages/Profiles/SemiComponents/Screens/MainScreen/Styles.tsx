@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import { StyleSheet, Dimensions } from "react-native";
-import { user } from "../DBUser";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 
 // Coefficients for transmitting sizes from Figma to user's device
 const screenHeight = Dimensions.get("screen").height;
@@ -351,7 +351,7 @@ export const styles = StyleSheet.create({
   allAlbumsContainer: {
     paddingBottom: 0.5 * screenHeight,
     gap: 0.01 * screenHeight,
-    height: Math.ceil(user.albums.length / 2) * 0.305 * screenHeight,
+    height: Math.ceil(GetProfile()?.albums.length / 2) * 0.305 * screenHeight,
   },
   albumContainer: {
     width: 0.5 * screenWidth,
@@ -398,17 +398,6 @@ export const styles = StyleSheet.create({
     bottom: 0.055 * screenHeight,
     alignItems: "center",
     justifyContent: "center",
-  },
-  doneButtonContainer: {
-    position: "absolute",
-    top: 0.058 * screenHeight,
-    right: 0,
-    width: 0.3 * screenWidth,
-  },
-  doneButtonTitle: {
-    fontSize: 21,
-    fontFamily: "JacquesFrancois-Regular",
-    color: "rgb(92, 64, 129)",
   },
   bottomToolBar: {
     backgroundColor: "rgb(231, 230,	228)",

@@ -5,10 +5,10 @@ import { View, ScrollView, Image, Text } from "react-native";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { channel } from "../../SemiComponents/DBUser";
+import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import DeletedUserIcon from "./Icons/DeletedUserIcon";
 import AddedUserIcon from "./Icons/AddedUserIcon";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
+import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface AuditLogScreenProps {

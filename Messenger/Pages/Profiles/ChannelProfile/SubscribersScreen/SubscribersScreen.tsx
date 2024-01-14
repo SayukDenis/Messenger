@@ -12,11 +12,11 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
-import PlusIcon from "../../SemiComponents/BranchesScreen/Icons/PlusIcon";
-import { channel } from "../../SemiComponents/DBUser";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
+import PlusIcon from "../../SemiComponents/Screens/BranchesScreen/Icons/PlusIcon";
+import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
+import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";

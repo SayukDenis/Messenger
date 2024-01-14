@@ -3,7 +3,10 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import { PhotoOrVideo, user } from "../../SemiComponents/DBUser";
+import {
+  PhotoOrVideo,
+  user,
+} from "../../SemiComponents/DatabaseSimulation/DBUser";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;

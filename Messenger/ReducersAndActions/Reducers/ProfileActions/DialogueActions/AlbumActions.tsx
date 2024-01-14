@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import { combineReducers } from "redux";
-import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DBUser";
+import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DatabaseSimulation/DBUser";
 
 const selectedPhotosAndVideosReducer = (state = [], action) => {
   switch (action.type) {

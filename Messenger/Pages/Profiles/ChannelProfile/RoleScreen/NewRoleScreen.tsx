@@ -12,12 +12,19 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { styles } from "./Styles";
-import EmojiAndColorButtons from "../../SemiComponents/BranchesScreen/NewBranchScreen/EmojiAndColorButtons";
-import ColorSelection from "../../SemiComponents/BranchesScreen/NewBranchScreen/ColorSelection";
-import EmojiSelection from "../../SemiComponents/BranchesScreen/NewBranchScreen/EmojiSelection";
+import EmojiAndColorButtons from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/EmojiAndColorButtons";
+import ColorSelection from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/ColorSelection";
+import EmojiSelection from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/EmojiSelection";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import BranchColorPicker from "../../SemiComponents/BranchesScreen/NewBranchScreen/BranchColorPicker";
-import { Contact, Role, channel, tempRole } from "../../SemiComponents/DBUser";
+import BranchColorPicker from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/BranchColorPicker";
+import {
+  Contact,
+  Role,
+} from "../../SemiComponents/DatabaseSimulation/DBClasses";
+import {
+  tempRole,
+  channel,
+} from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 import { LinearGradient } from "expo-linear-gradient";
 

@@ -4,6 +4,7 @@ import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { pickedProfile } from "./DatabaseSimulation/DBVariables";
 
 export default function ChooseAuthor() {
   const navigation = useNavigation();
@@ -21,6 +22,7 @@ export default function ChooseAuthor() {
           justifyContent: "center",
         }}
         onPress={() => {
+          pickedProfile.current = "group";
           navigation.navigate("GroupNavigation" as never);
         }}
       >
@@ -35,6 +37,7 @@ export default function ChooseAuthor() {
           justifyContent: "center",
         }}
         onPress={() => {
+          pickedProfile.current = "user";
           navigation.navigate("UserNavigation" as never);
         }}
       >
@@ -49,6 +52,7 @@ export default function ChooseAuthor() {
           justifyContent: "center",
         }}
         onPress={() => {
+          pickedProfile.current = "channel";
           navigation.navigate("ChannelNavigation" as never);
         }}
       >

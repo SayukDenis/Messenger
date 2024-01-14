@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import { Album } from "../../../../Pages/Profiles/SemiComponents/DBUser";
+import { Album } from "../../../../Pages/Profiles/SemiComponents/DatabaseSimulation/DBUser";
 
 export const setBioTextHeight = (name: number) => ({
   type: "SET_BIO_TEXT_HEIGHT",

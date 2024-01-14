@@ -11,9 +11,12 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
-import { user, Album, PhotoOrVideo } from "../../SemiComponents/DBUser";
+import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import {
+  Album,
+  PhotoOrVideo,
+} from "../../SemiComponents/DatabaseSimulation/DBClasses";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
-import { tempUser } from "../../SemiComponents/DBUser";
 
 interface NewAlbumScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -28,7 +31,7 @@ const NewAlbumScreen: React.FC<NewAlbumScreenProps> = (props) => {
       <Header
         primaryTitle="New album"
         onGoBackPress={() => {
-          tempUser.selectedPhotosAndVideos = new Array<PhotoOrVideo>();
+          GetProfile().selectedPhotosAndVideos = new Array<PhotoOrVideo>();
           props.navigation.goBack();
         }}
       />
@@ -42,12 +45,12 @@ const NewAlbumScreen: React.FC<NewAlbumScreenProps> = (props) => {
           if (newAlbumName.length == 0) {
             isValid = false;
             alert("Enter new album name");
-          } else if (tempUser.selectedPhotosAndVideos.length == 0) {
+          } else if (GetProfile().selectedPhotosAndVideos.length == 0) {
             isValid = false;
             alert("Add at least 1 photo");
           }
 
-          user.albums.map((album) => {
+          GetProfile().albums.map((album) => {
             if (album.name == newAlbumName) {
               isValid = false;
               alert("This album name already exists");
@@ -55,18 +58,18 @@ const NewAlbumScreen: React.FC<NewAlbumScreenProps> = (props) => {
           });
 
           if (isValid) {
-            user.albums.push(
+            GetProfile().albums.push(
               new Album(
                 newAlbumName,
-                tempUser.selectedPhotosAndVideos[0],
-                tempUser.selectedPhotosAndVideos
+                GetProfile().selectedPhotosAndVideos[0],
+                GetProfile().selectedPhotosAndVideos
               )
             );
 
-            user.albums.sort((a, b) => a.name.localeCompare(b.name));
+            GetProfile().albums.sort((a, b) => a.name.localeCompare(b.name));
 
             props.navigation.goBack();
-            tempUser.selectedPhotosAndVideos = new Array<PhotoOrVideo>();
+            GetProfile().selectedPhotosAndVideos = new Array<PhotoOrVideo>();
           }
         }}
       >

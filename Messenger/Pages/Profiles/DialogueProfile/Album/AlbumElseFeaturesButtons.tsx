@@ -3,10 +3,10 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import ForwardContactIcon from "../../SemiComponents/MainScreen/Icons/ForwardContactIcon";
-import AddNewImageIcon from "../../SemiComponents/MainScreen/Icons/AddNewImageIcon";
-import SortIcon from "../../SemiComponents/MainScreen/Icons/SortIcon";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
+import ForwardContactIcon from "../../SemiComponents/Screens/MainScreen/Icons/ForwardContactIcon";
+import AddNewImageIcon from "../../SemiComponents/Screens/MainScreen/Icons/AddNewImageIcon";
+import SortIcon from "../../SemiComponents/Screens/MainScreen/Icons/SortIcon";
+import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 
 interface AlbumElseFeaturesButtonsProps {
   isVisible: boolean;

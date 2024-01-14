@@ -8,7 +8,7 @@ import RoleButton from "./SettingsRoleButton";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import SettingsBranchesButton from "./SettingsBranchesButton";
-import { branchMode } from "../../SemiComponents/DBUser";
+import { branchMode } from "../../SemiComponents/DatabaseSimulation/DBUser";
 
 interface SettingsMenuProps {
   navigation: StackNavigationProp<{}>;

@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import { StyleSheet, Dimensions } from "react-native";
-import { user } from "../DBUser";
+import { user } from "../../DatabaseSimulation/DBUser";
 
 // Coefficients for transmitting sizes from Figma to user's device
 const screenHeight = Dimensions.get("screen").height;
@@ -20,6 +20,18 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     zIndex: 1,
+  },
+  profileTitle: {
+    fontSize: 20,
+    fontFamily: "JacquesFrancois-Regular",
+  },
+  elseFeaturesButton: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    right: 0.03 * screenWidth,
+    top: 0.033 * screenHeight,
+    width: 40 * figmaWidthPixelConverter,
+    height: 40 * figmaWidthPixelConverter,
   },
 });
 

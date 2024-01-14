@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { PhotoOrVideo } from "../../DBUser";
+import { PhotoOrVideo } from "../../../DatabaseSimulation/DBClasses";
 import styles from "../Styles";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
 import CrossIcon from "../Icons/CrossIcon";

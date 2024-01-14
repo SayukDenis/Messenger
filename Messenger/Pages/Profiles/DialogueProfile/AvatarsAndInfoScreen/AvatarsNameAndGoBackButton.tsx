@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import { View, Image, TouchableWithoutFeedback } from "react-native";
 import { styles } from "./Styles";
-import { PhotoOrVideo, user } from "../../SemiComponents/DBUser";
-import Name from "../../SemiComponents/MainScreen/Name";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
+import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
+import Name from "../../SemiComponents/Screens/MainScreen/Name";
 import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
 
 interface AvatarsNameAndGoBackButtonProps {

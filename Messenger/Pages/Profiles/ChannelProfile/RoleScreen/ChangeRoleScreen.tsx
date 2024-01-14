@@ -14,64 +14,61 @@ import { useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { styles } from "./Styles";
-import EmojiAndColorButtons from "../../SemiComponents/BranchesScreen/NewBranchScreen/EmojiAndColorButtons";
-import ColorSelection from "../../SemiComponents/BranchesScreen/NewBranchScreen/ColorSelection";
-import EmojiSelection from "../../SemiComponents/BranchesScreen/NewBranchScreen/EmojiSelection";
+import EmojiAndColorButtons from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/EmojiAndColorButtons";
+import ColorSelection from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/ColorSelection";
+import EmojiSelection from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/EmojiSelection";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import BranchColorPicker from "../../SemiComponents/BranchesScreen/NewBranchScreen/BranchColorPicker";
+import BranchColorPicker from "../../SemiComponents/Screens/BranchesScreen/NewBranchScreen/BranchColorPicker";
+import { Role } from "../../SemiComponents/DatabaseSimulation/DBClasses";
 import {
-  Role,
-  channel,
   clearFunctions,
   executeFunctions,
-  selectedRole,
-} from "../../SemiComponents/DBUser";
+} from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
-import PlusIcon from "../../SemiComponents/BranchesScreen/Icons/PlusIcon";
-import BinIcon from "../../SemiComponents/MainScreen/Icons/BinIcon";
+import PlusIcon from "../../SemiComponents/Screens/BranchesScreen/Icons/PlusIcon";
+import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import { LinearGradient } from "expo-linear-gradient";
 
-interface ChangeBranchParentScreenProps {
+interface ChangeRoleScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
 }
 
 const screenWidth: number = Dimensions.get("screen").width;
 const screenHeight: number = Dimensions.get("screen").height;
 
-const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
-  props
-) => {
+const ChangeRoleScreen: React.FC<ChangeRoleScreenProps> = (props) => {
   var isValid: boolean = true;
 
   const previousPermissions: boolean[] = [
-    selectedRole.selectedRole.removeMembersPermission,
-    selectedRole.selectedRole.blockMembersPermission,
-    selectedRole.selectedRole.manageRolesPermission,
-    selectedRole.selectedRole.manageBranchesPermission,
-    selectedRole.selectedRole.seeTheAuditLogPermission,
-    selectedRole.selectedRole.considerChannelsPermission,
-    selectedRole.selectedRole.considerBranchPermission,
-    selectedRole.selectedRole.manageTheServerPermission,
-    selectedRole.selectedRole.sendAMessagePermission,
-    selectedRole.selectedRole.sendAVoiceMessagePermission,
+    channel.selectedRole.removeMembersPermission,
+    channel.selectedRole.blockMembersPermission,
+    channel.selectedRole.manageRolesPermission,
+    channel.selectedRole.manageBranchesPermission,
+    channel.selectedRole.seeTheAuditLogPermission,
+    channel.selectedRole.considerChannelsPermission,
+    channel.selectedRole.considerBranchPermission,
+    channel.selectedRole.manageTheServerPermission,
+    channel.selectedRole.sendAMessagePermission,
+    channel.selectedRole.sendAVoiceMessagePermission,
   ];
 
-  const [name, setName] = useState(selectedRole.selectedRole.name);
-  const [emoji, setEmoji] = useState(selectedRole.selectedRole.emoji);
+  const [name, setName] = useState(channel.selectedRole.name);
+  const [emoji, setEmoji] = useState(channel.selectedRole.emoji);
   const [isEmojiSelectionVisible, setIsEmojiSelectionVisible] = useState(false);
   const [isColorSelectionVisible, setIsColorSelectionVisible] = useState(false);
-  const [color, setColor] = useState(selectedRole.selectedRole.color);
+  const [color, setColor] = useState(channel.selectedRole.color);
   const [isSpecialColorSelectionVisible, setIsSpecialColorSelectionVisible] =
     useState(false);
 
   const [subscribers, setSubscribers] = useState(
-    selectedRole.selectedRole.subscribers
+    channel.selectedRole.subscribers
   );
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    setSubscribers(selectedRole.selectedRole.subscribers);
+    setSubscribers(channel.selectedRole.subscribers);
   }, [isFocused]);
 
   return (
@@ -89,25 +86,21 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
       <Header
         primaryTitle="New role"
         onGoBackPress={() => {
-          selectedRole.selectedRole.removeMembersPermission =
-            previousPermissions[0];
-          selectedRole.selectedRole.blockMembersPermission =
-            previousPermissions[1];
-          selectedRole.selectedRole.manageRolesPermission =
-            previousPermissions[2];
-          selectedRole.selectedRole.manageBranchesPermission =
+          channel.selectedRole.removeMembersPermission = previousPermissions[0];
+          channel.selectedRole.blockMembersPermission = previousPermissions[1];
+          channel.selectedRole.manageRolesPermission = previousPermissions[2];
+          channel.selectedRole.manageBranchesPermission =
             previousPermissions[3];
-          selectedRole.selectedRole.seeTheAuditLogPermission =
+          channel.selectedRole.seeTheAuditLogPermission =
             previousPermissions[4];
-          selectedRole.selectedRole.considerChannelsPermission =
+          channel.selectedRole.considerChannelsPermission =
             previousPermissions[5];
-          selectedRole.selectedRole.considerBranchPermission =
+          channel.selectedRole.considerBranchPermission =
             previousPermissions[6];
-          selectedRole.selectedRole.manageTheServerPermission =
+          channel.selectedRole.manageTheServerPermission =
             previousPermissions[7];
-          selectedRole.selectedRole.sendAMessagePermission =
-            previousPermissions[8];
-          selectedRole.selectedRole.sendAVoiceMessagePermission =
+          channel.selectedRole.sendAMessagePermission = previousPermissions[8];
+          channel.selectedRole.sendAVoiceMessagePermission =
             previousPermissions[9];
 
           executeFunctions();
@@ -126,10 +119,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           }
 
           channel.roles.map((role) => {
-            if (
-              role.name == name &&
-              role.name != selectedRole.selectedRole.name
-            ) {
+            if (role.name == name && role.name != channel.selectedRole.name) {
               isValid = false;
               alert("This name is busy");
             }
@@ -137,7 +127,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
 
           if (isValid) {
             const roleToRemove = channel.roles.find(
-              (role) => role.name === selectedRole.selectedRole.name
+              (role) => role.name === channel.selectedRole.name
             );
 
             if (roleToRemove) {
@@ -149,23 +139,23 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
                 name,
                 emoji,
                 color,
-                selectedRole.selectedRole.removeMembersPermission,
-                selectedRole.selectedRole.blockMembersPermission,
-                selectedRole.selectedRole.manageRolesPermission,
-                selectedRole.selectedRole.manageBranchesPermission,
-                selectedRole.selectedRole.seeTheAuditLogPermission,
-                selectedRole.selectedRole.considerChannelsPermission,
-                selectedRole.selectedRole.considerBranchPermission,
-                selectedRole.selectedRole.manageTheServerPermission,
-                selectedRole.selectedRole.sendAMessagePermission,
-                selectedRole.selectedRole.sendAVoiceMessagePermission,
+                channel.selectedRole.removeMembersPermission,
+                channel.selectedRole.blockMembersPermission,
+                channel.selectedRole.manageRolesPermission,
+                channel.selectedRole.manageBranchesPermission,
+                channel.selectedRole.seeTheAuditLogPermission,
+                channel.selectedRole.considerChannelsPermission,
+                channel.selectedRole.considerBranchPermission,
+                channel.selectedRole.manageTheServerPermission,
+                channel.selectedRole.sendAMessagePermission,
+                channel.selectedRole.sendAVoiceMessagePermission,
                 subscribers
               )
             );
 
             channel.roles.sort((a, b) => a.name.localeCompare(b.name));
 
-            selectedRole.selectedRole = null;
+            channel.selectedRole = null;
 
             clearFunctions();
             props.navigation.goBack();
@@ -191,7 +181,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
               1.1 * Dimensions.get("screen").height +
               0.05 *
                 Dimensions.get("screen").height *
-                selectedRole.selectedRole.subscribers.length,
+                channel.selectedRole.subscribers.length,
           }}
         >
           {/* Title for name input */}
@@ -331,7 +321,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
 
           <TouchableOpacity
             onPress={() => {
-              selectedRole.selectedRole.subscribers = subscribers;
+              channel.selectedRole.subscribers = subscribers;
               props.navigation.navigate("AddSubscriberRoleScreen" as never);
             }}
             style={[
@@ -394,4 +384,4 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
   );
 };
 
-export default ChangeBranchParentScreen;
+export default ChangeRoleScreen;

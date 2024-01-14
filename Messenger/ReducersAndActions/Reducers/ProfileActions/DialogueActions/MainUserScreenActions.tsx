@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import { combineReducers } from "redux";
-import { user } from "../../../../Pages/Profiles/SemiComponents/DBUser";
+import { user } from "../../../../Pages/Profiles/SemiComponents/DatabaseSimulation/DBUser";
 
 const initialState = {
   pressedMultimediaButton: "Photos",
