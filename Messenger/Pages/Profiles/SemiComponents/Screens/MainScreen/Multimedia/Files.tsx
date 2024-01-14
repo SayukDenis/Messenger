@@ -8,9 +8,9 @@ import {
   Text,
   Dimensions,
 } from "react-native";
-import { user } from "../../../DatabaseSimulation/DBUser";
 import styles from "../Styles";
 import DownArrowIcon from "../Icons/DownArrowIcon";
+import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
 interface FilesProps {}
 
@@ -18,8 +18,8 @@ const Files: React.FC<FilesProps> = (props) => {
   return (
     <View style={styles.mediaContainer}>
       <FlatList
-        data={user.files}
-        keyExtractor={(item) => user.files.indexOf(item).toString()}
+        data={GetProfile().files}
+        keyExtractor={(item) => GetProfile().files.indexOf(item).toString()}
         horizontal={false}
         numColumns={1}
         contentContainerStyle={{
