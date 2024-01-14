@@ -11,10 +11,6 @@ const figmaWidthPixelConverter = screenWidth / 356;
 
 // Main styles for main user page
 export const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "rgb(227, 192, 124)",
-  },
   headerTitle: {
     fontSize: 27,
     fontFamily: "JacquesFrancois-Regular",
@@ -45,13 +41,12 @@ export const styles = StyleSheet.create({
     zIndex: 1,
   },
   linearGradient: {
-    opacity: 0.7,
     top: 0,
     position: "absolute",
     left: 0,
     right: 0,
-    height: Dimensions.get("screen").height,
-    width: Dimensions.get("screen").width,
+    height: screenHeight,
+    width: screenWidth,
   },
   settingOption: {
     top: 0.04 * screenHeight,
@@ -59,19 +54,18 @@ export const styles = StyleSheet.create({
     height: 0.07 * screenHeight,
     backgroundColor: "white",
     borderRadius: 9,
-    borderWidth: 0.5,
-    borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     alignSelf: "center",
+    overflow: "hidden",
   },
   settingOptionTitle: {
     position: "absolute",
     left: 0.05 * screenWidth,
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
-    color: "rgb(92, 64, 129)",
+    color: "rgb(43, 29, 29)",
   },
   settingOptionRightArrow: {
     position: "absolute",
@@ -79,5 +73,38 @@ export const styles = StyleSheet.create({
     width: 11 * figmaWidthPixelConverter,
     height: 17 * figmaWidthPixelConverter,
     color: "rgb(111, 111, 111)",
+  },
+  plusIcon: {
+    position: "absolute",
+    left: 0.045 * screenWidth,
+    width: 22 * figmaWidthPixelConverter,
+    height: 22 * figmaWidthPixelConverter,
+  },
+  buttonWithPlusTitle: {
+    position: "absolute",
+    left: 0.09 * screenWidth + 22 * figmaWidthPixelConverter,
+    fontFamily: "JacquesFrancois-Regular",
+    fontSize: 20,
+    color: "rgb(43, 29, 29)",
+  },
+  toggleButtonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    right: 0.05 * screenWidth,
+  },
+  toggleButtonBackground: {
+    width: 0.15 * screenWidth,
+    height: 0.034 * screenHeight,
+    backgroundColor: "rgb(161, 156, 145)",
+    borderRadius: 20,
+    justifyContent: "center",
+    padding: 0.003 * screenHeight,
+  },
+  toggleButtonCircle: {
+    height: 0.027 * screenHeight,
+    width: 0.027 * screenHeight,
+    borderRadius: 20,
+    backgroundColor: "white",
   },
 });

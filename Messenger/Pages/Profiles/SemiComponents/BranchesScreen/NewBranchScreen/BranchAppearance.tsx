@@ -3,6 +3,7 @@
 import React from "react";
 import { View, Text, ViewStyle } from "react-native";
 import { styles } from "../Styles";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface BranchAppearanceProps {
   emoji: string;
@@ -14,6 +15,10 @@ interface BranchAppearanceProps {
 const BranchAppearance: React.FC<BranchAppearanceProps> = (props) => {
   return (
     <View style={[styles.branchAppearanceContainer, props.style]}>
+      <LinearGradient
+        colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+        style={[styles.linearGradient, { opacity: 0.7 }]}
+      />
       <View
         style={[
           styles.branchAvatarWhileCreatingBranch,

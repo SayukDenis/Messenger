@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { styles } from "../Styles";
 import RedCrossIcon from "../Icons/RedCrossIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface EmojiListProps {
   emojis: string[];
@@ -22,13 +23,20 @@ interface EmojiListProps {
 const EmojiList: React.FC<EmojiListProps> = (props) => {
   return (
     <View style={[styles.emojiSelectionContainer, props.style]}>
+      <LinearGradient
+        colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+        style={[styles.linearGradient, { opacity: 0.7 }]}
+      />
       <FlatList
         key={props.numColumns}
         data={props.emojis}
         keyExtractor={(item) => item}
         horizontal={false}
         numColumns={props.numColumns}
-        contentContainerStyle={{ width: "100%", padding: 15 }}
+        contentContainerStyle={{
+          width: "100%",
+          padding: 15,
+        }}
         scrollEnabled={false}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -42,7 +50,7 @@ const EmojiList: React.FC<EmojiListProps> = (props) => {
                 backgroundColor:
                   props.pickedEmoji === item
                     ? "rgb(93, 171, 228)"
-                    : "rgb(218, 182, 113)",
+                    : "transparent",
               },
             ]}
           >

@@ -79,7 +79,7 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
             alert(noNameWarningTitle);
           }
 
-          character().branchParents.map((branch) => {
+          character()?.branchParents.map((branch) => {
             if (branch.name == branchName) {
               isValid = false;
               alert(nameIsBusyTitle);
@@ -94,8 +94,8 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
           });
 
           if (isValid) {
-            if (tempCharacter().selectedBranchParent == null) {
-              character().branchParents.push(
+            if (tempCharacter()?.selectedBranchParent == null) {
+              character()?.branchParents.push(
                 new BranchParent(
                   branchName,
                   pickedEmoji,
@@ -104,15 +104,15 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
                 )
               );
 
-              character().branchParents.sort((a, b) =>
+              character()?.branchParents.sort((a, b) =>
                 a.name.localeCompare(b.name)
               );
             } else {
-              tempCharacter().selectedBranchParent.children.push(
+              tempCharacter()?.selectedBranchParent.children.push(
                 new BranchChild(branchName, pickedEmoji, pickedColor)
               );
 
-              tempCharacter().selectedBranchParent.children.sort((a, b) =>
+              tempCharacter()?.selectedBranchParent.children.sort((a, b) =>
                 a.name.localeCompare(b.name)
               );
             }
@@ -140,12 +140,16 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
           }}
         >
           {/* Title for name input */}
-          <View style={styles.containerForSettingTitle}>
+          <View style={styles.emojiAndColorButtonsContainer}>
             <Text style={styles.settingTitle}>{nameTitle}</Text>
           </View>
 
           {/* Branch name input */}
           <View style={styles.settingOption}>
+            <LinearGradient
+              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+              style={[styles.linearGradient, { opacity: 0.7 }]}
+            />
             <TextInput
               style={styles.newBranchNameInput}
               onChangeText={(text: string) => {
@@ -158,7 +162,7 @@ const NewBranchScreen: React.FC<NewBranchProps> = ({ navigation }) => {
           </View>
 
           {/* Title for designing branch */}
-          <View style={styles.containerForSettingTitle}>
+          <View style={styles.emojiAndColorButtonsContainer}>
             <Text style={styles.settingTitle}>{designBranchTitle}</Text>
           </View>
           <EmojiAndColorButtons

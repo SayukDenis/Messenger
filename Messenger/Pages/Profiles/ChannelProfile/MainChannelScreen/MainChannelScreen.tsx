@@ -14,17 +14,14 @@ import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import {
   Album,
   PhotoOrVideo,
-  channel,
   tempUser,
   user,
 } from "../../SemiComponents/DBUser";
 import AlbumLongPressedMenu from "../../SemiComponents/MainScreen/Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "../../SemiComponents/MainScreen/ButtomToolBar";
 import { GestureResponderEvent } from "react-native-modal";
-import SubscribersButton from "./SubscribersButton";
 import TypeChannelMenu from "./TypeChannelMenu";
 import { LinearGradient } from "expo-linear-gradient";
-import Header from "../../../ChatList/Components/Header";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -226,13 +223,6 @@ const MainChannelScreen: React.FC<MainChannelScreenProps> = (props) => {
             onAvatarPress={() => {
               props.navigation.navigate("AvatarsAndInfoScreen" as never);
             }}
-          />
-
-          <SubscribersButton
-            onPress={() => {
-              props.navigation.navigate("SubscribersScreen" as never);
-            }}
-            subscribersQuantity={channel.subscribersQuantity}
           />
 
           {/* Multimedia bar with photo/albums, files, voice, links buttons*/}

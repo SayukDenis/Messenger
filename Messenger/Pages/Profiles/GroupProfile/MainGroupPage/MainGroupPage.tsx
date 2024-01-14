@@ -16,6 +16,7 @@ import {
 } from "../../SemiComponents/DBUser";
 import { GestureResponderEvent } from "react-native-modal";
 import { useIsFocused } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -49,7 +50,12 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
   useEffect(() => {}, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{
+        flex: 1,
+      }}
+    >
       {/* Blur if photo or album button is on long press */}
       <Blur
         visibleWhen={isPhotoAlbumSelectionVisible}
@@ -207,7 +213,7 @@ const MainGroupPage: React.FC<MainUserPageProps> = ({ navigation }) => {
           }}
         />
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

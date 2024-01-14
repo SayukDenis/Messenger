@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { View, TouchableOpacity, Animated, Dimensions } from "react-native";
-import { styles } from "../../DialogueProfile/PermissionScreen/Styles";
+import { styles } from "./Styles";
 
 const screenWidth: number = Dimensions.get("screen").width;
 const screenHeight: number = Dimensions.get("screen").height;
@@ -41,12 +41,12 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
 
     const marginFromRightToLeft = animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0.16 * screenWidth - 0.033 * screenHeight, 0],
+      outputRange: [0.15 * screenWidth - 0.033 * screenHeight, 0],
     });
 
     const marginFromLeftToRight = animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 0.16 * screenWidth - 0.033 * screenHeight],
+      outputRange: [0, 0.15 * screenWidth - 0.033 * screenHeight],
     });
 
     return (

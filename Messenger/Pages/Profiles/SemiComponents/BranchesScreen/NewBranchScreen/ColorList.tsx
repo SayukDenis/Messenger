@@ -4,6 +4,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "../Styles";
 import SpecialSelectedColorIcon from "../Icons/SpecialSelectedColorIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface ColorListProps {
   pickedColor: string;
@@ -44,6 +45,10 @@ const ColorList: React.FC<ColorListProps> = (props) => {
         flexDirection: "column",
       }}
     >
+      <LinearGradient
+        colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+        style={[styles.linearGradient, { opacity: 0.7 }]}
+      />
       <View style={styles.selectedColorOuterContainer}>
         {/* Selected color */}
         <View
@@ -52,6 +57,7 @@ const ColorList: React.FC<ColorListProps> = (props) => {
             { backgroundColor: props.pickedColor },
           ]}
         />
+
         {/* Special color */}
         <TouchableOpacity
           onPress={() => {
@@ -63,6 +69,7 @@ const ColorList: React.FC<ColorListProps> = (props) => {
           </View>
         </TouchableOpacity>
       </View>
+
       {/* Basic colors */}
       <View style={styles.basicColorsContainer}>
         {basicColors.map((color, index) => {
@@ -79,7 +86,7 @@ const ColorList: React.FC<ColorListProps> = (props) => {
                   styles.oneColorContainer,
                   { backgroundColor: "rgb" + basicColors[index] },
                 ]}
-              ></View>
+              />
             </TouchableOpacity>
           );
         })}

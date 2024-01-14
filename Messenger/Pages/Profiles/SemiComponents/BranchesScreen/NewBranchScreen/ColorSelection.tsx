@@ -5,6 +5,7 @@ import { View, TouchableOpacity, Dimensions } from "react-native";
 import { styles } from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import ColorList from "./ColorList";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface ColorSelectionProps {
   isVisible: boolean;
@@ -28,6 +29,10 @@ const ColorSelection: React.FC<ColorSelectionProps> = (props) => {
               }}
             >
               <View style={styles.closeEmojiSelectionButton}>
+                <LinearGradient
+                  colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+                  style={[styles.linearGradient, { opacity: 0.7 }]}
+                />
                 <CrossIcon style={styles.crossIcon} />
               </View>
             </TouchableOpacity>

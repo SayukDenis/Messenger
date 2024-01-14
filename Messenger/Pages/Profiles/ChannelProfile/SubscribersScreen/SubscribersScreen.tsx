@@ -19,6 +19,7 @@ import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import RemovalApproval from "../../SemiComponents/MainScreen/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
 
 type SubscribersScreenProps = {
   navigation: StackNavigationProp<{}>;
@@ -38,7 +39,10 @@ const SubscribersScreen: React.FC<SubscribersScreenProps> = ({
   useEffect(() => {}, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Header
         primaryTitle="Subscribers"
         onGoBackPress={() => {
@@ -54,7 +58,7 @@ const SubscribersScreen: React.FC<SubscribersScreenProps> = ({
           style={styles.subscriberContainer}
         >
           <PlusIcon style={styles.plusIcon} />
-          <Text style={styles.plusSubscriberTitle}>Member</Text>
+          <Text style={styles.plusSubscriberTitle}>Subscriber</Text>
         </TouchableOpacity>
 
         <View style={{ paddingBottom: 0.07 * Dimensions.get("screen").height }}>
@@ -108,7 +112,7 @@ const SubscribersScreen: React.FC<SubscribersScreenProps> = ({
         }}
         text={"Do you really want to kick " + subscriberToRemove?.name + "?"}
       />
-    </View>
+    </LinearGradient>
   );
 };
 

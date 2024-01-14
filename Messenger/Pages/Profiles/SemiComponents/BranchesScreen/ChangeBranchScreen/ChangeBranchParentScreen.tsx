@@ -194,12 +194,16 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           }}
         >
           {/* Title for name input */}
-          <View style={styles.containerForSettingTitle}>
+          <View style={styles.emojiAndColorButtonsContainer}>
             <Text style={styles.settingTitle}>{nameTitle}</Text>
           </View>
 
           {/* Branch name input */}
           <View style={styles.settingOption}>
+            <LinearGradient
+              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+              style={[styles.linearGradient, { opacity: 0.7 }]}
+            />
             <TextInput
               style={styles.newBranchNameInput}
               onChangeText={(text: string) => {
@@ -212,7 +216,7 @@ const ChangeBranchParentScreen: React.FC<ChangeBranchParentScreenProps> = (
           </View>
 
           {/* Title for designing branch */}
-          <View style={styles.containerForSettingTitle}>
+          <View style={styles.emojiAndColorButtonsContainer}>
             <Text style={styles.settingTitle}>{designBranchTitle}</Text>
           </View>
 

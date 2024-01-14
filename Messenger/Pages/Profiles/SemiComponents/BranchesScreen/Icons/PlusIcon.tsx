@@ -6,6 +6,7 @@ import { Svg, Line } from "react-native-svg";
 
 interface PlusIconProps {
   style?: ViewStyle;
+  stroke?: string;
 }
 
 const PlusIcon: React.FC<PlusIconProps> = (props) => {
@@ -15,14 +16,14 @@ const PlusIcon: React.FC<PlusIconProps> = (props) => {
         x1="8.12734"
         x2="8.12734"
         y2="16"
-        stroke="#5C4081"
+        stroke={props.stroke ? props.stroke : "#5C4081"}
         stroke-width="1.2"
       />
       <Line
         x1="16"
         y1="8.0668"
         y2="8.0668"
-        stroke="#5C4081"
+        stroke={props.stroke ? props.stroke : "#5C4081"}
         stroke-width="1.2"
       />
     </Svg>

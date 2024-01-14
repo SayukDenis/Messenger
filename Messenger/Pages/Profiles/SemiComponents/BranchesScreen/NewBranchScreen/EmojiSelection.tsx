@@ -5,6 +5,7 @@ import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
 import EmojiList from "./EmojiList";
+import { LinearGradient } from "expo-linear-gradient";
 
 const emojis: string[] = [
   "😀",
@@ -170,18 +171,23 @@ const EmojiSelection: React.FC<EmojiSelectionProps> = (props) => {
           >
             {emojis[0] + " "}
           </Text>
+
           <View style={styles.closeEmojiSelectionButtonContainer}>
             {/* Close emoji selection button */}
             <TouchableOpacity
               onPress={() => {
                 props.onCloseClick();
               }}
+              style={styles.closeEmojiSelectionButton}
             >
-              <View style={styles.closeEmojiSelectionButton}>
-                <CrossIcon style={styles.crossIcon} />
-              </View>
+              <LinearGradient
+                colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+                style={[styles.linearGradient, { opacity: 0.7 }]}
+              />
+              <CrossIcon style={styles.crossIcon} />
             </TouchableOpacity>
           </View>
+
           <EmojiList
             emojis={emojis}
             pickedEmoji={props.pickedEmoji}

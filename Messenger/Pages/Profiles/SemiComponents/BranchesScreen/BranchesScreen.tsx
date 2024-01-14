@@ -13,6 +13,9 @@ import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { character, tempCharacter } from "../DBUser";
 import { LinearGradient } from "expo-linear-gradient";
+import ButtonWithPlus from "../GeneralComponents/ButtonWithPlus";
+
+const screenHeight = Dimensions.get("screen").height;
 
 type BranchesScreenProps = {
   navigation: StackNavigationProp<{}>;
@@ -67,57 +70,69 @@ const BranchesScreen: React.FC<BranchesScreenProps> = ({ navigation }) => {
       />
 
       <ScrollView>
-        <TouchableOpacity
+        <ButtonWithPlus
+          text="Branch"
           onPress={() => {
             navigation.navigate("NewBranchScreen" as never);
           }}
-          style={styles.settingOption}
-        >
-          <PlusIcon style={styles.plusIcon} />
-          <Text style={styles.plusBranchTitle}>Branch</Text>
-        </TouchableOpacity>
+        />
 
         <View
           style={{
-            paddingBottom: 0.07 * Dimensions.get("screen").height,
+            paddingBottom: 0.09 * screenHeight,
             zIndex: 0,
+            top: 0.04 * screenHeight,
           }}
         >
           {character().branchParents.map((item, index) => {
             return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  tempCharacter().selectedBranchParent = item;
-                  navigation.navigate("ChangeBranchParentScreen" as never);
-                }}
-                style={styles.settingOption}
-              >
+              <>
                 <View
-                  style={[
-                    styles.branchAvatarInList,
-                    {
-                      backgroundColor: item.color,
-                    },
-                  ]}
-                >
-                  <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
-                </View>
-                <View style={styles.branchTitleContainer}>
-                  <Text numberOfLines={1} style={styles.branchTitleInList}>
-                    {item.name}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsDeleteBranchPressed(true);
-                    setBranchNameToRemove(item.name);
+                  key={index + character().branchParents.length}
+                  style={{
+                    height: 0.005 * screenHeight,
                   }}
-                  style={styles.binIconContainer}
+                />
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    tempCharacter().selectedBranchParent = item;
+                    navigation.navigate("ChangeBranchParentScreen" as never);
+                  }}
+                  style={[styles.settingOption, { top: 0 }]}
                 >
-                  <BinIcon style={styles.binIcon} />
+                  <LinearGradient
+                    colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+                    style={[styles.linearGradient, { opacity: 0.7 }]}
+                  />
+                  <View
+                    style={[
+                      styles.branchAvatarInList,
+                      {
+                        backgroundColor: item.color,
+                      },
+                    ]}
+                  >
+                    <Text style={{ fontSize: 20 }}>{item.emoji}</Text>
+                  </View>
+
+                  <View style={styles.branchTitleContainer}>
+                    <Text numberOfLines={1} style={styles.branchTitleInList}>
+                      {item.name}
+                    </Text>
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsDeleteBranchPressed(true);
+                      setBranchNameToRemove(item.name);
+                    }}
+                    style={styles.binIconContainer}
+                  >
+                    <BinIcon style={styles.binIcon} />
+                  </TouchableOpacity>
                 </TouchableOpacity>
-              </TouchableOpacity>
+              </>
             );
           })}
         </View>

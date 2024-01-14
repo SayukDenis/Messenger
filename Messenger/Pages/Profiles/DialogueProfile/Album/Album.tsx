@@ -240,7 +240,7 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
           flex: 1,
         }}
         contentContainerStyle={{
-          top: -0.085 * Dimensions.get("screen").height,
+          top: -0.04 * Dimensions.get("screen").height,
         }}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}

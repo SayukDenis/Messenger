@@ -1,6 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
+import { Dimensions, View } from "react-native";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { branchMode } from "../../SemiComponents/DBUser";
@@ -40,7 +41,9 @@ const DialogueSettingsScreen: React.FC<DialogueSettingsScreenProps> = (
   return (
     <LinearGradient
       colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-      style={{ flex: 1 }}
+      style={{
+        flex: 1,
+      }}
     >
       <Header
         primaryTitle="Settings"
@@ -50,13 +53,15 @@ const DialogueSettingsScreen: React.FC<DialogueSettingsScreenProps> = (
       />
 
       {SettingOptions.map((item, index) => (
-        <SettingOption
-          key={index}
-          text={item.text}
-          onPress={() => {
-            item.onPress();
-          }}
-        />
+        <View key={index}>
+          <SettingOption
+            text={item.text}
+            onPress={() => {
+              item.onPress();
+            }}
+          />
+          <View style={{ height: 0.005 * Dimensions.get("screen").height }} />
+        </View>
       ))}
     </LinearGradient>
   );

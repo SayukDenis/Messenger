@@ -1,32 +1,33 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React from "react";
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, ViewStyle } from "react-native";
 import { styles } from "./Styles";
+import PlusIcon from "../BranchesScreen/Icons/PlusIcon";
 import { LinearGradient } from "expo-linear-gradient";
-import RightArrow from "../Assets/Icons/RightArrow";
 
-interface SettingOptionProps {
+interface ButtonWithPlusProps {
   text: string;
   onPress: () => void;
+  style?: ViewStyle;
 }
 
-const SettingOption: React.FC<SettingOptionProps> = (props) => {
+const ButtonWithPlus: React.FC<ButtonWithPlusProps> = (props) => {
   return (
     <TouchableOpacity
       onPress={() => {
         props.onPress();
       }}
-      style={styles.settingOption}
+      style={[styles.settingOption, props.style]}
     >
       <LinearGradient
         colors={["#cf9b95", "#c98bb8", "#c37adb"]}
         style={[styles.linearGradient, { opacity: 0.7 }]}
       />
-      <Text style={styles.settingOptionTitle}>{props.text}</Text>
-      <RightArrow style={styles.settingOptionRightArrow} />
+      <PlusIcon stroke="rgb(43, 29, 29)" style={styles.plusIcon} />
+      <Text style={styles.buttonWithPlusTitle}>{props.text}</Text>
     </TouchableOpacity>
   );
 };
 
-export default SettingOption;
+export default ButtonWithPlus;
