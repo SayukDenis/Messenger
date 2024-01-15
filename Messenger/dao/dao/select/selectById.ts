@@ -1,4 +1,3 @@
-import { addExistingGroupToContainerAsync } from "expo-contacts";
 import Model from "../../Models/Model";
 import DataBase from "../Database";
 

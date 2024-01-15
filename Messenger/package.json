@@ -63,6 +63,7 @@
     "react-redux": "^8.1.3",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
+    "semver": "^7.5.4",
     "tailwind-react-native-classnames": "^1.5.1",
     "tailwind-rn": "^4.2.0",
     "tinycolor2": "^1.6.0"
