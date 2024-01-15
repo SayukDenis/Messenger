@@ -2,7 +2,11 @@ import Model from '../Model';
 import IMessageLog from './IMessageLog';
 
 export default class AuditLog extends Model {
-    messages: Array<IMessageLog> = new Array; 
+    constructor(messages?: Array<IMessageLog>) {
+        super();
+        this.messages = messages ?? new Array;
+    }
+    messages: Array<IMessageLog>;
     static schema = {
         name: 'auditLogs',
         properties: {

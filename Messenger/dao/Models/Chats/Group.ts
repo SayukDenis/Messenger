@@ -6,20 +6,23 @@ import Branch from './Branch';
 import Role from './Role';
 
 export default class Group extends MainChat {
-    constructor(title: string) {
-        super();
+    constructor(title: string, adminUsers?: Array<User>, users?: Array<User>, roles?: Array<Role>, linkToPhoto?: string, messages?: Array<Message>, branches?: Array<Branch>,
+        pinnedMessage?: Array<Message>, pinnedMessageForAll?: Array<Message>,
+        lastWatchedMessage?: Array<ILastWatchedMessage>) {
+        super(users, roles, linkToPhoto, messages, branches, pinnedMessage, pinnedMessageForAll, lastWatchedMessage);
         this.title = title;
+        this.adminUsers = adminUsers ?? new Array;
     }
     groupId?: number;
     title!: string;
-    adminUser: Array<User> = new Array;
+    adminUsers: Array<User> = new Array;
     //schema
     static schema = {
         name: 'groups',
         properties: {
             groupId: { type: 'integer', indexed: true },
             title: 'text',
-            adminUser: { type: 'list', objectType: User },
+            adminUsers: { type: 'list', objectType: User },
             users: { type: 'list', objectType: User },
             messages: { type: 'list', objectType: Message },
             pinnedMessage: { type: 'list', objectType: Message },

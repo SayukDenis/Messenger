@@ -1,25 +1,40 @@
 import Model from '../Model';
 
 export default class Role extends Model {
-    constructor(name: string, emoji: string) {
+
+    constructor(name: string, emoji: string,
+        removeMembers: boolean = false, blockMembers: boolean = false,
+        manageRoles: boolean = false, manageBranches: boolean = false,
+        seeAuditLog: boolean = false, considerChannels: boolean = false,
+        manageServer: boolean = false, sendMessage: boolean = true,
+        sendVoiceMessage: boolean = true) {
         super();
         this.name = name;
         this.emoji = emoji;
+        this.removeMembers = removeMembers;
+        this.blockMembers = blockMembers;
+        this.manageRoles = manageRoles;
+        this.manageBranches = manageBranches;
+        this.seeAuditLog = seeAuditLog;
+        this.considerChannels = considerChannels;
+        this.manageServer = manageServer;
+        this.sendMessage = sendMessage;
+        this.sendVoiceMessage = sendVoiceMessage;
     }
     roleId?: number;
     name!: string;
     emoji!: string;
     //permissions basic
-    removeMembers: boolean = false;
-    blockMembers: boolean = false;
-    manageRoles: boolean = false;
-    manageBranches: boolean = false;
-    seeAuditLog: boolean = false;
-    considerChannels: boolean = false;
-    manageServer: boolean = false;
+    removeMembers: boolean;
+    blockMembers: boolean;
+    manageRoles: boolean;
+    manageBranches: boolean;
+    seeAuditLog: boolean;
+    considerChannels: boolean;
+    manageServer: boolean;
     //for members
-    sendMessage: boolean = true;
-    sendVoiceMessage: boolean = true;
+    sendMessage: boolean;
+    sendVoiceMessage: boolean;
 
     //scheme
     static schema = {
