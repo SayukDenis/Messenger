@@ -1,28 +1,46 @@
-import { View, StyleSheet, Text, Button, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Button, Image, TouchableOpacity } from 'react-native';
 import styles from './Styles/DialogueHeader';
 import React from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
-import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import HeaderBackButton from '../SVG/HeaderBackButton';
+import HeaderBranchButton from '../SVG/HeaderBranchButton';
+import { connect } from 'react-redux';
 
-let userName = 'Denis';
-let wasOnline = 'Online recently';
+interface DialogueHeaderProps {
+  navigation: any;
+  picture: string | undefined;
+  displayName: string | undefined;
+  activityTime: string | Date;
+}
 
-const DialogueHeader = () => {
+const DialogueHeader = ({ navigation, picture, displayName, activityTime }:DialogueHeaderProps) => {
   return(
     <HeaderContainer>
-      <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'flex-end', padding: 10 }}>
-        <Button title='back'/>
+      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', paddingHorizontal: 20, paddingVertical: 10 }}>
+          <TouchableOpacity 
+            style={{ width: screenWidth * 0.08  }} 
+            hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
+            activeOpacity={1}
+            onPress={() => navigation.goBack()}>
+            <HeaderBackButton />
+          </TouchableOpacity>
           <View style={styles.chatUserInfo}>
-            <Image source={{ uri: 'https://cdn140.picsart.com/361453903080211.png' }} style={styles.chatUserInfoImg}/>
+            <Image 
+              source={{ uri: picture }} 
+              style={styles.chatUserInfoImg}
+            />
             <View style={styles.chatUserInfoDiv}>
-              <Text style={styles.chatUserInfoUserName}>{userName}</Text>
-              <Text style={styles.chatUserInfoUserWasOnline}>{wasOnline}</Text>
+              <Text style={styles.chatUserInfoUserName}>{displayName}</Text>
+              <Text style={styles.chatUserInfoUserWasOnline}>{activityTime.toString()}</Text>
             </View>
           </View>
-        <Button title='branch'></Button>
+          <HeaderBranchButton />
+        </View>
       </View>
     </HeaderContainer>
   );
 }
 
-export default DialogueHeader;
+export default connect(null)(DialogueHeader);

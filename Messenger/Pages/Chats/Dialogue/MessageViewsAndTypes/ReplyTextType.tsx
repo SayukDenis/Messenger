@@ -1,25 +1,30 @@
 import { View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
-import { MutableRefObject, useState, memo, useCallback, useRef, useEffect } from 'react'
-import {Message, messages} from '../tmpdata';
+import { MutableRefObject, memo, useCallback, useEffect, useRef, useState, } from 'react';
 import { styles } from './Styles/ReplyTextType';
-import handlePress from './DefaultTextType';
 import React from 'react';
+import { MessageProps } from '../GeneralInterfaces/IMessage';
+import User from '../../../../dao/Models/User';
+import { wrapText } from './HelperFunctions/wrapText';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 interface ReplyTextType {
-  messages:Message[];
-  message:Message;
-  setMessageMenuVisible:(arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
-  id:number;
-  scrollView:MutableRefObject<any>;
-  cordsY:any;
+  messages: MessageProps[];
+  message: MessageProps;
+  setMessageMenuVisible: (arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
+  id: number;
+  scrollView: MutableRefObject<any>;
+  cordsY: any;
+  author: User;
 }
 
-let size = [];
-const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrollView, cordsY}:ReplyTextType) => {
+let size:any[] = [];
 
-  const onLayout = (event) => {
+const FONT_SIZE = 10;
+const CHARS_PER_LINE = Math.round(width*0.65 / FONT_SIZE);
+const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author}:ReplyTextType) => {
+
+  const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
     size = [...size, { ID: id, layout: { width, height }}];
   };
@@ -42,32 +47,71 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
   }, []);
 
   const handleLinkTo = useCallback((messageID:any) => {
-    const y = cordsY[--messageID][0] - ((height*0.88)/2-cordsY[messageID][1]/2);
-    scrollView.current.scrollTo({y, animated:true});
+    scrollView.current.scrollToIndex({ index: messages.length - messageID, animated: true, viewPosition: 0.5 });
   }, []);
-  
-  const replyMessage = messages.find(m => m.id === message.replyMessageID);
+ 
+  const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
 
+
+
+  const onScrollEndDrag = (event:any) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    const contentWidth = event.nativeEvent.contentSize.width;
+    const scrollViewWidth = event.nativeEvent.layoutMeasurement.width;
+
+    if (Math.round(contentOffsetX + scrollViewWidth) >= Math.round(contentWidth)) {
+      scrollViewRef.current!.scrollTo({y:0,animated:true})
+      setMessageMenuVisible(handlePress(null), false);
+    }
+  };
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  interface coordProps {
+    locationX_In: number;
+    locationY_In: number;
+  }
+  const [pressCoordinations, setPressCoordinations] = useState({} as coordProps);
   return (
     <ScrollView 
       horizontal={true} 
+      ref={scrollViewRef}
       alwaysBounceHorizontal={false} 
       pagingEnabled 
+      bounces={false}
+      overScrollMode={'never'}
       showsHorizontalScrollIndicator={false}
       style={styles.swipeableContainer}
-      onScrollEndDrag={() => setMessageMenuVisible(handlePress(null), false)}
+      onScrollEndDrag={onScrollEndDrag}
     >
-      <View style={styles.replyContainer}>
-        <View style={styles.innerReplyContainer}>
-          <Text style={[styles.replyUserNameFont, message.isUser&&{ alignSelf: 'flex-end' }]}>
-            {message.isUser?'You':'Denis'}
+      <View style={styles.replyContainer} >
+        <TouchableOpacity 
+          style={styles.innerReplyContainer}
+          activeOpacity={1}
+          onPressIn={(event) => {
+            const { locationX, locationY } = event.nativeEvent;
+            setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
+          }}
+          onPressOut={(event) => {
+            const { locationX, locationY } = event.nativeEvent;
+            const { locationX_In, locationY_In } = pressCoordinations;
+            
+            if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3)
+              setMessageMenuVisible(handlePress(event), true)
+          }} 
+        >
+          <Text style={[styles.replyUserNameFont, message.author.userId==author.userId&&{ alignSelf: 'flex-end' }]}>
+            {message.author.userId==author.userId?'You':'Denis'}
           </Text>
-          {message.isUser?
+          {message.author.userId==author.userId?
           <View style={styles.replyMessageContainer}>
-            <TouchableOpacity activeOpacity={1} onPress={() => {handleLinkTo(message!.replyMessageID)}}>
+            <TouchableOpacity 
+              activeOpacity={1} 
+              onPress={() => {handleLinkTo(message!.messageResponseId)}}
+              hitSlop={{ top: 10 }}
+            >
               <View style={[styles.messageTypeTextUser, styles.replyMessagePos]}>
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!.text.length>=20?replyMessage!.text.replace('\n', '').slice(0,20)+'...':replyMessage!.text}
+                  {replyMessage!=undefined&&replyMessage?.content?.length>=20?replyMessage?.content.replace('\n', '').slice(0,20)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -79,33 +123,43 @@ const replyTextType = memo(({messages, message, setMessageMenuVisible, id, scrol
             <TouchableOpacity style={{flex:1}} activeOpacity={1}>
               <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos]}>
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!.text.length>=20?replyMessage!.text.replace('\n', '').slice(0,20)+'...':replyMessage!.text}
+                  {replyMessage!=undefined&&replyMessage?.content.length>=20?replyMessage?.content.replace('\n', '').slice(0,20)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>
           </View>}
           <TouchableOpacity 
             activeOpacity={1} 
-            onPress={(event) => {setMessageMenuVisible(handlePress(event), true);}}
+            onPressIn={(event) => {
+              const { locationX, locationY } = event.nativeEvent;
+              setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
+            }}
+            onPressOut={(event) => {
+              const { locationX, locationY } = event.nativeEvent;
+              const { locationX_In, locationY_In } = pressCoordinations;
+              
+              if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3)
+                setMessageMenuVisible(handlePress(event), true)
+            }}
           >
             <View 
               onLayout={(event) => onLayout(event)}
-              style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}]}
+              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginVertical:5}, message?.content.length>CHARS_PER_LINE&&styles.longMessage]}
             >
-              <Text>{message.text}</Text>
-              <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                {message.edited?'edited ':''}
-                {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
+              <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
+              <Text style={message?.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+                {message.isEdited?'edited ':''}
+                {new Date(message.sendingTime).getHours().toString().padStart(2, '0')}:
+                {new Date(message.sendingTime).getMinutes().toString().padStart(2, '0')}
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={{width:50, backgroundColor:'pink'}}>
         <Text>Reply</Text>
       </View>
     </ScrollView>
-)});
+)};
 
-export default replyTextType;
+export default memo(replyTextType);

@@ -2,8 +2,9 @@ import { View, Text, Modal, TouchableOpacity, Dimensions,  } from 'react-native'
 import React, { MutableRefObject, useEffect } from 'react';
 import { DeleteMessageModalProps } from './interfaces/IDeleteMessageModal';
 import { styles } from './Styles/DeleteMessageModal';
+import { connect } from 'react-redux';
 
-const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, message}:DeleteMessageModalProps) => {
+const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, message, author}:DeleteMessageModalProps) => {
   useEffect(()=> {
     
   }, [setDeletingHandler]);
@@ -13,16 +14,16 @@ const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, messag
         <View style={styles.mainModalMessageContainer}>
           <View style={styles.modalMessageContainer}>
             <Text style={styles.modalMessageText}>
-              Do you want to delete this message? {message?.isUser||'It will be deleted only for you.'}
+              Do you want to delete this message? {message?.author.userId==author.userId||'It will be deleted only for you.'}
             </Text>
           </View>
           {message!=undefined?(
               <View style={styles.modalButtonsContainer}>
                 <TouchableOpacity activeOpacity={1} style={styles.modalLeftButtonContainer} onPress={onDeletePress}>
-                  <Text style={styles.modalButtonText}>{message.isUser?'For me':'Agree'}</Text>
+                  <Text style={styles.modalButtonText}>{message.author.userId==author.userId?'For me':'Agree'}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.modalRightButtonContainer} onPress={message.isUser?onDeletePress:setDeletingHandler}>
-                  <Text style={styles.modalButtonText}>{message.isUser?'For everyone':'Disagree'}</Text>
+                <TouchableOpacity activeOpacity={1} style={styles.modalRightButtonContainer} onPress={message.author.userId==author.userId?onDeletePress:setDeletingHandler}>
+                  <Text style={styles.modalButtonText}>{message.author.userId==author.userId?'For everyone':'Disagree'}</Text>
                 </TouchableOpacity>
               </View>
             ):null}
@@ -32,4 +33,4 @@ const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, messag
   )
 }
 
-export default DeleteMessageModal
+export default connect(null)(DeleteMessageModal)

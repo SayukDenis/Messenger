@@ -1,15 +1,18 @@
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 import DialogueHeader from './components/DialogueHeader';
-import { DialogueMessages } from './components/DialogueMessages';
+import DialogueMessages from './components/DialogueMessages';
 import DialogueFooter from './components/DialogueFooter';
 import MessageMenu from './components/MessageMenu';
 import styles from './DialogueStyle';
-import { messages, Message } from './tmpdata';
 import React from 'react';
 import DeleteMessageModal from './components/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
+import { MessageProps } from './GeneralInterfaces/IMessage';
+import { connect, useSelector } from 'react-redux';
+import SelfProfile from '../../../dao/Models/SelfProfile';
+import User from '../../../dao/Models/User';
 
 interface Layout {
   ID: number;
@@ -21,16 +24,50 @@ interface Layout {
 
 let coord:Layout;
 let messageID:number=-1;
-let msgs:Message[];
+let msgs:MessageProps[];
 
-
+const user:SelfProfile = {
+  userId: 0,
+  name: 'Denis',
+  numberPhone: '',
+  nickname: 'Denis',
+  description: '',
+  linkToPhoto: '',
+  password: 'asdoapwd',
+  email: 'dopawdjpa',
+  timeLastEntry: new Date(),
+  tabs: new Array(),
+  schema: {} as any
+}
 
 const Dialogue = ({ navigation, route }:any) => {
-  console.log((route.params.chat as DialogueModel.default).users[1].name)
   const dialogue:DialogueModel.default=route.params.chat as DialogueModel.default;
+
+  // const user = useSelector((state: any) => state.selfProfileUser);
+  // console.log('userId', user.userId);
+
+  // console.log(dialogue.messages.map((m, index) => {
+  //   const mes = {
+  //     messageId: m.messageId,
+  //     author: m.author.userId,
+  //     content: m.content,
+  //     sendingTime: m.sendingTime,
+  //     messageType: m.messageType,
+  //     messageResponseId: m.messageResponseId,
+  //     messageForwardId: m.messageForwardId,
+  //     isEdited: m.isEdited,
+  //     isDeleted: m.isDeleted,
+  //     reactionOnMessage: m.reactionOnMessage,
+  //   }
+  //   return JSON.stringify(mes, null, 2)
+  // }))
+
   const [messageMenuVisible, setMessageMenuVisible] = useState(false);
   const [messageMenuVisisbleAppearence, setMessageMenuVisisbleAppearence] = useState(false);
-  const [listOfMessages, setListOfMessages] = useState(messages);
+  const [listOfMessages, setListOfMessages] = useState([] as MessageProps[]);
+  useEffect(() => {
+    setListOfMessages(dialogue.messages.reverse());
+  }, [])
   
   const [isReply, setIsReply] = useState(false);
   const [replyMessage, setReplyMessage] = useState({} as any);
@@ -42,20 +79,22 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const setReplyMessageHandler = () => {
     if(!isReply) {
-      setReplyMessage(msgs.find(m => m.id==messageID));
-      setEditMessage({} as Message);
+      setReplyMessage(msgs.find(m => m.messageId==messageID));
+      setEditMessage({} as MessageProps);
     }
     else
-      setReplyMessage({} as Message);
+      setReplyMessage({} as MessageProps);
   }
 
   const sendMessageOrCancelReplyAndEditHandler = useCallback(() => {
     setIsEdit(false);
     setIsReply(false);
+    setEditMessage({} as MessageProps);
+    setReplyMessage({} as MessageProps);
   },[]);
 
   const [isEdit, setIsEdit] = useState(false);
-  const [editMessage, setEditMessage] = useState({} as Message);
+  const [editMessage, setEditMessage] = useState({} as MessageProps);
 
   const pressEditButton = () => {
     setIsEdit(!isEdit);
@@ -64,11 +103,11 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const setEditMessageHandler = () => {
     if(!isEdit) {
-      setEditMessage(msgs.find(m => m.id==messageID)!);
-      setReplyMessage({} as Message);
+      setEditMessage(msgs.find(m => m.messageId==messageID)!);
+      setReplyMessage({} as MessageProps);
     }
     else
-      setEditMessage({} as Message);
+      setEditMessage({} as MessageProps);
   }
 
   const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed: boolean) => {
@@ -83,12 +122,23 @@ const Dialogue = ({ navigation, route }:any) => {
     }
   }, []);
 
-  const setMessages = useCallback((mes:Message) => {
-    if(isEdit) {
-      setListOfMessages([...listOfMessages]);
+  // asdad
+  const updateMessageContent = (messageId: number|undefined, newContent: string|undefined) => {
+    if(messageId&&newContent)
+      setListOfMessages(prevMessages =>
+        prevMessages.map(message =>
+          message.messageId === messageId ? { ...message, content: newContent } : message
+        )
+      );
+  };
+
+  const setMessages = useCallback((mes:MessageProps) => {
+    if(mes.messageId){
+      setListOfMessages([mes, ...listOfMessages]);
     }
-    else {
-      setListOfMessages([...listOfMessages, mes]);
+    else{
+      const m = msgs.find(m => m.messageId==messageID);
+      updateMessageContent(m?.messageId, m?.content)
     }
   }, [listOfMessages]);
 
@@ -104,7 +154,7 @@ const Dialogue = ({ navigation, route }:any) => {
   // якогось хуя useRef не працює якщо useState з boolean
   const onDeletePress = () => {
     console.log('hohnpjopo');
-    setListOfMessages([...listOfMessages.filter(m => m.id!=messageID)]);
+    setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
     setDeleting(!deleting);
   }
 
@@ -113,12 +163,13 @@ const Dialogue = ({ navigation, route }:any) => {
     setMessageMenuVisisbleAppearence(false);
   }, []);
   
-  const mes = listOfMessages.find(m => m.id==messageID);
+  console.log('djapowjdpoa');
+  const mes = listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>
         <BackGroundGradinetView>
           <MessageMenu 
-            isUser={mes!=undefined?mes.isUser:false} 
+            isUser={mes!=undefined&&mes.author.userId===user?.userId} 
             isVisible={messageMenuVisible} 
             onOverlayPress={handleMessageMenuPress} 
             coord={coord} 
@@ -126,7 +177,12 @@ const Dialogue = ({ navigation, route }:any) => {
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
           />
-          <DialogueHeader />
+          <DialogueHeader 
+            navigation={navigation} 
+            picture={dialogue.linkToPhoto}
+            displayName={dialogue.users[1].name}
+            activityTime={'Online recently'} // Last activity from user
+          />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
             messageMenuVisisbleAppearence={messageMenuVisisbleAppearence} 
@@ -134,11 +190,13 @@ const Dialogue = ({ navigation, route }:any) => {
             listOfMessages={listOfMessages} 
             isReply={isReply} 
             isEdit={isEdit}
+            author={user as User}
           />
           <DialogueFooter 
             messages={listOfMessages} 
             setMessages={setMessages} 
             isReply={isReply} 
+            author={user}
             messageID={messageID} 
             isEdit={isEdit} 
             editMessage={editMessage} 
@@ -150,10 +208,11 @@ const Dialogue = ({ navigation, route }:any) => {
             setDeletingHandler={setDeletingHandler} 
             onDeletePress={onDeletePress} 
             message={mes} 
+            author={user as User}
           />
         </BackGroundGradinetView>
       </View>
   );
 };
 
-export default Dialogue;
+export default connect(null)(Dialogue);

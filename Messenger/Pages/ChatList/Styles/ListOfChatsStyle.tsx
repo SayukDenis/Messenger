@@ -1,14 +1,10 @@
-import { StyleSheet,Platform,StatusBar, Dimensions } from "react-native";
-import Constants from 'expo-constants';
+import { StyleSheet, Dimensions } from "react-native";
 import { heightOfHeader } from "../Constants/ConstantsForChatlist";
-
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const listOfChatsStyle = StyleSheet.create({
   container: {
-    //backgroundColor:"red",
     marginTop: screenHeight * 0.05,
   },
-
   helpContainer: {
     backgroundColor: "blue",
     opacity: 0,
@@ -103,7 +99,7 @@ export const listOfChatsStyle = StyleSheet.create({
   },
   timeStyle: {
     alignSelf: "flex-end",
-    fontSize: screenHeight * 0.014,
+    fontSize: 13,
     color: "#2B1D1D",
     marginRight: screenWidth * 0.01,
     fontWeight: "500",
@@ -116,33 +112,14 @@ export const listOfChatsStyle = StyleSheet.create({
     marginRight: screenWidth * 0.01,
   },
   countOfUnreadMessagescontainer: {
-    //backgroundColor: "#FFFFFF",
-    textAlign: "center",
     borderRadius: 100,
-    
-    maxWidth: "100%",
     justifyContent: "center",
-    overflow:"hidden"
+    overflow:"hidden",
+   
     //opacity:0.95
   },
-  oneCharcontainer: {
-    width: screenHeight * 0.018,
-    aspectRatio:1,
-    //alignSelf:"flex-end"
-    paddingTop:0,
-    
-  },
-  twoCharcontainer: {
-    width: screenHeight * 0.03,
-  },
-  threeCharcontainer: {
-    width: screenHeight * 0.04,
-  },
-  fourCharcontainer: {
-    width: screenHeight * 0.05,
-  },
   countOfUnReadMessagesContent: {
-    fontSize: screenHeight * 0.013,
+  
     color: "#2B1D1D",
     alignSelf: "center",
     //opacity:0.95

@@ -4,23 +4,36 @@ import ContactsSvg from "../SVG/ContactsSvg";
 import AddFolderSvg from "../SVG/AddFolderSvg";
 import WriteMessageSvg from "../SVG/WriteMessageSvg";
 import UserIconSvg from "../SVG/UserIconSvg";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const RightContainer = ({ navigation }:any) => {
+import { screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
+import { setBooleanForTouchOnHamburgerInHeaderChatList } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+
+const RightContainer = ({ navigation }: any) => {
+  const dispatch = useDispatch();
+  const PressForDispatch = () => {
+    setTimeout(()=>
+    dispatch(
+      setBooleanForTouchOnHamburgerInHeaderChatList(false)
+    ),350)
+  };
   const kefForSizeOfSvg: number = 0.073;
   const PressOnUserIcon = useRef(() => {
     navigation.navigate("NavigationForSettings");
-  });
-  const PressOnContactsIcon=useRef(()=>{
+    PressForDispatch()
+  })
+  const PressOnContactsIcon = useRef(() => {
     navigation.navigate("ContactsPage");
-  })
-  const PressaOnAddFolderIcon=useRef(()=>{
+    PressForDispatch()
+  });
+  const PressaOnAddFolderIcon = useRef(() => {
     navigation.navigate("Chat folders");
-  })
-  const PressOnWriteMessage=useRef(()=>{
+    PressForDispatch()
+  });
+  const PressOnWriteMessage = useRef(() => {
     navigation.navigate("Create channel and group or write message");
-  })
+    PressForDispatch()
+  });
   return (
     <Animated.View
       style={[
@@ -37,19 +50,28 @@ const RightContainer = ({ navigation }:any) => {
           justifyContent: "center",
         }}
       >
-        <TouchableOpacity  onPress={PressOnContactsIcon.current} style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}>
+        <TouchableOpacity
+          onPress={PressOnContactsIcon.current}
+          style={{ alignSelf: "center", marginLeft: screenWidth * 0 }}
+        >
           <ContactsSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }} onPress={PressaOnAddFolderIcon.current}>
+        <TouchableOpacity
+          style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}
+          onPress={PressaOnAddFolderIcon.current}
+        >
           <AddFolderSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={PressOnWriteMessage.current} style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}>
+        <TouchableOpacity
+          onPress={PressOnWriteMessage.current}
+          style={{ alignSelf: "center", marginLeft: screenWidth * 0.05 }}
+        >
           <WriteMessageSvg
             width={screenWidth * kefForSizeOfSvg}
             height={screenHeight * kefForSizeOfSvg}

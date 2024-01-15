@@ -55,6 +55,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({ currentFolder,navigation })
         }
         showsVerticalScrollIndicator={false}
         windowSize={20}
+        initialNumToRender={10}
       />
     </View>
   );

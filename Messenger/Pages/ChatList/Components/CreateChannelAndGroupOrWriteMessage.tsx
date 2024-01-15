@@ -11,7 +11,7 @@ interface CreateChannelAndGroupOrWriteMessageProps{
 const CreateChannelAndGroupOrWriteMessage:React.FC<CreateChannelAndGroupOrWriteMessageProps>=({navigation})=>{
     return <BackGroundGradientView>
         <HeaderForCreateChannelAndGroupOrWriteMessage navigation={navigation}/>
-        <MainForCreateChannelAngGroupOrWriteMessage/>
+        <MainForCreateChannelAngGroupOrWriteMessage navigation={navigation}/>
     </BackGroundGradientView>
 }
 export default CreateChannelAndGroupOrWriteMessage

@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 
 const StyleChatFolderCenter = StyleSheet.create({
     articleFolderTextStyle:{
-        marginTop:'3%',
+        marginTop:'8%',
         marginLeft:"3%"
     },
     newFodlerButton:{
@@ -14,14 +14,15 @@ const StyleChatFolderCenter = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-around',
         width:'30%',
-        height:windowHeight*0.05,
+        height:windowHeight*0.04,
         marginLeft:"5%",
         marginTop:'3%',
-        backgroundColor:'#DAB671',
-        borderWidth:0.4,
-        borderBottomWidth:0,
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
+        backgroundColor:'white',
+        borderTopLeftRadius:17,
+        borderTopRightRadius:17,
+        borderBottomLeftRadius:1,
+        borderBottomRightRadius:1,
+        opacity:0.13,
     },
     foldersButt:{
         display:'flex',
@@ -36,12 +37,13 @@ const StyleChatFolderCenter = StyleSheet.create({
         borderRadius:10,
     },
     stylechatFolderButtonText:{
-        color:"#5C4081",
         paddingLeft:'3%',
         paddingRight:'3%'
     },
     styleChatFolderText:{
-        color:"#5C4081"
+        color:"black",
+        paddingLeft:"4%",
+        fontSize:15
     }
 });
 
