@@ -1,11 +1,8 @@
 import LogWriter from '../LogWriter';
-import DataBase from '../Database';
 import { SQLiteDatabase } from 'expo-sqlite';
-import { executeSql } from './createTables'
+import DataBase from '../Database';
 
-export async function createTriggers() {
-
-    const db = await (DataBase.getInstance().then(x => x.openDatabase()));
+export async function createTriggers(database: DataBase) {
 
     const increment_numberInChat_messages =
         `CREATE TRIGGER IF NOT EXISTS increment_numberInChat
@@ -22,6 +19,6 @@ export async function createTriggers() {
         END;`
 
     //create all triggers:
-    await executeSql(db, increment_numberInChat_messages);
+    await database.executeSqlAsync(increment_numberInChat_messages);
 }
 

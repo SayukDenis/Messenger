@@ -177,11 +177,11 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
     group.linkToPhoto = images[getRandomNumber(images.length)];
 
     if (Math.random() < 0.4) {
-      group.adminUser.push(selfUser);
+      group.adminUsers.push(selfUser);
       group.title = "Admin Group" + i;
     }
     group.users.push(selfUser);
-    group.adminUser.push(...getRandomElementsFromArray<User>(users));
+    group.adminUsers.push(...getRandomElementsFromArray<User>(users));
     group.users.push(...getRandomElementsFromArray<User>(users));
     addMessages(group, 100, users, messageGroupsAndChannels);
 
@@ -203,13 +203,13 @@ function createChannel(count: number, selfUser: SelfProfile, users: User[]): Cha
     channel.channelId = idChannelToCreate++;
 
     if (Math.random() < 0.4) {
-      channel.adminUser.push(selfUser);
+      channel.adminUsers.push(selfUser);
       channel.title = "Admin Channel " + i;
     }
     channel.linkToPhoto = images[getRandomNumber(images.length)];
     channel.users.push(selfUser);
     addMessages(channel, 100, users, messageGroupsAndChannels);
-    channel.adminUser.push(...getRandomElementsFromArray<User>(users));
+    channel.adminUsers.push(...getRandomElementsFromArray<User>(users));
     channel.users.push(...getRandomElementsFromArray<User>(users));
 
     if (Math.random() < 0.15) addBranch(getRandomNumber(5), channel);

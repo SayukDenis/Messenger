@@ -4,13 +4,25 @@ import Branch from './Branch';
 import ILastWatchedMessage from './ILastWatchedMessage';
 
 export default class Chat extends Model {
+    constructor(linkToPhoto?: string, messages?: Array<Message>, branches?: Array<Branch>,
+        pinnedMessage?: Array<Message>, pinnedMessageForAll?: Array<Message>,
+        lastWatchedMessage?: Array<ILastWatchedMessage>) {
+        super();
+
+        this.linkToPhoto = linkToPhoto ;
+        this.messages = messages ?? new Array;
+        this.branches = branches ?? new Array;
+        this.pinnedMessage = pinnedMessage ?? new Array;
+        this.pinnedMessageForAll = pinnedMessageForAll ?? new Array;
+        this.lastWatchedMessage = lastWatchedMessage ?? new Array;
+    }
     linkToPhoto?: string;
-    messages: Array<Message> = new Array;
-    branches: Array<Branch> = new Array;     
-    pinnedMessage: Array<Message> = new Array;
-    pinnedMessageForAll: Array<Message> = new Array;
+    messages: Array<Message>;
+    branches: Array<Branch>;
+    pinnedMessage: Array<Message>;
+    pinnedMessageForAll: Array<Message>;
     //last watched message of each User
-    lastWatchedMessage: Array<ILastWatchedMessage> = new Array;    
+    lastWatchedMessage: Array<ILastWatchedMessage>;
     //schema
     static schema = {
         name: 'chats',

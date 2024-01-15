@@ -15,7 +15,7 @@ import DataBase from '../Database';
 import { SQLiteDatabase } from 'expo-sqlite';
 
 
-export async function createTables() {
+export async function createTables(database: DataBase) {
   //add schemes of all classes
   initializeClasses();
   //create Sql code of each classes
@@ -25,29 +25,13 @@ export async function createTables() {
     LogWriter.log(`\n--Table: ${model[0]}\n${model[1]}\n`)
   LogWriter.log("\ndao_generate_main: End of main\n\n");
 
-  const database = await DataBase.getInstance().then(db =>db.openDatabase());
-
   //create all table in database 
   if (database)
     for (const model of models) {
-      await executeSql(database, model[1]);
+      await database.executeSqlAsync(model[1]);
       LogWriter.log(`Table "${model[0]}" was created`);
     }
-
 }
-
-export async function executeSql(database: SQLiteDatabase | undefined, sqlCode: string) {
-  if (database == undefined)
-    LogWriter.error('Error executing SQL: Database is undefined');
-  else {
-    await database.transactionAsync( async tx => {
-       await tx.executeSqlAsync(
-        sqlCode, undefined
-      );
-    });
-  }
-}
-
 function initializeClasses() {
   const creator = Creator.getInstance();
   creator.clean();

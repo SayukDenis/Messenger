@@ -4,17 +4,20 @@ import User from './User';
 
 
 export default class SelfProfile extends User {
-    constructor(name: string, password: string, numberPhone: string) {
-        super(name);
+    constructor(name: string, password: string, email?: string, timeLastEntry?: Date, tabs?: Array<Tab>, numberPhone?: string,
+        nickname?: string, description?: string, linkToPhoto?: string) {
+        super(name, numberPhone, nickname, description, linkToPhoto);
         this.password = password;
-        this.numberPhone = numberPhone;
+        this.email = email;
+        this.timeLastEntry = timeLastEntry;
+        this.tabs = tabs ?? new Array;
     }
     password!: string;
     //Additional
     email?: string;
     //Information about user
     timeLastEntry?: Date;
-    tabs: Array<Tab> = new Array();
+    tabs: Array<Tab>;
 
     static schema = {
         name: 'selfProfiles',

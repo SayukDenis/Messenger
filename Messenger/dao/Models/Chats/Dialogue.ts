@@ -7,10 +7,11 @@ import Role from './Role';
 import MainChat from './MainChat';
 
 export default class Dialogue extends MainChat {
-    constructor(firstUser: User, secondUser: User) {
-        super();
-        this.users.push(firstUser);
-        this.users.push(secondUser);
+
+    constructor(firstUser: User, secondUser: User, users?: Array<User>, roles?: Array<Role>, linkToPhoto?: string, messages?: Array<Message>, branches?: Array<Branch>,
+        pinnedMessage?: Array<Message>, pinnedMessageForAll?: Array<Message>,
+        lastWatchedMessage?: Array<ILastWatchedMessage>) {
+        super([firstUser, secondUser], roles, linkToPhoto, messages, branches, pinnedMessage, pinnedMessageForAll, lastWatchedMessage);
     }
     dialogueId?: number;
     //schema
@@ -19,7 +20,7 @@ export default class Dialogue extends MainChat {
         properties: {
             dialogueId: 'integer',
             users: { type: 'list', objectType: User },
-            messages: { type: 'list', objectType: Message },          
+            messages: { type: 'list', objectType: Message },
             pinnedMessage: { type: 'list', objectType: Message },
             pinnedMessageForAll: { type: 'list', objectType: Message },
             branches: { type: 'list', objectType: Branch },

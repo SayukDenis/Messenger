@@ -4,13 +4,23 @@ import IUserReaction from './IUserReaction ';
 import Model from './Model';
 
 export default class Message extends Model {
-    constructor(author: User, content: string, sendingTime: Date, massageType: EMessageType) {
+    constructor(author: User, content: string, sendingTime: Date, messageType: EMessageType,
+        numberInChat: number = 0, messageResponseId?: number, messageForwardId?: number,
+        isEdited: boolean = false, isDeleted: boolean = false,
+        reactionOnMessage?: Array<IUserReaction>) {
         super();
         this.author = author;
         this.content = content;
         this.sendingTime = sendingTime;
-        this.messageType = massageType;
+        this.messageType = messageType;
+        this.numberInChat = numberInChat;
+        this.messageResponseId = messageResponseId;
+        this.messageForwardId = messageForwardId;
+        this.isEdited = isEdited;
+        this.isDeleted = isDeleted;
+        this.reactionOnMessage = reactionOnMessage ?? new Array;
     }
+
     messageId?: number;
     author!: User;
     //Information about message
@@ -21,9 +31,9 @@ export default class Message extends Model {
     //
     messageResponseId?: number;
     messageForwardId?: number;
-    isEdited: boolean = false;
-    isDeleted: boolean = false;
-    reactionOnMessage: Array<IUserReaction> = new Array;
+    isEdited: boolean;
+    isDeleted: boolean;
+    reactionOnMessage: Array<IUserReaction>;
     //scheme
     static schema = {
         name: 'messages',

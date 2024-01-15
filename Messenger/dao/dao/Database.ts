@@ -37,7 +37,7 @@ export default class DataBase {
         return this.instance;
     }
 
-    public async openDatabase() {
+    public async openDatabaseAsync() {
         try {
             const config = await ReadConfigFile();
             if (config) {
@@ -52,7 +52,7 @@ export default class DataBase {
         }
     }
 
-    public async dropDatabase(): Promise<boolean> {
+    public async dropDatabaseAsync(): Promise<boolean> {
         try {
             const config = await ReadConfigFile();
             if (config) {
@@ -71,20 +71,21 @@ export default class DataBase {
         }
     }
 
-    public async createDatabase(dropDatabase = false) {
+    public async createDatabaseAsync(dropDatabase = false) {
         if (dropDatabase) {
-            const result = await this.dropDatabase();
+            const result = await this.dropDatabaseAsync();
             if (!result)
-            LogWriter.error('Error dropping database');
+                LogWriter.error('Error dropping database');
         }
+        const db = await DataBase.getInstance()
 
-        await createTables();
-        await createTriggers();
+        await createTables(db);
+        await createTriggers(db);
     }
 
-    public async dropTables(): Promise<boolean> {
+    public async dropTablesAsync(): Promise<boolean> {
         try {
-            const db = await this.openDatabase();
+            const db = await this.openDatabaseAsync();
             db?.transaction(tx => {
                 tx.executeSql('SELECT name FROM sqlite_master WHERE type="table"', [], (tx, results) => {
                     const len = results.rows.length;
@@ -98,6 +99,30 @@ export default class DataBase {
         } catch (error) {
             LogWriter.error(`Error dropping tables: ${error}`);
             return false;
+        }
+    }
+
+    public async executeSqlAsync(sqlCode: string) {
+        if (this.database == undefined)
+            this.openDatabaseAsync();
+        else {
+            await this.database.transactionAsync(async tx => {
+                await tx.executeSqlAsync(
+                    sqlCode, undefined
+                );
+            });
+        }
+    }
+
+    public executeSql(sqlCode: string) {
+        if (this.database == undefined)
+            this.openDatabaseAsync();
+        else {
+            this.database.transaction(async tx => {
+                tx.executeSql(
+                    sqlCode, undefined
+                );
+            });
         }
     }
 
