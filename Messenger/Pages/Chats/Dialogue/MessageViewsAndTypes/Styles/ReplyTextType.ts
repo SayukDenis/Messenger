@@ -11,11 +11,10 @@ export const styles = StyleSheet.create({
   replyContainer: {
     display: 'flex',
     flexDirection: 'column',
-    width: width,
+    width: width - 5,
   },
   innerReplyContainer: {
     alignSelf: 'stretch',
-    maxWidth: '100%',
     marginRight:10,
     marginLeft:10,
   },

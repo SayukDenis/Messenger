@@ -6,6 +6,10 @@ import { MessageProps } from '../GeneralInterfaces/IMessage';
 import User from '../../../../dao/Models/User';
 import { wrapText } from './HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
+import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
+import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
+import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 
 const {width, height} = Dimensions.get('window');
 
@@ -14,15 +18,14 @@ interface DefaultTextMessageProps {
   setMessageMenuVisible:(arg0: {ID:number, componentPageX:number, componentPageY:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
   id:number;
   author: User;
+  userMessageLastWatched: ILastWatchedMessage | undefined;
 }
 
 let size:any[] = [];
 
-let measures = 0;
-
 const FONT_SIZE = 14 * PixelRatio.getFontScale();
 const CHARS_PER_LINE = Math.round(width*1 / FONT_SIZE);
-const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTextMessageProps) => {
+const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessageLastWatched }:DefaultTextMessageProps) => {
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -33,7 +36,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTe
     return new Promise((resolve) => {
       if (componentRef.current) {
         componentRef.current.measure(
-          async (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+          async (pageX: number, pageY: number) => {
             resolve({ X: pageX, Y: pageY });
           }
         );
@@ -135,12 +138,15 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author}:DefaultTe
                 {message.sendingTime.getHours().toString().padStart(2, '0')}:
                 {message.sendingTime.getMinutes().toString().padStart(2, '0')}
               </Text>
-              {/* Add 'watched' indicator */}
             </View> 
           </View>
+          { message.author.userId==author.userId && 
+            <View style={{ position: 'absolute', right: 0, bottom: 10 , marginRight: -2.5 }}>
+              { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+            </View> }
         </View>
-        <View style={{width:50, backgroundColor:'pink'}}>
-          <Text>Reply</Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center', width: 55, paddingRight: 10 }}>
+          <MessageItemSwipeToReplyIcon />
         </View>
       </TouchableOpacity>
     </ScrollView>

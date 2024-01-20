@@ -2,7 +2,6 @@ import { View, Text, Dimensions, PixelRatio } from 'react-native';
 import { styles } from './../MessageViewsAndTypes/Styles/DefaultTextType';
 import React from 'react';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
-import User from '../../../../dao/Models/User';
 import { wrapText } from './../MessageViewsAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 

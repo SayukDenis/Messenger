@@ -13,6 +13,7 @@ import { MessageProps } from './GeneralInterfaces/IMessage';
 import { connect, useSelector } from 'react-redux';
 import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
+import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 
 interface Layout {
   ID: number;
@@ -44,12 +45,20 @@ const user:SelfProfile = {
   schema: {} as any
 }
 
+// const user:SelfProfile = useSelector((state: any) => state.selfProfileUser);
+
+let authorMessageLastWatched:ILastWatchedMessage | undefined;
+let userMessageLastWatched:ILastWatchedMessage | undefined;
+let dialogue:DialogueModel.default;
 const Dialogue = ({ navigation, route }:any) => {
-  const dialogue:DialogueModel.default=route.params.chat as DialogueModel.default;
+  useEffect(() => {
+  }, [])
+  dialogue = route.params.chat as DialogueModel.default;
+  authorMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
+  userMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
 
   const [messageID, setMessageID] = useState(-1);
 
-  // const user = useSelector((state: any) => state.selfProfileUser);
   // console.log('userId', user.userId);
 
   // console.log(dialogue.messages.map((m, index) => {
@@ -217,6 +226,8 @@ const Dialogue = ({ navigation, route }:any) => {
             isReply={isReply} 
             isEdit={isEdit}
             author={user as User}
+            userMessageLastWatched={userMessageLastWatched}
+            authorMessageLastWatched={authorMessageLastWatched}
           />
           <DialogueFooter 
             messages={listOfMessages} 

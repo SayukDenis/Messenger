@@ -11,11 +11,11 @@ import MessageItem from './MessageItem';
 
 const { height, width } = Dimensions.get('screen');
 
-const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit, author }:DialogueMessagesProps) => {
-  const scrollViewRef = useRef(null);
+const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched }:DialogueMessagesProps) => {
+  const flatListRef = useRef(null);
   useEffect(() => {
-    if (scrollViewRef.current) {
-      (scrollViewRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
+    if (flatListRef.current) {
+      (flatListRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
     }
   }, [listOfMessages]);
   
@@ -77,11 +77,12 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
       item={item}
       listOfMessages={listOfMessages}
       setMessageMenuVisible={setMessageMenuVisible}
-      scrollViewRef={scrollViewRef}
+      scrollViewRef={flatListRef}
       coordsY={coordsY}
       author={author}
       messageID={messageID}
       setCoordsY={setCoordsYHandler}
+      userMessageLastWatched={userMessageLastWatched}
     />);
   const memoizedItem = useMemo(() => renderItem, [listOfMessages]);
 
@@ -98,7 +99,7 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
   return(
     <Animated.View style={[styles.mainContainer, { height: screenHeight * 0.94 + (checkForSoftMenuBar()?insets.top:0), zIndex:0, transform: [{ translateY: keyboardHeight }] }]}>
       <FlatList
-        ref={scrollViewRef}
+        ref={flatListRef}
         showsVerticalScrollIndicator={false}
         style={[styles.dialogueChat, { zIndex: 3 }]}
         data={listOfMessages}

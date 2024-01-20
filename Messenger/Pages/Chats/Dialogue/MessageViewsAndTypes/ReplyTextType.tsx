@@ -6,6 +6,10 @@ import { MessageProps } from '../GeneralInterfaces/IMessage';
 import User from '../../../../dao/Models/User';
 import { wrapText } from './HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
+import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
+import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
+import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,13 +21,14 @@ interface ReplyTextType {
   scrollView: MutableRefObject<any>;
   cordsY: any;
   author: User;
+  userMessageLastWatched: ILastWatchedMessage | undefined;
 }
 
 let size:any[] = [];
 
 const FONT_SIZE = 14 * PixelRatio.getFontScale()
 const CHARS_PER_LINE = Math.round(height*0.5 / FONT_SIZE);
-const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author}:ReplyTextType) => {
+const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author, userMessageLastWatched}:ReplyTextType) => {
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -34,7 +39,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     return new Promise((resolve) => {
       if (componentRef.current) {
         componentRef.current.measure(
-          async (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+          async (pageX: number, pageY: number) => {
             resolve({ X: pageX, Y: pageY });
           }
         );
@@ -199,9 +204,13 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
             </View>
           </TouchableOpacity>
         </TouchableOpacity>
+        { message.author.userId==author.userId && 
+          <View style={{ position: 'absolute', right: 0, bottom: 5 , marginRight: -2.5 }}>
+            { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+          </View> }
       </View>
-      <View style={{width:50, backgroundColor:'pink'}}>
-        <Text>Reply</Text>
+      <View style={{ alignItems: 'center', justifyContent: 'center', width: 55 }}>
+        <MessageItemSwipeToReplyIcon />
       </View>
     </ScrollView>
 )};
