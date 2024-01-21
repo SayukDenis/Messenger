@@ -11,11 +11,10 @@ export const styles = StyleSheet.create({
   replyContainer: {
     display: 'flex',
     flexDirection: 'column',
-    width: width,
+    width: width - 5,
   },
   innerReplyContainer: {
     alignSelf: 'stretch',
-    maxWidth: '100%',
     marginRight:10,
     marginLeft:10,
   },
@@ -28,10 +27,10 @@ export const styles = StyleSheet.create({
     display:'flex', 
     flexDirection:'row', 
     maxHeight:'100%',
-    alignSelf:'flex-end'
+    alignSelf:'flex-end',
   },
   messageTypeTextUser: {
-    backgroundColor: 'rgb(102, 191, 255)',
+    //backgroundColor: 'rgb(102, 191, 255)',
     marginLeft: 'auto',
     fontSize: 10,
     display: 'flex',
@@ -60,7 +59,7 @@ export const styles = StyleSheet.create({
     overflow:'visible'
   },
   messageTypeTextNotUser: {
-    backgroundColor: 'rgb(231, 230, 228)',
+    //backgroundColor: 'rgb(231, 230, 228)',
     marginRight: 'auto',
     fontSize: 10,
     display: 'flex',

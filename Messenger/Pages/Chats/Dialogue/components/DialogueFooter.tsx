@@ -1,4 +1,4 @@
-import { View, TextInput, Alert, Platform, Dimensions, TouchableOpacity } from 'react-native';
+import { View, TextInput, Platform, TouchableOpacity, Animated, Keyboard, KeyboardEvent } from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
 import styles from './Styles/DialogueFooter';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
@@ -14,9 +14,9 @@ import { EMessageType } from '../../../../dao/Models/EMessageType';
 import User from '../../../../dao/Models/User';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
 import { connect } from 'react-redux';
+import { height } from '../DialogueConstants';
 
-const { height, width } = Dimensions.get('screen');
-
+const keyboardHeight = new Animated.Value(0);
 const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, messageID, author}:DialogueFooterProps) => {
 
   const [text, setText] = useState('');
@@ -37,8 +37,42 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     return 0;
   }
 
+
+  // In the future make animation using 'react-native-keyboard-controller' library
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (event: KeyboardEvent) => {
+        console.log('show');
+        Animated.timing(keyboardHeight, {
+          toValue: -event.endCoordinates.height,
+          duration: 200,
+          useNativeDriver: false, // Adjust based on your requirements
+        }).start();
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        console.log('hide');
+        Animated.timing(keyboardHeight, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false, // Adjust based on your requirements
+        }).start();
+      }
+    );
+
+    // Clean up the event listeners when the component is unmounted
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, [keyboardHeight]);
+
   return(
-    <View>
+    <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
       <ReplyAndEditMenu 
         isReply={isReply} 
         replyMessage={replyMessage} 
@@ -115,7 +149,7 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
           </View>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 })
 
@@ -126,7 +160,6 @@ const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSend
   const messageToEdit = messages.find(m => m.messageId == messageID);
 
   if(text == '') {
-    Alert.alert('dasda')
     onSendMessageOrCancelReplyAndEdit();
     return;
   }
