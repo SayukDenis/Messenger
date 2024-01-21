@@ -5,6 +5,7 @@ import { messageMenuProps } from "./interfaces/IMessageMenu";
 import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
+import Clipboard from '@react-native-clipboard/clipboard';
 import MessageMenuSelectButton from "../SVG/MessageMenuSelectButton";
 import MessageMenuDeleteButton from "../SVG/MessageMenuDeleteButton";
 import MessageMenuForwardButton from "../SVG/MessageMenuForwardButton";
@@ -27,7 +28,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -44,7 +45,10 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     },
     {
       text: 'Copy',
-      action: () => {},
+      action: () => {
+        //await Clipboard.setString(coord.message?.content!);
+        onCopyPress();
+      },
       svg: <MessageMenuCopyButton />
     },
     {

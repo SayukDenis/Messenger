@@ -3,9 +3,9 @@ import { MessageProps } from "../../GeneralInterfaces/IMessage";
 
 
 export interface messageMenuProps {
-  isVisible:boolean;
-  onOverlayPress:()=>void;
-  coord:{
+  isVisible: boolean;
+  onOverlayPress: () => void;
+  coord: {
     ID: number;
     componentPageX: number;
     componentPageY: number;
@@ -16,9 +16,10 @@ export interface messageMenuProps {
     message: MessageProps|undefined;
   };
   messages: MessageProps[];
-  onReplyPress:()=>void;
-  onEditPress:()=>void;
-  isUser:boolean;
-  onDeletePress:()=>void;
-  userMessageLastWatched: ILastWatchedMessage|undefined;
+  onReplyPress: () => void;
+  onEditPress: () => void;
+  onCopyPress: () => void;
+  isUser: boolean;
+  onDeletePress: () => void;
+  userMessageLastWatched: ILastWatchedMessage | undefined;
 }

@@ -139,6 +139,11 @@ const Dialogue = ({ navigation, route }:any) => {
   const handleMessageMenuPress = useCallback(() => {
     setMessageMenuVisible(false);
   }, []);
+
+  const [copy, setCopy] = useState(false);
+  const setCopyHandler = () => {
+    setCopy(!copy);
+  }
   
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
@@ -153,6 +158,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onReplyPress={replyHandler} 
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
+            onCopyPress={setCopyHandler}
             userMessageLastWatched={userMessageLastWatched}
           />
           <DialogueHeader 
@@ -182,6 +188,8 @@ const Dialogue = ({ navigation, route }:any) => {
             editMessage={editMessage} 
             replyMessage={isReply?msgs.find(m => m.messageId==messageIdForReplyAndEdit)!:{} as MessageProps} 
             onSendMessageOrCancelReplyAndEdit={sendMessageOrCancelReplyAndEditHandler} 
+            copyMessagePopUp={copy}
+            endCopyMessagePopUp={setCopyHandler}
           />
           <DeleteMessageModal 
             deleting={deleting} 

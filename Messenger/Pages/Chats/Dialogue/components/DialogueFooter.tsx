@@ -1,4 +1,4 @@
-import { View, TextInput, Platform, TouchableOpacity, Animated, Keyboard, KeyboardEvent } from 'react-native';
+import { View, TextInput, Platform, TouchableOpacity, Animated, Keyboard, KeyboardEvent, Text, EasingFunction, Easing } from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
 import styles from './Styles/DialogueFooter';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
@@ -15,9 +15,13 @@ import User from '../../../../dao/Models/User';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
 import { connect } from 'react-redux';
 import { height } from '../DialogueConstants';
+import DialogueFooterCopyIcon from '../SVG/DialogueFooterCopyIcon';
 
-const keyboardHeight = new Animated.Value(0);
-const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, messageID, author}:DialogueFooterProps) => {
+const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
+
+  const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
+  const [copyPopUpTranslate, setCopyPopUpTranslate] = useState(new Animated.Value(0));
+
 
   const [text, setText] = useState('');
   const [video, setVideo] = useState(true);
@@ -71,8 +75,47 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     };
   }, [keyboardHeight]);
 
+  const durationOfAnimation: number = 200;
+  const easing: EasingFunction = Easing.linear;
+  const copyPopUpPositionY = copyPopUpTranslate.interpolate({
+    inputRange: [0, 1],
+    outputRange: [screenHeight * 0.07, 0],
+  });
+  const animateOfCopyPopUp = Animated.timing(copyPopUpTranslate, {
+    toValue: 1, 
+    duration: durationOfAnimation, 
+    easing,
+    useNativeDriver: false,
+  });
+
+  const animate = () => {
+    Animated.sequence([
+      animateOfCopyPopUp,
+      Animated.delay(durationOfAnimation * 5),
+    ]).start(() => {
+      endCopyMessagePopUp();
+    });
+  }
+
+  useEffect(() => {
+    if(copyMessagePopUp) {
+      animate();
+    } else {
+      setCopyPopUpTranslate(new Animated.Value(0));
+    } 
+  }, [copyMessagePopUp])
+
   return(
     <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
+      { copyMessagePopUp &&
+        (<Animated.View style={{ position: 'absolute', bottom: screenHeight*0.03, width: screenWidth*0.9, alignSelf: 'center', transform: [{ translateY: copyPopUpPositionY }] }}>
+          <View style={{ backgroundColor: '#fff', flexDirection: 'row', paddingHorizontal: 20, paddingVertical: 10, alignItems: 'center', borderRadius: 9999,  }}>
+            <DialogueFooterCopyIcon />
+            <View style={{ width: 1, height: '140%', backgroundColor: 'black', marginHorizontal: 5 }} />
+            <Text>Message Copied</Text>
+          </View>
+        </Animated.View>)
+      }
       <ReplyAndEditMenu 
         isReply={isReply} 
         replyMessage={replyMessage} 
