@@ -17,7 +17,7 @@ export default function App() {
       <StatusBar translucent backgroundColor="transparent" />
       <Provider store={store}>
         <SafeAreaView style={{ flex: 1, backgroundColor: "blue" }}>
-          <Navigation />
+          <Look />
         </SafeAreaView>
       </Provider>
     </SafeAreaProvider>
