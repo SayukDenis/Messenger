@@ -41,10 +41,12 @@ export const setLayoutOfModeOfEmployment=(layoutOfModeOfEmployment:any)=>({
   type:"SET_LAYOUT_OF_MODE_OF_EMPLOYMENT",
   layoutOfModeOfEmployment
 })
+export const setPhotoForCreateGroupOrChannel=(photoForCreateGroupOrChannel:string)=>({
+  type:"SET_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL",
+  photoForCreateGroupOrChannel
+})
 
 export const SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL = "SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL";
-
-
 
 export const addUserForCreateGroupOrChannel = (user: User[]) => ({
   type: SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL,
