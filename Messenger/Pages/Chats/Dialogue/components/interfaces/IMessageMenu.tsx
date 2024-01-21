@@ -1,3 +1,4 @@
+import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
 import { MessageProps } from "../../GeneralInterfaces/IMessage";
 
 
@@ -19,4 +20,5 @@ export interface messageMenuProps {
   onEditPress:()=>void;
   isUser:boolean;
   onDeletePress:()=>void;
+  userMessageLastWatched: ILastWatchedMessage|undefined;
 }

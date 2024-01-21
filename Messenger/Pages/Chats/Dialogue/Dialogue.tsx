@@ -1,4 +1,4 @@
-import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { View } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 import DialogueHeader from './components/DialogueHeader';
 import DialogueMessages from './components/DialogueMessages';
@@ -10,25 +10,14 @@ import DeleteMessageModal from './components/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 import { MessageProps } from './GeneralInterfaces/IMessage';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
-
-interface Layout {
-  ID: number;
-  componentPageX: number;
-  componentPageY: number;
-  pageX: number;
-  pageY: number;
-  width: number;
-  height: number;  
-  message: MessageProps|undefined;
-}
+import { Layout } from './GeneralInterfaces/ILayout';
 
 let coord:Layout;
 let messageIdForReplyAndEdit:number;
-let msgForReply:MessageProps;
 let msgs:MessageProps[];
 
 const user:SelfProfile = {
@@ -58,24 +47,6 @@ const Dialogue = ({ navigation, route }:any) => {
   userMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
 
   const [messageID, setMessageID] = useState(-1);
-
-  // console.log('userId', user.userId);
-
-  // console.log(dialogue.messages.map((m, index) => {
-  //   const mes = {
-  //     messageId: m.messageId,
-  //     author: m.author.userId,
-  //     content: m.content,
-  //     sendingTime: m.sendingTime,
-  //     messageType: m.messageType,
-  //     messageResponseId: m.messageResponseId,
-  //     messageForwardId: m.messageForwardId,
-  //     isEdited: m.isEdited,
-  //     isDeleted: m.isDeleted,
-  //     reactionOnMessage: m.reactionOnMessage,
-  //   }
-  //   return JSON.stringify(mes, null, 2)
-  // }))
 
   const [messageMenuVisible, setMessageMenuVisible] = useState(false);
   const [messageMenuVisisbleAppearence, setMessageMenuVisisbleAppearence] = useState(false);
@@ -125,7 +96,7 @@ const Dialogue = ({ navigation, route }:any) => {
       setEditMessage({} as MessageProps);
   }
 
-  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed: boolean) => {
+  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed:boolean) => {
     coord = coordinations;
     // if(coord)
     //   console.log('Dialogue-coord', JSON.stringify({
@@ -154,7 +125,6 @@ const Dialogue = ({ navigation, route }:any) => {
     }
   }, []);
 
-  // asdad
   const updateMessageContent = (messageId: number|undefined, newContent: string|undefined) => {
     if(messageId&&newContent)
       setListOfMessages(prevMessages =>
@@ -193,11 +163,7 @@ const Dialogue = ({ navigation, route }:any) => {
     setMessageMenuVisible(false);
     setMessageMenuVisisbleAppearence(false);
   }, []);
-  // if(msgs) {
-  //   const aboba = msgs.find(m => m.messageId==messageID);
-  //   console.log('msgs.message', aboba?.messageId, aboba?.content);
-  //   console.log('messageID', messageID);
-  // }
+  
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>
@@ -211,6 +177,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onReplyPress={replyHandler} 
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
+            userMessageLastWatched={userMessageLastWatched}
           />
           <DialogueHeader 
             navigation={navigation} 
@@ -220,7 +187,6 @@ const Dialogue = ({ navigation, route }:any) => {
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
-            messageMenuVisisbleAppearence={messageMenuVisisbleAppearence} 
             messageID={messageID} 
             listOfMessages={listOfMessages} 
             isReply={isReply} 

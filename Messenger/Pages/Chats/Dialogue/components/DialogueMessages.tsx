@@ -1,25 +1,28 @@
-import { View, Dimensions, ScrollView, Keyboard, KeyboardEvent, FlatList, Animated } from 'react-native';
-import { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
+import { View, Keyboard, KeyboardEvent, FlatList, Animated } from 'react-native';
+import { useRef, useEffect, memo, useMemo, useState } from 'react';
 import styles from './Styles/DialogueMessages'
 import React from 'react';
-import { DialogueMessagesProps, messageViewHandleProps } from './interfaces/IDialogueMessages';
+import { DialogueMessagesProps } from './interfaces/IDialogueMessages';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import MessageItem from './MessageItem';
+import { height } from '../DialogueConstants';
 
-const { height, width } = Dimensions.get('screen');
+const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched }:DialogueMessagesProps) => {
 
-const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched }:DialogueMessagesProps) => {
   const flatListRef = useRef(null);
   useEffect(() => {
     if (flatListRef.current) {
       (flatListRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
     }
   }, [listOfMessages]);
-  
+
   const [coordsY, setCoordsY]:any = useState([]); 
+  const setCoordsYHandler = (newCoordsY:any) => {
+    setCoordsY([...newCoordsY]);
+  }
 
   const insets = useSafeAreaInsets();
 
@@ -29,7 +32,6 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
     
     return 0;
   } 
-
 
   // In the future make animation using 'react-native-keyboard-controller' library
   const keyboardHeight = new Animated.Value(0);
@@ -68,16 +70,12 @@ const DialogueMessages =({setMessageMenuVisible, messageMenuVisisbleAppearence, 
     return item.messageId?.toString();
   }
 
-  const setCoordsYHandler = (newCoordsY:any) => {
-    setCoordsY(newCoordsY);
-  }
-
   const renderItem = ({item}:any) => (
     <MessageItem 
       item={item}
       listOfMessages={listOfMessages}
       setMessageMenuVisible={setMessageMenuVisible}
-      scrollViewRef={flatListRef}
+      flatListRef={flatListRef}
       coordsY={coordsY}
       author={author}
       messageID={messageID}

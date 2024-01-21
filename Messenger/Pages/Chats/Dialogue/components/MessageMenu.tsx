@@ -1,5 +1,5 @@
-import { Dispatch, MutableRefObject, SetStateAction, memo, useEffect, useState } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, Dimensions, Animated, EasingFunction, Easing } from "react-native";
+import { memo, useEffect, useState } from "react";
+import { TouchableOpacity, View, StyleSheet, Text, Animated, EasingFunction, Easing } from "react-native";
 import React from 'react';
 import { messageMenuProps } from "./interfaces/IMessageMenu";
 import { styles } from './Styles/MessageMenu';
@@ -14,8 +14,8 @@ import MessageMenuEditButton from "../SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "../SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "../MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "../MessageMenuDummyMessages/ReplyTextDummyMessage";
+import { height, width } from "../DialogueConstants";
 
-const {width, height} = Dimensions.get('window');
 
 let size:{ width:number, height:number } = { width: 0, height: 0 };
 
@@ -27,9 +27,25 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, isUser, onDeletePress}:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
   if(!isVisible) 
       return null;
+
+      // if(coord)
+      // console.log('MessageMenu-coord', JSON.stringify({
+      //   ID: coord.ID,
+      //   componentPageX: coord.componentPageX,
+      //   componentPageY: coord.componentPageY,
+      //   pageX: coord.pageX,
+      //   pageY: coord.pageY,
+      //   width: coord.width,
+      //   height: coord.height,
+      //   message: {
+      //     messageId: coord.message?.messageId,
+      //     content: coord.message?.content,
+      //     replyId: coord.message?.messageResponseId
+      //   },
+      // }, null, 2))
     
   const buttons = [
     {
@@ -305,8 +321,8 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       }}
     >
       <View style={{ top: coord.componentPageY, height: coord.height }}>
-        {coord.message?.messageResponseId?<ReplyTextDummyMessage message={coord.message} messages={messages} isUser={isUser} height={coord.height} />:
-        <DefaultTextDummyMessage message={coord.message} id={coord.message?.messageId} isUser={isUser} height={coord.height} />}
+        {coord.message?.messageResponseId?<ReplyTextDummyMessage message={coord.message} messages={messages} isUser={isUser} height={coord.height} userMessageLastWatched={userMessageLastWatched} />:
+        <DefaultTextDummyMessage message={coord.message} isUser={isUser} height={coord.height} userMessageLastWatched={userMessageLastWatched} />}
       </View>
       <View 
         onLayout={onLayout}

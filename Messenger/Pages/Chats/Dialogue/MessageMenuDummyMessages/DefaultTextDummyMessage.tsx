@@ -1,26 +1,17 @@
-import { View, Text, Dimensions, PixelRatio } from 'react-native';
+import { View, Text } from 'react-native';
 import { styles } from './../MessageViewsAndTypes/Styles/DefaultTextType';
 import React from 'react';
-import { MessageProps } from '../GeneralInterfaces/IMessage';
 import { wrapText } from './../MessageViewsAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
-
-const {width, height} = Dimensions.get('window');
-
-interface DefaultTextMessageProps {
-  message:MessageProps|undefined;
-  id:number|undefined;
-  isUser: boolean;
-  height:number;
-}
-
-const FONT_SIZE = 14 * PixelRatio.getFontScale();
-const CHARS_PER_LINE = Math.round(width*1 / FONT_SIZE);
-const DefaultTextDummyMessage = ({ message, id, isUser, height}:DefaultTextMessageProps) => {
+import { DefaultTextMessageProps } from './Interfaces/IDefaultText';
+import { CHARS_PER_LINE } from '../DialogueConstants';
+import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
+import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
+const DefaultTextDummyMessage = ({ message, isUser, height, userMessageLastWatched}:DefaultTextMessageProps) => {
   if(!message) return null;
   return (
     <View style={[styles.messageBlockContainer, isUser&&{ justifyContent:'flex-end' }]}>
-      <View style={styles.messageContainer}>
+      <View style={[styles.messageContainer, isUser&&{ marginRight: 15 }]}>
         <View 
           style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
         >
@@ -34,6 +25,10 @@ const DefaultTextDummyMessage = ({ message, id, isUser, height}:DefaultTextMessa
           {/* Add 'watched' indicator */}
         </View> 
       </View>
+      { isUser && 
+      <View style={{ position: 'absolute', right: 0, bottom: 0 ,marginRight: 2.5 }}>
+        { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+      </View> }
     </View>
   );
 };

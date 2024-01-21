@@ -1,4 +1,4 @@
-import { View, TextInput, Alert, Platform, Dimensions, TouchableOpacity, Animated, Keyboard, KeyboardEvent } from 'react-native';
+import { View, TextInput, Platform, TouchableOpacity, Animated, Keyboard, KeyboardEvent } from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
 import styles from './Styles/DialogueFooter';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
@@ -14,8 +14,7 @@ import { EMessageType } from '../../../../dao/Models/EMessageType';
 import User from '../../../../dao/Models/User';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
 import { connect } from 'react-redux';
-
-const { height, width } = Dimensions.get('screen');
+import { height } from '../DialogueConstants';
 
 const keyboardHeight = new Animated.Value(0);
 const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, messageID, author}:DialogueFooterProps) => {

@@ -1,23 +1,14 @@
-import { View, Text, TouchableOpacity, Dimensions, PixelRatio } from 'react-native';
+import { View, Text } from 'react-native';
 import { styles } from './../MessageViewsAndTypes/Styles/ReplyTextType';
 import React from 'react';
-import { MessageProps } from '../GeneralInterfaces/IMessage';
-import User from '../../../../dao/Models/User';
 import { wrapText } from './../MessageViewsAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { ReplyTextType } from './Interfaces/IReplyText';
+import { CHARS_PER_LINE, FONT_SIZE } from '../DialogueConstants';
+import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
+import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 
-const { width, height } = Dimensions.get('window');
-
-interface ReplyTextType {
-  messages: MessageProps[];
-  message: MessageProps;
-  isUser: boolean;
-  height: number;
-}
-
-const FONT_SIZE = 14 * PixelRatio.getFontScale()
-const CHARS_PER_LINE = Math.round(height*0.5 / FONT_SIZE);
-const ReplyTextDummyMessage = ({messages, message, isUser, height}:ReplyTextType) => {
+const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLastWatched}:ReplyTextType) => {
   const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
 
   return (
@@ -64,6 +55,10 @@ const ReplyTextDummyMessage = ({messages, message, isUser, height}:ReplyTextType
             </View>
           </View>
         </View>
+        { isUser && 
+          <View style={{ position: 'absolute', right: 0, bottom: 5 , marginRight: -2.5 }}>
+            { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+          </View> }
       </View>
 )};
 

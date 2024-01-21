@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Dimensions, StyleSheet, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, } from 'react-native';
 import React from 'react';
 import { ReplyAndEditMenuProps } from './interfaces/IReplyAndEditMenu';
 import { styles } from './Styles/ReplyAndEditHandle';
@@ -6,11 +6,7 @@ import { connect } from 'react-redux';
 import ReplyAndEditMenuReplyIcon from '../SVG/ReplyAndEditMenuReplyIcon';
 import ReplyAndEditMenuEditIcon from '../SVG/ReplyAndEditMenuEditIcon';
 import ReplyAndEditMenuCancelButton from '../SVG/ReplyAndEditMenuCancelButton';
-
-const {width, height} = Dimensions.get('window');
-
-const FONT_SIZE = 14 * PixelRatio.getFontScale();
-const CHARS_PER_LINE = Math.round(width*1.25 / FONT_SIZE);
+import { CHARS_PER_LINE } from '../DialogueConstants';
 
 const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, editMessage }:ReplyAndEditMenuProps) => {
   return (

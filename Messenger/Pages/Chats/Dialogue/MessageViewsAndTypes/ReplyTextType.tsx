@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Dimensions, ScrollView, PixelRatio } from 'react-native';
-import { MutableRefObject, memo, useCallback, useEffect, useRef, useState, } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { MutableRefObject, memo, useCallback, useRef, useState, } from 'react';
 import { styles } from './Styles/ReplyTextType';
 import React from 'react';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
@@ -10,25 +10,22 @@ import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-
-const { width, height } = Dimensions.get('window');
+import { Layout } from '../GeneralInterfaces/ILayout';
+import { CHARS_PER_LINE, FONT_SIZE } from '../DialogueConstants';
 
 interface ReplyTextType {
   messages: MessageProps[];
   message: MessageProps;
-  setMessageMenuVisible: (arg0: {ID:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
+  setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
   id: number;
   scrollView: MutableRefObject<any>;
-  cordsY: any;
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
 }
 
 let size:any[] = [];
 
-const FONT_SIZE = 14 * PixelRatio.getFontScale()
-const CHARS_PER_LINE = Math.round(height*0.5 / FONT_SIZE);
-const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, cordsY, author, userMessageLastWatched}:ReplyTextType) => {
+const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, author, userMessageLastWatched}:ReplyTextType) => {
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -39,7 +36,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     return new Promise((resolve) => {
       if (componentRef.current) {
         componentRef.current.measure(
-          async (pageX: number, pageY: number) => {
+          async (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
             resolve({ X: pageX, Y: pageY });
           }
         );

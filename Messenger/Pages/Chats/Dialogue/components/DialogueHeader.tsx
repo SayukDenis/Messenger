@@ -6,13 +6,7 @@ import { screenHeight, screenWidth } from '../../../ChatList/Constants/Constants
 import HeaderBackButton from '../SVG/HeaderBackButton';
 import HeaderBranchButton from '../SVG/HeaderBranchButton';
 import { connect } from 'react-redux';
-
-interface DialogueHeaderProps {
-  navigation: any;
-  picture: string | undefined;
-  displayName: string | undefined;
-  activityTime: string | Date;
-}
+import { DialogueHeaderProps } from './interfaces/IDialogueHeader';
 
 const DialogueHeader = ({ navigation, picture, displayName, activityTime }:DialogueHeaderProps) => {
   return(

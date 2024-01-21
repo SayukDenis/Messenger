@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView, PixelRatio } from 'react-native';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { memo, useCallback, useRef, useState } from 'react';
 import { styles } from './Styles/DefaultTextType';
 import React from 'react';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
@@ -10,12 +10,12 @@ import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-
-const {width, height} = Dimensions.get('window');
+import { Layout } from "../GeneralInterfaces/ILayout";
+import { CHARS_PER_LINE } from '../DialogueConstants';
 
 interface DefaultTextMessageProps {
   message:MessageProps;
-  setMessageMenuVisible:(arg0: {ID:number, componentPageX:number, componentPageY:number, pageX:number, pageY:number, width:number, height:number}, arg1: boolean)=>void;
+  setMessageMenuVisible:(arg0: Layout, arg1: boolean)=>void;
   id:number;
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
@@ -23,8 +23,6 @@ interface DefaultTextMessageProps {
 
 let size:any[] = [];
 
-const FONT_SIZE = 14 * PixelRatio.getFontScale();
-const CHARS_PER_LINE = Math.round(width*1 / FONT_SIZE);
 const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessageLastWatched }:DefaultTextMessageProps) => {
 
   const onLayout = (event:any) => {
@@ -36,7 +34,8 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
     return new Promise((resolve) => {
       if (componentRef.current) {
         componentRef.current.measure(
-          async (pageX: number, pageY: number) => {
+          async (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+            console.log(pageX, pageY)
             resolve({ X: pageX, Y: pageY });
           }
         );
@@ -59,6 +58,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
     const component = size.find(c => c.ID === id);
 
     const componentPage = await measureHandler();
+    console.log('componentPage', componentPage)
     
     return { 
       ID: id,
