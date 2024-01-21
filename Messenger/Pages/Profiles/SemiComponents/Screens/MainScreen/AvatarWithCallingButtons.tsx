@@ -37,7 +37,7 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
           }}
           style={styles.phone}
         >
-          <PhoneIcon />
+          <PhoneIcon fill="rgb(43, 29, 29)" />
         </TouchableOpacity>
 
         {/* Videocamera button */}
@@ -47,7 +47,7 @@ const AvatarWithCallingButtons: React.FC<AvatarWithCallingButtonsProps> = (
           }}
           style={styles.videoCamera}
         >
-          <VideoCameraIcon />
+          <VideoCameraIcon fill="rgb(43, 29, 29)" />
         </TouchableOpacity>
       </View>
     </View>

@@ -40,12 +40,9 @@ const AlbumLongPressedMenu: React.FC<AlbumLongPressedMenuProps> = (props) => {
           ]}
         >
           {/* Settings button */}
-          <TouchableOpacity
-            onPress={() => {}}
-            style={styles.additionalFeatureButton}
-          >
-            <ForwardContactIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Forward</Text>
+          <TouchableOpacity onPress={() => {}} style={styles.elseFeatureButton}>
+            <ForwardContactIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Forward</Text>
           </TouchableOpacity>
 
           {/* Select button */}
@@ -53,10 +50,10 @@ const AlbumLongPressedMenu: React.FC<AlbumLongPressedMenuProps> = (props) => {
             onPress={() => {
               props.onSelectAlbumPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <SelectIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Select</Text>
+            <SelectIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Select</Text>
           </TouchableOpacity>
 
           {/* Delete album button */}
@@ -64,10 +61,10 @@ const AlbumLongPressedMenu: React.FC<AlbumLongPressedMenuProps> = (props) => {
             onPress={() => {
               props.onDeleteAlbumPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <BinIcon style={styles.additionalFeatureIcon} />
-            <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
+            <BinIcon style={styles.elseFeatureIcon} />
+            <Text style={[styles.elseFeatureTitle, { color: "red" }]}>
               Delete an album
             </Text>
           </TouchableOpacity>

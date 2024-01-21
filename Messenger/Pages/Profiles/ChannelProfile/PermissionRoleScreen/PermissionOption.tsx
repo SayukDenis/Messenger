@@ -4,6 +4,7 @@ import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import ToggleButton from "../../SemiComponents/GeneralComponents/ToggleButton";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface PermissionOptionProps {
   onPress: () => void;
@@ -19,6 +20,10 @@ const PermissionOption: React.FC<PermissionOptionProps> = (props) => {
       }}
       style={styles.settingOption}
     >
+      <LinearGradient
+        colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+        style={styles.linearGradient}
+      />
       <Text style={styles.settingOptionTitle}>{props.text}</Text>
       <ToggleButton
         isEnabled={props.isEnabled}

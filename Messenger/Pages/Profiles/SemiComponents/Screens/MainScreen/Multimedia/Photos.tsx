@@ -15,6 +15,7 @@ import CrossIcon from "../Icons/CrossIcon";
 
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
+const figmaHeightPixelConverter = screenHeight / 648;
 
 interface PhotosProps {
   selectedPhotosAndVideos?: Array<PhotoOrVideo>;
@@ -23,11 +24,22 @@ interface PhotosProps {
   onPress: (value: PhotoOrVideo) => void;
   hasAddNewPhotoFeature?: boolean;
   onAddNewPhotoPress?: () => void;
+  isMultimediaBarEnabled?: boolean;
 }
 
 const Photos: React.FC<PhotosProps> = (props) => {
   return (
-    <View style={[styles.mediaContainer, { opacity: 1 }]}>
+    <View
+      style={[
+        styles.mediaContainer,
+        {
+          opacity: 1,
+          top: props.isMultimediaBarEnabled
+            ? 25 * figmaHeightPixelConverter
+            : 0,
+        },
+      ]}
+    >
       <FlatList
         data={props.data}
         keyExtractor={(item) => props.data.indexOf(item).toString()}

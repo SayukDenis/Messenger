@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./Styles";
 import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 import * as Clipboard from "expo-clipboard";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface CallingMenuProps {
   isVisible: boolean;
@@ -22,6 +23,7 @@ const CallingMenu: React.FC<CallingMenuProps> = (props) => {
     "Call in Telentik",
     "Call",
   ];
+
   const callingMenuOptionsOnPress: (() => void)[] = [
     () => {
       copyToClipboard(user.phoneNumber);
@@ -34,6 +36,7 @@ const CallingMenu: React.FC<CallingMenuProps> = (props) => {
       alert("Call");
     },
   ];
+
   return (
     <>
       {props.isVisible && (
@@ -55,6 +58,10 @@ const CallingMenu: React.FC<CallingMenuProps> = (props) => {
                     callingMenuOptionsOnPress[index]();
                   }}
                 >
+                  <LinearGradient
+                    colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+                    style={[styles.linearGradient, { opacity: 0.2 }]}
+                  />
                   <Text style={styles.callingMenuOptionTitle}>{option}</Text>
                 </TouchableOpacity>
               );

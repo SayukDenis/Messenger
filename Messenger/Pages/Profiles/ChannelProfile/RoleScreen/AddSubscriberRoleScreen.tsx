@@ -72,12 +72,7 @@ const AddSubscriberRoleScreen: React.FC<AddSubscriberRoleScreenProps> = (
         <Text style={styles.doneButtonTitle}>Done</Text>
       </TouchableOpacity>
 
-      <View style={styles.separatingLine} />
-
       <ScrollView>
-        <View style={styles.contactsTitleContainer}>
-          <Text style={styles.contactsTitle}>Contacts</Text>
-        </View>
         {/* Contacts list */}
         <View
           style={{

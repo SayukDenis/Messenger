@@ -9,33 +9,26 @@ const figmaHeightPixelConverter = screenHeight / 648;
 const figmaWidthPixelConverter = screenWidth / 356;
 
 export const styles = StyleSheet.create({
+  linearGradient: {
+    opacity: 0.7,
+    top: 0,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: Dimensions.get("screen").height,
+    width: Dimensions.get("screen").width,
+  },
   settingOption: {
-    top: 0.04 * screenHeight,
     width: 0.9 * screenWidth,
     height: 0.07 * screenHeight,
-    backgroundColor: "rgb(218, 182, 113)",
+    backgroundColor: "white",
     borderRadius: 9,
-    borderWidth: 0.5,
-    borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     alignSelf: "center",
     zIndex: 1,
-  },
-  plusIcon: {
-    position: "absolute",
-    left: 0.045 * screenWidth,
-    width: 22 * figmaWidthPixelConverter,
-    height: 22 * figmaWidthPixelConverter,
-    color: "rgb(92, 64, 129)",
-  },
-  plusRoleTitle: {
-    position: "absolute",
-    left: 0.09 * screenWidth + 22 * figmaWidthPixelConverter,
-    fontFamily: "JacquesFrancois-Regular",
-    fontSize: 20,
-    color: "rgb(92, 64, 129)",
+    overflow: "hidden",
   },
   binIconContainer: {
     position: "absolute",
@@ -65,6 +58,7 @@ export const styles = StyleSheet.create({
   roleTitleInList: {
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
+    color: "rgb(43, 29, 29)",
   },
   doneButtonContainer: {
     position: "absolute",
@@ -75,7 +69,7 @@ export const styles = StyleSheet.create({
   doneButtonTitle: {
     fontSize: 21,
     fontFamily: "JacquesFrancois-Regular",
-    color: "rgb(92, 64, 129)",
+    color: "rgb(43, 29, 29)",
   },
   containerForSettingTitle: {
     top: 0.04 * screenHeight,
@@ -87,18 +81,20 @@ export const styles = StyleSheet.create({
   settingTitle: {
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
+    color: "rgb(43, 29, 29)",
   },
   newRoleNameInput: {
     width: "90%",
     fontSize: 17,
     fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(43, 29, 29)",
   },
   settingOptionTitle: {
     position: "absolute",
     left: 0.05 * screenWidth,
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
-    color: "rgb(92, 64, 129)",
+    color: "rgb(43, 29, 29)",
   },
   settingOptionRightArrow: {
     position: "absolute",
@@ -112,18 +108,18 @@ export const styles = StyleSheet.create({
     left: 0.05 * screenWidth,
     width: 0.9 * screenWidth,
     height: 0.07 * screenHeight,
-    backgroundColor: "rgb(218, 182, 113)",
+    backgroundColor: "white",
     borderRadius: 9,
-    borderWidth: 0.5,
-    borderColor: "rgb(161, 156, 145)",
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
     alignSelf: "flex-start",
+    overflow: "hidden",
   },
   roleTitle: {
     fontSize: 17,
     fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(43, 29, 29)",
   },
   roleTitleContainerWhileCreating: {
     position: "absolute",
@@ -159,13 +155,6 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: "JacquesFrancois-Regular",
     color: "rgb(136, 130, 130)",
-  },
-  separatingLine: {
-    width: screenWidth,
-    height: 0.017 * screenHeight,
-    backgroundColor: "rgb(196, 165, 104)",
-    top: 0.017 * screenHeight,
-    zIndex: 1,
   },
   contactsTitleContainer: {
     justifyContent: "center",
@@ -225,5 +214,18 @@ export const styles = StyleSheet.create({
     left: 0.0125 * screenHeight,
     alignItems: "center",
     justifyContent: "center",
+  },
+  plusIcon: {
+    position: "absolute",
+    left: 0.045 * screenWidth,
+    width: 22 * figmaWidthPixelConverter,
+    height: 22 * figmaWidthPixelConverter,
+  },
+  plusRoleTitle: {
+    position: "absolute",
+    left: 0.09 * screenWidth + 22 * figmaWidthPixelConverter,
+    fontFamily: "JacquesFrancois-Regular",
+    fontSize: 20,
+    color: "rgb(43, 29, 29)",
   },
 });

@@ -16,8 +16,11 @@ import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import { useIsFocused } from "@react-navigation/native";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/GeneralComponents/RemovalApproval";
 import { LinearGradient } from "expo-linear-gradient";
+import ButtonWithPlus from "../../SemiComponents/GeneralComponents/ButtonWithPlus";
+
+const screenHeight: number = Dimensions.get("screen").height;
 
 interface RolesScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -63,58 +66,61 @@ const RolesScreen: React.FC<RolesScreenProps> = (props) => {
       />
 
       <ScrollView>
-        <TouchableOpacity
+        <ButtonWithPlus
+          text="Role"
           onPress={() => {
-            channel.selectedRole = null;
             props.navigation.navigate("NewRoleScreen" as never);
           }}
-          style={styles.settingOption}
-        >
-          <PlusIcon style={styles.plusIcon} />
-          <Text style={styles.plusRoleTitle}>Role</Text>
-        </TouchableOpacity>
+        />
 
         <View
           style={{
-            paddingBottom: 0.07 * Dimensions.get("screen").height,
+            paddingBottom: 0.07 * screenHeight,
             zIndex: 0,
+            top: 0.04 * screenHeight,
           }}
         >
           {channel.roles.map((item, index) => {
             return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  channel.selectedRole = item;
-                  props.navigation.navigate("ChangeRoleScreen" as never);
-                }}
-                style={styles.roleAppearanceContainer}
-              >
-                <View
-                  style={[
-                    styles.roleTitleContainerWhileCreating,
-                    { left: 0.04 * Dimensions.get("screen").width },
-                  ]}
-                >
-                  <Text style={{ fontSize: 28 }}>{item.emoji}</Text>
-                </View>
-                <View style={styles.roleTitleContainerWhileCreating}>
-                  <Text
-                    numberOfLines={1}
-                    style={[styles.roleTitle, { color: item.color }]}
-                  >
-                    {item.name}
-                  </Text>
-                </View>
+              <View key={index}>
+                <View style={{ height: 0.005 * screenHeight }} />
                 <TouchableOpacity
                   onPress={() => {
-                    setRoleToRemove(item);
+                    channel.selectedRole = item;
+                    props.navigation.navigate("ChangeRoleScreen" as never);
                   }}
-                  style={styles.binIconContainer}
+                  style={styles.settingOption}
                 >
-                  <BinIcon style={styles.binIcon} />
+                  <LinearGradient
+                    colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+                    style={styles.linearGradient}
+                  />
+                  <View
+                    style={[
+                      styles.roleTitleContainerWhileCreating,
+                      { left: 0.04 * Dimensions.get("screen").width },
+                    ]}
+                  >
+                    <Text style={{ fontSize: 28 }}>{item.emoji}</Text>
+                  </View>
+                  <View style={styles.roleTitleContainerWhileCreating}>
+                    <Text
+                      numberOfLines={1}
+                      style={[styles.roleTitle, { color: item.color }]}
+                    >
+                      {item.name}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setRoleToRemove(item);
+                    }}
+                    style={styles.binIconContainer}
+                  >
+                    <BinIcon style={styles.binIcon} />
+                  </TouchableOpacity>
                 </TouchableOpacity>
-              </TouchableOpacity>
+              </View>
             );
           })}
         </View>

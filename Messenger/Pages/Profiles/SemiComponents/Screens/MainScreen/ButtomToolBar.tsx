@@ -4,7 +4,7 @@ import React from "react";
 import { View, TouchableOpacity, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import BinIcon from "./Icons/BinIcon";
-import ArrowEastIcon from "./Icons/ArromEastIcon";
+import ArrowEastIcon from "./Icons/ArrowEastIcon";
 
 interface BottomToolBarProps {
   isVisible: boolean;

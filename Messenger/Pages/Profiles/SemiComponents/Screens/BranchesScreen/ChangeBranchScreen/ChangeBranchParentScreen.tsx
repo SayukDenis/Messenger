@@ -23,7 +23,7 @@ import ColorSelection from "../NewBranchScreen/ColorSelection";
 import EmojiSelection from "../NewBranchScreen/EmojiSelection";
 import BranchAppearance from "../NewBranchScreen/BranchAppearance";
 import BranchChildrenList from "./BranchChildrenList";
-import RemovalApproval from "../../MainScreen/RemovalApproval";
+import RemovalApproval from "../../../GeneralComponents/RemovalApproval";
 import { LinearGradient } from "expo-linear-gradient";
 import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 

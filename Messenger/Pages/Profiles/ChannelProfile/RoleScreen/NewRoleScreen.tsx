@@ -21,12 +21,11 @@ import {
   Contact,
   Role,
 } from "../../SemiComponents/DatabaseSimulation/DBClasses";
-import {
-  tempRole,
-  channel,
-} from "../../SemiComponents/DatabaseSimulation/DBChannel";
+import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
 import { LinearGradient } from "expo-linear-gradient";
+import { tempRole } from "../../SemiComponents/DatabaseSimulation/DBVariables";
+import SettingOption from "../../SemiComponents/GeneralComponents/SettingOption";
 
 interface NewRoleScreenProps {
   navigation: StackNavigationProp<{}>; // Встановіть правильний тип для navigation
@@ -146,7 +145,11 @@ const NewRoleScreen: React.FC<NewRoleScreenProps> = (props) => {
           </View>
 
           {/* Role name input */}
-          <View style={styles.settingOption}>
+          <View style={[styles.settingOption, { top: 0.04 * screenHeight }]}>
+            <LinearGradient
+              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+              style={styles.linearGradient}
+            />
             <TextInput
               style={styles.newRoleNameInput}
               onChangeText={(text: string) => {
@@ -162,6 +165,7 @@ const NewRoleScreen: React.FC<NewRoleScreenProps> = (props) => {
           <View style={styles.containerForSettingTitle}>
             <Text style={styles.settingTitle}>Design role</Text>
           </View>
+
           <EmojiAndColorButtons
             isVisible={!isEmojiSelectionVisible && !isColorSelectionVisible}
             onColorPress={() => setIsColorSelectionVisible(true)}
@@ -208,6 +212,10 @@ const NewRoleScreen: React.FC<NewRoleScreenProps> = (props) => {
               },
             ]}
           >
+            <LinearGradient
+              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+              style={styles.linearGradient}
+            />
             <View
               style={[
                 styles.roleTitleContainerWhileCreating,
@@ -255,6 +263,10 @@ const NewRoleScreen: React.FC<NewRoleScreenProps> = (props) => {
               },
             ]}
           >
+            <LinearGradient
+              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+              style={styles.linearGradient}
+            />
             <Text style={styles.settingOptionTitle}>Permission role</Text>
             <RightArrow style={styles.settingOptionRightArrow} />
           </TouchableOpacity>

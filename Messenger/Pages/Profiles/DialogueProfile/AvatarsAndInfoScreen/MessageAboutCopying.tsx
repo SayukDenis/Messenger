@@ -26,13 +26,13 @@ const AnimatedMessageAboutCopying: React.FC<
 
       Animated.timing(animatedValue, {
         toValue: 1,
-        duration: 150,
+        duration: 0,
         useNativeDriver: false,
       }).start(() => {
         setTimeout(() => {
           setIsAnimationRunning(false);
           props.onEnd();
-        }, 800);
+        }, 8000);
       });
     }
   };
@@ -59,24 +59,22 @@ const AnimatedMessageAboutCopying: React.FC<
   });
 
   return (
-    <>
-      <Animated.View
-        style={{
-          transform: [
-            {
-              translateY: margin,
-            },
-          ],
-          position: "absolute",
-          zIndex: 2,
-        }}
-      >
-        <View style={styles.containerForAnimatedMessage}>
-          <CopyIcon style={styles.copyIcon} />
-          <Text style={styles.animatedMessageText}>{props.text}</Text>
-        </View>
-      </Animated.View>
-    </>
+    <Animated.View
+      style={{
+        transform: [
+          {
+            translateY: margin,
+          },
+        ],
+        position: "absolute",
+        zIndex: 2,
+      }}
+    >
+      <View style={styles.containerForAnimatedMessage}>
+        <CopyIcon style={styles.copyIcon} />
+        <Text style={styles.animatedMessageText}>{props.text}</Text>
+      </View>
+    </Animated.View>
   );
 };
 

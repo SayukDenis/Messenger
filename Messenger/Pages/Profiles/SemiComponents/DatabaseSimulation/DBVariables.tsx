@@ -4,6 +4,8 @@ import { Contact, Role } from "./DBClasses";
 
 export const pickedProfile = { current: "" };
 
+export const forwardMode = { current: "" };
+
 interface functionsToUndoActionsWhileChangingRoleProps {
   functions: (() => void)[];
 }
@@ -61,11 +63,3 @@ export const tempRole: Role = {
   sendAVoiceMessagePermission: true,
   subscribers: new Array<Contact>(),
 };
-
-/*const roleCharacter = () => {
-    if (channel.selectedRole) {
-      return channel.selectedRole;
-    } else {
-      return tempRole;
-    }
-  };*/

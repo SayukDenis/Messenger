@@ -9,23 +9,27 @@ const figmaHeightPixelConverter = screenHeight / 648;
 const figmaWidthPixelConverter = screenWidth / 356;
 
 export const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "rgb(227, 192, 124)",
+  linearGradient: {
+    opacity: 0.7,
+    top: 0,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: screenHeight,
+    width: screenWidth,
   },
   settingOption: {
     top: 0.02 * screenHeight,
     width: 0.9 * screenWidth,
     height: 0.065 * screenHeight,
-    backgroundColor: "rgb(218, 182, 113)",
+    backgroundColor: "white",
     borderRadius: 9,
-    borderWidth: 0.5,
-    borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     alignSelf: "center",
     zIndex: 1,
+    overflow: "hidden",
   },
   containerForSettingTitle: {
     top: 0.02 * screenHeight,
@@ -37,12 +41,13 @@ export const styles = StyleSheet.create({
   settingTitle: {
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
+    color: "rgb(43, 29, 29)",
   },
   settingOptionTitle: {
     position: "absolute",
     left: 0.05 * screenWidth,
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
-    color: "rgb(92, 64, 129)",
+    color: "rgb(43, 29, 29)",
   },
 });

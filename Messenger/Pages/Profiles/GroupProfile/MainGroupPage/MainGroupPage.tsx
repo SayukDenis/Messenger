@@ -6,7 +6,7 @@ import TopToolBar from "../../SemiComponents/Screens/MainScreen/TopToolBar";
 import Multimedia from "../../SemiComponents/Screens/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
 import ElseFeaturesButtons from "../../SemiComponents/Screens/MainScreen/ElseFeaturesButtons";
-import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/GeneralComponents/RemovalApproval";
 import BioAndLink from "./BioAndLink";
 import {
   Album,

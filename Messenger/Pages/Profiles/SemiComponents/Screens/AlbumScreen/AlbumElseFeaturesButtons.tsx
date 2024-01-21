@@ -3,10 +3,10 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import ForwardContactIcon from "../../SemiComponents/Screens/MainScreen/Icons/ForwardContactIcon";
-import AddNewImageIcon from "../../SemiComponents/Screens/MainScreen/Icons/AddNewImageIcon";
-import SortIcon from "../../SemiComponents/Screens/MainScreen/Icons/SortIcon";
-import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
+import ForwardContactIcon from "../MainScreen/Icons/ForwardContactIcon";
+import AddNewImageIcon from "../MainScreen/Icons/AddNewImageIcon";
+import SortIcon from "../MainScreen/Icons/SortIcon";
+import BinIcon from "../MainScreen/Icons/BinIcon";
 
 interface AlbumElseFeaturesButtonsProps {
   isVisible: boolean;
@@ -28,10 +28,10 @@ const AlbumElseFeaturesButtons: React.FC<AlbumElseFeaturesButtonsProps> = (
             onPress={() => {
               props.onForwardPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <ForwardContactIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Forward</Text>
+            <ForwardContactIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Forward</Text>
           </TouchableOpacity>
 
           {/* Add photo button */}
@@ -39,10 +39,10 @@ const AlbumElseFeaturesButtons: React.FC<AlbumElseFeaturesButtonsProps> = (
             onPress={() => {
               props.onAddPhotoPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <AddNewImageIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Add photo</Text>
+            <AddNewImageIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Add photo</Text>
           </TouchableOpacity>
 
           {/* Sort button */}
@@ -50,10 +50,10 @@ const AlbumElseFeaturesButtons: React.FC<AlbumElseFeaturesButtonsProps> = (
             onPress={() => {
               props.onSortPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <SortIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Sort</Text>
+            <SortIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Sort</Text>
           </TouchableOpacity>
 
           {/* Delete button */}
@@ -61,10 +61,10 @@ const AlbumElseFeaturesButtons: React.FC<AlbumElseFeaturesButtonsProps> = (
             onPress={() => {
               props.onDeleteAlbumPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <BinIcon style={styles.additionalFeatureIcon} />
-            <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
+            <BinIcon style={styles.elseFeatureIcon} />
+            <Text style={[styles.elseFeatureTitle, { color: "red" }]}>
               Delete an album
             </Text>
           </TouchableOpacity>

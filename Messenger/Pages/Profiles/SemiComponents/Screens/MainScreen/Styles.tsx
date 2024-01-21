@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   },
   secondaryTitle: {
     fontSize: 14,
-    color: "black",
+    color: "rgb(43, 29, 29)",
     alignSelf: "center",
     fontFamily: "JacquesFrancois-Regular",
     top: 29 * figmaHeightPixelConverter,
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
     gap: screenWidth / 8.5,
   },
   multimediaTitle: {
-    color: "rgb(124, 79, 145)",
+    color: "rgb(43, 29, 29)",
     fontSize: 16.5,
     alignSelf: "center",
     fontFamily: "JacquesFrancois-Regular",
@@ -163,7 +163,7 @@ export const styles = StyleSheet.create({
   },
   multimediaQuantityTitle: {
     alignSelf: "center",
-    color: "black",
+    color: "rgb(43, 29, 29)",
   },
   elseFeaturesButtonsContainer: {
     position: "absolute",
@@ -172,7 +172,7 @@ export const styles = StyleSheet.create({
     width: 0.51 * screenWidth,
     zIndex: 2,
   },
-  additionalFeatureButton: {
+  elseFeatureButton: {
     width: "100%",
     height: 40,
     borderRadius: 18,
@@ -183,14 +183,15 @@ export const styles = StyleSheet.create({
     gap: 4.5 * figmaWidthPixelConverter,
     paddingLeft: 17 * figmaWidthPixelConverter,
   },
-  additionalFeatureTitle: {
+  elseFeatureTitle: {
     fontSize: 16,
     fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(43, 29, 29)",
   },
-  additionalFeatureIcon: {
+  elseFeatureIcon: {
     width: 18 * figmaWidthPixelConverter,
     height: 18 * figmaWidthPixelConverter,
-    color: "black",
+    color: "rgb(43, 29, 29)",
   },
   blockButtonTitle: {
     color: "red",
@@ -226,59 +227,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  },
-  clearChatApproval: {
-    position: "absolute",
-    alignSelf: "center",
-    width: 269 * figmaWidthPixelConverter,
-    top: (screenHeight - 108 * figmaHeightPixelConverter) / 2.75,
-    height: 108 * figmaHeightPixelConverter,
-    backgroundColor: "rgb(231, 230,	228)",
-    zIndex: 4,
-    borderRadius: 30,
-    borderWidth: 1.3,
-    borderColor: "rgb(161, 156, 145)",
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    overflow: "hidden",
-  },
-  clearChatApprovalText: {
-    fontSize: 16,
-    alignSelf: "center",
-    bottom: 0.045 * screenHeight,
-    fontFamily: "JacquesFrancois-Regular",
-  },
-  clearChatAgreeButton: {
-    backgroundColor: "rgb(220, 220, 220)",
-    width: "50%",
-    height: 27 * figmaHeightPixelConverter,
-    alignSelf: "flex-start",
-    bottom: 0,
-    borderTopWidth: 1.3,
-    borderRightWidth: 1.3,
-    borderColor: "rgb(161, 156, 145)",
-    justifyContent: "center",
-  },
-  clearChatDisagreeButton: {
-    backgroundColor: "rgb(220, 220, 220)",
-    width: "50%",
-    height: 27 * figmaHeightPixelConverter,
-    alignSelf: "flex-end",
-    bottom: 0,
-    borderTopWidth: 1.3,
-    borderColor: "rgb(161, 156, 145)",
-    justifyContent: "center",
-  },
-  agreeTitle: {
-    fontSize: 16,
-    alignSelf: "center",
-    fontFamily: "JacquesFrancois-Regular",
-  },
-  disagreeTitle: {
-    fontSize: 16,
-    alignSelf: "center",
-    color: "rgb(179, 17, 17)",
-    fontFamily: "JacquesFrancois-Regular",
   },
   mediaContainer: {
     width: "100%",
@@ -455,6 +403,17 @@ export const styles = StyleSheet.create({
   videoCamera: {
     width: 38 * figmaWidthPixelConverter,
     height: 38 * figmaWidthPixelConverter,
+  },
+  doneButtonContainer: {
+    position: "absolute",
+    top: 0.064 * screenHeight - 7.09,
+    right: 0,
+    width: 0.2 * screenWidth,
+  },
+  doneButtonTitle: {
+    fontSize: 21,
+    fontFamily: "JacquesFrancois-Regular",
+    color: "rgb(43, 29, 29)",
   },
 });
 

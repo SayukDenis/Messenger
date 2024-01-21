@@ -9,9 +9,13 @@ const figmaHeightPixelConverter = screenHeight / 648;
 const figmaWidthPixelConverter = screenWidth / 356;
 
 export const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "rgb(227, 192, 124)",
+  linearGradient: {
+    top: 0,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: Dimensions.get("screen").height,
+    width: Dimensions.get("screen").width,
   },
   mainAvatarImage: {
     width: 120 * figmaHeightPixelConverter,
@@ -41,15 +45,14 @@ export const styles = StyleSheet.create({
     zIndex: 1,
   },
   topToolBar: {
-    backgroundColor: "rgb(231, 230,	228)",
     width: "100%",
+    backgroundColor: "white",
     alignItems: "center",
     height: 77 * figmaHeightPixelConverter,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 37,
     borderBottomRightRadius: 37,
-    borderWidth: 1.5,
     borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
   },
@@ -80,24 +83,22 @@ export const styles = StyleSheet.create({
     width: 0.51 * screenWidth,
     zIndex: 2,
   },
-  additionalFeatureButton: {
+  elseFeatureButton: {
     width: "100%",
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgb(231, 230,	228)",
-    borderWidth: 0.5,
-    borderColor: "rgb(161, 156, 145)",
+    borderRadius: 18,
+    backgroundColor: "white",
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
     gap: 4.5 * figmaWidthPixelConverter,
     paddingLeft: 17 * figmaWidthPixelConverter,
   },
-  additionalFeatureTitle: {
+  elseFeatureTitle: {
     fontSize: 16,
     fontFamily: "JacquesFrancois-Regular",
   },
-  additionalFeatureIcon: {
+  elseFeatureIcon: {
     width: 18 * figmaWidthPixelConverter,
     height: 18 * figmaWidthPixelConverter,
     color: "black",
@@ -115,7 +116,7 @@ export const styles = StyleSheet.create({
   galleryButton: {
     width: "100%",
     height: 0.06 * screenHeight,
-    backgroundColor: "rgb(220, 220, 220)",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -141,7 +142,7 @@ export const styles = StyleSheet.create({
     width: "30%",
     alignSelf: "center",
     height: 0.05 * screenHeight,
-    backgroundColor: "rgb(220, 220, 220)",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     top: 0.85 * screenHeight,

@@ -11,26 +11,28 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
-import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
-import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
-import Photos from "../../SemiComponents/Screens/MainScreen/Multimedia/Photos";
-import Name from "../../SemiComponents/Screens/MainScreen/Name";
-import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
-import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import ElseFeaturesIcon from "../../SemiComponents/Screens/MainScreen/Icons/ElseFeaturesIcon";
+import { user } from "../../DatabaseSimulation/DBUser";
+import { PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
+import Photos from "../MainScreen/Multimedia/Photos";
+import Name from "../MainScreen/Name";
+import GoBackButton from "../../GeneralComponents/GoBackButton";
+import Blur from "../../GeneralComponents/Blur";
+import ElseFeaturesIcon from "../MainScreen/Icons/ElseFeaturesIcon";
 import AlbumElseFeaturesButtons from "./AlbumElseFeaturesButtons";
-import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
+import RemovalApproval from "../../GeneralComponents/RemovalApproval";
 import AddingPhotoMenu from "./AddingPhotoMenu";
 import { useIsFocused } from "@react-navigation/native";
 import PhotoElseFeaturesButtons from "./PhotoElseFeaturesButtons";
-import BottomToolBar from "../../SemiComponents/Screens/MainScreen/ButtomToolBar";
-import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import BottomToolBar from "../MainScreen/ButtomToolBar";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
+import AlbumScreenHeader from "./AlbumScreenHeader";
+import { LinearGradient } from "expo-linear-gradient";
 
-interface AlbumFillingProps {
+interface AlbumScreenProps {
   navigation: StackNavigationProp<{}>;
 }
 
-const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
+const AlbumScreen: React.FC<AlbumScreenProps> = (props) => {
   const [removalApprovalText, setRemovalApprovalText] = useState("");
   const [isElseFeaturesVisible, setIsElseFeaturesVisible] = useState(false);
   const [isAddNewPhotoPressed, setIsAddNewPhotoPressed] = useState(false);
@@ -43,7 +45,6 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {}, [isFocused]);
-  //2, 4, 5
 
   const removalApprovalsTexts: string[] = [
     "delete an album",
@@ -73,8 +74,9 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
   ];
 
   return (
-    <View
-      style={[styles.mainContainer, { backgroundColor: "rgb(174, 174, 174)" }]}
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={styles.linearGradient}
     >
       {/* General blur with zIndex 1 */}
       <Blur
@@ -165,32 +167,19 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
             </TouchableOpacity>
           </>
         ) : (
-          <>
-            {/* Main name */}
-            <Name
-              primaryTitle={GetProfile().selectedAlbum.name}
-              style={styles.headerTitle}
-            />
-
-            {/* Going back button */}
-            <GoBackButton onPress={() => props.navigation.goBack()} />
-
-            <TouchableOpacity
-              onPress={() => {
-                setIsElseFeaturesVisible(true);
-              }}
-              style={styles.elseFeaturesButton}
-            >
-              <ElseFeaturesIcon />
-            </TouchableOpacity>
-          </>
+          <AlbumScreenHeader
+            navigation={props.navigation}
+            onElseFeaturesPress={() => {
+              setIsElseFeaturesVisible(true);
+            }}
+          />
         )}
       </View>
 
       <AlbumElseFeaturesButtons
         isVisible={isElseFeaturesVisible}
         onForwardPress={() => {
-          alert("Forward album...");
+          props.navigation.navigate("ForwardToChatsScreen" as never);
         }}
         onAddPhotoPress={() => {
           setIsAddNewPhotoPressed(true);
@@ -239,9 +228,6 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
       <ScrollView
         style={{
           flex: 1,
-        }}
-        contentContainerStyle={{
-          top: -0.04 * Dimensions.get("screen").height,
         }}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
@@ -298,8 +284,8 @@ const AlbumFilling: React.FC<AlbumFillingProps> = (props) => {
           props.navigation.navigate("GalleryWhileAddingNewPhoto" as never);
         }}
       />
-    </View>
+    </LinearGradient>
   );
 };
 
-export default AlbumFilling;
+export default AlbumScreen;

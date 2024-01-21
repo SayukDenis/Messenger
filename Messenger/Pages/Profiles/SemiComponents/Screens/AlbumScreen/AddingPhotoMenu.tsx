@@ -4,11 +4,8 @@ import React, { useEffect } from "react";
 import { View, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { FlatList } from "react-native-gesture-handler";
-import {
-  PhotoOrVideo,
-  user,
-} from "../../SemiComponents/DatabaseSimulation/DBUser";
-import { tempUser } from "../../SemiComponents/DatabaseSimulation/DBUser";
+import { PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -23,9 +20,9 @@ const AddingPhotoMenu: React.FC<AddingPhotoMenuProps> = (props) => {
   var data: Array<PhotoOrVideo> = [];
 
   var counter = 0;
-  user.photosAndVideos.map((photo) => {
+  GetProfile().photosAndVideos.map((photo) => {
     if (
-      !tempUser.selectedAlbum.photosAndVideos.includes(photo) &&
+      !GetProfile().selectedAlbum.photosAndVideos.includes(photo) &&
       counter <= 9
     ) {
       data?.push(photo);

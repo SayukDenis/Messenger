@@ -24,17 +24,18 @@ interface ElseFeaturesButtonsProps {
   onClearChatPress: () => void;
   onSettingsPress: () => void;
   onTypeChannelPress?: () => void;
+  onForwardPress?: () => void;
   mode: string;
 }
 
 const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
-  const additionalFeaturesForEachProfile = [
+  const elseFeaturesForEachProfile = [
     {
       onPress: () => {
         props.onSettingsPress();
         props.setIsVisible(false);
       },
-      icon: <SettingsIcon style={styles.additionalFeatureIcon} />,
+      icon: <SettingsIcon style={styles.elseFeatureIcon} />,
       title: "Settings",
     },
     {
@@ -43,9 +44,9 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
         props.setIsVisible(false);
       },
       icon: props.isMuted ? (
-        <OnNotificationIcon style={styles.additionalFeatureIcon} />
+        <OnNotificationIcon style={styles.elseFeatureIcon} />
       ) : (
-        <OffNotificationIcon style={styles.additionalFeatureIcon} />
+        <OffNotificationIcon style={styles.elseFeatureIcon} />
       ),
       title: props.isMuted ? "On notification" : "Off notification",
     },
@@ -53,7 +54,7 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
       onPress: () => {
         props.onClearChatPress();
       },
-      icon: <ClearChatIcon style={styles.additionalFeatureIcon} />,
+      icon: <ClearChatIcon style={styles.elseFeatureIcon} />,
       title: "Clear chat",
     },
   ];
@@ -62,14 +63,14 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
     <>
       {props.isVisible && (
         <View style={styles.elseFeaturesButtonsContainer}>
-          {additionalFeaturesForEachProfile.map((feature, index) => (
+          {elseFeaturesForEachProfile.map((feature, index) => (
             <TouchableOpacity
               key={index}
               onPress={feature.onPress}
-              style={styles.additionalFeatureButton}
+              style={styles.elseFeatureButton}
             >
               {feature.icon}
-              <Text style={styles.additionalFeatureTitle}>{feature.title}</Text>
+              <Text style={styles.elseFeatureTitle}>{feature.title}</Text>
             </TouchableOpacity>
           ))}
 
@@ -77,11 +78,14 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {props.mode === "user" && (
             <>
               {/* Forward contact button */}
-              <TouchableOpacity style={styles.additionalFeatureButton}>
-                <ForwardContactIcon style={styles.additionalFeatureIcon} />
-                <Text style={styles.additionalFeatureTitle}>
-                  Forward contact
-                </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  props.onForwardPress();
+                }}
+                style={styles.elseFeatureButton}
+              >
+                <ForwardContactIcon style={styles.elseFeatureIcon} />
+                <Text style={styles.elseFeatureTitle}>Forward contact</Text>
               </TouchableOpacity>
 
               {/* Toggle block button */}
@@ -92,12 +96,12 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
                   }
                   props.setIsVisible(false);
                 }}
-                style={styles.additionalFeatureButton}
+                style={styles.elseFeatureButton}
               >
                 {props.isBlocked ? (
-                  <UnblockIcon style={styles.additionalFeatureIcon} />
+                  <UnblockIcon style={styles.elseFeatureIcon} />
                 ) : (
-                  <BlockIcon style={styles.additionalFeatureIcon} />
+                  <BlockIcon style={styles.elseFeatureIcon} />
                 )}
                 <Text style={styles.blockButtonTitle}>
                   {props.isBlocked ? "Unblock" : "Block"}
@@ -110,17 +114,17 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
           {props.mode === "group" && (
             <>
               {/* Delete group button */}
-              <TouchableOpacity style={styles.additionalFeatureButton}>
-                <BinIcon style={styles.additionalFeatureIcon} />
-                <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
+              <TouchableOpacity style={styles.elseFeatureButton}>
+                <BinIcon style={styles.elseFeatureIcon} />
+                <Text style={[styles.elseFeatureTitle, { color: "red" }]}>
                   Delete group
                 </Text>
               </TouchableOpacity>
 
               {/* Leave group button */}
-              <TouchableOpacity style={styles.additionalFeatureButton}>
-                <ExitDoorIcon style={styles.additionalFeatureIcon} />
-                <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
+              <TouchableOpacity style={styles.elseFeatureButton}>
+                <ExitDoorIcon style={styles.elseFeatureIcon} />
+                <Text style={[styles.elseFeatureTitle, { color: "red" }]}>
                   Leave group
                 </Text>
               </TouchableOpacity>
@@ -135,24 +139,24 @@ const ElseFeaturesButtons: React.FC<ElseFeaturesButtonsProps> = (props) => {
                 onPress={() => {
                   props.onTypeChannelPress();
                 }}
-                style={styles.additionalFeatureButton}
+                style={styles.elseFeatureButton}
               >
-                <LockIcon style={styles.additionalFeatureIcon} />
-                <Text style={styles.additionalFeatureTitle}>Type channel</Text>
+                <LockIcon style={styles.elseFeatureIcon} />
+                <Text style={styles.elseFeatureTitle}>Type channel</Text>
               </TouchableOpacity>
 
               {/* Delete channel button */}
-              <TouchableOpacity style={styles.additionalFeatureButton}>
-                <BinIcon style={styles.additionalFeatureIcon} />
-                <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
+              <TouchableOpacity style={styles.elseFeatureButton}>
+                <BinIcon style={styles.elseFeatureIcon} />
+                <Text style={[styles.elseFeatureTitle, { color: "red" }]}>
                   Delete channel
                 </Text>
               </TouchableOpacity>
 
               {/* Leave channel button */}
-              <TouchableOpacity style={styles.additionalFeatureButton}>
-                <ExitDoorIcon style={styles.additionalFeatureIcon} />
-                <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
+              <TouchableOpacity style={styles.elseFeatureButton}>
+                <ExitDoorIcon style={styles.elseFeatureIcon} />
+                <Text style={[styles.elseFeatureTitle, { color: "red" }]}>
                   Leave channel
                 </Text>
               </TouchableOpacity>

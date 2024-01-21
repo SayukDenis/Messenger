@@ -12,19 +12,20 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import { useIsFocused } from "@react-navigation/native";
-import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
-import {
-  channel,
-  contacts,
-} from "../../SemiComponents/DatabaseSimulation/DBUser";
+import GoBackButton from "../../GeneralComponents/GoBackButton";
+import { channel } from "../../DatabaseSimulation/DBChannel";
+import { contacts } from "../../DatabaseSimulation/DBVariables";
 import { ScrollView } from "react-native-gesture-handler";
-import CheckmarkIcon from "../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
+import CheckmarkIcon from "../../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
-interface AddMemberScreenProps {
+interface AddSubscriberScreenProps {
   navigation: StackNavigationProp<{}>;
 }
 
-const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
+const AddSubscriberScreen: React.FC<AddSubscriberScreenProps> = ({
+  navigation,
+}) => {
   const [searchedName, setSearchedName] = useState("");
   const [subscribers, setSubscribers] = useState(channel.subscribers);
 
@@ -33,7 +34,10 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
   useEffect(() => {}, [isFocused]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <View style={styles.topToolBar}>
         {/* Going back button */}
         <GoBackButton onPress={() => navigation.goBack()} />
@@ -64,16 +68,10 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
         <Text style={styles.doneButtonTitle}>Done</Text>
       </TouchableOpacity>
 
-      <View style={styles.separatingLine} />
-
       <ScrollView>
-        <View style={styles.contactsTitleContainer}>
-          <Text style={styles.contactsTitle}>Contacts</Text>
-        </View>
         {/* Contacts list */}
         <View
           style={{
-            top: 0.035 * Dimensions.get("screen").height,
             paddingBottom: 0.07 * Dimensions.get("screen").height,
             zIndex: 0,
           }}
@@ -116,8 +114,8 @@ const AddMemberScreen: React.FC<AddMemberScreenProps> = ({ navigation }) => {
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
-export default AddMemberScreen;
+export default AddSubscriberScreen;

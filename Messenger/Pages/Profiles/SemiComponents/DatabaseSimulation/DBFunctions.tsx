@@ -3,6 +3,7 @@
 import {
   pickedProfile,
   functionsToUndoActionsWhileChangingRole,
+  tempRole,
 } from "./DBVariables";
 import { user } from "./DBUser";
 import { channel } from "./DBChannel";
@@ -33,3 +34,11 @@ export function executeFunctions(): void {
 export function clearFunctions(): void {
   functionsToUndoActionsWhileChangingRole.functions = [];
 }
+
+export const GetRole = () => {
+  if (channel.selectedRole) {
+    return channel.selectedRole;
+  } else {
+    return tempRole;
+  }
+};

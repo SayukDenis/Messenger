@@ -10,13 +10,11 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
-import Header from "../../SemiComponents/GeneralComponents/Header";
-import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
-import {
-  Album,
-  PhotoOrVideo,
-} from "../../SemiComponents/DatabaseSimulation/DBClasses";
-import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
+import Header from "../../GeneralComponents/Header";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
+import { Album, PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
+import RightArrow from "../../Assets/Icons/RightArrow";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface NewAlbumScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -27,7 +25,10 @@ const NewAlbumScreen: React.FC<NewAlbumScreenProps> = (props) => {
   var isValid: boolean = true;
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Header
         primaryTitle="New album"
         onGoBackPress={() => {
@@ -88,6 +89,10 @@ const NewAlbumScreen: React.FC<NewAlbumScreenProps> = (props) => {
 
         {/* Branch name input */}
         <View style={styles.settingOption}>
+          <LinearGradient
+            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+            style={styles.linearGradient}
+          />
           <TextInput
             style={styles.newBranchNameInput}
             onChangeText={(text: string) => {
@@ -108,11 +113,15 @@ const NewAlbumScreen: React.FC<NewAlbumScreenProps> = (props) => {
           onPress={() => props.navigation.navigate("GalleryScreen" as never)}
           style={styles.settingOption}
         >
+          <LinearGradient
+            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+            style={styles.linearGradient}
+          />
           <Text style={styles.settingOptionTitle}>Gallery</Text>
           <RightArrow style={styles.settingOptionRightArrow} />
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

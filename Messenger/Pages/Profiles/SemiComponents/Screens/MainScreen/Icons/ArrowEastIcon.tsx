@@ -4,11 +4,11 @@ import React from "react";
 import { ViewStyle } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-interface ArrowEastIconProps {
+interface RightArrowIconProps {
   style: ViewStyle;
 }
 
-const ArrowEastIcon: React.FC<ArrowEastIconProps> = (props) => {
+const RightArrowIcon: React.FC<RightArrowIconProps> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 0 20 13" fill="none">
       <Path
@@ -19,4 +19,4 @@ const ArrowEastIcon: React.FC<ArrowEastIconProps> = (props) => {
   );
 };
 
-export default ArrowEastIcon;
+export default RightArrowIcon;

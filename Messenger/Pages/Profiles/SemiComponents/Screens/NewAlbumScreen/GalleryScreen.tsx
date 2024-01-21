@@ -1,13 +1,13 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View, Dimensions, ScrollView } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { styles } from "./Styles";
-import Header from "../../SemiComponents/GeneralComponents/Header";
-import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
-import Photos from "../../SemiComponents/Screens/MainScreen/Multimedia/Photos";
-import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
+import Header from "../../GeneralComponents/Header";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
+import Photos from "../MainScreen/Multimedia/Photos";
+import { PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface GalleryScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -23,8 +23,9 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
   });
 
   return (
-    <View
-      style={[styles.mainContainer, { backgroundColor: "rgb(174, 174, 174)" }]}
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
     >
       <Header
         primaryTitle="Gallery"
@@ -35,9 +36,6 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
       <ScrollView
         style={{
           flex: 1,
-        }}
-        contentContainerStyle={{
-          top: -0.085 * Dimensions.get("screen").height,
         }}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
@@ -61,7 +59,7 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
           }}
         />
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

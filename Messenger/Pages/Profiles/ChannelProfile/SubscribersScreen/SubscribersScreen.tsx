@@ -16,7 +16,7 @@ import PlusIcon from "../../SemiComponents/Screens/BranchesScreen/Icons/PlusIcon
 import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/GeneralComponents/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
@@ -74,8 +74,8 @@ const SubscribersScreen: React.FC<SubscribersScreenProps> = ({
                 source={{ uri: item.avatar }}
                 style={styles.subscriberAvatarInList}
               />
-              <View style={styles.contactTitleContainer}>
-                <Text numberOfLines={1} style={styles.contactTitleInList}>
+              <View style={styles.subscriberTitleContainer}>
+                <Text numberOfLines={1} style={styles.subscriberTitleInList}>
                   {item.name}
                 </Text>
               </View>

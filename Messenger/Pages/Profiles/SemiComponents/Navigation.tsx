@@ -13,17 +13,17 @@ import DialogueSettingsScreen from "../DialogueProfile/SettingsScreen/DialogueSe
 import PermissionScreen from "../DialogueProfile/PermissionScreen/PermissionScreen";
 import BranchesScreen from "./Screens/BranchesScreen/BranchesScreen";
 import NewBranchScreen from "./Screens/BranchesScreen/NewBranchScreen/NewBranchScreen";
-import NewAlbumScreen from "../DialogueProfile/NewAlbumScreen/NewAlbumScreen";
-import GalleryScreen from "../DialogueProfile/NewAlbumScreen/GalleryScreen";
+import NewAlbumScreen from "./Screens/NewAlbumScreen/NewAlbumScreen";
+import GalleryScreen from "./Screens/NewAlbumScreen/GalleryScreen";
 import { useFonts } from "expo-font";
 import ChangeBranchParentScreen from "./Screens/BranchesScreen/ChangeBranchScreen/ChangeBranchParentScreen";
-import Album from "../DialogueProfile/Album/Album";
-import GalleryWhileAddingNewPhoto from "../DialogueProfile/Album/GalleryWhileAddingNewPhoto";
+import AlbumScreen from "./Screens/AlbumScreen/AlbumScreen";
+import GalleryWhileAddingNewPhoto from "./Screens/AlbumScreen/GalleryWhileAddingNewPhoto";
 import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
 import ChangeBranchChildScreen from "./Screens/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
 import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
 import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
-import AddSubscriberScreen from "../ChannelProfile/SubscribersScreen/AddSubscriberScreen";
+import AddSubscriberScreen from "./Screens/ForwardToChatsScreen/AddSubscriberScreen";
 import ChannelSettingsScreen from "../ChannelProfile/SettingsScreen/ChannelSettingsScreen";
 import AuditLogScreen from "../ChannelProfile/AuditLogScreen/AuditLogScreen";
 import RolesScreen from "../ChannelProfile/RoleScreen/RolesScreen";
@@ -31,13 +31,14 @@ import NewRoleScreen from "../ChannelProfile/RoleScreen/NewRoleScreen";
 import PermissionRoleScreen from "../ChannelProfile/PermissionRoleScreen/PermissionRoleScreen";
 import GroupSettingsScreen from "../GroupProfile/SettingsMenu/SettingsBranchesButton";
 import ChangeRoleScreen from "../ChannelProfile/RoleScreen/ChangeRoleScreen";
-import AddSubscriberRoleScreen from "../ChannelProfile/RoleScreen/AddSubscriberRoleScreen";
+import ForwardToChatsScreen from "./Screens/ForwardToChatsScreen/ForwardToChatsScreen";
 
 const Stack = createStackNavigator();
 
 export default function StartPage() {
   const [dataLoaded] = useFonts({
     "JacquesFrancois-Regular": require("./Assets/JacquesFrancois-Regular.ttf"),
+    "Rubik-Regular": require("./Assets/Rubik-VariableFont_wght.ttf"),
   });
 
   return (
@@ -82,7 +83,7 @@ const UserNavigation = () => {
         name="ChangeBranchChildScreen"
         component={ChangeBranchChildScreen}
       />
-      <Stack.Screen name="Album" component={Album} />
+      <Stack.Screen name="Album" component={AlbumScreen} />
       <Stack.Screen
         name="GalleryWhileAddingNewPhoto"
         component={GalleryWhileAddingNewPhoto}
@@ -92,6 +93,10 @@ const UserNavigation = () => {
         component={AvatarsAndInfoScreen}
       />
       <Stack.Screen name="PhotoScreen" component={PhotoScreen} />
+      <Stack.Screen
+        name="ForwardToChatsScreen"
+        component={ForwardToChatsScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -111,6 +116,8 @@ const GroupNavigation = () => {
         name="GroupSettingsScreen"
         component={GroupSettingsScreen}
       />
+      <Stack.Screen name="Album" component={AlbumScreen} />
+      <Stack.Screen name="NewAlbumScreen" component={NewAlbumScreen} />
       <Stack.Screen name="AuditLog" component={AuditLog} />
       <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
       <Stack.Screen name="Role" component={Role} />
@@ -127,6 +134,10 @@ const GroupNavigation = () => {
         component={ChangeBranchChildScreen}
       />
       <Stack.Screen name="PhotoScreen" component={PhotoScreen} />
+      <Stack.Screen
+        name="GalleryWhileAddingNewPhoto"
+        component={GalleryWhileAddingNewPhoto}
+      />
     </Stack.Navigator>
   );
 };
@@ -146,6 +157,8 @@ const ChannelNavigation = () => {
         name="AddSubscriberScreen"
         component={AddSubscriberScreen}
       />
+      <Stack.Screen name="Album" component={AlbumScreen} />
+      <Stack.Screen name="NewAlbumScreen" component={NewAlbumScreen} />
       <Stack.Screen name="SettingsScreen" component={ChannelSettingsScreen} />
       <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
       <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
@@ -165,11 +178,11 @@ const ChannelNavigation = () => {
         component={PermissionRoleScreen}
       />
       <Stack.Screen name="ChangeRoleScreen" component={ChangeRoleScreen} />
-      <Stack.Screen
-        name="AddSubscriberRoleScreen"
-        component={AddSubscriberRoleScreen}
-      />
       <Stack.Screen name="PhotoScreen" component={PhotoScreen} />
+      <Stack.Screen
+        name="GalleryWhileAddingNewPhoto"
+        component={GalleryWhileAddingNewPhoto}
+      />
     </Stack.Navigator>
   );
 };

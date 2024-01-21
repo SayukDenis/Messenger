@@ -26,13 +26,6 @@ interface MultimediaBarProps {
 const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
   const [maxQuantitiesTitleWidth, setMaxQuantitiesTitleWidth] = useState(0);
 
-  const photosButtonTitle: string = "Photos";
-  const albumsButtonTitle: string = "Albums";
-  const filesButtonTitle: string = "Files";
-  const voiceButtonTitle: string = "Voice";
-  const linksButtonTitle: string = "Links";
-  const videosButtonTitle: string = "Videos";
-
   const photosQuantity: number = 600;
   const videosQuantity: number = 20;
   const albumsQuantity: number = 50;
@@ -47,27 +40,27 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
   const buttonData: Button[] = [
     {
       name: "Photos",
-      title: photosButtonTitle,
+      title: "Photos",
       quantity: photosQuantity,
     },
     {
       name: "Albums",
-      title: albumsButtonTitle,
+      title: "Albums",
       quantity: GetProfile().albums.length,
     },
     {
       name: "Files",
-      title: filesButtonTitle,
+      title: "Files",
       quantity: GetProfile().files.length,
     },
     {
       name: "Voice",
-      title: voiceButtonTitle,
+      title: "Voice",
       quantity: GetProfile().voice.length,
     },
     {
       name: "Links",
-      title: linksButtonTitle,
+      title: "Links",
       quantity: GetProfile().links.length,
     },
   ];
@@ -83,7 +76,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
               setMaxQuantitiesTitleWidth(event.nativeEvent.layout.width);
           }}
         >
-          {`${photosQuantity.toLocaleString()} ${photosButtonTitle.toLowerCase()}, ${videosQuantity.toLocaleString()} ${videosButtonTitle.toLowerCase()}`}
+          {`${photosQuantity.toLocaleString()} ${"photos"}, ${videosQuantity.toLocaleString()} ${"videos"}`}
         </Text>
         {buttonData.map(
           (button) =>
@@ -132,7 +125,7 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
         {pressedMultimediaButton === "Photos" && (
           <Text
             style={styles.multimediaQuantityTitle}
-          >{`${photosQuantity.toLocaleString()} ${photosButtonTitle.toLowerCase()}, ${videosQuantity.toLocaleString()} ${videosButtonTitle.toLowerCase()}`}</Text>
+          >{`${photosQuantity.toLocaleString()} ${"photos"}, ${videosQuantity.toLocaleString()} ${"videos"}`}</Text>
         )}
         {buttonData.map(
           (button) =>
@@ -174,17 +167,24 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
             style={styles.albumsOrPhotosAppearingButton}
           >
             <Text style={styles.multimediaTitle}>
-              {photosAndAlbumsState === "Albums"
-                ? photosButtonTitle
-                : albumsButtonTitle}
+              {photosAndAlbumsState === "Albums" ? "Photos" : "Albums"}
             </Text>
           </TouchableOpacity>
         )}
         <View style={styles.photosOrAlbumsSelectedName}>
-          <Text style={styles.multimediaTitle}>
-            {photosAndAlbumsState === "Albums"
-              ? albumsButtonTitle
-              : photosButtonTitle}
+          <Text
+            style={[
+              styles.multimediaTitle,
+              {
+                color:
+                  pressedMultimediaButton == "Photos" ||
+                  pressedMultimediaButton == "Albums"
+                    ? "rgb(124, 79, 145)"
+                    : "rgb(43, 29, 29)",
+              },
+            ]}
+          >
+            {photosAndAlbumsState === "Albums" ? "Albums" : "Photos"}
           </Text>
           {pressedMultimediaButton === photosAndAlbumsState && (
             <View style={styles.rectangleUnderPhotosOrAlbumsButton} />
@@ -206,7 +206,19 @@ const MultimediaBar: React.FC<MultimediaBarProps> = (props) => {
               }}
               style={button.name === "Files" ? styles.filesButton : null}
             >
-              <Text style={styles.multimediaTitle}>{button.title}</Text>
+              <Text
+                style={[
+                  styles.multimediaTitle,
+                  {
+                    color:
+                      button.name == pressedMultimediaButton
+                        ? "rgb(124, 79, 145)"
+                        : "rgb(43, 29, 29)",
+                  },
+                ]}
+              >
+                {button.title}
+              </Text>
               {pressedMultimediaButton === button.name && (
                 <View style={styles.rectangleUnderMultimediaButton} />
               )}

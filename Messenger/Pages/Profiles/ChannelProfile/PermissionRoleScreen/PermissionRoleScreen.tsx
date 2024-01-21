@@ -1,16 +1,17 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
 import PermissionOption from "./PermissionOption";
 import {
   addFunction,
-  roleCharacter,
-  selectedRole,
-} from "../../SemiComponents/DatabaseSimulation/DBUser";
+  GetRole,
+} from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface PermissionRoleScreenProps {
   navigation: StackNavigationProp<{}>;
@@ -25,52 +26,52 @@ interface Permission {
 const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
   const [permissions, setPermissions] = useState<Permission[]>([
     {
-      state: roleCharacter().removeMembersPermission,
+      state: GetRole().removeMembersPermission,
       toggle: () => togglePermission(0),
       text: "Remove members",
     },
     {
-      state: roleCharacter().blockMembersPermission,
+      state: GetRole().blockMembersPermission,
       toggle: () => togglePermission(1),
       text: "Block members",
     },
     {
-      state: roleCharacter().manageRolesPermission,
+      state: GetRole().manageRolesPermission,
       toggle: () => togglePermission(2),
       text: "Manage roles",
     },
     {
-      state: roleCharacter().manageBranchesPermission,
+      state: GetRole().manageBranchesPermission,
       toggle: () => togglePermission(3),
       text: "Manage branches",
     },
     {
-      state: roleCharacter().seeTheAuditLogPermission,
+      state: GetRole().seeTheAuditLogPermission,
       toggle: () => togglePermission(4),
       text: "See the audit log",
     },
     {
-      state: roleCharacter().considerChannelsPermission,
+      state: GetRole().considerChannelsPermission,
       toggle: () => togglePermission(5),
       text: "Consider channels",
     },
     {
-      state: roleCharacter().considerBranchPermission,
+      state: GetRole().considerBranchPermission,
       toggle: () => togglePermission(6),
       text: "Consider branch",
     },
     {
-      state: roleCharacter().manageTheServerPermission,
+      state: GetRole().manageTheServerPermission,
       toggle: () => togglePermission(7),
       text: "Manage the server",
     },
     {
-      state: roleCharacter().sendAMessagePermission,
+      state: GetRole().sendAMessagePermission,
       toggle: () => togglePermission(8),
       text: "Send a message",
     },
     {
-      state: roleCharacter().sendAVoiceMessagePermission,
+      state: GetRole().sendAVoiceMessagePermission,
       toggle: () => togglePermission(9),
       text: "Send a voice message",
     },
@@ -83,44 +84,44 @@ const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
     addFunction(() => {
       switch (index) {
         case 0:
-          selectedRole.selectedRole.removeMembersPermission =
-            !selectedRole.selectedRole.removeMembersPermission;
+          channel.selectedRole.removeMembersPermission =
+            !channel.selectedRole.removeMembersPermission;
           break;
         case 1:
-          selectedRole.selectedRole.blockMembersPermission =
-            !selectedRole.selectedRole.blockMembersPermission;
+          channel.selectedRole.blockMembersPermission =
+            !channel.selectedRole.blockMembersPermission;
           break;
         case 2:
-          selectedRole.selectedRole.manageRolesPermission =
-            !selectedRole.selectedRole.manageRolesPermission;
+          channel.selectedRole.manageRolesPermission =
+            !channel.selectedRole.manageRolesPermission;
           break;
         case 3:
-          selectedRole.selectedRole.manageBranchesPermission =
-            !selectedRole.selectedRole.manageBranchesPermission;
+          channel.selectedRole.manageBranchesPermission =
+            !channel.selectedRole.manageBranchesPermission;
           break;
         case 4:
-          selectedRole.selectedRole.seeTheAuditLogPermission =
-            !selectedRole.selectedRole.seeTheAuditLogPermission;
+          channel.selectedRole.seeTheAuditLogPermission =
+            !channel.selectedRole.seeTheAuditLogPermission;
           break;
         case 5:
-          selectedRole.selectedRole.considerChannelsPermission =
-            !selectedRole.selectedRole.considerChannelsPermission;
+          channel.selectedRole.considerChannelsPermission =
+            !channel.selectedRole.considerChannelsPermission;
           break;
         case 6:
-          selectedRole.selectedRole.considerBranchPermission =
-            !selectedRole.selectedRole.considerBranchPermission;
+          channel.selectedRole.considerBranchPermission =
+            !channel.selectedRole.considerBranchPermission;
           break;
         case 7:
-          selectedRole.selectedRole.manageTheServerPermission =
-            !selectedRole.selectedRole.manageTheServerPermission;
+          channel.selectedRole.manageTheServerPermission =
+            !channel.selectedRole.manageTheServerPermission;
           break;
         case 8:
-          selectedRole.selectedRole.sendAMessagePermission =
-            !selectedRole.selectedRole.sendAMessagePermission;
+          channel.selectedRole.sendAMessagePermission =
+            !channel.selectedRole.sendAMessagePermission;
           break;
         case 9:
-          selectedRole.selectedRole.sendAVoiceMessagePermission =
-            !selectedRole.selectedRole.sendAVoiceMessagePermission;
+          channel.selectedRole.sendAVoiceMessagePermission =
+            !channel.selectedRole.sendAVoiceMessagePermission;
           break;
       }
       updatedPermissions[index].state = !updatedPermissions[index].state;
@@ -128,20 +129,23 @@ const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
   };
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       <Header
         primaryTitle="Permission"
         onGoBackPress={() => {
-          roleCharacter().removeMembersPermission = permissions[0].state;
-          roleCharacter().blockMembersPermission = permissions[1].state;
-          roleCharacter().manageRolesPermission = permissions[2].state;
-          roleCharacter().manageBranchesPermission = permissions[3].state;
-          roleCharacter().seeTheAuditLogPermission = permissions[4].state;
-          roleCharacter().considerChannelsPermission = permissions[5].state;
-          roleCharacter().considerBranchPermission = permissions[6].state;
-          roleCharacter().manageTheServerPermission = permissions[7].state;
-          roleCharacter().sendAMessagePermission = permissions[8].state;
-          roleCharacter().sendAVoiceMessagePermission = permissions[9].state;
+          GetRole().removeMembersPermission = permissions[0].state;
+          GetRole().blockMembersPermission = permissions[1].state;
+          GetRole().manageRolesPermission = permissions[2].state;
+          GetRole().manageBranchesPermission = permissions[3].state;
+          GetRole().seeTheAuditLogPermission = permissions[4].state;
+          GetRole().considerChannelsPermission = permissions[5].state;
+          GetRole().considerBranchPermission = permissions[6].state;
+          GetRole().manageTheServerPermission = permissions[7].state;
+          GetRole().sendAMessagePermission = permissions[8].state;
+          GetRole().sendAVoiceMessagePermission = permissions[9].state;
 
           props.navigation.goBack();
         }}
@@ -153,22 +157,22 @@ const PermissionRoleScreen: React.FC<PermissionRoleScreenProps> = (props) => {
 
       {permissions.map((permission, index) => {
         return (
-          <>
+          <View key={index}>
+            <View style={{ height: 0.005 * Dimensions.get("screen").height }} />
             <PermissionOption
-              key={index}
               onPress={permission.toggle}
               isEnabled={permission.state}
               text={permission.text}
             />
             {index === 6 && (
-              <View key={-index} style={styles.containerForSettingTitle}>
+              <View style={styles.containerForSettingTitle}>
                 <Text style={styles.settingTitle}>For members</Text>
               </View>
             )}
-          </>
+          </View>
         );
       })}
-    </View>
+    </LinearGradient>
   );
 };
 

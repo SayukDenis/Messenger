@@ -1,13 +1,14 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import { View, Dimensions, ScrollView } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
-import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
+import { PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
 import { styles } from "./Styles";
-import Photos from "../../SemiComponents/Screens/MainScreen/Multimedia/Photos";
-import Header from "../../SemiComponents/GeneralComponents/Header";
+import Photos from "../MainScreen/Multimedia/Photos";
+import Header from "../../GeneralComponents/Header";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface GalleryWhileAddingNewPhotoProps {
   navigation: StackNavigationProp<{}>;
@@ -25,8 +26,9 @@ const GalleryWhileAddingNewPhoto: React.FC<GalleryWhileAddingNewPhotoProps> = (
   });
 
   return (
-    <View
-      style={[styles.mainContainer, { backgroundColor: "rgb(174, 174, 174)" }]}
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={styles.linearGradient}
     >
       <Header
         primaryTitle="Gallery"
@@ -38,20 +40,20 @@ const GalleryWhileAddingNewPhoto: React.FC<GalleryWhileAddingNewPhotoProps> = (
         style={{
           flex: 1,
         }}
-        contentContainerStyle={{
-          top: -0.085 * Dimensions.get("screen").height,
-        }}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
       >
         <Photos
           selectedPhotosAndVideos={selectedPhotosAndVideos}
           onPress={(photo: PhotoOrVideo) => {
-            if (!selectedPhotosAndVideos?.includes(photo)) {
-              setSelectedPhotosAndVideos(selectedPhotosAndVideos?.concat([]));
+            console.log(selectedPhotosAndVideos.includes(photo));
+            if (!selectedPhotosAndVideos.includes(photo)) {
+              setSelectedPhotosAndVideos(
+                selectedPhotosAndVideos.concat([photo])
+              );
             } else {
               setSelectedPhotosAndVideos(
-                selectedPhotosAndVideos?.filter(
+                selectedPhotosAndVideos.filter(
                   (photoOrVideo) => photoOrVideo !== photo
                 )
               );
@@ -61,7 +63,7 @@ const GalleryWhileAddingNewPhoto: React.FC<GalleryWhileAddingNewPhotoProps> = (
           data={GetProfile().photosAndVideos}
         />
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 

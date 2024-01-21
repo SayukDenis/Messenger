@@ -7,7 +7,7 @@ import { styles } from "./Styles";
 import Header from "../../GeneralComponents/Header";
 import BinIcon from "../MainScreen/Icons/BinIcon";
 import Blur from "../../GeneralComponents/Blur";
-import RemovalApproval from "../MainScreen/RemovalApproval";
+import RemovalApproval from "../../GeneralComponents/RemovalApproval";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { GetProfile } from "../../DatabaseSimulation/DBFunctions";

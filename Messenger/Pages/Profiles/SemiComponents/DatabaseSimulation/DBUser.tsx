@@ -39,7 +39,7 @@ export interface UserProps {
 export const user: UserProps = {
   ImagePath: "https://picsum.photos/id/1084/536/354",
   phoneNumber: "+380 12 345 67 89",
-  username: "@myUsername",
+  username: "@myUsernameвцфвфвфвцфв",
   bio: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
 
   selectedInterval: 0,

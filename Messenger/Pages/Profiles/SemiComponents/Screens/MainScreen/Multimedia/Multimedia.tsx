@@ -61,6 +61,7 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
           onPress={(photo: PhotoOrVideo) => {
             props.onPhotoPress(photo);
           }}
+          isMultimediaBarEnabled={true}
         />
       )}
       {props.pressedMultimediaButton == "Albums" && (

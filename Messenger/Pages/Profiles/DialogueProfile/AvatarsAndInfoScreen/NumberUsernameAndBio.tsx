@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
@@ -8,26 +8,34 @@ import * as Clipboard from "expo-clipboard";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
+const figmaHeightPixelConverter = screenHeight / 648;
 
 interface NumberUsernameAndBioProps {
-  onUsernameAndBioPress: (text: string) => void;
+  onUsernamePress: (text: string) => void;
   onNumberPress: () => void;
 }
 
 const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
   const [bioTextHeight, setBioTextHeight] = useState(0);
+  const [userInfoMainContainerHeight, setUserInfoMainContainerHeight] =
+    useState(0);
+  const [isFullBioVisible, setIsFullBioVisible] = useState(false);
 
-  var userInfoMainContainerHeight: number = 0;
+  useEffect(() => {
+    let height = 0;
 
-  if (user.phoneNumber) {
-    userInfoMainContainerHeight += 0.05 * screenHeight;
-  }
-  if (user.username) {
-    userInfoMainContainerHeight += 0.05 * screenHeight;
-  }
-  if (user.bio) {
-    userInfoMainContainerHeight += bioTextHeight;
-  }
+    if (user.phoneNumber) {
+      height += 0.053 * screenHeight;
+    }
+    if (user.username) {
+      height += 0.053 * screenHeight;
+    }
+    if (user.bio) {
+      height += Math.max(bioTextHeight, 0.053 * screenHeight);
+    }
+
+    setUserInfoMainContainerHeight(height);
+  }, [bioTextHeight, user.phoneNumber, user.username, user.bio]);
 
   const copyToClipboard = (text: string) => {
     Clipboard.setString(text);
@@ -45,7 +53,7 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
             ]}
           >
             <Text
-              style={[styles.infoTitle, { color: "black" }]}
+              style={[styles.infoTitle, { color: "rgba(255, 255, 255, 0.54)" }]}
               onLayout={(event) => {
                 setBioTextHeight(
                   Math.max(
@@ -63,11 +71,17 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
           <View
             style={[
               styles.userInfoMainContainer,
-              { height: userInfoMainContainerHeight },
+              {
+                height: isFullBioVisible
+                  ? userInfoMainContainerHeight
+                  : 0.159 * screenHeight,
+              },
             ]}
           >
             {user.phoneNumber && (
               <>
+                <View style={styles.separatingHorizontalLine} />
+
                 {/* Number */}
                 <TouchableOpacity
                   style={styles.infoView}
@@ -75,56 +89,87 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
                     props.onNumberPress();
                   }}
                 >
-                  <Text style={styles.infoTitle}>Number: </Text>
+                  <Text style={styles.infoTitle}>Num:</Text>
+                  <View style={styles.separatingVerticalLine} />
                   <Text
                     style={[
                       styles.infoTitle,
-                      { color: "black", fontFamily: null },
+                      { color: "rgba(255, 255, 255, 0.54)" },
                     ]}
                   >
                     {user.phoneNumber}
                   </Text>
                 </TouchableOpacity>
 
-                {user.username && <View style={styles.separatingLine} />}
+                <View style={styles.separatingHorizontalLine} />
               </>
             )}
 
             {user.username && (
               <>
+                {!user.phoneNumber && (
+                  <View style={styles.separatingHorizontalLine} />
+                )}
+
                 {/* Username */}
                 <TouchableOpacity
                   onPress={() => {
                     copyToClipboard(user.username);
-                    props.onUsernameAndBioPress("Username");
+                    props.onUsernamePress("Username");
                   }}
                   style={styles.infoView}
                 >
-                  <Text style={styles.infoTitle}>Username: </Text>
-                  <Text style={[styles.infoTitle, { color: "black" }]}>
+                  <Text style={styles.infoTitle}>Username:</Text>
+                  <View style={styles.separatingVerticalLine} />
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      styles.infoTitle,
+                      { color: "rgba(255, 255, 255, 0.54)", width: "85%" },
+                    ]}
+                  >
                     {user.username}
                   </Text>
                 </TouchableOpacity>
 
-                {user.bio && <View style={styles.separatingLine} />}
+                <View style={styles.separatingHorizontalLine} />
               </>
             )}
 
             {user.bio && (
               <>
+                {!user.phoneNumber && !user.username && (
+                  <View style={styles.separatingHorizontalLine} />
+                )}
+
                 {/* Bio */}
                 <TouchableOpacity
                   onPress={() => {
-                    copyToClipboard(user.bio);
-                    props.onUsernameAndBioPress("Bio");
+                    setIsFullBioVisible(!isFullBioVisible);
                   }}
-                  style={[styles.bioInfoView, { height: bioTextHeight }]}
+                  style={[
+                    styles.infoView,
+                    {
+                      height: isFullBioVisible
+                        ? bioTextHeight
+                        : 0.053 * screenHeight,
+                    },
+                  ]}
                 >
-                  <Text style={[styles.infoTitle, { color: "black" }]}>
-                    <Text style={styles.infoTitle}>Bio: </Text>
+                  <Text style={styles.infoTitle}>Bio:</Text>
+                  <View style={styles.separatingVerticalLine} />
+                  <Text
+                    numberOfLines={isFullBioVisible ? 100 : 1}
+                    style={[
+                      styles.infoTitle,
+                      { color: "rgba(255, 255, 255, 0.54)" },
+                    ]}
+                  >
                     {user.bio}
                   </Text>
                 </TouchableOpacity>
+
+                <View style={styles.separatingHorizontalLine} />
               </>
             )}
           </View>

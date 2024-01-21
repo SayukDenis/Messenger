@@ -3,8 +3,8 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import EyeIcon from "../../SemiComponents/MainScreen/Icons/EyeIcon";
-import EyeWithLineIcon from "./Icons/EyeWithLineIcon";
+import EyeIcon from "./Icons/EyeIcon";
+import EyeWithLineIcon from "../../../ChannelProfile/MainChannelScreen/Icons/EyeWithLineIcon";
 
 interface TypeChannelMenuProps {
   isVisible: boolean;
@@ -16,16 +16,16 @@ const TypeChannelMenu: React.FC<TypeChannelMenuProps> = (props) => {
   return (
     <>
       {props.isVisible && (
-        <View style={styles.typeChannelMenuContainer}>
+        <View style={styles.elseFeaturesButtonsContainer}>
           {/* Private channel button */}
           <TouchableOpacity
             onPress={() => {
               props.onPrivatePress();
             }}
-            style={styles.typeChannelMenuButton}
+            style={styles.elseFeatureButton}
           >
-            <EyeWithLineIcon style={styles.typeChannelMenuIcon} />
-            <Text style={styles.typeChannelMenuTitle}>Private channe</Text>
+            <EyeWithLineIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Private channe</Text>
           </TouchableOpacity>
 
           {/* Public channel button */}
@@ -33,10 +33,10 @@ const TypeChannelMenu: React.FC<TypeChannelMenuProps> = (props) => {
             onPress={() => {
               props.onPublicPress();
             }}
-            style={styles.typeChannelMenuButton}
+            style={styles.elseFeatureButton}
           >
-            <EyeIcon style={styles.typeChannelMenuIcon} />
-            <Text style={styles.typeChannelMenuTitle}>Public channel</Text>
+            <EyeIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Public channel</Text>
           </TouchableOpacity>
         </View>
       )}

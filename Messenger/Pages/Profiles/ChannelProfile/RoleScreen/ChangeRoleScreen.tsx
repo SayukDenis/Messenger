@@ -67,6 +67,13 @@ const ChangeRoleScreen: React.FC<ChangeRoleScreenProps> = (props) => {
 
   const isFocused = useIsFocused();
 
+  const Gradient = () => (
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={styles.linearGradient}
+    />
+  );
+
   useEffect(() => {
     setSubscribers(channel.selectedRole.subscribers);
   }, [isFocused]);
@@ -190,7 +197,8 @@ const ChangeRoleScreen: React.FC<ChangeRoleScreenProps> = (props) => {
           </View>
 
           {/* Role name input */}
-          <View style={styles.settingOption}>
+          <View style={[styles.settingOption, { top: 0.04 * screenHeight }]}>
+            {Gradient()}
             <TextInput
               style={styles.newRoleNameInput}
               onChangeText={(text: string) => {
@@ -253,6 +261,7 @@ const ChangeRoleScreen: React.FC<ChangeRoleScreenProps> = (props) => {
               },
             ]}
           >
+            {Gradient()}
             <View
               style={[
                 styles.roleTitleContainerWhileCreating,
@@ -300,6 +309,7 @@ const ChangeRoleScreen: React.FC<ChangeRoleScreenProps> = (props) => {
               },
             ]}
           >
+            {Gradient()}
             <Text style={styles.settingOptionTitle}>Permission role</Text>
             <RightArrow style={styles.settingOptionRightArrow} />
           </TouchableOpacity>
@@ -334,6 +344,7 @@ const ChangeRoleScreen: React.FC<ChangeRoleScreenProps> = (props) => {
               },
             ]}
           >
+            {Gradient()}
             <PlusIcon style={styles.plusIcon} />
             <Text style={styles.plusRoleTitle}>Add subscriber role</Text>
           </TouchableOpacity>

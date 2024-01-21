@@ -10,17 +10,21 @@ import AvatarWithCallingButtons from "./AvatarWithCallingButtons";
 import Multimedia from "./Multimedia/Multimedia";
 import Blur from "../../GeneralComponents/Blur";
 import ElseFeaturesButtons from "./ElseFeaturesButtons";
-import RemovalApproval from "./RemovalApproval";
+import RemovalApproval from "../../GeneralComponents/RemovalApproval";
 import { Album, PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
 import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 import AlbumLongPressedMenu from "./Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "./ButtomToolBar";
 import { GestureResponderEvent } from "react-native-modal";
 import { LinearGradient } from "expo-linear-gradient";
-import { pickedProfile } from "../../DatabaseSimulation/DBVariables";
+import {
+  forwardMode,
+  pickedProfile,
+} from "../../DatabaseSimulation/DBVariables";
 import { user } from "../../DatabaseSimulation/DBUser";
 import { group } from "../../DatabaseSimulation/DBGroup";
 import { channel } from "../../DatabaseSimulation/DBChannel";
+import TypeChannelMenu from "./TypeChannelMenu";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -44,6 +48,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     useState(0);
   const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
   const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
+  const [isTypeChannelPressed, setIsTypeChannelPressed] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -89,12 +94,14 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         visibleWhen={
           isElseFeaturesVisible ||
           longPressedAlbum != null ||
-          isPhotoAlbumSelectionVisible
+          isPhotoAlbumSelectionVisible ||
+          isTypeChannelPressed
         }
         onPress={() => {
           setIsElseFeaturesVisible(false);
           setLongPressedAlbum(null);
           setIsPhotoAlbumSelectionVisible(false);
+          setIsTypeChannelPressed(false);
         }}
         style={styles.blurEffect}
       />
@@ -175,6 +182,13 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           setRemovalApprovalText("clear the chat");
         }}
         onSettingsPress={() => navigation.navigate("SettingsScreen" as never)}
+        onForwardPress={() => {
+          navigation.navigate("ForwardToChatsScreen" as never);
+        }}
+        onTypeChannelPress={() => {
+          setIsElseFeaturesVisible(false);
+          setIsTypeChannelPressed(true);
+        }}
         mode={pickedProfile.current}
       />
 
@@ -192,13 +206,24 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         }}
       />
 
+      <TypeChannelMenu
+        isVisible={isTypeChannelPressed}
+        onPrivatePress={() => {
+          alert("private");
+        }}
+        onPublicPress={() => {
+          alert("public");
+        }}
+      />
+
       <BottomToolBar
         isVisible={isAlbumSelectionVisible}
         onDeletePress={() => {
           setRemovalApprovalText("delete selected albums");
         }}
         onForwardPress={() => {
-          alert("Forward album...");
+          forwardMode.current = "albums";
+          navigation.navigate("ForwardToChatsScreen" as never);
         }}
       />
 

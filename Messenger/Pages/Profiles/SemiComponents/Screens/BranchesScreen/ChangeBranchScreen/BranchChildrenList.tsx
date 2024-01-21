@@ -60,18 +60,14 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
       >
         {GetProfile().selectedBranchParent.children.map((item, index) => {
           return (
-            <>
+            <View key={index}>
               <View
-                key={
-                  index + GetProfile().selectedBranchParent.children.length + 1
-                }
                 style={{
                   height: 0.005 * screenHeight,
                 }}
               />
               <TouchableOpacity
                 style={[styles.settingOption, { top: 0 }]}
-                key={index}
                 onPress={() => {
                   props.onChildBranchPress(item);
                 }}
@@ -104,7 +100,7 @@ const BranchChildrenList: React.FC<BranchChildrenListProps> = (props) => {
                   <BinIcon style={styles.binIcon} />
                 </TouchableOpacity>
               </TouchableOpacity>
-            </>
+            </View>
           );
         })}
       </View>

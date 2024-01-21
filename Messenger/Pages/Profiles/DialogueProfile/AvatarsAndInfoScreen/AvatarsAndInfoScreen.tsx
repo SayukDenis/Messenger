@@ -7,7 +7,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import Multimedia from "../../SemiComponents/Screens/MainScreen/Multimedia/Multimedia";
 import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import RemovalApproval from "../../SemiComponents/Screens/MainScreen/RemovalApproval";
+import RemovalApproval from "../../SemiComponents/GeneralComponents/RemovalApproval";
 import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
 import {
   Album,
@@ -19,9 +19,10 @@ import AvatarsNameAndGoBackButton from "./AvatarsNameAndGoBackButton";
 import TopMenuWhenSelection from "../../SemiComponents/GeneralComponents/TopMenuWhenSelection";
 import NumberUsernameAndBio from "./NumberUsernameAndBio";
 import CurrentAvatarBar from "./CurrentAvatarBar";
-import AnimatedMessageAboutCopying from "./AnimatedMessageAboutCopying";
+import MessageAboutCopying from "./MessageAboutCopying";
 import CallingMenu from "./CallingMenu";
 import { GestureResponderEvent } from "react-native-modal";
+import { LinearGradient } from "expo-linear-gradient";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -82,7 +83,10 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
   ];
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
       {/* General blur with zIndex 1 */}
       <Blur
         visibleWhen={
@@ -224,12 +228,14 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         <CurrentAvatarBar currentAvatar={currentAvatar} />
 
         <NumberUsernameAndBio
-          onUsernameAndBioPress={(text: string) => {
+          onUsernamePress={(text: string) => {
             setIsAnyTextCopied(true);
             setPhoneUsernameOrBioCopied(text);
           }}
           onNumberPress={() => setIsNumberPressed(true)}
         />
+
+        <View style={{ height: 0.02 * screenHeight }} />
 
         {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
         <Multimedia
@@ -288,14 +294,14 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         />
       </ScrollView>
 
-      <AnimatedMessageAboutCopying
+      <MessageAboutCopying
         isVisible={isAnyTextCopied}
         onEnd={() => {
           setIsAnyTextCopied(false);
         }}
         text={phoneUsernameOrBioCopied + " is copied"}
       />
-    </View>
+    </LinearGradient>
   );
 };
 

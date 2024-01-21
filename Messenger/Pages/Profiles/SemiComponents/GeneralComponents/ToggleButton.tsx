@@ -23,7 +23,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = (props) => {
     const Move = () => {
       Animated.timing(animatedValue, {
         toValue: 1,
-        duration: 200,
+        duration: 120,
         useNativeDriver: false,
       }).start(() => {
         if (props.isEnabled === false) setCurrentPosition("Left");

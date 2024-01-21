@@ -3,11 +3,11 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
-import ForwardContactIcon from "../../SemiComponents/Screens/MainScreen/Icons/ForwardContactIcon";
-import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
-import SelectIcon from "../../SemiComponents/Screens/MainScreen/Icons/SelectIcon";
-import CopyIcon from "../../SemiComponents/Screens/MainScreen/Icons/CopyIcon";
-import StarIcon from "../../SemiComponents/Screens/MainScreen/Icons/StarIcon";
+import ForwardContactIcon from "../MainScreen/Icons/ForwardContactIcon";
+import BinIcon from "../MainScreen/Icons/BinIcon";
+import SelectIcon from "../MainScreen/Icons/SelectIcon";
+import CopyIcon from "../MainScreen/Icons/CopyIcon";
+import StarIcon from "../MainScreen/Icons/StarIcon";
 
 interface PhotoElseFeaturesButtonsProps {
   isVisible: boolean;
@@ -31,10 +31,10 @@ const PhotoElseFeaturesButtons: React.FC<PhotoElseFeaturesButtonsProps> = (
             onPress={() => {
               props.onCopyPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <CopyIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Copy</Text>
+            <CopyIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Copy</Text>
           </TouchableOpacity>
 
           {/* Forward button */}
@@ -42,10 +42,10 @@ const PhotoElseFeaturesButtons: React.FC<PhotoElseFeaturesButtonsProps> = (
             onPress={() => {
               props.onForwardPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <ForwardContactIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Forward</Text>
+            <ForwardContactIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Forward</Text>
           </TouchableOpacity>
 
           {/* Select button */}
@@ -54,10 +54,10 @@ const PhotoElseFeaturesButtons: React.FC<PhotoElseFeaturesButtonsProps> = (
               props.setIsNotVisible();
               props.onSelectPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <SelectIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>Select</Text>
+            <SelectIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Select</Text>
           </TouchableOpacity>
 
           {/* Make main photo button */}
@@ -66,12 +66,10 @@ const PhotoElseFeaturesButtons: React.FC<PhotoElseFeaturesButtonsProps> = (
               props.setIsNotVisible();
               props.onMakeMainPhotoPress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <StarIcon style={styles.additionalFeatureIcon} />
-            <Text style={styles.additionalFeatureTitle}>
-              Make the main photo
-            </Text>
+            <StarIcon style={styles.elseFeatureIcon} />
+            <Text style={styles.elseFeatureTitle}>Make the main photo</Text>
           </TouchableOpacity>
 
           {/* Delete button */}
@@ -80,10 +78,10 @@ const PhotoElseFeaturesButtons: React.FC<PhotoElseFeaturesButtonsProps> = (
               props.setIsNotVisible();
               props.onDeletePress();
             }}
-            style={styles.additionalFeatureButton}
+            style={styles.elseFeatureButton}
           >
-            <BinIcon style={styles.additionalFeatureIcon} />
-            <Text style={[styles.additionalFeatureTitle, { color: "red" }]}>
+            <BinIcon style={styles.elseFeatureIcon} />
+            <Text style={[styles.elseFeatureTitle, { color: "red" }]}>
               Delete in album
             </Text>
           </TouchableOpacity>

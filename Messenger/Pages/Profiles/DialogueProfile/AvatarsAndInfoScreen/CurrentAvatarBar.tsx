@@ -1,12 +1,10 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
-import { View, Text, Dimensions } from "react-native";
+import React from "react";
+import { View, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import {
-  PhotoOrVideo,
-  user,
-} from "../../SemiComponents/DatabaseSimulation/DBUser";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
+import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
