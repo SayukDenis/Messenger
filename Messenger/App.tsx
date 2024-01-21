@@ -5,16 +5,14 @@ import { Provider } from "react-redux";
 import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./Navigation/Navigation";
+import { View } from "react-native";
 
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-  return (
-    <SafeAreaProvider>
-      <StatusBar translucent backgroundColor="transparent" />
-      <Provider store={store}>
-        <Navigation />
-      </Provider>
-    </SafeAreaProvider>
+
+
+  
+  return (<View></View>
   );
 }
 registerRootComponent(App);

@@ -8,7 +8,7 @@ import Folder from "../dao/Models/Folder";
 import User from "../dao/Models/User";
 import Branch from "../dao/Models/Chats/Branch";
 import MainChat from "../dao/Models/Chats/MainChat";
-import { addMessages, initializationLastWatchedMessageChat } from './initializationMessage';
+import { addMessages, initializationLastWatchedMessageChat, initializationPinnedMessage, initializationPinnedMessageForAll } from './initializationMessage';
 import { getRandomElementsFromArray, getRandomNumber, shuffleArray } from "./functions";
 
 const messageDialog: string[] = [
@@ -159,7 +159,8 @@ function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Di
     addMessages(dialogue, 100, dialogue.users, messageDialog);
     if (Math.random() < 0.10) addBranch(getRandomNumber(5), dialogue); //branches
     initializationLastWatchedMessageChat(dialogue);
-
+    initializationPinnedMessage(dialogue);
+    initializationPinnedMessageForAll(dialogue);
     dialogues.push(dialogue);
   }
 
@@ -187,7 +188,8 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
 
     if (Math.random() < 0.1) addBranch(getRandomNumber(5), group);
     initializationLastWatchedMessageChat(group);
-
+    initializationPinnedMessage(group);
+    initializationPinnedMessageForAll(group);
     groups.push(group);
   }
   return groups;
@@ -214,7 +216,8 @@ function createChannel(count: number, selfUser: SelfProfile, users: User[]): Cha
 
     if (Math.random() < 0.15) addBranch(getRandomNumber(5), channel);
     initializationLastWatchedMessageChat(channel);
-
+    initializationPinnedMessage(channel);
+    initializationPinnedMessageForAll(channel);
     channels.push(channel);
   }
   return channels;

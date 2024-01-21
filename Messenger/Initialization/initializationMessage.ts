@@ -3,7 +3,7 @@ import Message from "../dao/Models/Message";
 import User from "../dao/Models/User";
 import { EMessageType } from "../dao/Models/EMessageType";
 import MainChat from "../dao/Models/Chats/MainChat";
-import { getRandomNumber } from './functions';
+import { getRandomElementsFromArray, getRandomNumber } from './functions';
 
 
 export function addMessages(chat: Chat, count: number, users: User[], texts: string[] = []) {
@@ -52,4 +52,11 @@ export function initializationLastWatchedMessageBranch(chat: Chat, users: User[]
         }
     }
 
+}
+export function initializationPinnedMessage(chat: Chat, count_max?: number) {
+    chat.pinnedMessage.push(...getRandomElementsFromArray(chat.messages, count_max));
+}
+
+export function initializationPinnedMessageForAll(chat: Chat, count_max?: number) {
+    chat.pinnedMessageForAll.push(...getRandomElementsFromArray(chat.messages, count_max));
 }
