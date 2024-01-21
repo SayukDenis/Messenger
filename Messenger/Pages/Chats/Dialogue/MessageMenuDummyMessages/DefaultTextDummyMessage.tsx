@@ -22,7 +22,6 @@ const DefaultTextDummyMessage = ({ message, isUser, height, userMessageLastWatch
             {message.sendingTime.getHours().toString().padStart(2, '0')}:
             {message.sendingTime.getMinutes().toString().padStart(2, '0')}
           </Text>
-          {/* Add 'watched' indicator */}
         </View> 
       </View>
       { isUser && 

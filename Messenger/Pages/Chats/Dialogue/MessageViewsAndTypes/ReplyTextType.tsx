@@ -79,8 +79,6 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
  
   const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
 
-
-
   const onScrollEndDrag = async (event:any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const contentWidth = event.nativeEvent.contentSize.width;
@@ -102,6 +100,22 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
   const [pressCoordinations, setPressCoordinations] = useState({} as coordProps);
   const componentRef = useRef<TouchableOpacity>(null);
 
+  const onPressIn = (event:any) => {
+    const { locationX, locationY } = event.nativeEvent;
+    setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
+  }
+
+  const onPressOut = async (event:any) => {
+    const { locationX, locationY } = event.nativeEvent;
+    const { locationX_In, locationY_In } = pressCoordinations;
+    
+    if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+      await handlePress(event).then((layout) => {
+        setMessageMenuVisible(layout, true);
+      });
+    }
+  }
+
   return (
     <ScrollView 
       horizontal={true} 
@@ -119,20 +133,8 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
           ref={componentRef}
           style={styles.innerReplyContainer}
           activeOpacity={1} 
-          onPressIn={(event) => {
-            const { locationX, locationY } = event.nativeEvent;
-            setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
-          }}
-          onPressOut={async (event) => {
-            const { locationX, locationY } = event.nativeEvent;
-            const { locationX_In, locationY_In } = pressCoordinations;
-            
-            if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
-              await handlePress(event).then((layout) => {
-                setMessageMenuVisible(layout, true);
-              });
-            }
-          }}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
         >
           <Text style={[styles.replyUserNameFont, message.author.userId==author.userId&&{ alignSelf: 'flex-end' }]}>
             {message.author.userId==author.userId?'You':'Denis'}
@@ -172,20 +174,8 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
           </View>}
           <TouchableOpacity 
             activeOpacity={1} 
-            onPressIn={(event) => {
-              const { locationX, locationY } = event.nativeEvent;
-              setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
-            }}
-            onPressOut={async (event) => {
-              const { locationX, locationY } = event.nativeEvent;
-              const { locationX_In, locationY_In } = pressCoordinations;
-              
-              if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
-                await handlePress(event).then((layout) => {
-                  setMessageMenuVisible(layout, true);
-                });
-              }
-            }}
+            onPressIn={onPressIn}
+            onPressOut={onPressOut}
           >
             <View 
               onLayout={(event) => onLayout(event)}

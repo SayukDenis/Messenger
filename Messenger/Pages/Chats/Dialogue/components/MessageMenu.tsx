@@ -1,9 +1,9 @@
 import { memo, useEffect, useState } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, Animated, EasingFunction, Easing } from "react-native";
+import { TouchableOpacity, View, Text, Animated, EasingFunction, Easing } from "react-native";
 import React from 'react';
 import { messageMenuProps } from "./interfaces/IMessageMenu";
-import { styles } from './Styles/MessageMenu';
-import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { footerstyles, styles } from './Styles/MessageMenu';
+import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
 import MessageMenuSelectButton from "../SVG/MessageMenuSelectButton";
 import MessageMenuDeleteButton from "../SVG/MessageMenuDeleteButton";
@@ -30,22 +30,6 @@ const sixthContainerTranslate = new Animated.Value(0);
 const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
   if(!isVisible) 
       return null;
-
-      // if(coord)
-      // console.log('MessageMenu-coord', JSON.stringify({
-      //   ID: coord.ID,
-      //   componentPageX: coord.componentPageX,
-      //   componentPageY: coord.componentPageY,
-      //   pageX: coord.pageX,
-      //   pageY: coord.pageY,
-      //   width: coord.width,
-      //   height: coord.height,
-      //   message: {
-      //     messageId: coord.message?.messageId,
-      //     content: coord.message?.content,
-      //     replyId: coord.message?.messageResponseId
-      //   },
-      // }, null, 2))
     
   const buttons = [
     {
@@ -265,14 +249,14 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     const { width, height } = event.nativeEvent.layout;
     size = { width, height }
   };
-
+  
   const handleMenuPosition = () => {
     if(isUser) {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
-        return { top:(coord?coord.pageY:0), left:(coord?width-coord.width-10:0)-size.width-5 }
+        return { top:(coord?coord.pageY:0), left:(coord?width-coord.width-10:0)-size.width-10 }
       }
       else {
-        return { top:(coord?coord.pageY:0)-size.height, left:(coord?width-coord.width-10:0)-size.width-5 }
+        return { top:(coord?coord.pageY:0)-size.height, left:(coord?width-coord.width-10:0)-size.width-10 }
       }
     } else {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
@@ -282,7 +266,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       }
     }
   }
-
+  
   const handleTrianglePosition = () => {
     if(isUser) {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
@@ -354,41 +338,5 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     </TouchableOpacity>
   );
 })
-
-const footerstyles = StyleSheet.create({
-  triangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
-    borderLeftWidth: screenWidth * 0.015,
-    borderRightWidth: screenWidth * 0.015,
-    borderBottomWidth: screenWidth * 0.03,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "#E7E6E4",
-    position: "relative",
-  },
-  positionOfModalWindowLeftBottom: {
-    transform: [{ rotate: "100deg" }],
-    bottom: screenHeight * 0.009,
-    left: screenWidth * 0.005,
-  },
-  positionOfModalWindowRightBottom: {
-    transform: [{ rotate: "-100deg" }],
-    bottom: screenHeight * 0.009,
-    left: screenWidth * 0.22,
-  },
-  positionOfModalWindowLeftTop: {
-    transform: [{ rotate: "322.5deg" }],
-    bottom: -screenHeight * 0.006,
-    left: -screenWidth * 0.008,
-  },
-  positionOfModalWindowRightTop: {
-    transform: [{ rotate: "-322.5deg" }],
-    bottom: -screenHeight * 0.006,
-    left: screenWidth * 0.23,
-  },
-});
 
 export default connect(null)(MessageMenu);

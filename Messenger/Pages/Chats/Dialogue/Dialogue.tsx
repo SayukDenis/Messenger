@@ -40,8 +40,6 @@ let authorMessageLastWatched:ILastWatchedMessage | undefined;
 let userMessageLastWatched:ILastWatchedMessage | undefined;
 let dialogue:DialogueModel.default;
 const Dialogue = ({ navigation, route }:any) => {
-  useEffect(() => {
-  }, [])
   dialogue = route.params.chat as DialogueModel.default;
   authorMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
   userMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
@@ -49,14 +47,12 @@ const Dialogue = ({ navigation, route }:any) => {
   const [messageID, setMessageID] = useState(-1);
 
   const [messageMenuVisible, setMessageMenuVisible] = useState(false);
-  const [messageMenuVisisbleAppearence, setMessageMenuVisisbleAppearence] = useState(false);
   const [listOfMessages, setListOfMessages] = useState([] as MessageProps[]);
   useEffect(() => {
     setListOfMessages(dialogue.messages.reverse());
   }, [])
   
   const [isReply, setIsReply] = useState(false);
-  const [replyMessage, setReplyMessage] = useState({} as any);
 
   const replyHandler = useCallback(() => {
     setIsReply(!isReply);
@@ -64,19 +60,14 @@ const Dialogue = ({ navigation, route }:any) => {
   },[messageID]);
 
   const setReplyMessageHandler = () => {
-    if(!isReply) {
-      setReplyMessage(msgs.find(m => m.messageId==messageIdForReplyAndEdit));
+    if(!isReply)
       setEditMessage({} as MessageProps);
-    }
-    else
-      setReplyMessage({} as MessageProps);
   }
 
   const sendMessageOrCancelReplyAndEditHandler = useCallback(() => {
     setIsEdit(false);
     setIsReply(false);
     setEditMessage({} as MessageProps);
-    setReplyMessage({} as MessageProps);
   },[]);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -90,7 +81,6 @@ const Dialogue = ({ navigation, route }:any) => {
   const setEditMessageHandler = () => {
     if(!isEdit) {
       setEditMessage(msgs.find(m => m.messageId==messageID)!);
-      setReplyMessage({} as MessageProps);
     }
     else
       setEditMessage({} as MessageProps);
@@ -98,24 +88,8 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed:boolean) => {
     coord = coordinations;
-    // if(coord)
-    //   console.log('Dialogue-coord', JSON.stringify({
-    //     ID: coord.ID,
-    //     componentPageX: coord.componentPageX,
-    //     componentPageY: coord.componentPageY,
-    //     pageX: coord.pageX,
-    //     pageY: coord.pageY,
-    //     width: coord.width,
-    //     height: coord.height,
-    //     message: {
-    //       messageId: coord.message?.messageId,
-    //       content: coord.message?.content,
-    //       replyId: coord.message?.messageResponseId
-    //     },
-    //   }, null, 2))
     if(pressed) {
       setMessageMenuVisible(true);
-      setMessageMenuVisisbleAppearence(true);
       setMessageID(coordinations.ID);
       messageIdForReplyAndEdit = coordinations.ID;
     } else {
@@ -161,7 +135,6 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const handleMessageMenuPress = useCallback(() => {
     setMessageMenuVisible(false);
-    setMessageMenuVisisbleAppearence(false);
   }, []);
   
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
