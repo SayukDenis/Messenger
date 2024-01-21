@@ -40,6 +40,7 @@ let authorMessageLastWatched:ILastWatchedMessage | undefined;
 let userMessageLastWatched:ILastWatchedMessage | undefined;
 let dialogue:DialogueModel.default;
 const Dialogue = ({ navigation, route }:any) => {
+  const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
   dialogue = route.params.chat as DialogueModel.default;
   authorMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
   userMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
@@ -50,6 +51,8 @@ const Dialogue = ({ navigation, route }:any) => {
   const [listOfMessages, setListOfMessages] = useState([] as MessageProps[]);
   useEffect(() => {
     setListOfMessages(dialogue.messages.reverse());
+    console.log(dialogue.pinnedMessage);
+    setPinnedMessage(dialogue.pinnedMessage[dialogue.pinnedMessage.length-1]);
   }, [])
   
   const [isReply, setIsReply] = useState(false);
@@ -157,6 +160,7 @@ const Dialogue = ({ navigation, route }:any) => {
             picture={dialogue.linkToPhoto}
             displayName={dialogue.users[1].name}
             activityTime={'Online recently'} // Last activity from user
+            pinnedMessage={pinnedMessage}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 

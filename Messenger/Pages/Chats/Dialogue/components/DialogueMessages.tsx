@@ -85,12 +85,12 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
   const memoizedItem = useMemo(() => renderItem, [listOfMessages]);
 
   const ListHeaderComponent = () => (
-    <View style={{ height: screenHeight * 0.03+(isReply||isEdit?screenHeight*0.05:0) }} />
+    <View style={{ height: screenHeight * 0.02+(isReply||isEdit?screenHeight*0.05:0) }} />
   );
 
   const ListFooterComponent = () => (
     <View 
-      style={{ backgroundColor: 'transparent', height: (screenHeight*0.08+Constants.statusBarHeight) }} 
+      style={{ backgroundColor: 'transparent', height: (screenHeight*0.12+5+Constants.statusBarHeight) }} 
     />
   )
 
