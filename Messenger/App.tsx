@@ -6,14 +6,16 @@ import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./Navigation/Navigation";
 import { View } from "react-native";
+import { printSelfProfile } from "./Initialization/Print";
+import DataBase from "./dao/dao/Database";
 
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-
-
+  //printSelfProfile();
   
-  return (<View></View>
-  );
+  DataBase.getInstance().then(db => db.createDatabaseAsync());
+
+  return (<View></View>);
 }
 registerRootComponent(App);
 AppRegistry.registerComponent("10", () => App);
