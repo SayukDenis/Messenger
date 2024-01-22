@@ -28,7 +28,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -69,7 +69,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     },
     {
       text: 'Select',
-      action: () => {},
+      action: onSelectPress,
       svg: <MessageMenuSelectButton />
     },
   ];

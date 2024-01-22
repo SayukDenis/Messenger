@@ -145,6 +145,11 @@ const Dialogue = ({ navigation, route }:any) => {
     setCopy(!copy);
   }
   
+  const [selecting, setSelecting] = useState(false);
+  const setSelectingHandler = () => {
+    setSelecting(!selecting);
+  }
+
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>
@@ -159,6 +164,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
             onCopyPress={setCopyHandler}
+            onSelectPress={setSelectingHandler}
             userMessageLastWatched={userMessageLastWatched}
           />
           <DialogueHeader 
@@ -167,6 +173,8 @@ const Dialogue = ({ navigation, route }:any) => {
             displayName={dialogue.users[1].name}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage}
+            selecting={selecting}
+            cancelSelection={setSelectingHandler}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
@@ -177,6 +185,7 @@ const Dialogue = ({ navigation, route }:any) => {
             author={user as User}
             userMessageLastWatched={userMessageLastWatched}
             authorMessageLastWatched={authorMessageLastWatched}
+            selecting={selecting}
           />
           <DialogueFooter 
             messages={listOfMessages} 

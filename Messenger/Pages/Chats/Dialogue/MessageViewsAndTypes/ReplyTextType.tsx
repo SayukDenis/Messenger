@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { MutableRefObject, memo, useCallback, useRef, useState, } from 'react';
+import { MutableRefObject, memo, useCallback, useEffect, useRef, useState, } from 'react';
 import { styles } from './Styles/ReplyTextType';
 import React from 'react';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
@@ -22,15 +22,20 @@ interface ReplyTextType {
   scrollView: MutableRefObject<any>;
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
 }
 
 let size:any[] = [];
 
-const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, author, userMessageLastWatched}:ReplyTextType) => {
+const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, author, userMessageLastWatched, selecting}:ReplyTextType) => {
 
   const [sizeOfMessageContainer, setSizeOfMessageContainer] = useState([0, 0]);
   const [widthOfMessage, setWidthOfMessage] = useState(0);
   const [widthOfReply, setWidthOfReply] = useState(0);
+  const [selected, setSelected] = useState(false);
+  useEffect(() => {
+    if(!selecting) setSelected(false)
+  }, [selecting])
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -60,6 +65,8 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
   const handlePress = useCallback(async (event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
     if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
 
+    setSelected(true);
+
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
 
@@ -80,6 +87,14 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
   }, []);
 
   const handleLinkTo = useCallback((messageID:any) => {
+    if(selecting) {
+      setSelected(!selected) 
+      return;
+    }
+    // if(selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+    //   setSelected(!selected) 
+    //   return;
+    // }
     scrollView.current.scrollToIndex({ index: messages.length - messageID, animated: true, viewPosition: 0.5 });
   }, []);
  
@@ -114,6 +129,11 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
   const onPressOut = async (event:any) => {
     const { locationX, locationY } = event.nativeEvent;
     const { locationX_In, locationY_In } = pressCoordinations;
+    
+    if(selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+      setSelected(!selected) 
+      return;
+    }
     
     if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
       await handlePress(event).then((layout) => {
@@ -205,12 +225,12 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
                 {new Date(message.sendingTime).getMinutes().toString().padStart(2, '0')}
               </Text>
             </View>
-            <SelectButton 
-              selected={false}
+            {selecting && <SelectButton 
+              selected={selected}
               isUser={message.author.userId==author.userId}
               verticalOffset={getSelectOffsetVertical()}
               horizontalOffset={getSelectOffsetHorizontal()}
-            />
+            />}
           </TouchableOpacity>
         </TouchableOpacity>
         { message.author.userId==author.userId && 

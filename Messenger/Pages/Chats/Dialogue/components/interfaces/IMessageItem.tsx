@@ -15,4 +15,5 @@ export interface MessageItemProps {
   messageID: number;
   setCoordsY: (newCoordsY: any) => void;
   userMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
 }

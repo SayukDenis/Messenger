@@ -19,6 +19,7 @@ export interface messageMenuProps {
   onReplyPress: () => void;
   onEditPress: () => void;
   onCopyPress: () => void;
+  onSelectPress: () => void;
   isUser: boolean;
   onDeletePress: () => void;
   userMessageLastWatched: ILastWatchedMessage | undefined;

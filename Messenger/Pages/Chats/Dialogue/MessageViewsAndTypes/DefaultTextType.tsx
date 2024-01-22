@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { memo, useCallback, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { styles } from './Styles/DefaultTextType';
 import React from 'react';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
@@ -13,6 +13,8 @@ import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessag
 import { Layout } from "../GeneralInterfaces/ILayout";
 import { CHARS_PER_LINE } from '../DialogueConstants';
 import SelectButton from './SemiComponents/SelectButton';
+import { useDispatch } from 'react-redux';
+import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 
 interface DefaultTextMessageProps {
   message:MessageProps;
@@ -20,13 +22,22 @@ interface DefaultTextMessageProps {
   id:number;
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
 }
 
 let size:any[] = [];
 
-const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessageLastWatched }:DefaultTextMessageProps) => {
+const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessageLastWatched, selecting }:DefaultTextMessageProps) => {
+  const dispatch = useDispatch();
 
   const [heightOfMessage, setHeightOfMessage] = useState(0);
+  const [selected, setSelected] = useState(false);
+  useEffect(() => {
+    if(!selecting) {
+      dispatch(resetNumberOfSelectedMessages())
+      setSelected(false)
+    }
+  }, [selecting])
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -38,7 +49,6 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
       if (componentRef.current) {
         componentRef.current.measure(
           async (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-            console.log(pageX, pageY)
             resolve({ X: pageX, Y: pageY });
           }
         );
@@ -55,13 +65,15 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
   const handlePress = useCallback(async (event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
     if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
 
+    setSelected(true);
+    dispatch(incrementNumberOfSelectedMessages())
+
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
 
     const component = size.find(c => c.ID === id);
 
     const componentPage = await measureHandler();
-    console.log('componentPage', componentPage)
     
     return { 
       ID: id,
@@ -121,6 +133,12 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
           const { locationX, locationY } = event.nativeEvent;
           const { locationX_In, locationY_In } = pressCoordinations;
           
+          if(selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+            dispatch(selected?decrementNumberOfSelectedMessages():incrementNumberOfSelectedMessages());
+            setSelected(!selected);
+            return;
+          }
+            
           if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
             await handlePress(event).then((layout) => {
               setMessageMenuVisible(layout, true);
@@ -147,12 +165,12 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
                 {message.sendingTime.getMinutes().toString().padStart(2, '0')}
               </Text>
             </View>
-            <SelectButton 
-              selected={true}
+            {selecting && <SelectButton 
+              selected={selected}
               isUser={message.author.userId==author.userId}
               verticalOffset={heightOfMessage/2-10}
               horizontalOffset={-(20+5)}
-            />
+            />}
           </View>
           { message.author.userId==author.userId && 
             <View style={{ position: 'absolute', right: 0, bottom: 10 , marginRight: -2.5 }}>
