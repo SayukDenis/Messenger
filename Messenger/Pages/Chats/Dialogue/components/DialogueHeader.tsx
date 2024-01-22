@@ -38,22 +38,22 @@ const DialogueHeader = ({ navigation, picture, displayName, activityTime, pinned
           </View>
         </View>
       </HeaderContainer>
-      <View style={{ position: 'absolute', top: screenHeight*0.12, backgroundColor: '#fff', overflow: 'hidden', borderRadius: 9999, alignSelf: 'center', alignItems: 'center' }}>
-      <LinearGradient
-          colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-          locations={[0.25, 0.5, 0.75]}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={{
-            opacity: 0.7,
-            top: 0,
-            position: "absolute",
-            left: 0,
-            right: 0,
-            height: screenHeight,
-            width: screenWidth,
-          }}
-        />
+      <View style={{ position: 'absolute', bottom: -screenHeight*0.185, backgroundColor: '#fff', overflow: 'hidden', borderRadius: 9999, alignSelf: 'center', alignItems: 'center' }}>
+        <LinearGradient
+            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+            locations={[0.25, 0.5, 0.75]}
+            start={{ x: 1, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              opacity: 0.7,
+              top: 0,
+              position: "absolute",
+              left: 0,
+              right: 0,
+              height: screenHeight,
+              width: screenWidth,
+            }}
+          />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: screenWidth*0.9, paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center' }}>
             <Text>Pinned message: {pinnedMessage?.content?.length>CHARS_PER_LINE?pinnedMessage?.content.slice(0,40):pinnedMessage?.content}</Text>
             <View style={{ flexDirection: 'row' }}>

@@ -12,6 +12,7 @@ import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessage
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { Layout } from "../GeneralInterfaces/ILayout";
 import { CHARS_PER_LINE } from '../DialogueConstants';
+import SelectButton from './SemiComponents/SelectButton';
 
 interface DefaultTextMessageProps {
   message:MessageProps;
@@ -24,6 +25,8 @@ interface DefaultTextMessageProps {
 let size:any[] = [];
 
 const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessageLastWatched }:DefaultTextMessageProps) => {
+
+  const [heightOfMessage, setHeightOfMessage] = useState(0);
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -125,8 +128,13 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
           }
         }}
       >
-        <View style={[styles.messageBlockContainer, message.author.userId==author.userId&&{ justifyContent:'flex-end' }]}>
-          <View style={styles.messageContainer}>
+        <View 
+          style={[styles.messageBlockContainer, message.author.userId==author.userId&&{ justifyContent:'flex-end' }]}
+        >
+          <View 
+            onLayout={(event) => setHeightOfMessage(event.nativeEvent.layout.height)}
+            style={styles.messageContainer}
+          >
             <View 
               onLayout={onLayout}
               style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
@@ -138,7 +146,13 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
                 {message.sendingTime.getHours().toString().padStart(2, '0')}:
                 {message.sendingTime.getMinutes().toString().padStart(2, '0')}
               </Text>
-            </View> 
+            </View>
+            <SelectButton 
+              selected={true}
+              isUser={message.author.userId==author.userId}
+              verticalOffset={heightOfMessage/2-10}
+              horizontalOffset={-(20+5)}
+            />
           </View>
           { message.author.userId==author.userId && 
             <View style={{ position: 'absolute', right: 0, bottom: 10 , marginRight: -2.5 }}>

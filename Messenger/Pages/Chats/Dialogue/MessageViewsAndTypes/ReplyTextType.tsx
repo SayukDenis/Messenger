@@ -12,6 +12,7 @@ import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessage
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { Layout } from '../GeneralInterfaces/ILayout';
 import { CHARS_PER_LINE, FONT_SIZE } from '../DialogueConstants';
+import SelectButton from './SemiComponents/SelectButton';
 
 interface ReplyTextType {
   messages: MessageProps[];
@@ -27,9 +28,14 @@ let size:any[] = [];
 
 const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, author, userMessageLastWatched}:ReplyTextType) => {
 
+  const [sizeOfMessageContainer, setSizeOfMessageContainer] = useState([0, 0]);
+  const [widthOfMessage, setWidthOfMessage] = useState(0);
+  const [widthOfReply, setWidthOfReply] = useState(0);
+
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
     size = [...size, { ID: id, layout: { width, height }}];
+    setWidthOfMessage(width);
   };
 
   const measureHandler = async () => {
@@ -116,6 +122,13 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     }
   }
 
+  const getSelectOffsetHorizontal = () => {
+    return widthOfMessage > widthOfReply ? sizeOfMessageContainer[0] -(20+5) - widthOfMessage : sizeOfMessageContainer[0] -(20+5) - widthOfReply;
+  }
+  const getSelectOffsetVertical = () => {
+    return sizeOfMessageContainer[1]/2-10;
+  }
+
   return (
     <ScrollView 
       horizontal={true} 
@@ -125,12 +138,13 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
       bounces={false}
       overScrollMode={'never'}
       showsHorizontalScrollIndicator={false}
-      style={styles.swipeableContainer}
+      style={[styles.swipeableContainer, { paddingBottom: 5 }]}
       onScrollEndDrag={onScrollEndDrag}
     >
       <View style={styles.replyContainer} >
         <TouchableOpacity 
           ref={componentRef}
+          onLayout={(event) => setSizeOfMessageContainer([event.nativeEvent.layout.width, event.nativeEvent.layout.height])}
           style={styles.innerReplyContainer}
           activeOpacity={1} 
           onPressIn={onPressIn}
@@ -140,7 +154,9 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
             {message.author.userId==author.userId?'You':'Denis'}
           </Text>
           {message.author.userId==author.userId?
-          <View style={styles.replyMessageContainer}>
+          <View 
+            onLayout={(event) => setWidthOfReply(event.nativeEvent.layout.width)}
+            style={styles.replyMessageContainer}>
             <TouchableOpacity 
               activeOpacity={1} 
               onPress={() => {handleLinkTo(message!.messageResponseId)}}
@@ -189,6 +205,12 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
                 {new Date(message.sendingTime).getMinutes().toString().padStart(2, '0')}
               </Text>
             </View>
+            <SelectButton 
+              selected={false}
+              isUser={message.author.userId==author.userId}
+              verticalOffset={getSelectOffsetVertical()}
+              horizontalOffset={getSelectOffsetHorizontal()}
+            />
           </TouchableOpacity>
         </TouchableOpacity>
         { message.author.userId==author.userId && 
