@@ -15,6 +15,7 @@ export interface DialogueMessagesProps {
   userMessageLastWatched: ILastWatchedMessage | undefined;
   authorMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
+  hasPinnedMessage: boolean;
 }
 
 export interface messageViewHandleProps {

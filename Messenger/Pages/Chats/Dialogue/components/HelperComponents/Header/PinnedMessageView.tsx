@@ -6,7 +6,15 @@ import { CHARS_PER_LINE } from '../../../DialogueConstants';
 import DialogueMessagesPinnedMessageIcon from '../../../SVG/DialogueMessagesPinnedMessageIcon';
 import { MessageProps } from '../../../GeneralInterfaces/IMessage';
 
-const PinnedMessageView = ({ pinnedMessage }: { pinnedMessage: MessageProps }) => {
+interface PinnedMessageViewProps { 
+  pinnedMessage: MessageProps;
+  current: number;
+  total: number 
+}
+
+const PinnedMessageView = ({ pinnedMessage, current, total }:PinnedMessageViewProps ) => {
+  if(!pinnedMessage) return null;
+
   return (
     <View style={{ position: 'absolute', bottom: -screenHeight*0.185, backgroundColor: '#fff', overflow: 'hidden', borderRadius: 9999, alignSelf: 'center', alignItems: 'center' }}>
         <LinearGradient
@@ -25,13 +33,13 @@ const PinnedMessageView = ({ pinnedMessage }: { pinnedMessage: MessageProps }) =
             }}
           />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: screenWidth*0.9, paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center' }}>
-            <Text>Pinned message: {pinnedMessage?.content?.length>CHARS_PER_LINE?pinnedMessage?.content.slice(0,40):pinnedMessage?.content}</Text>
+            <Text>Pinned message: {pinnedMessage?.content?.length>CHARS_PER_LINE?pinnedMessage?.content.slice(0,25).trim()+'...':pinnedMessage?.content}</Text>
             <View style={{ flexDirection: 'row' }}>
-              { true&&
+              { total>1&&
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 12 }}>
-                  <Text>2</Text>
+                  <Text>{current}</Text>
                   <View style={{ width: 1.4, height: '100%', backgroundColor: 'black', marginHorizontal: 5 }} />
-                  <Text>2</Text>
+                  <Text>{total}</Text>
                 </View>
               }
               <DialogueMessagesPinnedMessageIcon />

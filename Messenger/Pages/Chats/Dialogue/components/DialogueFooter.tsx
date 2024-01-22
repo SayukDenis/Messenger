@@ -10,6 +10,9 @@ import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
 import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
+import { height } from '../DialogueConstants';
+import Constants from 'expo-constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
 
@@ -89,6 +92,14 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     } 
   }, [copyMessagePopUp])
 
+  const insets = useSafeAreaInsets();
+  const checkForSoftMenuBar = () => {
+    if(height-screenHeight-Constants.statusBarHeight > 0)
+      return insets.top;
+    
+    return 0;
+  }
+
   return(
     <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
       <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
@@ -99,7 +110,7 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
         isEdit={isEdit} 
         editMessage={editMessage}
       />
-      <View style={styles.mainContainer} >
+      <View style={[styles.mainContainer, { bottom: checkForSoftMenuBar()?-(height-screenHeight-Constants.statusBarHeight):-screenHeight*0.06, }]} >
         <View style={styles.gradientContainer}>
           <LinearGradient
             colors={["#cf9b95", "#c98bb8", "#c37adb"]}

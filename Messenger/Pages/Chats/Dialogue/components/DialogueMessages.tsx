@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import MessageItem from './MessageItem';
 import { height } from '../DialogueConstants';
 
-const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched, selecting }:DialogueMessagesProps) => {
+const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched, selecting, hasPinnedMessage }:DialogueMessagesProps) => {
 
   const flatListRef = useRef(null);
   useEffect(() => {
@@ -91,7 +91,7 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
 
   const ListFooterComponent = () => (
     <View 
-      style={{ backgroundColor: 'transparent', height: (screenHeight*0.08+screenHeight*0.05+Constants.statusBarHeight) }} 
+      style={{ backgroundColor: 'transparent', height: (screenHeight*0.08+(hasPinnedMessage?screenHeight*0.05:0)+Constants.statusBarHeight) }} 
     />
   )
 

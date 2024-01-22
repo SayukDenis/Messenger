@@ -1,23 +1,11 @@
 import { StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { height } from "../../DialogueConstants";
-import Constants from 'expo-constants';
-
-const insets = useSafeAreaInsets();
-  const checkForSoftMenuBar = () => {
-    if(height-screenHeight-Constants.statusBarHeight > 0)
-      return insets.top;
-    
-    return 0;
-  }
 
 const styles = StyleSheet.create({
   mainContainer: {
     position: "absolute",
     left: 0,
     right: 0,
-    bottom: checkForSoftMenuBar()?-(height-screenHeight-Constants.statusBarHeight):-screenHeight*0.06,
     zIndex: 5,
     elevation: 0.001,
     borderTopLeftRadius: 30,

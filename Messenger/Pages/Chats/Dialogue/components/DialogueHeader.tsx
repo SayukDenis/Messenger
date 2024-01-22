@@ -8,7 +8,7 @@ import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
 import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
 import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 
-const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, displayName, activityTime, pinnedMessage, selecting, cancelSelection }:DialogueHeaderProps) => {
+const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, displayName, activityTime, pinnedMessage, selecting, cancelSelection, currentNumOfPinnedMessage, countOfPinnedMessages }:DialogueHeaderProps) => {
   if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
   return(
     <View style={{ backgroundColor: 'green', zIndex: 10 }}>
@@ -21,7 +21,7 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, displa
           </View>
         </View>
       </HeaderContainer>
-      <PinnedMessageView pinnedMessage={pinnedMessage} />
+      <PinnedMessageView pinnedMessage={pinnedMessage} current={currentNumOfPinnedMessage} total={countOfPinnedMessages} />
     </View>
   );
 }

@@ -10,4 +10,6 @@ export interface DialogueHeaderProps {
   pinnedMessage: MessageProps;
   selecting: boolean;
   cancelSelection: () => void;
+  currentNumOfPinnedMessage: number;
+  countOfPinnedMessages: number;
 }
