@@ -39,16 +39,13 @@ const StyleEditCenter = StyleSheet.create({
     paragTextStyle:{
         alignSelf:'flex-start',
         marginLeft:'5%',
-        marginTop:'10%',
+        marginTop:'5%',
         marginBottom:'3%',
     },
 
     inputText:{
         width:'90%',
         height:windowHeight*0.07,
-        backgroundColor:'#DAB671',
-        borderRadius:10,
-        borderWidth:1,
         padding:'3%'
     },
 
@@ -57,10 +54,6 @@ const StyleEditCenter = StyleSheet.create({
         width:'90%',
         padding:'3%',
         justifyContent:'center',
-        height:windowHeight*0.07,
-        backgroundColor:'#DAB671',
-        borderRadius:10,
-        borderWidth:1,
     }
 
 

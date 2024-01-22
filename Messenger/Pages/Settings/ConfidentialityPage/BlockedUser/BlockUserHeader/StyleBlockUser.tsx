@@ -5,21 +5,37 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const StyleBlockUserHeader = StyleSheet.create({
-    header :{
+
+    container :{
         display: "flex",
         flexDirection: 'row',
-        height: Platform.OS=="android"?windowHeight * 0.08+StatusBar.currentHeight:windowHeight * 0.08+Constants.statusBarHeight,
-        borderBottomLeftRadius:40,
-        borderBottomRightRadius:40,
-        backgroundColor: '#E7E6E4',
-        justifyContent:'space-around',
-        alignItems:'center',
-        borderColor : '#A19C91',
-        borderWidth:1
+        width: '100%',
+        height:windowHeight*0.07,
+        paddingLeft:'2%',
+        paddingRight:'2%',
     },
 
-    unblockButt:{
-        color:'#5C4081',
+    backButt:{
+        alignSelf:'flex-end',
+        paddingBottom:'4%',
+        width:"10%"
+    },
+
+    BlockUserArticleConteiner:{
+        display:'flex',
+        width:'75%',
+        paddingBottom:'2%',
+        paddingLeft:"3%",
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    BlockUserArticleText:{
+        fontSize: 20,
+    },
+
+    UnblockButt:{
+        marginRight:"5%",
+        alignSelf:'center',
     }
     
 });
