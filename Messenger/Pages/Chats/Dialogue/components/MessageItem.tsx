@@ -6,9 +6,9 @@ import ReplyTextType from '../MessageViewsAndTypes/ReplyTextType';
 import DefaultTextType from '../MessageViewsAndTypes/DefaultTextType';
 import { MessageItemProps } from './interfaces/IMessageItem';
 
-const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched }:MessageItemProps) => {
-  
-  const messageViewHandle = ({listOfMessages, message, setMessageMenuVisible, flatListRef, author}:messageViewHandleProps) => {
+const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting }:MessageItemProps) => {
+   
+  const messageViewHandle = ({message}:messageViewHandleProps) => {
     if(message.messageType == EMessageType.text && message.messageResponseId) {
       return <ReplyTextType 
         key={message.messageId} 
@@ -19,6 +19,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         scrollView={flatListRef}
         author={author}
         userMessageLastWatched={userMessageLastWatched}
+        selecting={selecting}
       />;
     }
     else if(message.messageType == EMessageType.text) {
@@ -29,6 +30,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         id={message.messageId!} 
         author={author}
         userMessageLastWatched={userMessageLastWatched}
+        selecting={selecting}
       />;
     }
   };
@@ -43,7 +45,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         }}
         style={{ flex: 1, zIndex: item.messageId === messageID ? 4 : -10 }}
       >
-        {messageViewHandle({ listOfMessages, message: item, setMessageMenuVisible, flatListRef, coordsY, author })}
+        {messageViewHandle({ message: item })}
       </View>
     );
   }

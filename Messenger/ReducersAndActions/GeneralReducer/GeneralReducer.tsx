@@ -9,7 +9,7 @@ import userReducer from "../UserReducersAndActions/Reducers/UserReducers";
 const rootReducer=combineReducers(
     {
         chatListReducer:rootReducerChatList,
-        //ChatReducer:ChatReducer,
+        ChatReducer:ChatReducer,
         //DialogueReducer:DialogueReducer,
         SettingsPagesReducers:ListOfSettingsReducer,
        // SelfProfileReducer:SelfProfileReducer,

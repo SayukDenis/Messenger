@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import MessageItem from './MessageItem';
 import { height } from '../DialogueConstants';
 
-const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched }:DialogueMessagesProps) => {
+const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched, selecting, hasPinnedMessage }:DialogueMessagesProps) => {
 
   const flatListRef = useRef(null);
   useEffect(() => {
@@ -81,16 +81,17 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
       messageID={messageID}
       setCoordsY={setCoordsYHandler}
       userMessageLastWatched={userMessageLastWatched}
+      selecting={selecting}
     />);
-  const memoizedItem = useMemo(() => renderItem, [listOfMessages]);
+  const memoizedItem = useMemo(() => renderItem, [listOfMessages, selecting]);
 
   const ListHeaderComponent = () => (
-    <View style={{ height: screenHeight * 0.02+(isReply||isEdit?screenHeight*0.05:0) }} />
+    <View style={{ height: screenHeight * 0.02+(isReply||isEdit?screenHeight*0.06:0) }} />
   );
 
   const ListFooterComponent = () => (
     <View 
-      style={{ backgroundColor: 'transparent', height: (screenHeight*0.12+5+Constants.statusBarHeight) }} 
+      style={{ backgroundColor: 'transparent', height: (screenHeight*0.08+(hasPinnedMessage?screenHeight*0.05:0)+Constants.statusBarHeight) }} 
     />
   )
 

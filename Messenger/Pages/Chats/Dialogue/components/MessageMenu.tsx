@@ -5,6 +5,7 @@ import { messageMenuProps } from "./interfaces/IMessageMenu";
 import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
+import * as Clipboard from 'expo-clipboard';
 import MessageMenuSelectButton from "../SVG/MessageMenuSelectButton";
 import MessageMenuDeleteButton from "../SVG/MessageMenuDeleteButton";
 import MessageMenuForwardButton from "../SVG/MessageMenuForwardButton";
@@ -27,7 +28,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -44,12 +45,17 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     },
     {
       text: 'Copy',
-      action: () => {},
+      action: async () => {
+        await Clipboard.setStringAsync(coord.message?.content!);
+        onCopyPress();
+      },
       svg: <MessageMenuCopyButton />
     },
     {
       text: 'Pin',
-      action: () => {},
+      action: () => {
+        onPinPress(coord.message!);
+      },
       svg: <MessageMenuPinButton />
     },
     {
@@ -65,7 +71,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     },
     {
       text: 'Select',
-      action: () => {},
+      action: onSelectPress,
       svg: <MessageMenuSelectButton />
     },
   ];

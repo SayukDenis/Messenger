@@ -40,7 +40,7 @@ let authorMessageLastWatched:ILastWatchedMessage | undefined;
 let userMessageLastWatched:ILastWatchedMessage | undefined;
 let dialogue:DialogueModel.default;
 const Dialogue = ({ navigation, route }:any) => {
-  const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
+  
   dialogue = route.params.chat as DialogueModel.default;
   authorMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
   userMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
@@ -51,8 +51,6 @@ const Dialogue = ({ navigation, route }:any) => {
   const [listOfMessages, setListOfMessages] = useState([] as MessageProps[]);
   useEffect(() => {
     setListOfMessages(dialogue.messages.reverse());
-    console.log(dialogue.pinnedMessage);
-    setPinnedMessage(dialogue.pinnedMessage[dialogue.pinnedMessage.length-1]);
   }, [])
   
   const [isReply, setIsReply] = useState(false);
@@ -139,7 +137,38 @@ const Dialogue = ({ navigation, route }:any) => {
   const handleMessageMenuPress = useCallback(() => {
     setMessageMenuVisible(false);
   }, []);
+
+  const [copy, setCopy] = useState(false);
+  const setCopyHandler = () => {
+    setCopy(!copy);
+  }
   
+  const [selecting, setSelecting] = useState(false);
+  const setSelectingHandler = () => {
+    setSelecting(!selecting);
+  }
+
+  const [listOfPinnedMessages, setListOfPinnedMessages] = useState(dialogue.pinnedMessage as MessageProps[]);
+  const pinMessageHandler = (message: MessageProps) => {
+    if(listOfPinnedMessages.find(m => message.messageId === m.messageId)) {
+      const msgs = listOfPinnedMessages.filter(m => m.messageId !== message.messageId);
+      setListOfPinnedMessages(msgs);
+      if(msgs.length>0) {
+        setPinnedMessage(msgs[msgs.length-1]);
+      } else {
+        setPinnedMessage({} as MessageProps);
+      }
+    } else {
+      setListOfPinnedMessages([...listOfPinnedMessages, message])
+      setPinnedMessage(message);
+    }
+  }
+  const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
+  // useEffect(() => {
+  //   setPinnedMessage(listOfPinnedMessages[listOfPinnedMessages.length-1]);
+  // }, [listOfPinnedMessages])
+  console.log(listOfPinnedMessages.length);
+
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>
@@ -153,6 +182,9 @@ const Dialogue = ({ navigation, route }:any) => {
             onReplyPress={replyHandler} 
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
+            onCopyPress={setCopyHandler}
+            onSelectPress={setSelectingHandler}
+            onPinPress={pinMessageHandler}
             userMessageLastWatched={userMessageLastWatched}
           />
           <DialogueHeader 
@@ -160,7 +192,11 @@ const Dialogue = ({ navigation, route }:any) => {
             picture={dialogue.linkToPhoto}
             displayName={dialogue.users[1].name}
             activityTime={'Online recently'} // Last activity from user
-            pinnedMessage={pinnedMessage}
+            pinnedMessage={listOfPinnedMessages[listOfPinnedMessages.length-1]}
+            countOfPinnedMessages={listOfPinnedMessages.length}
+            currentNumOfPinnedMessage={listOfPinnedMessages.findIndex(m => m.messageId === pinnedMessage.messageId)+1}
+            selecting={selecting}
+            cancelSelection={setSelectingHandler}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
@@ -171,6 +207,8 @@ const Dialogue = ({ navigation, route }:any) => {
             author={user as User}
             userMessageLastWatched={userMessageLastWatched}
             authorMessageLastWatched={authorMessageLastWatched}
+            selecting={selecting}
+            hasPinnedMessage={listOfPinnedMessages.length>0}
           />
           <DialogueFooter 
             messages={listOfMessages} 
@@ -182,6 +220,8 @@ const Dialogue = ({ navigation, route }:any) => {
             editMessage={editMessage} 
             replyMessage={isReply?msgs.find(m => m.messageId==messageIdForReplyAndEdit)!:{} as MessageProps} 
             onSendMessageOrCancelReplyAndEdit={sendMessageOrCancelReplyAndEditHandler} 
+            copyMessagePopUp={copy}
+            endCopyMessagePopUp={setCopyHandler}
           />
           <DeleteMessageModal 
             deleting={deleting} 

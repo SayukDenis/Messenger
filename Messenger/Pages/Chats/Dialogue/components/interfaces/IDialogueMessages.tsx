@@ -14,13 +14,10 @@ export interface DialogueMessagesProps {
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   authorMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
+  hasPinnedMessage: boolean;
 }
 
 export interface messageViewHandleProps {
-  listOfMessages: MessageProps[]; 
   message: MessageProps; 
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void; 
-  flatListRef: MutableRefObject<any>; 
-  coordsY: any;
-  author: User;
 }
