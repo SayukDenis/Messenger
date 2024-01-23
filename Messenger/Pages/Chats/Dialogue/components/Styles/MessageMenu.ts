@@ -24,6 +24,44 @@ export const styles = StyleSheet.create({
     paddingHorizontal:10, 
     paddingVertical:5, 
     borderRadius:15, 
-    width:width*0.2
+    width:width*0.25,
+    flexDirection: 'row',
+    alignItems: 'center'
   }
-})
+});
+
+export const footerstyles = StyleSheet.create({
+  triangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderStyle: "solid",
+    borderLeftWidth: screenWidth * 0.015,
+    borderRightWidth: screenWidth * 0.015,
+    borderBottomWidth: screenWidth * 0.03,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#E7E6E4",
+    position: "relative",
+  },
+  positionOfModalWindowLeftBottom: {
+    transform: [{ rotate: "100deg" }],
+    bottom: screenHeight * 0.009,
+    left: screenWidth * 0.005,
+  },
+  positionOfModalWindowRightBottom: {
+    transform: [{ rotate: "-100deg" }],
+    bottom: screenHeight * 0.009,
+    left: screenWidth * 0.22,
+  },
+  positionOfModalWindowLeftTop: {
+    transform: [{ rotate: "322.5deg" }],
+    bottom: -screenHeight * 0.006,
+    left: -screenWidth * 0.008,
+  },
+  positionOfModalWindowRightTop: {
+    transform: [{ rotate: "-322.5deg" }],
+    bottom: -screenHeight * 0.006,
+    left: screenWidth * 0.23,
+  },
+});

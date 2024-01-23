@@ -6,6 +6,11 @@ import ContactsPage from "../Components/ContactsPage";
 import { ChatFolderPageNAvigator } from "../../Settings/NavigationForSettings";
 import CreateChannelAndGroupOrWriteMessage from "../Components/CreateChannelAndGroupOrWriteMessage";
 import CreateGroupPage from "../Components/CreateGroupPage";
+import CreateChannelPage from "../Components/CreateChannelPage";
+import WriteMessagePage from "../Components/WriteMessagePage";
+import AddMemberPage from "../Components/CreateChannelAndGroupOrWriteMessage/Add member/AddMemberPage";
+import AllPhotoInGallery from "../Components/CreateChannelAndGroupOrWriteMessage/GalleryModalWindow/Gallery/AllPhotoInGallery";
+import CameraComponent from "../Components/CreateChannelAndGroupOrWriteMessage/GalleryModalWindow/Camera/CameraComponent";
 
 const ChatListNavigation = () => {
   return (
@@ -40,7 +45,12 @@ const CreateChannelAndGroupOrWriteMessageNavigation = () => {
         name="Create channel and group or write navigation"
         component={CreateChannelAndGroupOrWriteMessage}
       />
-      <Stack.Screen name="Create Group Page" component={CreateGroupPage}/>
+      <Stack.Screen name="Create Group Page" component={CreateGroupPage} />
+      <Stack.Screen name="Create Channel Page" component={CreateChannelPage} />
+      <Stack.Screen name= "Write Message Page" component={WriteMessagePage}/>
+      <Stack.Screen name="Add Member Page" component={AddMemberPage}/>
+      <Stack.Screen name="All Photo In Gallery" component={AllPhotoInGallery}/>
+      <Stack.Screen name="Camera Component" component={CameraComponent}/>
     </Stack.Navigator>
   );
 };

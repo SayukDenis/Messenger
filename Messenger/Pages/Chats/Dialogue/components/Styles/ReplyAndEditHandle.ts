@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     alignItems:'center'
   },
   usernameText: {
-    color:'rgb(183, 158, 255)'
+    color:'#4684FB'
   },
   messageText: {
     color:'rgb(121, 121, 121)'

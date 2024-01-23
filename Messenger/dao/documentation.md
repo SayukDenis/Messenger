@@ -1,42 +1,8 @@
 # Documentation for database
 
-## Types
+## Models
 
-### Basic types
-
-* `integer` - stored as an INTEGER
-* `bigint`  - stored as an INTEGER
-* `real` - stored as an REAL
-* `boolean`  - stored as an BOOLEAN
-* `string` and `text` - stored as a TEXT
-* `date` - stored as a DATETIME (INTEGER)
-* `blob` - stored as a BLOB (image, audio, video and other type of raw binary information)
-* `null` - stored as an NULL
-
-### Example column and data to insert
-
-| id | null_column | integer_column | real_column |  text_column  | blob_column |     datetime_column   | boolean_column |
-|----|-------------|----------------|-------------|---------------|-------------|-----------------------|----------------|
-| 1  | NULL        | 42             | 3.14        | Sample Text   | 0x010101    | 2024-01-01 12:34:56   | TRUE           |
-| 2  | NULL        | 23             | 2.71        | Another Text  | 0x020202    | 2024-01-02 18:45:30   | FALSE          |
-
-### Additional types
-
-* `enum` - stored as an INTEGER
-* `interface` - stored as an TEXT in JSON format
-* `list` - have 3 cases:
-  * if an array of `primitive types` - stored as an TEXT in JSON format
-  * if an array of `interface` - stored as an TEXT in JSON format
-  * if an array of `class` - add field INTEGER type and FOREIGN KEY in the binding model
-* `class` - one-to-one reference,  stored as an INTEGER
-* `other` - Error "dao_generateSql_mapToSQl: Unknown type "
-
-### NULLable type
-
-1. You can append ? at the end of the type definition as a string to indicate that the field can be nullable; otherwise, it is NOT NULL.
-2. If the type is an object, such as {type: 'number', optional: true}, it indicates that the field is optional. You can omit the specification of optional.
-
-## Example models
+### Example models
 
 User:
 
@@ -94,20 +60,57 @@ class Dialogue extends MainChat {
 }
 ```
 
-## Field naming rules
+### Basic types in schema
 
-### Field in schema
+* `integer` - stored as an INTEGER
+* `bigint`  - stored as an INTEGER
+* `real` - stored as an REAL
+* `boolean`  - stored as an BOOLEAN
+* `string` and `text` - stored as a TEXT
+* `date` - stored as a DATETIME (INTEGER)
+* `blob` - stored as a BLOB (image, audio, video and other type of raw binary information)
+* `null` - stored as an NULL
 
-Fields in the schema should be named like class fields - their names will be analogous in the table.
+### Example column and data to insert
 
-### Foreign key
+| id | null_column | integer_column | real_column |  text_column  | blob_column |     datetime_column   | boolean_column |
+|----|-------------|----------------|-------------|---------------|-------------|-----------------------|----------------|
+| 1  | NULL        | 42             | 3.14        | Sample Text   | 0x010101    | 2024-01-01 12:34:56   | TRUE           |
+| 2  | NULL        | 23             | 2.71        | Another Text  | 0x020202    | 2024-01-02 18:45:30   | FALSE          |
+
+### Additional types in schema
+
+* `enum` - stored as an INTEGER
+* `interface` - stored as an TEXT in JSON format
+* `list` - have 3 cases:
+  * if an array of `primitive types` - stored as an TEXT in JSON format
+  * if an array of `interface` - stored as an TEXT in JSON format
+  * if an array of `class` - add field INTEGER type and FOREIGN KEY in the binding model
+* `class` - one-to-one reference,  stored as an INTEGER
+* `other` - Error "dao_generateSql_mapToSQl: Unknown type "
+
+### NULLable type in schema
+
+1. You can append `?` at the end of the type definition as a string to indicate that the field can be `nullable`; otherwise, it is NOT NULL.
+2. If the type is an object, such as `{type: 'number', optional: true}`, it indicates that the field is `optional`. You can omit the specification of optional.
+
+## Field rules
+
+### Field rules in the scheme
+
+1. Fields in the schema should be named like class fields - their names will be analogous in the table.
+2. A scheme can't have functions.
+
+### Foreign key naming rules
 
 * For foreign keys in associated models (one-to-many relationship): `{name of the parent table}_{field name}_fk`
 
 * For foreign keys in this table (one-to-one relationship): `{field name}_fk`
 
-## Other
+## Example work with Expo SQLite
 
+```ts
+// Model
 class Employee {
   date_of_birth: Date;
   employee_id: number;
@@ -125,7 +128,7 @@ class Employee {
   }
 }
 
-// Додавання запису в таблицю
+// Adding a record to the table
 const addEmployee = () => {
   db.transaction(tx => {
     tx.executeSql(
@@ -144,7 +147,7 @@ const addEmployee = () => {
   });
 };
 
-// Отримання даних з таблиці та створення об'єкта Employee
+// Getting data from the table and creating an Employee object
 const readEmployees = () => {
   db.transaction(tx => {
     tx.executeSql(
@@ -165,3 +168,4 @@ const readEmployees = () => {
     );
   });
 };
+```

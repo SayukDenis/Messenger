@@ -1,15 +1,34 @@
-import { Dispatch, MutableRefObject, SetStateAction, memo, useEffect, useState } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, Dimensions, Animated, EasingFunction, Easing } from "react-native";
+import { memo, useEffect, useState } from "react";
+import { TouchableOpacity, View, Text, Animated, EasingFunction, Easing } from "react-native";
 import React from 'react';
 import { messageMenuProps } from "./interfaces/IMessageMenu";
-import { styles } from './Styles/MessageMenu';
-import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { footerstyles, styles } from './Styles/MessageMenu';
+import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
+import * as Clipboard from 'expo-clipboard';
+import MessageMenuSelectButton from "../SVG/MessageMenuSelectButton";
+import MessageMenuDeleteButton from "../SVG/MessageMenuDeleteButton";
+import MessageMenuForwardButton from "../SVG/MessageMenuForwardButton";
+import MessageMenuPinButton from "../SVG/MessageMenuPinButton";
+import MessageMenuCopyButton from "../SVG/MessageMenuCopyButton";
+import MessageMenuEditButton from "../SVG/MessageMenuEditButton";
+import MessageMenuReplyButton from "../SVG/MessageMenuReplyButton";
+import DefaultTextDummyMessage from "../MessageMenuDummyMessages/DefaultTextDummyMessage";
+import ReplyTextDummyMessage from "../MessageMenuDummyMessages/ReplyTextDummyMessage";
+import { height, width } from "../DialogueConstants";
 
-const {width, height} = Dimensions.get('window');
 
 let size:{ width:number, height:number } = { width: 0, height: 0 };
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEditPress, isUser, onDeletePress}:messageMenuProps) => {
+
+const containerWidth = new Animated.Value(0); 
+const firstContainerTranslate = new Animated.Value(0); 
+const secondContainerTranslate = new Animated.Value(0);
+const thirdContainerTranslate = new Animated.Value(0);
+const fourthContainerTranslate = new Animated.Value(0);
+const fifthContainerTranslate = new Animated.Value(0);
+const sixthContainerTranslate = new Animated.Value(0);
+
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -17,41 +36,46 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
     {
       text: 'Reply',
       action: onReplyPress,
+      svg: <MessageMenuReplyButton />
     },
     {
       text: 'Edit',
       action: onEditPress,
+      svg: <MessageMenuEditButton />
     },
     {
       text: 'Copy',
-      action: () => {},
+      action: async () => {
+        await Clipboard.setStringAsync(coord.message?.content!);
+        onCopyPress();
+      },
+      svg: <MessageMenuCopyButton />
     },
     {
       text: 'Pin',
-      action: () => {},
+      action: () => {
+        onPinPress(coord.message!);
+      },
+      svg: <MessageMenuPinButton />
     },
     {
       text: 'Forward',
       action: () => {},
+      svg: <MessageMenuForwardButton />
     },
     {
       text: 'Delete',
-      color: 'darkred',
-      action: onDeletePress
+      color: 'red',
+      action: onDeletePress,
+      svg: <MessageMenuDeleteButton />
     },
     {
       text: 'Select',
-      action: () => {},
+      action: onSelectPress,
+      svg: <MessageMenuSelectButton />
     },
   ];
 
-  const containerWidth = new Animated.Value(0); 
-  const firstContainerTranslate = new Animated.Value(0); 
-  const secondContainerTranslate = new Animated.Value(0);
-  const thirdContainerTranslate = new Animated.Value(0);
-  const fourthContainerTranslate = new Animated.Value(0);
-  const fifthContainerTranslate = new Animated.Value(0);
-  const sixthContainerTranslate = new Animated.Value(0);
   const durationOfAnimation: number = 10;
   const [state, setState] = useState(1);
   const easing: EasingFunction = Easing.linear;
@@ -231,14 +255,14 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
     const { width, height } = event.nativeEvent.layout;
     size = { width, height }
   };
-
+  
   const handleMenuPosition = () => {
     if(isUser) {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
-        return { top:(coord?coord.pageY:0), left:(coord?width-coord.width-10:0)-size.width-5 }
+        return { top:(coord?coord.pageY:0), left:(coord?width-coord.width-10:0)-size.width-10 }
       }
       else {
-        return { top:(coord?coord.pageY:0)-size.height, left:(coord?width-coord.width-10:0)-size.width-5 }
+        return { top:(coord?coord.pageY:0)-size.height, left:(coord?width-coord.width-10:0)-size.width-10 }
       }
     } else {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
@@ -248,7 +272,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
       }
     }
   }
-
+  
   const handleTrianglePosition = () => {
     if(isUser) {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
@@ -286,6 +310,10 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
         setTimeout(() => onOverlayPress(), 100)
       }}
     >
+      <View style={{ top: coord.componentPageY, height: coord.height }}>
+        {coord.message?.messageResponseId?<ReplyTextDummyMessage message={coord.message} messages={messages} isUser={isUser} height={coord.height} userMessageLastWatched={userMessageLastWatched} />:
+        <DefaultTextDummyMessage message={coord.message} isUser={isUser} height={coord.height} userMessageLastWatched={userMessageLastWatched} />}
+      </View>
       <View 
         onLayout={onLayout}
         style={[styles.buttonsContainer, handleMenuPosition()]}
@@ -303,7 +331,8 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
               activeOpacity={1} 
               style={styles.button}
             >
-              <Text style={{color:button.color}}>{button.text}</Text>
+              {button.svg}
+              <Text style={{color:button.color, marginLeft: 5}}>{button.text}</Text>
             </TouchableOpacity>
             {button.text==='Select'&&(coord?coord.pageY:0) > height-screenHeight*0.06-size.height?
             <View
@@ -315,41 +344,5 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, onReplyPress, onEdi
     </TouchableOpacity>
   );
 })
-
-const footerstyles = StyleSheet.create({
-  triangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
-    borderLeftWidth: screenWidth * 0.015,
-    borderRightWidth: screenWidth * 0.015,
-    borderBottomWidth: screenWidth * 0.03,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "#E7E6E4",
-    position: "relative",
-  },
-  positionOfModalWindowLeftBottom: {
-    transform: [{ rotate: "100deg" }],
-    bottom: screenHeight * 0.009,
-    left: screenWidth * 0.005,
-  },
-  positionOfModalWindowRightBottom: {
-    transform: [{ rotate: "-100deg" }],
-    bottom: screenHeight * 0.009,
-    left: screenWidth * 0.17,
-  },
-  positionOfModalWindowLeftTop: {
-    transform: [{ rotate: "322.5deg" }],
-    bottom: -screenHeight * 0.006,
-    left: -screenWidth * 0.008,
-  },
-  positionOfModalWindowRightTop: {
-    transform: [{ rotate: "-322.5deg" }],
-    bottom: -screenHeight * 0.006,
-    left: screenWidth * 0.18,
-  },
-});
 
 export default connect(null)(MessageMenu);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import {
   heightOfHeader,
@@ -7,10 +7,14 @@ import {
 } from "../../Constants/ConstantsForChatlist";
 import EditButton from "../../../SemiComponents/EditButton";
 import { TouchableOpacity } from "react-native";
-import ContainerForButtonForSettings from "../../../SemiComponents/ContainerForButtonForSettings";
-import TextInputValidateForCountOfText from "../../../SemiComponents/TextInputValidateForCountOfText";
-import AddMemberSVG from "../../../SemiComponents/AddMemberSVG";
-import CameraSVG from "../../../SemiComponents/CameraSVG";
+
+import { connect, useDispatch, useSelector } from "react-redux";
+import User from "../../../../dao/Models/User";
+import AddPhotoForCreate from "../CreateChannelAndGroupOrWriteMessage/Semi Components For creates/AddPhotoForCreate";
+import TextAndInputForCreate from "../CreateChannelAndGroupOrWriteMessage/Semi Components For creates/TextAndInputForCreate";
+import AddUsersListForCreate from "../CreateChannelAndGroupOrWriteMessage/Semi Components For creates/AddUsersListForCreate";
+import BlurAll from "../../../SemiComponents/BlurAll";
+import GalleryModalWindow from "../CreateChannelAndGroupOrWriteMessage/GalleryModalWindow/GalleryModalWindow";
 
 interface MainForCreateGroupPageProps {
   navigation: any;
@@ -19,84 +23,83 @@ interface MainForCreateGroupPageProps {
 const MainForCreateGroupPage: React.FC<MainForCreateGroupPageProps> = ({
   navigation,
 }) => {
-  const radiusOfPhotoContiner = screenWidth * 0.33;
-  //const radiusOfPhotoContiner=screenHeight*0.15
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
+  const [inputTextForName, setInputTextForName] = useState<string>("");
+  const [inputTextForBio, setInputTextForBio] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [onAddPhotoPress, setOnAddPhotoPress] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const marginTop = 15;
   const marginLeft = screenWidth * 0.03;
   const marginBottom = 10;
+  const selectedUsers: User[] = useSelector((state: any) => {
+    return state.chatListReducer.createGroupOrChannel.selectedUsers;
+  });
+  const handlePress = () => {
+    setStartTime(Date.now());
+  };
+
+  function handlePressOut() {
+    setEndTime(Date.now());
+    const duration = startTime - endTime;
+    if (duration < 16) {
+      setOnAddPhotoPress(false);
+      return;
+    }
+    setStartTime(Date.now());
+  }
+  const pressOnAddPhoto = () => {
+    setOnAddPhotoPress(true);
+  };
+
   return (
-    <ScrollView scrollEnabled={false} style={{ marginTop: heightOfHeader }}>
-      <View
-        style={{
-          alignSelf: "center",
-          backgroundColor: "#E3CFB1",
-          borderRadius: 100,
-          height: radiusOfPhotoContiner,
-          aspectRatio: 1,
-          marginTop: 20,
-          justifyContent: "center",
-        }}
-      >
-        <CameraSVG/>
-      </View>
-      <TouchableOpacity>
-        <EditButton />
-      </TouchableOpacity>
-      <View style={{ marginTop, marginLeft }}>
-        <Text style={{ color: "#2B1D1D", fontSize: 17, marginBottom }}>
-          {"Name"}
-        </Text>
-      </View>
-      <ContainerForButtonForSettings>
-        <TextInputValidateForCountOfText
-          placeHolder={"Group name"}
+    <>
+      <ScrollView scrollEnabled={isOpen} style={{ marginTop: heightOfHeader }}>
+        <TouchableOpacity onPress={pressOnAddPhoto}>
+          <AddPhotoForCreate />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={pressOnAddPhoto}>
+          <EditButton />
+        </TouchableOpacity>
+        <TextAndInputForCreate
+          marginTop={marginTop}
+          marginBottom={marginBottom}
+          marginLeft={marginLeft}
+          inputText={inputTextForName}
+          setInputText={setInputTextForName}
           maxNumberOfChars={43}
+          changeTopic={"Name"}
+          typeOfChat={"Group"}
         />
-      </ContainerForButtonForSettings>
-      <View style={{ marginTop, marginLeft }}>
-        <Text style={{ color: "#2B1D1D", fontSize: 17, marginBottom }}>
-          {"Bio"}
-        </Text>
-      </View>
-      <ContainerForButtonForSettings>
-        <TextInputValidateForCountOfText
-          placeHolder={"Group bio"}
+        <TextAndInputForCreate
+          marginTop={marginTop}
+          marginBottom={marginBottom}
+          marginLeft={marginLeft}
+          inputText={inputTextForBio}
+          setInputText={setInputTextForBio}
           maxNumberOfChars={100}
+          changeTopic={"Bio"}
+          typeOfChat={"Group"}
         />
-      </ContainerForButtonForSettings>
-      <View style={{ marginTop, marginLeft }}>
-        <Text style={{ color: "#2B1D1D", fontSize: 17, marginBottom }}>
-          {"Users"}
-        </Text>
-      </View>
-      <TouchableOpacity>
-        <ContainerForButtonForSettings>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <View
-              style={{
-                //backgroundColor: "white",
-                alignSelf: "center",
-                justifyContent: "center",
-                marginLeft: marginLeft - 3,
-              }}
-            >
-              <AddMemberSVG />
-            </View>
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: 16,
-                paddingLeft: 3,
-                //backgroundColor: "red",
-              }}
-            >
-              {"Member"}
-            </Text>
-          </View>
-        </ContainerForButtonForSettings>
-      </TouchableOpacity>
-    </ScrollView>
+        <AddUsersListForCreate
+          marginTop={marginTop}
+          marginBottom={marginBottom}
+          marginLeft={marginLeft}
+          selectedUsers={selectedUsers}
+          navigation={navigation}
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+          addNameOfUser={"Member"}
+        />
+      </ScrollView>
+      {onAddPhotoPress ? (
+        <BlurAll handlePress={handlePress} handlePressOut={handlePressOut}>
+          <GalleryModalWindow setOnAddPhotoPress={setOnAddPhotoPress} navigation={navigation} />
+        </BlurAll>
+      ) : null}
+    </>
   );
 };
 
-export default MainForCreateGroupPage;
+export default connect(null)(MainForCreateGroupPage);

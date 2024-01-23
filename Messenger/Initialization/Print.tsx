@@ -7,7 +7,7 @@ export function printSelfProfile() {
     const selfProfile: SelfProfile = initialization();
     for (const key in selfProfile) {
         if (selfProfile.hasOwnProperty(key)) {
-            const value = selfProfile[key];
+            const value = selfProfile[key as keyof SelfProfile];
 
             if (Array.isArray(value)) {
                 console.log(`${key}: ${value.length} elements`);
@@ -27,7 +27,7 @@ export function printFullData() {
     printObject(selfProfile, 0);
 }
 
-function printObject(obj, depth) {
+function printObject(obj: any, depth: any) {
     for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
             const value = obj[key];
@@ -48,6 +48,6 @@ function printObject(obj, depth) {
     }
 }
 
-function getIndentation(depth) {
+function getIndentation(depth: any) {
     return '  '.repeat(depth);
 }

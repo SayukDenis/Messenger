@@ -3,14 +3,13 @@ import Tab from "../dao/Models/Tab";
 import Dialogue from "../dao/Models/Chats/Dialogue";
 import Group from "../dao/Models/Chats/Group";
 import Channel from "../dao/Models/Chats/Channel";
-import Chat from "../dao/Models/Chats/Chat";
 import Message from "../dao/Models/Message";
 import Folder from "../dao/Models/Folder";
 import User from "../dao/Models/User";
-import { EMessageType } from "../dao/Models/EMessageType";
-import { user } from "../Pages/Profiles/SemiComponents/DBUser";
 import Branch from "../dao/Models/Chats/Branch";
 import MainChat from "../dao/Models/Chats/MainChat";
+import { addMessages, initializationLastWatchedMessageChat } from './initializationMessage';
+import { getRandomElementsFromArray, getRandomNumber, shuffleArray } from "./functions";
 
 const messageDialog: string[] = [
   "Привіт",
@@ -60,6 +59,7 @@ const images: string[] = [
   "data:image/jpeg;base64,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",
   "https://cdn.discordapp.com/attachments/1043985846715564102/1154700004942950501/image.png"
 ]
+
 const numberOfUsersToCreate = 20;
 const numberOfFolderToCreate = 5;
 const numberOfTabToCreate = 4;
@@ -107,7 +107,6 @@ export function initialization(): SelfProfile {
   allChatsFolder.chats.push(...groups);
   allChatsFolder.chats.push(...dialogues);
 
-
   for (let folder of folders) {
     folder.chats.push(...getRandomElementsFromArray<Dialogue>(dialogues));
     folder.chats.push(...getRandomElementsFromArray<Group>(groups));
@@ -121,20 +120,6 @@ export function initialization(): SelfProfile {
   selfProfile.tabs.push(...tabs);
 
   return selfProfile;
-}
-
-function getRandomNumber(max:number, min = 0): number {
-  const randomDecimal = Math.random();
-  // Scale the random decimal to the desired range [0, max)
-  const randomNumber = Math.floor(randomDecimal * max) + min;
-  return randomNumber;
-}
-function getRandomElementsFromArray<T>(arr: T[], max = arr.length): T[] {
-  if (arr.length == 1)
-    return arr;
-  const randomCount = getRandomNumber(max > arr.length ? arr.length : max, 1); // Випадкова кількість (мінімум 1)
-  const shuffledArray = arr.slice().sort(() => Math.random() - 0.5); // Перемішуємо копію масиву
-  return shuffledArray.slice(0, randomCount);
 }
 
 function createUsers(count: number): User[] {
@@ -158,10 +143,13 @@ function createUsers(count: number): User[] {
 function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Dialogue[] {
   const dialogues: Dialogue[] = [];
 
-  if (users.length < 1) throw Error("must be minimum 1 users ")
+  if (users.length < count) throw Error("users are less than the required number of dialogues");
 
-  for (let i = 0; i < count; i++) {
-    const user = users[getRandomNumber(users.length)];
+  const shuffledUsers = [...users];
+  shuffleArray(shuffledUsers);
+
+  for (let i = 0, j = 0; i < count; i++, j++) {
+    const user = shuffledUsers[j];
 
     const dialogue = new Dialogue(selfUser, user);
 
@@ -180,7 +168,7 @@ function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Di
 function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group[] {
   const groups: Group[] = [];
 
-  if (users.length == 0) throw Error("must be minimum 1 users");
+  if (users.length < 1) throw Error("must be minimum 1 users");
 
   for (let i = 0; i < count; i++) {
     const group = new Group("Group " + i);
@@ -189,11 +177,11 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
     group.linkToPhoto = images[getRandomNumber(images.length)];
 
     if (Math.random() < 0.4) {
-      group.adminUser.push(selfUser);
+      group.adminUsers.push(selfUser);
       group.title = "Admin Group" + i;
     }
     group.users.push(selfUser);
-    group.adminUser.push(...getRandomElementsFromArray<User>(users));
+    group.adminUsers.push(...getRandomElementsFromArray<User>(users));
     group.users.push(...getRandomElementsFromArray<User>(users));
     addMessages(group, 100, users, messageGroupsAndChannels);
 
@@ -207,7 +195,7 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
 function createChannel(count: number, selfUser: SelfProfile, users: User[]): Channel[] {
   const channels: Channel[] = [];
 
-  if (users.length == 0) throw Error("must be minimum 1 users");
+  if (users.length < 1) throw Error("must be minimum 1 users");
 
   for (let i = 0; i < count; i++) {
     const channel = new Channel("Channel " + i);
@@ -215,13 +203,13 @@ function createChannel(count: number, selfUser: SelfProfile, users: User[]): Cha
     channel.channelId = idChannelToCreate++;
 
     if (Math.random() < 0.4) {
-      channel.adminUser.push(selfUser);
+      channel.adminUsers.push(selfUser);
       channel.title = "Admin Channel " + i;
     }
     channel.linkToPhoto = images[getRandomNumber(images.length)];
     channel.users.push(selfUser);
     addMessages(channel, 100, users, messageGroupsAndChannels);
-    channel.adminUser.push(...getRandomElementsFromArray<User>(users));
+    channel.adminUsers.push(...getRandomElementsFromArray<User>(users));
     channel.users.push(...getRandomElementsFromArray<User>(users));
 
     if (Math.random() < 0.15) addBranch(getRandomNumber(5), channel);
@@ -270,52 +258,4 @@ function addBranch(count: number, mainChat: MainChat) {
 
     mainChat.branches.push(branch);
   }
-}
-function addMessages(chat: Chat, count: number, users: User[], texts: string[] = []) {
-  let idMessageToCreate = 0
-  if (chat.messages.length > 0) idMessageToCreate = chat.messages[chat.messages.length - 1].messageId! + 1;
-
-  if (users.length === 0) throw new Error("must be more than 1 users");
-
-  for (let i = 1; i <= count; i++) {
-    let content: string;
-
-    if (texts.length == 0)
-      content = `Random message content ${idMessageToCreate}`;
-    else
-      content = texts[getRandomNumber(texts.length)];
-    
-    const message = new Message(users[getRandomNumber(users.length)], content, new Date(), EMessageType.text);
-    message.messageId = idMessageToCreate;
-    // Additional properties can be set if needed
-    if (Math.random() < 0.15)  message.messageResponseId = i - 1; // Set response ID to the previous message ID
-    message.isEdited = i % 2 === 0; // Set isEdited based on the index
-    // Add the message to the array
-    chat.messages.push(message);
-    idMessageToCreate++;
-  }
-}
-function initializationLastWatchedMessageChat(chat: MainChat) {
-  if (chat.branches.length>0) {
-    for (let branch of chat.branches) {
-      initializationLastWatchedMessageBranch(branch, chat.users);
-    }
-  } else {
-    for (let user of chat.users) {
-      chat.lastWatchedMessage.push({ user: user, value: chat.messages[getRandomNumber(chat.messages.length)] })
-    }
-  }
-
-}
-function initializationLastWatchedMessageBranch(chat: Chat, users: User[]) {
-  if (chat.branches.length>0) {
-    for (let branch of chat.branches) {
-      initializationLastWatchedMessageBranch(branch, users)
-    }
-  } else {
-    for (let user of users) {
-      chat.lastWatchedMessage.push({ user: user, value: chat.messages[getRandomNumber(chat.messages.length)] })
-    }
-  }
-
 }
