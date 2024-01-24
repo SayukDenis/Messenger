@@ -2,6 +2,7 @@ import React, {
   MutableRefObject,
   Ref,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -26,6 +27,8 @@ import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import ListOfBranches from "./ListOfBranches";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
+import { CountOfUnreadMessages } from "./Functions/CountOfUnreadMessage";
+import getNameOfChat from "./Functions/GetNameOfChat";
 
 interface ChatProps {
   chat: Chat;
@@ -41,8 +44,8 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
   });
 
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
-    useState<number>(null);
-  let randomBoolean = useRef(null);
+    useState<number|null>(null);
+  
   const [IsBranchesOpenBoolean, setIsBranchesOpenBoolean] = useState(false);
   const [stateForBranchesShow, setStateForBranchesShow] = useState(false);
   const [isSwiped, setIsSwiped] = useState(false);
@@ -58,21 +61,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
     }
     return;
   }
-  const haveUnreadMessages = (chat) => {
-    const lastMessage: Message =
-      chat.messages.length > 0
-        ? chat.messages[chat.messages.length - 1]
-        : undefined;
-
-    const id: number | undefined = chat.dictionary?.get(selfProfile.userId);
-    if (lastMessage !== undefined)
-      if (lastMessage.author.userId !== selfProfile.userId) {
-        if (id && lastMessage.messageId > id) {
-          return true;
-        }
-      }
-    return false;
-  };
+  
   const onBranchPress: () => void = () => {
     if (!IsBranchesOpenBoolean) {
       setBranchPressOpen();
@@ -82,9 +71,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
   const setBranchPressOpen: () => void = () => {
     setIsBranchesOpenBoolean(!IsBranchesOpenBoolean);
   };
-  useEffect(() => {
-    randomBoolean.current = Math.random() < 0.5;
-  }, []);
+  
 
   const rightDragXposition = useState(new Animated.Value(screenWidth));
   const leftDragXposition = useState(new Animated.Value(0));
@@ -93,17 +80,20 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
   const [leftDragXpositionForRerender, setLeftDragXpositionForRerender] =
     useState(0);
   const [stateForSwipeDirection, setStateForSwipeDirection] =
-    useState<number>(null);
+    useState<number | null>(null);
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
-
-  const haveUnreadMessagesBool = haveUnreadMessages(chat);
+  const CountOfUnreadMessage = useMemo(() => {
+    return CountOfUnreadMessages(selfProfile, chat);
+  }, [chat.lastWatchedMessage]);
+  const haveUnreadMessagesBool =CountOfUnreadMessage!=null&&CountOfUnreadMessage>0 ;
+ // console.log(getNameOfChat(chat,selfProfile)+":"+haveUnreadMessagesBool)
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
-    /*if(chat instanceof Dialogue){
-      navigation.navigate("Dialogue,{chat:(chat as Dialogue)})
+    if(chat instanceof Dialogue){
+      navigation.navigate("DialogueNavigation",{chat:(chat as Dialogue)})
     }
-    else*/
+  
     
   });
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
@@ -142,21 +132,21 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
     }
   };
   const scrollToRight40Percents = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth * 1.4 });
+    scrollViewRef.current?.scrollTo({ x: screenWidth * 1.4 });
   };
   const scrollToLeft40Percents = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth * 0.6 });
+    scrollViewRef.current?.scrollTo({ x: screenWidth * 0.6 });
   };
   const scrollToRightBound = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth });
+    scrollViewRef.current?.scrollTo({ x: screenWidth });
   };
   const scrollToLeftBound = () => {
-    scrollViewRef.current.scrollTo({ x: screenWidth * 2 });
+    scrollViewRef.current?.scrollTo({ x: screenWidth * 2 });
   };
   const scrollToZeroPosition = () => {
-    scrollViewRef.current.scrollTo({ x: 0 });
+    scrollViewRef.current?.scrollTo({ x: 0 });
   };
-  const handleScroll = (event) => {
+  const handleScroll = (event:any) => {
     const { nativeEvent } = event;
     const currentXOffset = nativeEvent.contentOffset.x;
     if (stateForSwipeDirection == 1 && currentXOffset > screenWidth) {
@@ -267,6 +257,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
             nesting={nesting + 1}
             setBranchOpen={setBranchPressOpen}
             stateForBranchesShow={stateForBranchesShow}
+            navigation={navigation}
           />
         ) : null}
       </>
@@ -290,7 +281,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
         />
         <View
           style={{
-            backgroundColor: null,
+
             position: "absolute",
             direction: "rtl",
             height: screenHeight * 0.08,
@@ -346,7 +337,6 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
             nesting={nesting}
           />
           <RightContainersForSwipe
-            randomBoolean={randomBoolean}
             rightDragXposition={rightDragXposition[0]}
             rightDragXpositionForRerender={rightDragXpositionForRerender}
           />
@@ -366,6 +356,7 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
           nesting={nesting + 1}
           setBranchOpen={setBranchPressOpen}
           stateForBranchesShow={stateForBranchesShow}
+          navigation={navigation}
         />
       ) : null}
     </View>

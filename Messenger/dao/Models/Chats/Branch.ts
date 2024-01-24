@@ -2,20 +2,23 @@ import Message from '../Message';
 import Role from './Role';
 import Model from '../Model';
 import Chat from './Chat';
-import ILastWathedMessage from './ILastWathedMessage';
+import ILastWatchedMessage from './ILastWatchedMessage';
 
 export default class Branch extends Chat {
-    constructor(title: string) {
-        super();
+    constructor(title: string, haveAccess?: Array<Role>, linkToPhoto?: string, messages?: Array<Message>, branches?: Array<Branch>,
+        pinnedMessage?: Array<Message>, pinnedMessageForAll?: Array<Message>,
+        lastWatchedMessage?: Array<ILastWatchedMessage>) {
+        super(linkToPhoto, messages, branches, pinnedMessage, pinnedMessageForAll, lastWatchedMessage);
         this.title = title;
+        this.haveAccess = haveAccess ?? new Array;
     }
     branchId?: number;
     title!: string;
     //access
-    haveAccess: Array<Role> = new Array;
+    haveAccess: Array<Role>;
     //schema
     static schema = {
-        name: 'branchs',
+        name: 'branches',
         properties: {
             branchId: { type: 'integer', indexed: true },
             title: 'text',
@@ -26,7 +29,7 @@ export default class Branch extends Chat {
             pinnedMessage: { type: 'list', objectType: Message },
             //access
             haveAccess: { type: 'list', objectType: Role },
-            lastWathedMessage: { type: 'list', objectType: {} as ILastWathedMessage },
+            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
         },
         primaryKey: 'branchId',
         embedded: false,

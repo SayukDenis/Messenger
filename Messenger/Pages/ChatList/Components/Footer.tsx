@@ -27,10 +27,10 @@ const Footer: React.FC<FooterProps> = ({
   widths,
   positionsOfFolder,
 }) => {
-  const OnPressRef = useRef((event: any, index) => {
+  const OnPressRef = useRef((event: any, index:number) => {
     handleFolderPress.current(index);
   });
-  const LongPressRef = useRef((e: any, index) => {
+  const LongPressRef = useRef((e: any, index:number) => {
     handleLongPress.current(e, index);
   });
   useEffect(() => {

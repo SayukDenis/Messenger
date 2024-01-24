@@ -1,93 +1,188 @@
-import { View, Text, TouchableOpacity, Alert, PanResponder, Dimensions, ScrollView } from 'react-native';
-import { memo, useCallback, useRef, useState } from 'react';
-import {Message, messages} from '../tmpdata';
-import styles from '../components/Styles/DialogueMessagesStyle';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { styles } from './Styles/DefaultTextType';
 import React from 'react';
-import tw from 'tailwind-react-native-classnames';
-
-const {width, height} = Dimensions.get('window');
+import { MessageProps } from '../GeneralInterfaces/IMessage';
+import User from '../../../../dao/Models/User';
+import { wrapText } from './HelperFunctions/wrapText';
+import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
+import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
+import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
+import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
+import { Layout } from "../GeneralInterfaces/ILayout";
+import { CHARS_PER_LINE } from '../DialogueConstants';
+import SelectButton from './SemiComponents/SelectButton';
+import { useDispatch } from 'react-redux';
+import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 
 interface DefaultTextMessageProps {
-  messages:Message[];
-  message:Message;
-  setMessageMenuVisible:(arg0: {x:number, y:number, ID:number})=>void;
+  message:MessageProps;
+  setMessageMenuVisible:(arg0: Layout, arg1: boolean)=>void;
   id:number;
+  author: User;
+  userMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
 }
 
-const arr = new Array(messages.length);
-for(let i = 0; i < messages.length; i++)
-  arr[i] = [0];
+let size:any[] = [];
 
-const DefaultTextType = memo(({messages, message, setMessageMenuVisible, id}:DefaultTextMessageProps) => {
+const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessageLastWatched, selecting }:DefaultTextMessageProps) => {
+  const dispatch = useDispatch();
 
-  const handlePress = useCallback((event:{ nativeEvent: { pageX: number; pageY: number } }) => {
-    const { nativeEvent } = event;
-    const { pageX, pageY } = nativeEvent;
-    return { x:(pageX<(width/8)?(width/8):pageX)>(width*0.6)?(width*0.6):pageX,
-             y:(pageY<(height/12)?(height/12):pageY)>(height*5/7)?(height*5/7):pageY,
-             ID: id };
-  }, [])
+  const [heightOfMessage, setHeightOfMessage] = useState(0);
+  const [selected, setSelected] = useState(false);
+  useEffect(() => {
+    if(!selecting) {
+      dispatch(resetNumberOfSelectedMessages())
+      setSelected(false)
+    }
+  }, [selecting])
 
-  //console.log('DefaultTextType-arr:', arr);
+  const onLayout = (event:any) => {
+    const { width, height } = event.nativeEvent.layout;
+    size = [...size, { ID: id, layout: { width, height }}];
+  };
 
-  const wrapText = (text, maxLength) => {
-    const words = text.split(' ');
-    const maxLengthForLongWord = maxLength-10;
-    let currentLine = '';
-    const lines = [];
-  
-    words.forEach((word) => {
-      if (word.length > maxLength) {
-        // Break the long word into chunks of maxLength characters
-        for (let i = 0; i < word.length; i += maxLengthForLongWord) {
-          lines.push(word.slice(i, i + maxLengthForLongWord));
-        }
-      } else if ((currentLine + word).length > maxLength) {
-        lines.push(currentLine);
-        currentLine = word + ' ';
+  const measureHandler = async () => {
+    return new Promise((resolve) => {
+      if (componentRef.current) {
+        componentRef.current.measure(
+          async (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+            resolve({ X: pageX, Y: pageY });
+          }
+        );
       } else {
-        currentLine += word + ' ';
+        resolve({ X: 0, Y: 0 });
       }
     });
-  
-    lines.push(currentLine.trim()); // Add the last line
-    
-    return lines.join('\n').trim();
   };
+  
+  interface componentPageProps {
+    X: number;
+    Y: number;
+  }
+  const handlePress = useCallback(async (event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
+    if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
+
+    setSelected(true);
+    dispatch(incrementNumberOfSelectedMessages())
+
+    const { nativeEvent } = event;
+    const { pageX, pageY } = nativeEvent;
+
+    const component = size.find(c => c.ID === id);
+
+    const componentPage = await measureHandler();
+    
+    return { 
+      ID: id,
+      componentPageX: (componentPage as componentPageProps).X,
+      componentPageY: (componentPage as componentPageProps).Y,
+      pageX: pageX,
+      pageY: pageY,
+      width: component.layout.width,
+      height: component.layout.height,
+      message: message
+    };
+  }, []);
+
+
+  const onScrollEndDrag = async (event:any) => {
+    const contentOffsetX = event.nativeEvent.contentOffset.x;
+    const contentWidth = event.nativeEvent.contentSize.width;
+    const scrollViewWidth = event.nativeEvent.layoutMeasurement.width;
+
+    if (Math.round(contentOffsetX + scrollViewWidth) >= Math.round(contentWidth)) {
+      scrollViewRef.current!.scrollTo({y:0,animated:true})
+      await handlePress(null).then((layout) => {
+        setMessageMenuVisible(layout, false);
+      });
+    }
+  };
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  interface coordProps {
+    locationX_In: number;
+    locationY_In: number;
+  }
+  const [pressCoordinations, setPressCoordinations] = useState({} as coordProps);
+  const componentRef = useRef<TouchableOpacity>(null);
 
   return (
     <ScrollView 
+      ref={scrollViewRef}
       horizontal={true} 
       alwaysBounceHorizontal={false} 
       pagingEnabled 
+      bounces={false}
+      overScrollMode={'never'}
+      onScrollEndDrag={onScrollEndDrag}
       showsHorizontalScrollIndicator={false}
-      style={{width:width, alignSelf:'stretch', overflow:'visible'}}
+      style={styles.swipeableContainer}
     >
       <TouchableOpacity 
-        style={{width:width+50, flexDirection:'row', overflow:'visible'}}
+        ref={componentRef}
+        style={styles.mainContainer} 
         activeOpacity={1} 
-        onPress={(event) => {setMessageMenuVisible(handlePress(event))}}
+        onPressIn={(event) => {
+          const { locationX, locationY } = event.nativeEvent;
+          setPressCoordinations({ locationX_In: locationX, locationY_In: locationY })
+        }}
+        onPressOut={async (event) => {
+          const { locationX, locationY } = event.nativeEvent;
+          const { locationX_In, locationY_In } = pressCoordinations;
+          
+          if(selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+            dispatch(selected?decrementNumberOfSelectedMessages():incrementNumberOfSelectedMessages());
+            setSelected(!selected);
+            return;
+          }
+            
+          if(Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+            await handlePress(event).then((layout) => {
+              setMessageMenuVisible(layout, true);
+            });
+          }
+        }}
       >
-        <View style={[styles.messageContainer, message.isUser?{ justifyContent:'flex-end' }:null]}>
-          <View style={[{maxWidth:width*0.65}, message.isUser?{ marginRight:10 }:{ marginLeft:10 }]}>
-            <View style={[message.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.text.length>40?styles.longMessage:null]}>
-              <Text>{wrapText(message.text, 40)}</Text>
-              <Text style={message.text.length>40?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-                {message.edited?'edited ':''}
-                {new Date(message.timeStamp).getHours().toString().padStart(2, '0')}:
-                {new Date(message.timeStamp).getMinutes().toString().padStart(2, '0')}
+        <View 
+          style={[styles.messageBlockContainer, message.author.userId==author.userId&&{ justifyContent:'flex-end' }]}
+        >
+          <View 
+            onLayout={(event) => setHeightOfMessage(event.nativeEvent.layout.height)}
+            style={styles.messageContainer}
+          >
+            <View 
+              onLayout={onLayout}
+              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
+            >
+              <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
+              <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
+              <Text style={message.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+                {message.isEdited?'edited ':''}
+                {message.sendingTime.getHours().toString().padStart(2, '0')}:
+                {message.sendingTime.getMinutes().toString().padStart(2, '0')}
               </Text>
             </View>
+            {selecting && <SelectButton 
+              selected={selected}
+              isUser={message.author.userId==author.userId}
+              verticalOffset={heightOfMessage/2-10}
+              horizontalOffset={-(20+5)}
+            />}
           </View>
+          { message.author.userId==author.userId && 
+            <View style={{ position: 'absolute', right: 0, bottom: 10 , marginRight: -2.5 }}>
+              { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+            </View> }
         </View>
-        <View style={{width:50, backgroundColor:'pink'}}>
-          <Text>Reply</Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center', width: 55, paddingRight: 10 }}>
+          <MessageItemSwipeToReplyIcon />
         </View>
       </TouchableOpacity>
     </ScrollView>
   );
-});
+};
 
-export default DefaultTextType;
+export default memo(DefaultTextType);

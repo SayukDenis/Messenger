@@ -1,14 +1,17 @@
-import React from 'react';
-import Svg, { Path, G } from 'react-native-svg';
-import { connect } from 'react-redux';
-import { View } from "react-native";
-import { Dimensions } from 'react-native';
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+import React from "react";
+import Svg, { Path, G } from "react-native-svg";
+import { connect } from "react-redux";
+import { screenHeight, screenWidth } from "../ChatList/Constants/ConstantsForChatlist";
 
-const BackButtonSVG = () => {
+const BackButton = () => {
   return (
-    <Svg width={screenWidth * 0.1} height={screenHeight * 0.044} viewBox="0 0 12 22" fill="none">
-      <G transform="matrix(-1 0 0 1 12 0)"> 
+    <Svg
+      width={screenWidth * 0.1}
+      height={screenHeight * 0.038}
+      viewBox="0 0 12 22"
+      fill="none"
+    >
+      <G transform="matrix(-1 0 0 1 12 0)">
         <Path
           d="M10.502 10.8105L1.18641 20.7676"
           stroke="#2B1D1D"
@@ -26,4 +29,4 @@ const BackButtonSVG = () => {
   );
 };
 
-export default connect(null)(BackButtonSVG);
+export default connect(null)(BackButton);

@@ -14,6 +14,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { useSelector } from "react-redux";
 import BlurAll from "../../../SemiComponents/BlurAll";
+import FolderContainer from "../Footer containers/FolderContainer";
+import CountOfUnreadMessageOnFolderComponent from "../Footer containers/CountOfUnreadMessageOnFolderComponent";
+import { screenWidth } from "../../Constants/ConstantsForChatlist";
 const { height: screenHeight } = Dimensions.get("window");
 
 interface ModalWindowProps {
@@ -23,7 +26,7 @@ interface ModalWindowProps {
   selectedFolder: number;
   positionX: number;
   positionXInContainer: number;
-  widths: number[];
+  widths: any;
   setAnimation: () => void;
   handlePress: () => void;
   handlePressOut: () => void;
@@ -52,23 +55,18 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
     return null;
   }
   return (
-    <BlurAll
-      
-      handlePress={handlePress}
-      handlePressOut={handlePressOut}
-    >
+    <BlurAll handlePress={handlePress} handlePressOut={handlePressOut}>
       <FolderModalWindow
         folder={selfProfile.tabs[currentTab].folders[selectedLongPressFolder]}
         positionX={positionX}
         positionXInContainer={positionXInContainer}
-        widthOfFolder={widths[selectedLongPressFolder]}
+        widthOfFolder={widths.current[selectedLongPressFolder]}
         exit={isVisibleForModalFolder}
         booleanRefForEndAnimation={setAnimation}
       />
       <TouchableOpacity
         activeOpacity={1}
         style={[
-          footerstyles.folderContainer,
           {
             zIndex: 10,
             position: "absolute",
@@ -79,17 +77,29 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
                 : screenHeight * 0.0165,
             borderRadius: 100,
             justifyContent: "center",
-            height: screenHeight * 0.036,
-            backgroundColor: "#E7E6E4",
+            height: screenHeight * 0.035,
+            overflow: "hidden",
+
             alignSelf: "center",
+            flexDirection: "row",
           },
         ]}
       >
+        <View
+          style={{
+            position: "absolute",
+            height: screenHeight * 0.035,
+            width: screenWidth * 0.5,
+            backgroundColor: "#CBB2FF",
+          
+          }}
+        />
         <Text
           style={[
+            footerstyles.textPosition,
             selectedLongPressFolder == selectedFolder
               ? footerstyles.selectedText
-              : footerstyles.folder,
+              : null,
           ]}
         >
           {
@@ -97,6 +107,15 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
               .folderName
           }
         </Text>
+
+        <View style={{ flexDirection: "row", marginRight: 5 }}>
+          <CountOfUnreadMessageOnFolderComponent
+            folder={
+              selfProfile.tabs[currentTab].folders[selectedLongPressFolder]
+            }
+            isSelected={selectedLongPressFolder == selectedFolder}
+          />
+        </View>
       </TouchableOpacity>
     </BlurAll>
   );

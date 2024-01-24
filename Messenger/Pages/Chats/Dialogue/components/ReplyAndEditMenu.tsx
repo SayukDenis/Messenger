@@ -1,16 +1,12 @@
-import { View, Text, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, } from 'react-native';
 import React from 'react';
-import { Message } from '../tmpdata';
-
-const { width, height } = Dimensions.get('window');
-
-interface ReplyAndEditMenuProps {
-  isReply:boolean, 
-  replyMessage:Message, 
-  cancelReplyAndEdit:()=>void, 
-  isEdit:boolean, 
-  editMessage:Message
-}
+import { ReplyAndEditMenuProps } from './interfaces/IReplyAndEditMenu';
+import { styles } from './Styles/ReplyAndEditHandle';
+import { connect } from 'react-redux';
+import ReplyAndEditMenuReplyIcon from '../SVG/ReplyAndEditMenuReplyIcon';
+import ReplyAndEditMenuEditIcon from '../SVG/ReplyAndEditMenuEditIcon';
+import ReplyAndEditMenuCancelButton from '../SVG/ReplyAndEditMenuCancelButton';
+import { CHARS_PER_LINE } from '../DialogueConstants';
 
 const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, editMessage }:ReplyAndEditMenuProps) => {
   return (
@@ -18,17 +14,21 @@ const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, e
       <View style={styles.container}>
         <View style={{flex:1}}>
           <View style={styles.innerContainer}>
-            <Text>{isReply?'Reply Icon':'Edit Icon'}</Text>
+            {isReply?<ReplyAndEditMenuReplyIcon />:<ReplyAndEditMenuEditIcon />}
+            <View style={{ backgroundColor: '#4684FB', width: 1.45, height: '140%', marginHorizontal: 10 }} />
             <View style={styles.dataContainer}>
-              <View style={{marginLeft:10}}>
+              <View>
                 <Text style={styles.usernameText}>{isReply?'user name':'Edit'}</Text>
                 <Text style={styles.messageText}>{
-                  isReply?(replyMessage.text!.length>40?replyMessage.text.slice(0,40)+'...':replyMessage.text):
-                  (editMessage.text!.length>40?editMessage.text.slice(0,40)+'...':editMessage.text)
+                  isReply?(replyMessage?.content!.length>CHARS_PER_LINE?replyMessage?.content.slice(0,CHARS_PER_LINE)+'...':replyMessage?.content):
+                  (editMessage?.content!.length>CHARS_PER_LINE?editMessage?.content.slice(0,CHARS_PER_LINE)+'...':editMessage?.content)
                 }</Text>
               </View>
-              <TouchableOpacity onPress={cancelReplyAndEdit} style={styles.closeButton}>
-                <Text>x</Text>
+              <TouchableOpacity 
+                onPress={cancelReplyAndEdit}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}  
+              >
+                <ReplyAndEditMenuCancelButton />
               </TouchableOpacity>
             </View>
           </View>
@@ -38,41 +38,4 @@ const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, e
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    height:0, 
-    top: -(height*0.052)
-  },
-  innerContainer: {
-    height:height*0.052, 
-    width:width*0.96, 
-    backgroundColor:'rgb(231, 230, 228)', 
-    borderRadius:20, 
-    alignItems:'center',
-    marginHorizontal:width*0.02, 
-    paddingVertical:10, 
-    paddingHorizontal:20, 
-    display:'flex', 
-    flexDirection:'row'
-  },
-  dataContainer: {
-    flex: 1, 
-    justifyContent:'space-between', 
-    display:'flex', 
-    flexDirection:'row', 
-    alignItems:'center'
-  },
-  usernameText: {
-    color:'rgb(183, 158, 255)'
-  },
-  messageText: {
-    color:'rgb(121, 121, 121)'
-  },
-  closeButton: {
-    backgroundColor:'red', 
-    width:width*0.03, 
-    alignItems:'center'
-  }
-})
-
-export default ReplyAndEditMenu
+export default connect(null)(ReplyAndEditMenu)

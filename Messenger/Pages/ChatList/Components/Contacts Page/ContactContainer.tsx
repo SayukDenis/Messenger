@@ -11,7 +11,7 @@ interface ContactContainerProps {
 }
 
 const ContactContainer: React.FC<ContactContainerProps> = ({ contact }) => {
-  const getFirstChat = (name: string) => {
+  const getFirstChar = (name: string) => {
     const firstCharacter = name.slice(0, 2);
     const isEmoji = /^[\p{Extended_Pictographic}]/u.test(firstCharacter);
     let result: string;
@@ -24,7 +24,7 @@ const ContactContainer: React.FC<ContactContainerProps> = ({ contact }) => {
   };
   const CryptoJS = require('crypto-js');
 
-const generateColorFromPhoneNumber = (phoneNumber) => {
+const generateColorFromPhoneNumber = (phoneNumber:string|undefined) => {
   const cleanedPhoneNumber = phoneNumber?.replace(/^\+/, '');
   const hash = CryptoJS.MD5(cleanedPhoneNumber).toString();
   const r = parseInt(hash.substr(0, 2), 16);
@@ -37,7 +37,7 @@ const generateColorFromPhoneNumber = (phoneNumber) => {
     <View
       style={{
         flexDirection: "row",
-        height: screenHeight * 0.05,
+        height: screenHeight * 0.055,
 
         width: screenWidth,
       }}
@@ -54,7 +54,7 @@ const generateColorFromPhoneNumber = (phoneNumber) => {
         }}
       >
         <Text style={{ alignSelf: "center", fontSize: 20 }}>
-          {getFirstChat(contact.name)}
+          {getFirstChar(contact.name)}
         </Text>
       </View>
       <Text style={{ alignSelf: "center",marginLeft:10 }}>{contact.name}</Text>

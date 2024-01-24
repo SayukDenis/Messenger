@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import {
-  View,
   ScrollView,
   Dimensions,
   LayoutChangeEvent,
@@ -51,7 +50,6 @@ const Main: React.FC<MainProps> = ({navigation}) => {
   const [positionXInContainer, setPositionXInContainer] = useState<number>(0);
   const dispatch = useDispatch();
   const animationState = useSelector((state: any) => {
-    //console.log(state.chatListReducer.animationForChatListFolder)
     return state.chatListReducer.animationForChatListFolder
       .animationForChatListFolder;
   });
@@ -108,7 +106,7 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     }
   };
   useEffect(() => {
-    scrollViewRef.current.scrollToOffset({ offset: 0, animated: false });
+    scrollViewRef.current?.scrollToOffset({ offset: 0, animated: false });
   }, [currentTab]);
   const NewFolderSelect = (newFolder: number) => {
     dispatch(setSelectedFolderForChatList(newFolder));
@@ -149,6 +147,7 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     const updatedWidths = [...widths.current];
     updatedWidths[index] = width;
     widths.current = updatedWidths;
+
   });
   useEffect(() => {
     if (booleanForLogging) {
@@ -161,16 +160,16 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     const target = e.nativeEvent;
     setPositionX(target.pageX);
     setPositionXInContainer(target.locationX);
-    if (target.pageX - target.locationX + widths[index] > screenWidth * 0.98) {
+    if (target.pageX - target.locationX + widths.current[index] > screenWidth * 0.98) {
       scrollViewRefFooter.current?.scrollTo({
-        x: positionsOfFolder[index] - screenWidth * 0.92 + widths[index],
+        x: positionsOfFolder.current[index] - screenWidth * 0.92 + widths.current[index],
         animated: false,
       });
-      setPositionX(screenWidth * 0.964 - widths[index]);
+      setPositionX(screenWidth * 0.964 - widths.current[index]);
       setPositionXInContainer(0);
     } else if (target.pageX - target.locationX < screenWidth * 0.04) {
       scrollViewRefFooter.current?.scrollTo({
-        x: positionsOfFolder[index],
+        x: positionsOfFolder.current[index],
         animated: false,
       });
       setPositionX(screenWidth * 0.044);
@@ -206,7 +205,7 @@ const Main: React.FC<MainProps> = ({navigation}) => {
         selectedFolder={selectFolder}
         positionX={positionX}
         positionXInContainer={positionXInContainer}
-        widths={widths.current}
+        widths={widths}
         setAnimation={setAnimation}
         handlePress={handlePress}
         handlePressOut={handlePressOut}
@@ -217,6 +216,10 @@ const Main: React.FC<MainProps> = ({navigation}) => {
       />
       <FlatList
         data={selfProfile.tabs[currentTab].folders}
+        /*onContentSizeChange={(width,height)=>{
+          console.log(width+":"+height)
+        }}
+        */
         horizontal
         pagingEnabled
         ref={scrollViewRef}
@@ -231,8 +234,8 @@ const Main: React.FC<MainProps> = ({navigation}) => {
           <ListOfFolder key={index} currentFolder={index} navigation={navigation} />
         )}
         onScroll={handleHorizontalScroll}
-        windowSize={8}
-        initialNumToRender={8}
+        windowSize={10}
+        initialNumToRender={1}
       />
       <Footer
         isTouchableForHeader={isTouchableForHeader}

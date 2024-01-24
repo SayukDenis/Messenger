@@ -1,15 +1,20 @@
 import React, { useEffect, useRef } from "react";
 import { View, TouchableOpacity, TextInput } from "react-native";
 import HeaderContainer from "../../../SemiComponents/HeaderContainer";
-import { headerstyles } from "../../Styles/HeaderStyle";
-import { screenHeight, screenWidth } from "../../Constants/ConstantsForChatlist";
+import {
+  screenHeight,
+  screenWidth,
+} from "../../Constants/ConstantsForChatlist";
 import BackButton from "../../../SemiComponents/BackButton";
+import DefaultContainerInHeader from "../../../SemiComponents/DefaultContainerInHeader";
 
 interface HeaderForContactsProps {
   navigation: any;
 }
 
-const HeaderForContacts: React.FC<HeaderForContactsProps> = ({ navigation }) => {
+const HeaderForContacts: React.FC<HeaderForContactsProps> = ({
+  navigation,
+}) => {
   const pressOnBackButton = useRef(() => {
     navigation.goBack();
   });
@@ -20,16 +25,7 @@ const HeaderForContacts: React.FC<HeaderForContactsProps> = ({ navigation }) => 
 
   return (
     <HeaderContainer>
-      <View
-        style={[
-          headerstyles.header,
-          {
-            width: screenWidth * 0.96,
-            height: screenHeight * 0.08,
-            flexDirection: "row",
-          },
-        ]}
-      >
+      <DefaultContainerInHeader>
         <TouchableOpacity
           onPress={pressOnBackButton.current}
           style={{ alignSelf: "center" }}
@@ -41,7 +37,7 @@ const HeaderForContacts: React.FC<HeaderForContactsProps> = ({ navigation }) => 
             ref={inputRef}
             style={{
               width: screenWidth * 0.8,
-              height: screenHeight * 0.045,
+              height: screenHeight * 0.0415,
               backgroundColor: "#272727",
               alignSelf: "center",
               color: "white",
@@ -54,7 +50,7 @@ const HeaderForContacts: React.FC<HeaderForContactsProps> = ({ navigation }) => 
             keyboardAppearance="dark"
           />
         </View>
-      </View>
+      </DefaultContainerInHeader>
     </HeaderContainer>
   );
 };

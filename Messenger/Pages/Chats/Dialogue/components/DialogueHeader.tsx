@@ -1,28 +1,33 @@
-import { View, StyleSheet, Text, Button, Image, Dimensions } from 'react-native';
-import styles from './Styles/DialogueHeaderStyle';
+import { View } from 'react-native';
 import React from 'react';
+import HeaderContainer from '../../../SemiComponents/HeaderContainer';
+import { connect } from 'react-redux';
+import { DialogueHeaderProps } from './interfaces/IDialogueHeader';
+import RightPartOfHeader from './HelperComponents/Header/RightPartOfHeader';
+import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
+import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
+import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 
-let userName = 'Denis';
-let wasOnline = 'Online recently';
-
-const { height, width } = Dimensions.get('window');
-
-const DialogueHeader = () => {
+const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, displayName, activityTime, pinnedMessage, selecting, cancelSelection, currentNumOfPinnedMessage, countOfPinnedMessages }:DialogueHeaderProps) => {
+  if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
   return(
-    <View style={{flex:6}}>
-      <View style={styles.header}>
-        <Button title='back'/>
-        <View style={styles.chatUserInfo}>
-          <Image source={{ uri: 'https://cdn140.picsart.com/361453903080211.png' }} style={styles.chatUserInfoImg}/>
-          <View style={styles.chatUserInfoDiv}>
-            <Text style={styles.chatUserInfoUserName}>{userName}</Text>
-            <Text style={styles.chatUserInfoUserWasOnline}>{wasOnline}</Text>
+    <View style={{ backgroundColor: 'green', zIndex: 10 }}>
+      <HeaderContainer>
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', paddingHorizontal: 20, paddingVertical: 10 }}>
+            <LeftPartOfHeader counterOfSelectedMessages={counterOfSelectedMessages} selecting={selecting} navigation={navigation} />
+            <CenterPartOfHeader picture={picture} displayName={displayName} activityTime={activityTime} />
+            <RightPartOfHeader selecting={selecting} cancelSelection={cancelSelection} />
           </View>
         </View>
-        <Button title='branch'></Button>
-      </View>
+      </HeaderContainer>
+      <PinnedMessageView pinnedMessage={pinnedMessage} current={currentNumOfPinnedMessage} total={countOfPinnedMessages} />
     </View>
   );
 }
 
-export default DialogueHeader;
+const mapStateToProps = (state:any) => ({
+  counterOfSelectedMessages: state.ChatReducer.counterForSelectedMessages.counterOfSelectedMessages,
+});
+
+export default connect(mapStateToProps)(DialogueHeader);

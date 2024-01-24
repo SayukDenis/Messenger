@@ -8,24 +8,36 @@ import Model from './Model';
 
 
 export default class Tab extends Model {
-    constructor(title: string) {
+    constructor(title: string, isDialogueMessageOn: boolean = true,
+        isGroupsMessageOn: boolean = true, isChannelMessageOn: boolean = true,
+        exceptionsDialogues?: Array<Dialogue>, exceptionsGroups?: Array<Group>,
+        exceptionsChannels?: Array<Channel>, blockedChats?: Array<Chat>,
+        folders?: Array<Folder>) {
         super();
         this.title = title;
+        this.isDialogueMessageOn = isDialogueMessageOn;
+        this.isGroupsMessageOn = isGroupsMessageOn;
+        this.isChannelMessageOn = isChannelMessageOn;
+        this.exceptionsDialogues = exceptionsDialogues ?? new Array;
+        this.exceptionsGroups = exceptionsGroups ?? new Array;
+        this.exceptionsChannels = exceptionsChannels ?? new Array;
+        this.blockedChats = blockedChats ?? new Array;
+        this.folders = folders ?? new Array;
     }
     tabId?: number;
     title!: string;
     //Notifications
-    isDialogueMessageOn: boolean = true;
-    isGroupsMessageOn: boolean = true;
-    isChannelMessageOn: boolean = true;
+    isDialogueMessageOn: boolean;
+    isGroupsMessageOn: boolean;
+    isChannelMessageOn: boolean;
     //Exceptions "MessageOn"
-    exceptionsDialogues: Array<Dialogue> = new Array;
-    exceptionsGroups: Array<Group> = new Array;
-    exceptionsChannels: Array<Channel> = new Array;
+    exceptionsDialogues: Array<Dialogue>;
+    exceptionsGroups: Array<Group>;
+    exceptionsChannels: Array<Channel>;
     //Blocked chats
-    blockedChats: Array<Chat> = new Array;
+    blockedChats: Array<Chat>;
     //Information about user
-    folders: Array<Folder> = new Array;
+    folders: Array<Folder>;
 
     static schema = {
         name: 'tabs',
@@ -33,9 +45,9 @@ export default class Tab extends Model {
             tabId: { type: 'integer', indexed: true },
             title: 'text',
             //Notifications
-            isDialogueMessageOn: { type: 'bool', default: true },
-            isgroupsMessageOn: { type: 'bool', default: true },
-            isChannelMessageOn: { type: 'bool', default: true },
+            isDialogueMessageOn: { type: 'boolean', default: true },
+            isGroupsMessageOn: { type: 'boolean', default: true },
+            isChannelMessageOn: { type: 'boolean', default: true },
             //Exceptions "MessageOn"
             exceptionsDialogues: { type: 'list', objectType: Dialogue },
             exceptionsGroups: { type: 'list', objectType: Group },

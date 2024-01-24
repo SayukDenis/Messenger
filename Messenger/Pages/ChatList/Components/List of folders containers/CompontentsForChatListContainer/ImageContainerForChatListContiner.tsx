@@ -5,7 +5,7 @@ import ModeActivity from "../../Status Content/ModeActivity";
 import { connect } from "react-redux";
 
 interface ImageContainerProps {
-  urlToPhoto: string;
+  urlToPhoto: string|undefined;
 }
 
 const ImageContainerForChatListContainer: React.FC<ImageContainerProps> = ({
