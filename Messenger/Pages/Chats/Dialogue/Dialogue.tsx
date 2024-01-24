@@ -146,6 +146,7 @@ const Dialogue = ({ navigation, route }:any) => {
   const [selecting, setSelecting] = useState(false);
   const setSelectingHandler = () => {
     setSelecting(!selecting);
+    coord.selectionCallback!();
   }
 
   const [listOfPinnedMessages, setListOfPinnedMessages] = useState(dialogue.pinnedMessage as MessageProps[]);

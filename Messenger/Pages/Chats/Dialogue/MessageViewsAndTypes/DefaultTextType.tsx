@@ -39,6 +39,11 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
     }
   }, [selecting]);
 
+  const setSelectedCallback = () => {
+    setSelected(true);
+    dispatch(incrementNumberOfSelectedMessages());
+  }
+
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
     size = [...size, { ID: id, layout: { width, height }}];
@@ -63,10 +68,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
     Y: number;
   }
   const handlePress = useCallback(async (event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
-    if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
-
-    setSelected(true);
-    dispatch(incrementNumberOfSelectedMessages());
+    if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined, selectionCallback: undefined };
 
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
@@ -83,7 +85,8 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
       pageY: pageY,
       width: component.layout.width,
       height: component.layout.height,
-      message: message
+      message: message,
+      selectionCallback: setSelectedCallback,
     };
   }, []);
 
