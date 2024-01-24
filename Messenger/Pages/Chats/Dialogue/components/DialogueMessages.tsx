@@ -103,7 +103,11 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
         style={[styles.dialogueChat, { zIndex: 3 }]}
         data={listOfMessages}
         inverted
-        windowSize={20}
+        windowSize={15}
+        maxToRenderPerBatch={3}
+        initialNumToRender={20}
+        removeClippedSubviews
+        updateCellsBatchingPeriod={100}
         keyExtractor={keyExtractor}
         renderItem={memoizedItem}
         ListHeaderComponent={ListHeaderComponent}

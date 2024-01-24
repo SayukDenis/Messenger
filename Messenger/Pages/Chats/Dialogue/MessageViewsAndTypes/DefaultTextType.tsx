@@ -37,7 +37,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
       dispatch(resetNumberOfSelectedMessages())
       setSelected(false)
     }
-  }, [selecting])
+  }, [selecting]);
 
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
@@ -66,7 +66,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
     if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
 
     setSelected(true);
-    dispatch(incrementNumberOfSelectedMessages())
+    dispatch(incrementNumberOfSelectedMessages());
 
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
@@ -119,7 +119,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
       overScrollMode={'never'}
       onScrollEndDrag={onScrollEndDrag}
       showsHorizontalScrollIndicator={false}
-      style={styles.swipeableContainer}
+      style={[styles.swipeableContainer, selecting&&selected&&{ backgroundColor: 'rgba(32, 83, 44, 0.2)' }]}
     >
       <TouchableOpacity 
         ref={componentRef}
@@ -157,7 +157,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
               onLayout={onLayout}
               style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
-              <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
+              <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
               <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
               <Text style={message.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}

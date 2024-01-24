@@ -13,6 +13,8 @@ import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessag
 import { Layout } from '../GeneralInterfaces/ILayout';
 import { CHARS_PER_LINE, FONT_SIZE } from '../DialogueConstants';
 import SelectButton from './SemiComponents/SelectButton';
+import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { useDispatch } from 'react-redux';
 
 interface ReplyTextType {
   messages: MessageProps[];
@@ -62,10 +64,12 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     Y: number;
   }
   
+  const dispatch = useDispatch();
   const handlePress = useCallback(async (event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
     if(!event) return { ID: id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined };
 
     setSelected(true);
+    dispatch(incrementNumberOfSelectedMessages());
 
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
@@ -89,6 +93,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
   const handleLinkTo = useCallback((messageID:any) => {
     if(selecting) {
       setSelected(!selected) 
+      dispatch(selected?decrementNumberOfSelectedMessages():incrementNumberOfSelectedMessages());
       return;
     }
     // if(selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
@@ -132,6 +137,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
     
     if(selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
       setSelected(!selected) 
+      dispatch(selected?decrementNumberOfSelectedMessages():incrementNumberOfSelectedMessages());
       return;
     }
     
@@ -158,7 +164,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
       bounces={false}
       overScrollMode={'never'}
       showsHorizontalScrollIndicator={false}
-      style={[styles.swipeableContainer, { paddingBottom: 5 }]}
+      style={[styles.swipeableContainer, { paddingBottom: 5 }, selecting&&selected&&{ backgroundColor: 'rgba(32, 83, 44, 0.2)' }]}
       onScrollEndDrag={onScrollEndDrag}
     >
       <View style={styles.replyContainer} >
@@ -183,7 +189,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
             >
               <View style={[styles.messageTypeTextUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
-                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:'#E09EFF' }} /> 
+                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:'#E09EFF' }} /> 
                 <Text style={styles.replyMessageFont}>
                   {replyMessage!=undefined&&replyMessage?.content?.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
@@ -201,7 +207,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
             >
               <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
-                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:'#fff' }} /> 
+                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:'#fff' }} /> 
                 <Text style={styles.replyMessageFont}>
                   {replyMessage!=undefined&&replyMessage?.content.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
@@ -217,7 +223,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
               onLayout={(event) => onLayout(event)}
               style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginTop:Math.ceil(FONT_SIZE)+1}, message?.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
-              <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
+              <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
               <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
               <Text style={message?.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}
