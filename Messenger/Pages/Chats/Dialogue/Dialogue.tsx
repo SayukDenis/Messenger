@@ -165,10 +165,16 @@ const Dialogue = ({ navigation, route }:any) => {
     }
   }
   const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
+  const setPinnedMessageHandler = (id: number) => {
+    if(pinnedMessage.messageId !== id)
+      setPinnedMessage(listOfMessages.find(m => m.messageId === id)!)
+  }
   // useEffect(() => {
   //   setPinnedMessage(listOfPinnedMessages[listOfPinnedMessages.length-1]);
   // }, [listOfPinnedMessages])
-  console.log(listOfPinnedMessages.length);
+  //console.log(listOfPinnedMessages.length);
+
+  console.log('listOfPinnedMessages', listOfPinnedMessages.length);
 
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
@@ -193,9 +199,9 @@ const Dialogue = ({ navigation, route }:any) => {
             picture={dialogue.linkToPhoto}
             displayName={dialogue.users[1].name}
             activityTime={'Online recently'} // Last activity from user
-            pinnedMessage={listOfPinnedMessages[listOfPinnedMessages.length-1]}
+            pinnedMessage={pinnedMessage}
             countOfPinnedMessages={listOfPinnedMessages.length}
-            currentNumOfPinnedMessage={listOfPinnedMessages.findIndex(m => m.messageId === pinnedMessage.messageId)+1}
+            currentNumOfPinnedMessage={listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage.messageId)+1}
             selecting={selecting}
             cancelSelection={setSelectingHandler}
           />
@@ -210,6 +216,8 @@ const Dialogue = ({ navigation, route }:any) => {
             authorMessageLastWatched={authorMessageLastWatched}
             selecting={selecting}
             hasPinnedMessage={listOfPinnedMessages.length>0}
+            pinnedMessages={listOfPinnedMessages}
+            setPinnedMessage={setPinnedMessageHandler}
           />
           <DialogueFooter 
             messages={listOfMessages} 

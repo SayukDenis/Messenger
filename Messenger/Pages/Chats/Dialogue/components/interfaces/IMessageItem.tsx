@@ -16,4 +16,5 @@ export interface MessageItemProps {
   setCoordsY: (newCoordsY: any) => void;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
+  pinnedMessageHandler: (message: number, coord: number) => void;
 }

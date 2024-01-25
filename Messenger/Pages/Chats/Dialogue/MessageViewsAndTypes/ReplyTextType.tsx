@@ -27,6 +27,16 @@ interface ReplyTextType {
   selecting: boolean;
 }
 
+interface coordProps {
+  locationX_In: number;
+  locationY_In: number;
+}
+
+interface componentPageProps {
+  X: number;
+  Y: number;
+}
+
 let size:any[] = [];
 
 const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, author, userMessageLastWatched, selecting}:ReplyTextType) => {
@@ -63,11 +73,6 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
       }
     });
   };
-  
-  interface componentPageProps {
-    X: number;
-    Y: number;
-  }
   
   const dispatch = useDispatch();
   const handlePress = useCallback(async (event:({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
@@ -122,10 +127,6 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView
   };
   const scrollViewRef = useRef<ScrollView>(null);
 
-  interface coordProps {
-    locationX_In: number;
-    locationY_In: number;
-  }
   const [pressCoordinations, setPressCoordinations] = useState({} as coordProps);
   const componentRef = useRef<TouchableOpacity>(null);
 

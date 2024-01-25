@@ -6,7 +6,7 @@ import ReplyTextType from '../MessageViewsAndTypes/ReplyTextType';
 import DefaultTextType from '../MessageViewsAndTypes/DefaultTextType';
 import { MessageItemProps } from './interfaces/IMessageItem';
 
-const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting }:MessageItemProps) => {
+const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler }:MessageItemProps) => {
    
   const messageViewHandle = ({message}:messageViewHandleProps) => {
     if(message.messageType == EMessageType.text && message.messageResponseId) {
@@ -40,8 +40,11 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         key={item.messageId}
         onLayout={(event) => {
           const newCoordsY = [ ...coordsY ];
-          newCoordsY[item.messageId!] = [event.nativeEvent.layout.y, event.nativeEvent.layout.height];
+          const { y, height } = event.nativeEvent.layout;
+          newCoordsY[item.messageId!] = [y, height];
           setCoordsY(newCoordsY);
+          console.log('y', height);
+          pinnedMessageHandler(item.messageId!, height);
         }}
         style={{ flex: 1, zIndex: item.messageId === messageID ? 4 : -10 }}
       >

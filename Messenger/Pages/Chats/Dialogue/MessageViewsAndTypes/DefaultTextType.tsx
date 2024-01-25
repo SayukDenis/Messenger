@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Animated, Easing } from 'react-native';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { styles } from './Styles/DefaultTextType';
 import React from 'react';
@@ -11,12 +11,13 @@ import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageRev
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { Layout } from "../GeneralInterfaces/ILayout";
-import { CHARS_PER_LINE } from '../DialogueConstants';
+import { CHARS_PER_LINE, height, width } from '../DialogueConstants';
 import SelectButton from './SemiComponents/SelectButton';
-import { useDispatch } from 'react-redux';
-import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { connect, useDispatch } from 'react-redux';
+import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 
 interface DefaultTextMessageProps {
+  idForAnimation: number;
   message:MessageProps;
   setMessageMenuVisible:(arg0: Layout, arg1: boolean)=>void;
   id:number;
@@ -27,8 +28,15 @@ interface DefaultTextMessageProps {
 
 let size:any[] = [];
 
-const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessageLastWatched, selecting }:DefaultTextMessageProps) => {
+const DefaultTextType = ({ idForAnimation, message, setMessageMenuVisible, id, author, userMessageLastWatched, selecting }:DefaultTextMessageProps) => {
   const dispatch = useDispatch();
+
+  const [animate, setAnimate] = useState(false);
+  useEffect(() => {
+    console.log('\nidForAnimation', idForAnimation, '\nmessageId', message.messageId)
+    if(idForAnimation === message.messageId) 
+      setAnimate(true);
+  }, [idForAnimation])
 
   const [heightOfMessage, setHeightOfMessage] = useState(0);
   const [selected, setSelected] = useState(false);
@@ -112,6 +120,33 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
   const [pressCoordinations, setPressCoordinations] = useState({} as coordProps);
   const componentRef = useRef<TouchableOpacity>(null);
 
+  const fadeAnimTranslate = useRef(new Animated.Value(0)).current;
+  
+  const fadeIn = Animated.timing(fadeAnimTranslate, {
+    toValue: 1,
+    duration: 400,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+  
+  const fadeOut = Animated.timing(fadeAnimTranslate, {
+    toValue: 0,
+    duration: 400,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+
+  useEffect(() => {
+    if(!animate) return;
+    Animated.sequence([
+      fadeIn,
+      fadeOut
+    ]).start(() => {
+      setAnimate(false);
+      dispatch(setAnimationOfBackgroundForScrolledMessage());
+    });
+  }, [animate]);
+
   return (
     <ScrollView 
       ref={scrollViewRef}
@@ -124,6 +159,7 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
       showsHorizontalScrollIndicator={false}
       style={[styles.swipeableContainer, selecting&&selected&&{ backgroundColor: 'rgba(32, 83, 44, 0.2)' }]}
     >
+      <Animated.View style={{ position: 'absolute', width: width, height: height, backgroundColor: '#fff', opacity: fadeAnimTranslate }} />
       <TouchableOpacity 
         ref={componentRef}
         style={styles.mainContainer} 
@@ -188,4 +224,8 @@ const DefaultTextType = ({ message, setMessageMenuVisible, id, author, userMessa
   );
 };
 
-export default memo(DefaultTextType);
+const mapStateToProps = (state:any) => ({
+  idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id
+});
+
+export default memo(connect(mapStateToProps)(DefaultTextType));

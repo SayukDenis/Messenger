@@ -6,6 +6,8 @@ import { Layout } from "../../GeneralInterfaces/ILayout";
 
 
 export interface DialogueMessagesProps {
+  scrollToPinnedMessage: boolean;
+  idOfPinnedMessage: number;
   setMessageMenuVisible:(arg0: Layout, arg1: boolean)=>void; 
   messageID:number;
   listOfMessages:MessageProps[];
@@ -16,6 +18,8 @@ export interface DialogueMessagesProps {
   authorMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
   hasPinnedMessage: boolean;
+  pinnedMessages: MessageProps[];
+  setPinnedMessage: (id: number) => void;
 }
 
 export interface messageViewHandleProps {
