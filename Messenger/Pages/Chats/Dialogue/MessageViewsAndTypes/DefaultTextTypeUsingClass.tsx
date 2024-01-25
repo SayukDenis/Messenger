@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component, PureComponent } from 'react';
 import {
   View,
   Text,
@@ -26,16 +26,23 @@ import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessag
 import SelectButton from './SemiComponents/SelectButton';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
 import { CHARS_PER_LINE, height, width } from '../DialogueConstants';
+import { Dispatch } from 'redux';
 
 interface DefaultTextMessageProps {
   idForAnimation: number;
-  dispatch: any;
   message: MessageProps;
   setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
   id: number;
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
+  dispatch: Dispatch;
+}
+
+interface DefaultTextMessageState {
+  animate: boolean;
+  heightOfMessage: number;
+  selected: boolean;
 }
 
 interface componentPageProps {
@@ -50,8 +57,8 @@ interface coordProps {
 
 let size: any[] = [];
 
-class DefaultTextType extends PureComponent<DefaultTextMessageProps> {
-  state = {
+class DefaultTextType extends Component<DefaultTextMessageProps> {
+  state: DefaultTextMessageState = {
     animate: false,
     heightOfMessage: 0,
     selected: false,
@@ -60,7 +67,7 @@ class DefaultTextType extends PureComponent<DefaultTextMessageProps> {
   componentDidMount() {
     const { idForAnimation, message } = this.props;
     if (idForAnimation === message.messageId) {
-      this.setState({ animate: true });
+      //this.setState({ animate: true });
     }
   }
 
@@ -73,6 +80,7 @@ class DefaultTextType extends PureComponent<DefaultTextMessageProps> {
   setSelectedCallback = () => {
     const { dispatch } = this.props;
     this.setState({ selected: true });
+    console.log('this state selected', this.state.selected);
     dispatch(incrementNumberOfSelectedMessages());
   };
 
@@ -168,8 +176,25 @@ class DefaultTextType extends PureComponent<DefaultTextMessageProps> {
     useNativeDriver: true,
   });
 
+  shouldComponentUpdate(nextProps: Readonly<DefaultTextMessageProps>, nextState: Readonly<DefaultTextMessageState>, nextContext: any): boolean {
+    if(nextProps.idForAnimation === this.props.message.messageId) {
+      this.state.animate = true;
+      this.componentDidUpdate(this.props);
+      return true;
+    } else if(nextProps.selecting != this.props.selecting) {
+      this.setState({ selecting: nextProps.selecting });
+      return true;
+    } else if(nextState.selected != this.state.selected) {
+      this.setState({ selected: nextState.selected })
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
   componentDidUpdate(prevProps: DefaultTextMessageProps) {
     const { animate } = this.state;
+    console.log('animate', animate);
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
       this.setState({ animate: false });

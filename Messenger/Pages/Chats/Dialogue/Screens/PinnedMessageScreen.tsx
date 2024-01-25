@@ -1,12 +1,21 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { PureComponent } from 'react';
 
-const PinnedMessageScreen = () => {
-  return (
-    <View>
-      <Text>PinnedMessageScreen</Text>
-    </View>
-  );
+interface PinnedMessageScreenProps {
+
+}
+
+class PinnedMessageScreen extends PureComponent<PinnedMessageScreenProps> {
+  
+  
+
+  render(): React.ReactNode {
+    return (
+      <View>
+
+      </View>
+    )
+  }
 }
 
 export default PinnedMessageScreen;
