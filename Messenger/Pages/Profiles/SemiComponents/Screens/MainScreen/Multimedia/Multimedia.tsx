@@ -6,10 +6,16 @@ import styles from "../Styles";
 import MultimediaBar from "./MultimediaBar";
 import Photos from "./Photos";
 import Files from "./Files";
-import Voice from "./Voice";
+import Voices from "./Voices";
 import Links from "./Links";
 import Albums from "./Albums";
-import { Album, PhotoOrVideo } from "../../../DatabaseSimulation/DBClasses";
+import {
+  Album,
+  PhotoOrVideo,
+  Voice,
+  File,
+  Link,
+} from "../../../DatabaseSimulation/DBClasses";
 import Blur from "../../../GeneralComponents/Blur";
 import { GestureResponderEvent } from "react-native-modal";
 import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
@@ -21,10 +27,18 @@ interface MultimediaProps {
   setPressedMultimediaButton: (value: string) => void;
   onNewAlbumPress: () => void;
   onAlbumLongPress: (value: Album, event: GestureResponderEvent) => void;
-  isAlbumSelectionVisible: boolean;
+  isMultimediaSelectionVisible: boolean;
   onAlbumPress: (value: Album) => void;
   onPhotoPress: (value: PhotoOrVideo) => void;
-  isAlbumCheckMarkVisible: (value: Album) => boolean;
+  onAnyLongPressExceptAlbum: (
+    value: PhotoOrVideo | File | Voice | Link
+  ) => void;
+  isCheckMarkVisible: (
+    value: Album | PhotoOrVideo | File | Voice | Link
+  ) => boolean;
+  onAnyPressWhileSelection: (
+    value: Album | PhotoOrVideo | File | Voice
+  ) => void;
 }
 
 const Multimedia: React.FC<MultimediaProps> = (props) => {
@@ -56,12 +70,22 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
 
       {props.pressedMultimediaButton == "Photos" && (
         <Photos
-          isPhotoSelectionVisible={false}
+          isPhotoSelectionVisible={props.isMultimediaSelectionVisible}
           data={GetProfile().photosAndVideos}
           onPress={(photo: PhotoOrVideo) => {
-            props.onPhotoPress(photo);
+            if (props.isMultimediaSelectionVisible) {
+              props.onAnyPressWhileSelection(photo);
+            } else {
+              props.onPhotoPress(photo);
+            }
+          }}
+          onLongPress={(value: PhotoOrVideo) => {
+            props.onAnyLongPressExceptAlbum(value);
           }}
           isMultimediaBarEnabled={true}
+          isCheckMarkVisible={(value: PhotoOrVideo) =>
+            props.isCheckMarkVisible(value)
+          }
         />
       )}
       {props.pressedMultimediaButton == "Albums" && (
@@ -69,21 +93,65 @@ const Multimedia: React.FC<MultimediaProps> = (props) => {
           onNewAlbumPress={() => {
             props.onNewAlbumPress();
           }}
-          onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
+          onLongPress={(value: Album, event: GestureResponderEvent) => {
             props.onAlbumLongPress(value, event);
           }}
-          onAlbumPress={(value: Album) => {
-            props.onAlbumPress(value);
+          onPress={(value: Album) => {
+            if (props.isMultimediaSelectionVisible) {
+              props.onAnyPressWhileSelection(value);
+            } else {
+              props.onAlbumPress(value);
+            }
           }}
-          areCheckMarksVisible={props.isAlbumSelectionVisible}
-          isCheckmarkVisible={(value: Album) =>
-            props.isAlbumCheckMarkVisible(value)
-          }
+          areCheckMarksVisible={props.isMultimediaSelectionVisible}
+          isCheckmarkVisible={(value: Album) => props.isCheckMarkVisible(value)}
         />
       )}
-      {props.pressedMultimediaButton == "Files" && <Files />}
-      {props.pressedMultimediaButton == "Voice" && <Voice />}
-      {props.pressedMultimediaButton == "Links" && <Links />}
+      {props.pressedMultimediaButton == "Files" && (
+        <Files
+          onPress={(value: File) => {
+            if (props.isMultimediaSelectionVisible) {
+              props.onAnyPressWhileSelection(value);
+            }
+          }}
+          onLongPress={(value: File) => {
+            props.onAnyLongPressExceptAlbum(value);
+          }}
+          onDownloadPress={() => {
+            alert("Downloading");
+          }}
+          isCheckMarkVisible={(value: File) => props.isCheckMarkVisible(value)}
+          isSelectionVisible={props.isMultimediaSelectionVisible}
+        />
+      )}
+      {props.pressedMultimediaButton == "Voice" && (
+        <Voices
+          onPress={(value: Voice) => {
+            if (props.isMultimediaSelectionVisible) {
+              props.onAnyPressWhileSelection(value);
+            }
+          }}
+          onLongPress={(value: Voice) => {
+            props.onAnyLongPressExceptAlbum(value);
+          }}
+          isCheckMarkVisible={(value: Voice) => props.isCheckMarkVisible(value)}
+          isSelectionVisible={props.isMultimediaSelectionVisible}
+        />
+      )}
+      {props.pressedMultimediaButton == "Links" && (
+        <Links
+          onPress={(value: Link) => {
+            if (props.isMultimediaSelectionVisible) {
+              props.onAnyPressWhileSelection(value);
+            }
+          }}
+          isSelectionVisible={props.isMultimediaSelectionVisible}
+          onLongPress={(value: Link) => {
+            props.onAnyLongPressExceptAlbum(value);
+          }}
+          isCheckMarkVisible={(value: Link) => props.isCheckMarkVisible(value)}
+        />
+      )}
     </View>
   );
 };

@@ -4,11 +4,11 @@ import React from "react";
 import { ViewStyle } from "react-native";
 import { Svg, Line } from "react-native-svg";
 
-interface CheckmarkIcon {
+interface CheckMarkIcon {
   style: ViewStyle;
 }
 
-const CheckmarkIcon: React.FC<CheckmarkIcon> = (props) => {
+const CheckMarkIcon: React.FC<CheckMarkIcon> = (props) => {
   return (
     <Svg style={props.style} viewBox="0 -1 11 8" fill="none">
       <Line
@@ -29,4 +29,4 @@ const CheckmarkIcon: React.FC<CheckmarkIcon> = (props) => {
   );
 };
 
-export default CheckmarkIcon;
+export default CheckMarkIcon;

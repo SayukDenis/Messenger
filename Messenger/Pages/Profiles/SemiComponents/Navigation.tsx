@@ -21,9 +21,8 @@ import AlbumScreen from "./Screens/AlbumScreen/AlbumScreen";
 import GalleryWhileAddingNewPhoto from "./Screens/AlbumScreen/GalleryWhileAddingNewPhoto";
 import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
 import ChangeBranchChildScreen from "./Screens/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
-import PhotoScreen from "../DialogueProfile/PhotoScreen/PhotoScreen";
+import PhotoScreen from "./Screens/PhotoScreen/PhotoScreen";
 import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
-import AddSubscriberScreen from "./Screens/ForwardToChatsScreen/AddSubscriberScreen";
 import ChannelSettingsScreen from "../ChannelProfile/SettingsScreen/ChannelSettingsScreen";
 import AuditLogScreen from "../ChannelProfile/AuditLogScreen/AuditLogScreen";
 import RolesScreen from "../ChannelProfile/RoleScreen/RolesScreen";
@@ -125,6 +124,7 @@ const GroupNavigation = () => {
       <Stack.Screen name="CreateRole" component={CreateRole} />
       <Stack.Screen name="RolePermission" component={RolePermission} />
       <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
+      <Stack.Screen name="GalleryScreen" component={GalleryScreen} />
       <Stack.Screen
         name="ChangeBranchParentScreen"
         component={ChangeBranchParentScreen}
@@ -137,6 +137,10 @@ const GroupNavigation = () => {
       <Stack.Screen
         name="GalleryWhileAddingNewPhoto"
         component={GalleryWhileAddingNewPhoto}
+      />
+      <Stack.Screen
+        name="ForwardToChatsScreen"
+        component={ForwardToChatsScreen}
       />
     </Stack.Navigator>
   );
@@ -154,14 +158,15 @@ const ChannelNavigation = () => {
       <Stack.Screen name="MainChannelScreen" component={MainScreen} />
       <Stack.Screen name="SubscribersScreen" component={SubscribersScreen} />
       <Stack.Screen
-        name="AddSubscriberScreen"
-        component={AddSubscriberScreen}
+        name="ForwardToChatsScreen"
+        component={ForwardToChatsScreen}
       />
       <Stack.Screen name="Album" component={AlbumScreen} />
       <Stack.Screen name="NewAlbumScreen" component={NewAlbumScreen} />
       <Stack.Screen name="SettingsScreen" component={ChannelSettingsScreen} />
       <Stack.Screen name="BranchesScreen" component={BranchesScreen} />
       <Stack.Screen name="NewBranchScreen" component={NewBranchScreen} />
+      <Stack.Screen name="GalleryScreen" component={GalleryScreen} />
       <Stack.Screen
         name="ChangeBranchParentScreen"
         component={ChangeBranchParentScreen}

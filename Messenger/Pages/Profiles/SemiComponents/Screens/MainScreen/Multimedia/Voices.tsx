@@ -11,10 +11,17 @@ import {
 import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 import styles from "../Styles";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
+import { Voice } from "../../../DatabaseSimulation/DBClasses";
+import CheckMarkIcon from "../Icons/CheckMarkIcon";
 
-interface VoiceProps {}
+interface VoicesProps {
+  onPress: (value: Voice) => void;
+  onLongPress: (value: Voice) => void;
+  isSelectionVisible: boolean;
+  isCheckMarkVisible: (value: Voice) => boolean;
+}
 
-const Voice: React.FC<VoiceProps> = (props) => {
+const Voices: React.FC<VoicesProps> = (props) => {
   return (
     <View style={styles.mediaContainer}>
       <FlatList
@@ -31,22 +38,30 @@ const Voice: React.FC<VoiceProps> = (props) => {
             <TouchableOpacity
               style={styles.fileContainer}
               onPress={() => {
-                alert(item.author + "'s voice message is pressed...");
+                props.onPress(item);
+              }}
+              onLongPress={() => {
+                props.onLongPress(item);
               }}
             >
               <View style={styles.fileFormatContainer}>
                 <MicrophoneIcon style={styles.microphoneIcon} />
               </View>
-              <View style={[styles.fileNameContainer, { width: "50%" }]}>
-                <Text numberOfLines={1} style={styles.fileNameText}>
+              <View style={[styles.fileNameContainer, { width: "40%" }]}>
+                <Text numberOfLines={1} style={styles.fileVoiceOrLinkTitle}>
                   {item.author}
                 </Text>
-              </View>
-              <View style={styles.voiceTimeAndDateContainer}>
-                <Text numberOfLines={1} style={styles.fileNameText}>
-                  {item.time + " " + item.date}
+                <Text numberOfLines={1} style={styles.fileVoiceOrLinkTitle}>
+                  {", " + item.time + ", " + item.date}
                 </Text>
               </View>
+              {props.isSelectionVisible && (
+                <View style={styles.checkMarkContainerForPhoto}>
+                  {props.isCheckMarkVisible(item) && (
+                    <CheckMarkIcon style={styles.checkMarkIcon} />
+                  )}
+                </View>
+              )}
             </TouchableOpacity>
           );
         }}
@@ -55,4 +70,4 @@ const Voice: React.FC<VoiceProps> = (props) => {
   );
 };
 
-export default Voice;
+export default Voices;

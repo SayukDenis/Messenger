@@ -1,14 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  Dimensions,
-  Image,
-} from "react-native";
+import { View, TouchableOpacity, Text, Dimensions, Image } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";

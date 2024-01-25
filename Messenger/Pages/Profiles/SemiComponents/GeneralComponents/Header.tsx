@@ -18,15 +18,12 @@ const Header: React.FC<HeaderProps> = (props) => {
     <View style={styles.topToolBar}>
       <LinearGradient
         colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-        style={{
-          opacity: 0.7,
-          top: 0,
-          position: "absolute",
-          left: 0,
-          right: 0,
-          height: Dimensions.get("screen").height,
-          width: Dimensions.get("screen").width,
-        }}
+        style={[
+          styles.linearGradient,
+          {
+            opacity: 0.7,
+          },
+        ]}
       />
       {/* Main name */}
       <Name

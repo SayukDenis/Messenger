@@ -3,6 +3,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface TopMenuWhenSelectionProps {
   isVisible: boolean;
@@ -19,6 +20,15 @@ const TopMenuWhenSelection: React.FC<TopMenuWhenSelectionProps> = (props) => {
           <View
             style={[styles.topToolBar, { position: "absolute", zIndex: 1 }]}
           >
+            <LinearGradient
+              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+              style={[
+                styles.linearGradient,
+                {
+                  opacity: 0.7,
+                },
+              ]}
+            />
             {/* Delete all button */}
             <TouchableOpacity
               style={[

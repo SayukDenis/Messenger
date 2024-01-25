@@ -117,7 +117,7 @@ export const styles = StyleSheet.create({
   doneButtonTitle: {
     fontSize: 21,
     fontFamily: "JacquesFrancois-Regular",
-    color: "rgb(92, 64, 129)",
+    color: "rgb(43, 29, 29)",
   },
   removalApprovalContainer: {
     position: "absolute",

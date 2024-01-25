@@ -17,7 +17,7 @@ interface TopToolBarProps {
   isBlocked?: boolean;
   isSearchButtonVisible?: boolean;
   onGoBackPress?: () => void;
-  isMediaSelectionVisible: boolean;
+  isMultimediaSelectionVisible: boolean;
   quantityOfSelectedItems: number;
   onDeleteAllPress: () => void;
   onCancelPress: () => void;
@@ -27,12 +27,12 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
   const blockStatusTitle: string = "Blocked";
   return (
     <View style={styles.topToolBar}>
-      {!props.isMediaSelectionVisible && (
+      <LinearGradient
+        colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+        style={styles.linearGradient}
+      />
+      {!props.isMultimediaSelectionVisible && (
         <>
-          <LinearGradient
-            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-            style={styles.linearGradient}
-          />
           {/* Main name */}
           <Name
             primaryTitle={props.primaryTitle}
@@ -76,7 +76,7 @@ const TopToolBar: React.FC<TopToolBarProps> = (props) => {
           </TouchableOpacity>
         </>
       )}
-      {props.isMediaSelectionVisible && (
+      {props.isMultimediaSelectionVisible && (
         <>
           {/* Delete all button */}
           <TouchableOpacity

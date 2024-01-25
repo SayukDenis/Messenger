@@ -270,11 +270,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: "17%",
-    width: "70%",
+    width: "65%",
   },
-  fileNameText: {
-    fontSize: 16,
-    fontFamily: "JacquesFrancois-Regular",
+  fileVoiceOrLinkTitle: {
+    fontSize: 15,
+    fontFamily: "Rubik-Regular",
   },
   downloadFileIconContainer: {
     flexDirection: "row",
@@ -287,14 +287,6 @@ export const styles = StyleSheet.create({
   microphoneIcon: {
     width: 0.09 * screenWidth,
     height: 0.09 * screenHeight,
-  },
-  voiceTimeAndDateContainer: {
-    width: "50%",
-    height: 0.0475 * screenHeight,
-    position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
-    right: -0.065 * screenWidth,
   },
   allAlbumsContainer: {
     paddingBottom: 0.5 * screenHeight,
@@ -320,7 +312,7 @@ export const styles = StyleSheet.create({
   albumNameText: { fontSize: 16, fontFamily: "JacquesFrancois-Regular" },
   albumPhotosAndVideosQuantityText: { fontSize: 13, color: "dimgrey" },
   plusAlbumIcon: { width: 0.12 * screenWidth, height: 0.12 * screenWidth },
-  checkmarkContainerForPhoto: {
+  checkMarkContainerForPhoto: {
     width: 0.055 * screenWidth,
     height: 0.055 * screenWidth,
     borderRadius: 20,
@@ -333,8 +325,8 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  checkmarkIcon: { width: 0.037 * screenWidth, height: 0.037 * screenWidth },
-  checkmarkContainerForAlbum: {
+  checkMarkIcon: { width: 0.037 * screenWidth, height: 0.037 * screenWidth },
+  checkMarkContainerForAlbum: {
     width: 0.055 * screenWidth,
     height: 0.055 * screenWidth,
     borderRadius: 20,
@@ -348,7 +340,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomToolBar: {
-    backgroundColor: "rgb(231, 230,	228)",
+    backgroundColor: "white",
     width: "100%",
     alignItems: "center",
     height: 0.08 * screenHeight,
@@ -356,13 +348,12 @@ export const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
-    borderWidth: 1.5,
-    borderColor: "rgb(161, 156, 145)",
     justifyContent: "flex-start",
     position: "absolute",
     bottom: 0,
     zIndex: 1,
     flexDirection: "row",
+    overflow: "hidden",
   },
   binIcon: {
     width: 0.06 * screenWidth,
@@ -408,12 +399,25 @@ export const styles = StyleSheet.create({
     position: "absolute",
     top: 0.064 * screenHeight - 7.09,
     right: 0,
-    width: 0.2 * screenWidth,
+    width: 0.3 * screenWidth,
   },
   doneButtonTitle: {
     fontSize: 21,
     fontFamily: "JacquesFrancois-Regular",
     color: "rgb(43, 29, 29)",
+  },
+  checkMarkContainerForFile: {
+    width: 0.055 * screenWidth,
+    height: 0.055 * screenWidth,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: "white",
+    backgroundColor: "rgb(102, 191, 255)",
+    position: "absolute",
+    right: 0.025 * screenWidth,
+    bottom: 0.025 * screenWidth,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

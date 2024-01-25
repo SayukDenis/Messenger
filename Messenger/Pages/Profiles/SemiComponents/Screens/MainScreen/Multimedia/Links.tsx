@@ -11,8 +11,15 @@ import {
 } from "react-native";
 import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 import styles from "../Styles";
+import { Link } from "../../../DatabaseSimulation/DBClasses";
+import CheckMarkIcon from "../Icons/CheckMarkIcon";
 
-interface LinksProps {}
+interface LinksProps {
+  onPress: (value: Link) => void;
+  onLongPress: (value: Link) => void;
+  isSelectionVisible: boolean;
+  isCheckMarkVisible: (value: Link) => boolean;
+}
 
 const Links: React.FC<LinksProps> = (props) => {
   return (
@@ -31,7 +38,10 @@ const Links: React.FC<LinksProps> = (props) => {
             <TouchableOpacity
               style={styles.fileContainer}
               onPress={() => {
-                alert(item.url + "'s voice message is pressed...");
+                props.onPress(item);
+              }}
+              onLongPress={() => {
+                props.onLongPress(item);
               }}
             >
               <View style={styles.fileFormatContainer}>
@@ -45,12 +55,15 @@ const Links: React.FC<LinksProps> = (props) => {
                   { width: "95%", bottom: "50%" },
                 ]}
               >
-                <Text numberOfLines={1} style={styles.fileNameText}>
+                <Text
+                  numberOfLines={1}
+                  style={[styles.fileVoiceOrLinkTitle, { width: "80%" }]}
+                >
                   {item.name}
                 </Text>
               </View>
               <View
-                style={[styles.fileNameContainer, { width: "95%", top: "50%" }]}
+                style={[styles.fileNameContainer, { width: "80%", top: "50%" }]}
               >
                 <TouchableOpacity
                   onPress={() => {
@@ -60,7 +73,7 @@ const Links: React.FC<LinksProps> = (props) => {
                   <Text
                     numberOfLines={1}
                     style={[
-                      styles.fileNameText,
+                      styles.fileVoiceOrLinkTitle,
                       { color: "rgb(43, 118, 134)" },
                     ]}
                   >
@@ -68,6 +81,13 @@ const Links: React.FC<LinksProps> = (props) => {
                   </Text>
                 </TouchableOpacity>
               </View>
+              {props.isSelectionVisible && (
+                <View style={styles.checkMarkContainerForPhoto}>
+                  {props.isCheckMarkVisible(item) && (
+                    <CheckMarkIcon style={styles.checkMarkIcon} />
+                  )}
+                </View>
+              )}
             </TouchableOpacity>
           );
         }}

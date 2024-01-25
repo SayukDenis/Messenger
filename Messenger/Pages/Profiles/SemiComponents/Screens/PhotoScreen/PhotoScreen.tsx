@@ -4,14 +4,14 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 import ImageViewer from "react-native-image-zoom-viewer";
-import PhotoToolBar from "../../SemiComponents/Screens/PhotoScreen/PhotoToolBar";
-import EyeIcon from "../../SemiComponents/Screens/MainScreen/Icons/EyeIcon";
-import DownArrowIcon from "../../SemiComponents/Screens/MainScreen/Icons/DownArrowIcon";
-import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
-import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import ForwardContactIcon from "../../SemiComponents/Screens/MainScreen/Icons/ForwardContactIcon";
+import PhotoToolBar from "./PhotoToolBar";
+import EyeIcon from "../MainScreen/Icons/EyeIcon";
+import DownArrowIcon from "../MainScreen/Icons/DownArrowIcon";
+import BinIcon from "../MainScreen/Icons/BinIcon";
+import Blur from "../../GeneralComponents/Blur";
+import ForwardContactIcon from "../MainScreen/Icons/ForwardContactIcon";
 
 type PhotoScreenProps = {
   navigation: StackNavigationProp<{}>;

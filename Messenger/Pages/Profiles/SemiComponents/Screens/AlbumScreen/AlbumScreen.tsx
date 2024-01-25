@@ -233,7 +233,9 @@ const AlbumScreen: React.FC<AlbumScreenProps> = (props) => {
         showsVerticalScrollIndicator={false}
       >
         <Photos
-          selectedPhotosAndVideos={selectedPhotosAndVideos}
+          isCheckMarkVisible={(item: PhotoOrVideo) =>
+            selectedPhotosAndVideos.includes(item)
+          }
           isPhotoSelectionVisible={isPhotoSelectionVisible}
           data={GetProfile().selectedAlbum.photosAndVideos}
           onPress={(photo: PhotoOrVideo) => {

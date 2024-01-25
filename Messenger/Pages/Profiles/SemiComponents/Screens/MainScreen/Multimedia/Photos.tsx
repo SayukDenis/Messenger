@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { PhotoOrVideo } from "../../../DatabaseSimulation/DBClasses";
 import styles from "../Styles";
-import CheckmarkIcon from "../Icons/CheckmarkIcon";
+import CheckMarkIcon from "../Icons/CheckMarkIcon";
 import CrossIcon from "../Icons/CrossIcon";
 
 const screenWidth = Dimensions.get("screen").width;
@@ -18,13 +18,14 @@ const screenHeight = Dimensions.get("screen").height;
 const figmaHeightPixelConverter = screenHeight / 648;
 
 interface PhotosProps {
-  selectedPhotosAndVideos?: Array<PhotoOrVideo>;
   isPhotoSelectionVisible: boolean;
   data: Array<PhotoOrVideo>;
   onPress: (value: PhotoOrVideo) => void;
+  onLongPress?: (value: PhotoOrVideo) => void;
   hasAddNewPhotoFeature?: boolean;
   onAddNewPhotoPress?: () => void;
   isMultimediaBarEnabled?: boolean;
+  isCheckMarkVisible?: (value: PhotoOrVideo) => boolean;
 }
 
 const Photos: React.FC<PhotosProps> = (props) => {
@@ -56,6 +57,9 @@ const Photos: React.FC<PhotosProps> = (props) => {
               onPress={() => {
                 props.onPress(item);
               }}
+              onLongPress={() => {
+                props.onLongPress(item);
+              }}
               style={[
                 styles.photo,
                 {
@@ -65,9 +69,9 @@ const Photos: React.FC<PhotosProps> = (props) => {
             >
               <Image style={styles.photo} source={{ uri: item.url }} />
               {props.isPhotoSelectionVisible && (
-                <View style={styles.checkmarkContainerForPhoto}>
-                  {props.selectedPhotosAndVideos?.includes(item) && (
-                    <CheckmarkIcon style={styles.checkmarkIcon} />
+                <View style={styles.checkMarkContainerForPhoto}>
+                  {props.isCheckMarkVisible(item) && (
+                    <CheckMarkIcon style={styles.checkMarkIcon} />
                   )}
                 </View>
               )}

@@ -4,7 +4,7 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import EyeIcon from "./Icons/EyeIcon";
-import EyeWithLineIcon from "../../../ChannelProfile/MainChannelScreen/Icons/EyeWithLineIcon";
+import EyeWithLineIcon from "./Icons/EyeWithLineIcon";
 
 interface TypeChannelMenuProps {
   isVisible: boolean;

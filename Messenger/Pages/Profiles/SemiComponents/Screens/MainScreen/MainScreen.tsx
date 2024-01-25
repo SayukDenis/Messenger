@@ -11,7 +11,13 @@ import Multimedia from "./Multimedia/Multimedia";
 import Blur from "../../GeneralComponents/Blur";
 import ElseFeaturesButtons from "./ElseFeaturesButtons";
 import RemovalApproval from "../../GeneralComponents/RemovalApproval";
-import { Album, PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
+import {
+  Album,
+  PhotoOrVideo,
+  Voice,
+  File,
+  Link,
+} from "../../DatabaseSimulation/DBClasses";
 import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 import AlbumLongPressedMenu from "./Multimedia/AlbumLongPressedMenu";
 import BottomToolBar from "./ButtomToolBar";
@@ -46,8 +52,11 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   const [longPressedAlbum, setLongPressedAlbum] = useState(null);
   const [positionYOfLongPressedAlbum, setPositionYOfLongPressedAlbum] =
     useState(0);
-  const [isAlbumSelectionVisible, setIsAlbumSelectionVisible] = useState(false);
-  const [selectedAlbums, setSelectedAlbums] = useState<Array<Album>>([]);
+  const [isMultimediaSelectionVisible, setIsMultimediaSelectionVisible] =
+    useState(false);
+  const [selectedMultimedia, setSelectedMultimedia] = useState<
+    Array<Album | PhotoOrVideo | File | Voice | Link>
+  >([]);
   const [isTypeChannelPressed, setIsTypeChannelPressed] = useState(false);
 
   const isFocused = useIsFocused();
@@ -60,6 +69,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     "delete all albums",
     "delete selected albums",
   ];
+
   const removalApprovalsOnPress: (() => void)[] = [
     () => {
       alert("Agree");
@@ -73,16 +83,31 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     },
     () => {
       GetProfile().albums = Array<Album>();
-      setIsAlbumSelectionVisible(false);
+      setIsMultimediaSelectionVisible(false);
     },
     () => {
-      selectedAlbums.forEach((album) => {
-        GetProfile().albums.splice(GetProfile().albums.indexOf(album), 1);
+      selectedMultimedia.forEach((album) => {
+        if (album instanceof Album) {
+          GetProfile().albums.splice(GetProfile().albums.indexOf(album), 1);
+        }
       });
-      setSelectedAlbums(Array<Album>());
-      setIsAlbumSelectionVisible(false);
+      setSelectedMultimedia([]);
+      setIsMultimediaSelectionVisible(false);
     },
   ];
+
+  const HandleMultimediaLongPress = (
+    value: PhotoOrVideo | Album | File | Voice | Link
+  ) => {
+    setIsMultimediaSelectionVisible(true);
+    if (!selectedMultimedia.includes(value)) {
+      setSelectedMultimedia(selectedMultimedia.concat([value]));
+    } else {
+      setSelectedMultimedia(
+        selectedMultimedia.filter((photoOrVideo) => photoOrVideo !== value)
+      );
+    }
+  };
 
   return (
     <LinearGradient
@@ -155,11 +180,11 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         onGoBackPress={() => {
           navigation.goBack();
         }}
-        isMediaSelectionVisible={isAlbumSelectionVisible}
-        quantityOfSelectedItems={selectedAlbums.length}
+        isMultimediaSelectionVisible={isMultimediaSelectionVisible}
+        quantityOfSelectedItems={selectedMultimedia.length}
         onCancelPress={() => {
-          setSelectedAlbums([]);
-          setIsAlbumSelectionVisible(false);
+          setSelectedMultimedia([]);
+          setIsMultimediaSelectionVisible(false);
         }}
         onDeleteAllPress={() => {
           setRemovalApprovalText("delete all albums");
@@ -200,8 +225,8 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           setRemovalApprovalText("delete an album");
         }}
         onSelectAlbumPress={() => {
-          setIsAlbumSelectionVisible(true);
-          setSelectedAlbums(selectedAlbums?.concat([longPressedAlbum]));
+          setIsMultimediaSelectionVisible(true);
+          setSelectedMultimedia(selectedMultimedia.concat([longPressedAlbum]));
           setLongPressedAlbum(null);
         }}
       />
@@ -217,7 +242,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
       />
 
       <BottomToolBar
-        isVisible={isAlbumSelectionVisible}
+        isVisible={isMultimediaSelectionVisible}
         onDeletePress={() => {
           setRemovalApprovalText("delete selected albums");
         }}
@@ -235,7 +260,6 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         contentContainerStyle={{
           zIndex: isPhotoAlbumSelectionVisible ? 2 : 0,
         }}
-        overScrollMode="never"
         showsVerticalScrollIndicator={false}
         onScroll={() => {
           setIsPhotoAlbumSelectionVisible(false);
@@ -251,13 +275,13 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
 
         {/* Touchable avatar image with phone and videocamera buttons*/}
         <AvatarWithCallingButtons
-          avatarURL="https://picsum.photos/id/1084/536/354"
+          avatarURL={GetProfile().avatars[0].url}
           onAvatarPress={() => {
             navigation.navigate("AvatarsAndInfoScreen" as never);
           }}
         />
 
-        {/* Multimedia bar with photo/albums, files, voice, links buttons*/}
+        {/* Multimedia with photo/albums, files, voice, links*/}
         <Multimedia
           isPhotoAlbumSelectionVisible={isPhotoAlbumSelectionVisible}
           setIsPhotoAlbumSelectionVisible={(value: boolean) =>
@@ -267,49 +291,49 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           setPressedMultimediaButton={(value: string) => {
             setPressedMultimediaButton(value);
           }}
-          onPhotoPress={(photo: PhotoOrVideo) => {
-            GetProfile().selectedPhoto = photo;
-            navigation.navigate("PhotoScreen" as never);
-          }}
-          onAlbumPress={(item: Album) => {
-            if (isAlbumSelectionVisible) {
-              if (!selectedAlbums.includes(item)) {
-                setSelectedAlbums(selectedAlbums.concat([item]));
+          onAnyPressWhileSelection={(
+            value: Album | PhotoOrVideo | File | Voice | Link
+          ) => {
+            if (isMultimediaSelectionVisible) {
+              if (!selectedMultimedia.includes(value)) {
+                setSelectedMultimedia(selectedMultimedia.concat([value]));
               } else {
-                setSelectedAlbums(
-                  selectedAlbums.filter((photoOrVideo) => photoOrVideo !== item)
+                setSelectedMultimedia(
+                  selectedMultimedia.filter((item) => item !== value)
                 );
               }
-            } else {
-              GetProfile().selectedAlbum = item;
-              navigation.navigate("Album" as never);
             }
+          }}
+          onPhotoPress={(value: PhotoOrVideo) => {
+            GetProfile().selectedPhoto = value;
+            navigation.navigate("PhotoScreen" as never);
+          }}
+          onAlbumPress={(value: Album) => {
+            GetProfile().selectedAlbum = value;
+            navigation.navigate("Album" as never);
           }}
           onNewAlbumPress={() => {
             navigation.navigate("NewAlbumScreen" as never);
           }}
+          onAnyLongPressExceptAlbum={(
+            value: PhotoOrVideo | File | Voice | Link
+          ) => {
+            HandleMultimediaLongPress(value);
+          }}
           onAlbumLongPress={(value: Album, event: GestureResponderEvent) => {
-            if (!isAlbumSelectionVisible) {
+            if (!isMultimediaSelectionVisible) {
               setLongPressedAlbum(value);
               setPositionYOfLongPressedAlbum(
                 event.nativeEvent.pageY + 0.05 * screenHeight
               );
             } else {
-              if (!selectedAlbums.includes(value)) {
-                setSelectedAlbums(selectedAlbums.concat([value]));
-              } else {
-                setSelectedAlbums(
-                  selectedAlbums.filter(
-                    (photoOrVideo) => photoOrVideo !== value
-                  )
-                );
-              }
+              HandleMultimediaLongPress(value);
             }
           }}
-          isAlbumSelectionVisible={isAlbumSelectionVisible}
-          isAlbumCheckMarkVisible={(value: Album) => {
-            return selectedAlbums.includes(value);
-          }}
+          isMultimediaSelectionVisible={isMultimediaSelectionVisible}
+          isCheckMarkVisible={(
+            value: Album | PhotoOrVideo | File | Voice | Link
+          ) => selectedMultimedia.includes(value)}
         />
       </ScrollView>
     </LinearGradient>

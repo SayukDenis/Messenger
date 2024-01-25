@@ -12,14 +12,14 @@ import {
 import { Album } from "../../../DatabaseSimulation/DBClasses";
 import styles from "../Styles";
 import CrossIcon from "../Icons/CrossIcon";
-import CheckmarkIcon from "../Icons/CheckmarkIcon";
+import CheckmarkIcon from "../Icons/CheckMarkIcon";
 import { GestureResponderEvent } from "react-native-modal";
 import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
 
 interface AlbumsProps {
   onNewAlbumPress: () => void;
-  onAlbumLongPress: (value: Album, event: GestureResponderEvent) => void;
-  onAlbumPress: (value: Album) => void;
+  onLongPress: (value: Album, event: GestureResponderEvent) => void;
+  onPress: (value: Album) => void;
   areCheckMarksVisible: boolean;
   isCheckmarkVisible: (value: Album) => boolean;
 }
@@ -53,10 +53,10 @@ const Albums: React.FC<AlbumsProps> = (props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                props.onAlbumPress(item);
+                props.onPress(item);
               }}
               onLongPress={(event) => {
-                props.onAlbumLongPress(item, event);
+                props.onLongPress(item, event);
               }}
               style={[styles.albumContainer]}
             >
@@ -75,9 +75,9 @@ const Albums: React.FC<AlbumsProps> = (props) => {
                   {item.photosAndVideos.length}
                 </Text>
                 {props.areCheckMarksVisible && (
-                  <View style={styles.checkmarkContainerForAlbum}>
+                  <View style={styles.checkMarkContainerForAlbum}>
                     {props.isCheckmarkVisible(item) && (
-                      <CheckmarkIcon style={styles.checkmarkIcon} />
+                      <CheckmarkIcon style={styles.checkMarkIcon} />
                     )}
                   </View>
                 )}

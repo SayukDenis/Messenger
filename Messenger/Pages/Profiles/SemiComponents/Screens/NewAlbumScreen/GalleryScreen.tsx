@@ -41,7 +41,9 @@ const GalleryScreen: React.FC<GalleryScreenProps> = (props) => {
         showsVerticalScrollIndicator={false}
       >
         <Photos
-          selectedPhotosAndVideos={selectedPhotosAndVideos}
+          isCheckMarkVisible={(item: PhotoOrVideo) =>
+            selectedPhotosAndVideos.includes(item)
+          }
           isPhotoSelectionVisible={true}
           data={GetProfile().photosAndVideos}
           onPress={(photo: PhotoOrVideo) => {

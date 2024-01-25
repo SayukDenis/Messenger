@@ -5,6 +5,7 @@ import { View, TouchableOpacity, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import BinIcon from "./Icons/BinIcon";
 import ArrowEastIcon from "./Icons/ArrowEastIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface BottomToolBarProps {
   isVisible: boolean;
@@ -17,6 +18,10 @@ const BottomToolBar: React.FC<BottomToolBarProps> = (props) => {
     <>
       {props.isVisible && (
         <View style={styles.bottomToolBar}>
+          <LinearGradient
+            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+            style={styles.linearGradient}
+          />
           {/* Delete button */}
           <TouchableOpacity
             style={{ left: 0.07 * Dimensions.get("screen").width }}

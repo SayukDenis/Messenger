@@ -11,8 +11,16 @@ import {
 import styles from "../Styles";
 import DownArrowIcon from "../Icons/DownArrowIcon";
 import { GetProfile } from "../../../DatabaseSimulation/DBFunctions";
+import { File } from "../../../DatabaseSimulation/DBClasses";
+import CheckMarkIcon from "../Icons/CheckMarkIcon";
 
-interface FilesProps {}
+interface FilesProps {
+  onPress: (value: File) => void;
+  onLongPress: (value: File) => void;
+  onDownloadPress: () => void;
+  isSelectionVisible: boolean;
+  isCheckMarkVisible: (value: File) => boolean;
+}
 
 const Files: React.FC<FilesProps> = (props) => {
   return (
@@ -31,7 +39,10 @@ const Files: React.FC<FilesProps> = (props) => {
             <TouchableOpacity
               style={styles.fileContainer}
               onPress={() => {
-                alert(item.name + " is pressed...");
+                props.onPress(item);
+              }}
+              onLongPress={() => {
+                props.onLongPress(item);
               }}
             >
               <View style={styles.fileFormatContainer}>
@@ -40,18 +51,26 @@ const Files: React.FC<FilesProps> = (props) => {
                 </Text>
               </View>
               <View style={styles.fileNameContainer}>
-                <Text numberOfLines={1} style={styles.fileNameText}>
+                <Text numberOfLines={1} style={styles.fileVoiceOrLinkTitle}>
                   {item.name}
                 </Text>
               </View>
-              <TouchableOpacity
-                onPress={() => {
-                  alert("Downloading " + item.name + "...");
-                }}
-                style={styles.downloadFileIconContainer}
-              >
-                <DownArrowIcon style={styles.downloadFileIcon} />
-              </TouchableOpacity>
+              {props.isSelectionVisible ? (
+                <View style={styles.checkMarkContainerForFile}>
+                  {props.isCheckMarkVisible(item) && (
+                    <CheckMarkIcon style={styles.checkMarkIcon} />
+                  )}
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    props.onDownloadPress();
+                  }}
+                  style={styles.downloadFileIconContainer}
+                >
+                  <DownArrowIcon style={styles.downloadFileIcon} />
+                </TouchableOpacity>
+              )}
             </TouchableOpacity>
           );
         }}
