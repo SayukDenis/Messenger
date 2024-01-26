@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -179,7 +179,6 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   shouldComponentUpdate(nextProps: Readonly<DefaultTextMessageProps>, nextState: Readonly<DefaultTextMessageState>, nextContext: any): boolean {
     if(nextProps.idForAnimation === this.props.message.messageId) {
       this.state.animate = true;
-      this.componentDidUpdate(this.props);
       return true;
     } else if(nextProps.selecting != this.props.selecting) {
       this.setState({ selecting: nextProps.selecting });

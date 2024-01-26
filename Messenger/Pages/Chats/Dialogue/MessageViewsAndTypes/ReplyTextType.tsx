@@ -21,7 +21,7 @@ interface ReplyTextType {
   message: MessageProps;
   setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
   id: number;
-  scrollView: MutableRefObject<any>;
+  flatList: MutableRefObject<any>;
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
@@ -39,7 +39,7 @@ interface componentPageProps {
 
 let size:any[] = [];
 
-const replyTextType = ({messages, message, setMessageMenuVisible, id, scrollView, author, userMessageLastWatched, selecting}:ReplyTextType) => {
+const replyTextType = ({messages, message, setMessageMenuVisible, id, flatList: scrollView, author, userMessageLastWatched, selecting}:ReplyTextType) => {
 
   const [sizeOfMessageContainer, setSizeOfMessageContainer] = useState([0, 0]);
   const [widthOfMessage, setWidthOfMessage] = useState(0);

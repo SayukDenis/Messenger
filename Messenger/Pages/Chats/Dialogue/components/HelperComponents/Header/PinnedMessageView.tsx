@@ -16,7 +16,7 @@ interface PinnedMessageViewProps {
 }
 
 const PinnedMessageView = ({ pinnedMessage, current, total }:PinnedMessageViewProps ) => {
-  if(!pinnedMessage) return null;
+  if(!pinnedMessage.messageId) return null;
 
   const dispatch = useDispatch();
 

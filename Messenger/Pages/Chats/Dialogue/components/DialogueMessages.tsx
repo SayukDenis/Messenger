@@ -41,18 +41,19 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
         y += mes.coord;
       }
     });
-    console.log(pinnedMessagesWithCoords);
+    console.log(pinnedMessagesWithCoords, '\n', pinnedMessages.length);
   }, [pinnedMessages])
 
   const dispatch = useDispatch();
 
+  const flatListRef = useRef<any>(null);
   useEffect(() => {
     console.log('\nscrollToPinnedMessage', scrollToPinnedMessage, '\nidOfPinnedMessage', idOfPinnedMessage);
-    if(scrollToPinnedMessage && flatListRef.current){
+    if(scrollToPinnedMessage && flatListRef.current) {
       const offset = pinnedMessagesWithCoords.find(m => m.message === idOfPinnedMessage)?.coord;
       console.log('\noffset', offset, '\npinnedMessagesWithCoords', pinnedMessagesWithCoords);
       if(offset)
-        (flatListRef.current as FlatList).scrollToOffset({ animated: true, offset });
+        flatListRef.current.scrollToOffset({ animated: true, offset });
 
       dispatch(setScrollStateForPinnedMessage(false, 0));
     }
@@ -68,7 +69,6 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
     }
   }
 
-  const flatListRef = useRef(null);
   useEffect(() => {
     if (flatListRef.current) {
       (flatListRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
@@ -175,6 +175,7 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
         style={[styles.dialogueChat, { zIndex: 3 }]}
         data={listOfMessages}
         inverted
+        overScrollMode={'never'}
         windowSize={15}
         maxToRenderPerBatch={3}
         initialNumToRender={20}

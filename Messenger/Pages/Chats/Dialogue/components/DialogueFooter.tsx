@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
 
   const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
+  const [keyboardActive, setKeyboardActive] = useState(false);
   const [copyPopUpTranslate, setCopyPopUpTranslate] = useState(new Animated.Value(0));
 
 
@@ -34,24 +35,24 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       (event: KeyboardEvent) => {
-        console.log('show');
         Animated.timing(keyboardHeight, {
           toValue: -event.endCoordinates.height,
           duration: 200,
           useNativeDriver: false, // Adjust based on your requirements
         }).start();
+        setKeyboardActive(true);
       }
     );
 
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        console.log('hide');
         Animated.timing(keyboardHeight, {
           toValue: 0,
           duration: 200,
           useNativeDriver: false, // Adjust based on your requirements
         }).start();
+        setKeyboardActive(false);
       }
     );
 
@@ -100,6 +101,10 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     return 0;
   }
 
+  const sendMessageHandler = () => {
+    sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author});
+  }
+
   return(
     <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
       <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
@@ -122,11 +127,19 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
           <View style={styles.footerContainer}>
             <View style={styles.footer}>
               <LeftPartOfFooter />
-
-              <TextInput value={text} onChangeText={setText} placeholderTextColor={'rgb(137, 130, 130)'} style={styles.messageInput} 
-              placeholder='Льоша блядюга)' onSubmitEditing={() => sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author})} />
-
-              <RightPartOfFooter />
+              <TextInput 
+                value={text} 
+                onChangeText={setText} 
+                placeholderTextColor={'rgb(137, 130, 130)'} 
+                style={styles.messageInput} 
+                placeholder='Льоша блядюга)' 
+                onSubmitEditing={sendMessageHandler} 
+              />
+              <RightPartOfFooter 
+                sendMessage={keyboardActive} 
+                sendMessageHandler={sendMessageHandler} 
+                pressGalleryButtonHandler={()=>{}} 
+              />
             </View>
           </View>
         </View>

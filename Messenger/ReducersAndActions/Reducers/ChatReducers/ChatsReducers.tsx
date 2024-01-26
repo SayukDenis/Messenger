@@ -19,7 +19,7 @@ const counterOfSelectedMessagesReducer = (state = counterOfSelectedMessagesIniti
 
 const scrollToPinnedMessageInitialState = {
   scroll: false,
-  id: 0
+  id: -1
 }
 const scrollToPinnedMessageReducer = (state = scrollToPinnedMessageInitialState, action:any) => {
   switch(action.type) {

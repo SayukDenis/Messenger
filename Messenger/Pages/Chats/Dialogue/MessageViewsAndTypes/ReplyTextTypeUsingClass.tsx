@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -7,71 +7,92 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { MutableRefObject, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { styles } from './Styles/ReplyTextType';
-import { MessageProps } from '../GeneralInterfaces/IMessage';
-import User from '../../../../dao/Models/User';
 import { wrapText } from './HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-import { Layout } from '../GeneralInterfaces/ILayout';
-import { CHARS_PER_LINE, FONT_SIZE } from '../DialogueConstants';
+import { CHARS_PER_LINE, FONT_SIZE, height, width } from '../DialogueConstants';
 import SelectButton from './SemiComponents/SelectButton';
-import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import { useDispatch } from 'react-redux';
-
-interface ReplyTextTypeProps {
-  messages: MessageProps[];
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
-  id: number;
-  scrollView: MutableRefObject<any>;
-  author: User;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-}
-
-interface coordProps {
-  locationX_In: number;
-  locationY_In: number;
-}
-
-interface componentPageProps {
-  X: number;
-  Y: number;
-}
+import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { connect } from 'react-redux';
+import { ReplyTextTypeProps, ReplyTextTypeState, componentPageProps, coordProps } from './Interfaces/IReplyTextType';
+import ReplyMessage from './HelperComponents/ReplyMessage';
 
 let size:any[] = [];
 
-class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
+class ReplyTextType extends Component<ReplyTextTypeProps> {
   state = {
     sizeOfMessageContainer: [0, 0],
     widthOfMessage: 0,
     widthOfReply: 0,
     selected: false,
+    animate: false,
     pressCoordinations: {} as coordProps,
   };
 
-  componentDidMount() {
-    const { selecting } = this.props;
-    if (!selecting) {
-      this.setState({ selected: false });
+  componentDidMount() { }
+
+  componentDidUpdate(prevProps: ReplyTextTypeProps) {
+    const { animate } = this.state;
+    console.log('animate', animate);
+    if (!animate) return;
+    Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
+      this.setState({ animate: false });
+      this.props.dispatch(setAnimationOfBackgroundForScrolledMessage());
+    });
+
+    const { idForAnimation, selecting } = this.props;
+    if (idForAnimation !== prevProps.idForAnimation) {
+      this.setState({ animate: idForAnimation === this.props.message.messageId });
+    }
+
+    if (!selecting && prevProps.selecting) {
+      this.resetSelected();
     }
   }
 
-  componentDidUpdate(prevProps: ReplyTextTypeProps) {
-    const { selecting } = this.props;
-    if (!selecting && prevProps.selecting) {
-      this.setState({ selected: false });
+  shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
+    if(nextProps.idForAnimation === this.props.message.messageId) {
+      this.state.animate = true;
+      return true;
+    } else if(nextProps.selecting != this.props.selecting) {
+      this.setState({ selecting: nextProps.selecting });
+      return true;
+    } else if(nextState.selected != this.state.selected) {
+      this.setState({ selected: nextState.selected })
+      return true;
+    } else {
+      return false;
     }
   }
+
+  fadeAnimTranslate = new Animated.Value(0);
+
+  fadeIn = Animated.timing(this.fadeAnimTranslate, {
+    toValue: 1,
+    duration: 400,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+
+  fadeOut = Animated.timing(this.fadeAnimTranslate, {
+    toValue: 0,
+    duration: 400,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+
+  resetSelected = () => {
+    const { dispatch } = this.props;
+    dispatch(resetNumberOfSelectedMessages());
+    this.setState({ selected: false });
+  };
 
   setSelectedCallback = () => {
     this.setState({ selected: true });
-    this.dispatch(incrementNumberOfSelectedMessages());
+    this.props.dispatch(incrementNumberOfSelectedMessages());
   }
 
   onLayout = (event: any) => {
@@ -80,11 +101,11 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
     this.setState({ widthOfMessage: width });
   };
 
-  componentRef = useRef<TouchableOpacity>(null);
+  componentRef: TouchableOpacity | null = null;
   measureHandler = async () => {
     return new Promise((resolve) => {
       if (this.componentRef) {
-        this.componentRef.current!.measure(
+        this.componentRef.measure(
           async (
             x: number,
             y: number,
@@ -102,8 +123,7 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
     });
   };
 
-  dispatch = useDispatch();
-  handlePress = useCallback(async (event: ({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
+  handlePress = async (event: ({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
     if (!event) return { ID: this.props.id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined, selectionCallback: undefined };
 
     const { nativeEvent } = event;
@@ -124,33 +144,36 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
     };
-  }, []);
+  };
 
-  scrollViewRef = useRef<ScrollView>(null);
+  scrollViewRef: ScrollView | null = null;
   onScrollEndDrag = async (event:any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const contentWidth = event.nativeEvent.contentSize.width;
     const scrollViewWidth = event.nativeEvent.layoutMeasurement.width;
 
     if (Math.round(contentOffsetX + scrollViewWidth) >= Math.round(contentWidth)) {
-      this.scrollViewRef.current!.scrollTo({y:0,animated:true})
+      this.scrollViewRef!.scrollTo({y:0,animated:true})
       await this.handlePress(null).then((layout:any) => {
         this.props.setMessageMenuVisible(layout, false);
       });
     }
   };
 
-  handleLinkTo = useCallback((messageID:any) => {
+  handleLinkTo = (messageID:any) => {
     const { selecting } = this.props;
     const { selected } = this.state;
     if (selecting) {
       this.setState({ selected: !selected });
-      this.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       return;
     }
 
-    this.props.scrollView.current.scrollToIndex({ index: this.props.messages.length - messageID, animated: true, viewPosition: 0.5 });
-  }, []);
+    if(this.props.flatList.current) {
+      this.props.dispatch(setAnimationOfBackgroundForScrolledMessage(this.props.message.messageResponseId));
+      this.props.flatList.current.scrollToIndex({ index: this.props.messages.length - messageID, animated: true, viewPosition: 0.5 });
+    }
+  };
   
   onPressIn = (event:any) => {
     const { locationX, locationY } = event.nativeEvent;
@@ -166,7 +189,7 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
     
     if (selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
       this.setState({ selected: !selected });
-      this.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       return;
     }
 
@@ -194,7 +217,7 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
     return (
       <ScrollView 
         horizontal={true} 
-        ref={this.props.scrollView}
+        ref={(ref) => this.scrollViewRef = ref}
         alwaysBounceHorizontal={false} 
         pagingEnabled 
         bounces={false}
@@ -203,9 +226,10 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
         style={[styles.swipeableContainer, { paddingBottom: 5 }, selecting && selected && { backgroundColor: 'rgba(32, 83, 44, 0.2)' }]}
         onScrollEndDrag={this.onScrollEndDrag}
       >
+        <Animated.View style={[styles.animatedBackground, { opacity: this.fadeAnimTranslate }]} />
         <View style={styles.replyContainer} >
           <TouchableOpacity 
-            ref={this.componentRef}
+            ref={(ref) => (this.componentRef = ref)}
             onLayout={(event) => this.setState({ sizeOfMessageContainer: [event.nativeEvent.layout.width, event.nativeEvent.layout.height] })}
             style={styles.innerReplyContainer}
             activeOpacity={1} 
@@ -215,41 +239,14 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
             <Text style={[styles.replyUserNameFont, this.props.message.author.userId==this.props.author.userId && { alignSelf: 'flex-end' }]}>
               {this.props.message.author.userId == this.props.author.userId ? 'You' : 'Denis'}
             </Text>
-            {this.props.message.author.userId == this.props.author.userId ?
-              <View 
-                onLayout={(event) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
-                style={styles.replyMessageContainer}>
-                <TouchableOpacity 
-                  activeOpacity={1} 
-                  onPress={() => { this.handleLinkTo(this.props.message!.messageResponseId) }}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
-                >
-                  <View style={[styles.messageTypeTextUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
-                    <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting && selected ? 1 : 0.4, backgroundColor: '#E09EFF' }} /> 
-                    <Text style={styles.replyMessageFont}>
-                      {this.replyMessage != undefined && this.replyMessage?.content?.length >= CHARS_PER_LINE ? this.replyMessage?.content.replace('\n', '').slice(0, CHARS_PER_LINE) + '...' : this.replyMessage?.content}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <View style={styles.replyMessageLine}/>
-              </View>
-              :
-              <View style={styles.replyMessageContainer}>
-                <View style={styles.replyMessageLine}/>
-                <TouchableOpacity 
-                  activeOpacity={1}
-                  style={{ flex:1 }}
-                  onPress={() => { this.handleLinkTo(this.props.message!.messageResponseId) }}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
-                >
-                  <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
-                    <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting && selected ? 1 : 0.4, backgroundColor: '#fff' }} /> 
-                    <Text style={styles.replyMessageFont}>
-                      {this.replyMessage != undefined && this.replyMessage?.content.length >= CHARS_PER_LINE ? this.replyMessage?.content.replace('\n', '').slice(0, CHARS_PER_LINE) + '...' : this.replyMessage?.content}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>}
+            <ReplyMessage 
+              message={this.props.message}
+              replyMessage={this.replyMessage!}
+              author={this.props.author}
+              selecting={selecting}
+              selected={selected}
+              handleLinkTo={this.handleLinkTo}
+            />
             <TouchableOpacity 
               activeOpacity={1} 
               onPressIn={this.onPressIn}
@@ -288,4 +285,8 @@ class ReplyTextType extends PureComponent<ReplyTextTypeProps> {
   }
 }
 
-export default memo(ReplyTextType);
+const mapStateToProps = (state: any) => ({
+  idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
+});
+
+export default connect(mapStateToProps)(ReplyTextType);
