@@ -8,18 +8,17 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "blue",
   },
   header: {
-    backgroundColor: "#E7E6E4",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    borderColor: "#A19C91",
     //borderWidth: 1,
-    borderRightWidth: 1,
-    borderBottomWidth: 1.8,
-    borderLeftWidth: 1,
+    alignSelf: "center",
     display: "flex",
     flexDirection: "row",
     height: windowHeight * 0.0635,
-    width: "100%",
+    width: windowWidth,
+    marginHorizontal: 0,
+    //width: "100%",
     //flexGrow: 1
   },
   footer: {

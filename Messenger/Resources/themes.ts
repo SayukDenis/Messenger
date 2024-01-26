@@ -1,3 +1,5 @@
+import { createContext } from "react";
+
 const MainColor = "#e3c07c";
 const HeaderAndLowerColor = "#e7e6e4";
 const HeaderAndLowerBorderColor = "#a19c91";
@@ -42,10 +44,28 @@ const SystemDarkPeach = "#CCAD70";
 const SystemWhite = "White";
 const SystemTransparent = "Transparent";
 
-export default {
-  light: {},
+export const themes = {
+  light: {
+    mainColor: "black",
+    background: "#D7B168",
+    card: "string",
+    text: "black",
+    border: "black",
+    notification: "black",
+    header_and_footer_background: "rgba(255, 255, 255, 0.7)",
+    big_text: "black",
+  },
 
-  dark: {},
+  dark: {
+    mainColor: "white",
+    background: "black",
+    card: "string",
+    text: "white",
+    border: "white",
+    notification: "white",
+    header_and_footer_background: "#161616",
+    big_text: "white",
+  },
 
   gradient_light: {},
 
@@ -57,3 +77,13 @@ export default {
     colors: ["#D7B168", "#D783FF"],
   },
 };
+
+export type Theme = typeof themes.light;
+
+export const ThemeContext = createContext<{
+  theme: Theme;
+  toggleTheme: (theme_index: number) => void;
+}>({
+  theme: themes.light,
+  toggleTheme: (theme_index: number) => {},
+});
