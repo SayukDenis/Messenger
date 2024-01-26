@@ -13,9 +13,10 @@ interface PinnedMessageViewProps {
   pinnedMessage: MessageProps;
   current: number;
   total: number;
+  navigation: any;
 }
 
-const PinnedMessageView = ({ pinnedMessage, current, total }:PinnedMessageViewProps ) => {
+const PinnedMessageView = ({ pinnedMessage, current, total, navigation }:PinnedMessageViewProps ) => {
   if(!pinnedMessage.messageId) return null;
 
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const PinnedMessageView = ({ pinnedMessage, current, total }:PinnedMessageViewPr
               }
               <TouchableOpacity
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                onPress={() => navigation.navigate('PinnedMessages', { navigation })}
               >
                 <DialogueMessagesPinnedMessageIcon />
               </TouchableOpacity>

@@ -1,5 +1,5 @@
 import { View, TextInput, TouchableOpacity, Animated, Keyboard, KeyboardEvent,  EasingFunction, Easing } from 'react-native';
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useRef } from 'react';
 import styles from './Styles/DialogueFooter';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
 import { DialogueFooterProps } from './interfaces/IDialoueFooter';
@@ -24,11 +24,14 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
   const [text, setText] = useState('');
 
   useEffect(() => {
-    if(isEdit)
+    if(isEdit) {
+      textInput.current?.focus();
       setText(editMessage?.content)
-    else
+    } else {
       setText('');
-  }, [editMessage, isEdit]);
+      if(isReply) textInput.current?.focus();
+    }
+  }, [editMessage, isEdit, isReply]);
 
   // In the future make animation using 'react-native-keyboard-controller' library
   useEffect(() => {
@@ -38,7 +41,7 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
         Animated.timing(keyboardHeight, {
           toValue: -event.endCoordinates.height,
           duration: 200,
-          useNativeDriver: false, // Adjust based on your requirements
+          useNativeDriver: false,
         }).start();
         setKeyboardActive(true);
       }
@@ -53,6 +56,9 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
           useNativeDriver: false, // Adjust based on your requirements
         }).start();
         setKeyboardActive(false);
+        if(textInput.current) {
+          textInput.current.blur();
+        }
       }
     );
 
@@ -105,6 +111,8 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author});
   }
 
+  const textInput = useRef<TextInput>(null);
+
   return(
     <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
       <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
@@ -128,6 +136,7 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
             <View style={styles.footer}>
               <LeftPartOfFooter />
               <TextInput 
+                ref={textInput}
                 value={text} 
                 onChangeText={setText} 
                 placeholderTextColor={'rgb(137, 130, 130)'} 

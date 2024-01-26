@@ -174,8 +174,6 @@ const Dialogue = ({ navigation, route }:any) => {
   // }, [listOfPinnedMessages])
   //console.log(listOfPinnedMessages.length);
 
-  console.log('listOfPinnedMessages', listOfPinnedMessages.length);
-
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>

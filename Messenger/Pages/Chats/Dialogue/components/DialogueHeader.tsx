@@ -21,7 +21,7 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, displa
           </View>
         </View>
       </HeaderContainer>
-      <PinnedMessageView pinnedMessage={pinnedMessage} current={currentNumOfPinnedMessage} total={countOfPinnedMessages} />
+      <PinnedMessageView pinnedMessage={pinnedMessage} current={currentNumOfPinnedMessage} total={countOfPinnedMessages} navigation={navigation} />
     </View>
   );
 }
