@@ -16,12 +16,13 @@ export interface messageMenuProps {
     message: MessageProps|undefined;
   };
   messages: MessageProps[];
-  onReplyPress: () => void;
-  onEditPress: () => void;
-  onCopyPress: () => void;
-  onSelectPress: () => void;
-  onPinPress: (arg0: MessageProps) => void
+  onReplyPress?: () => void;
+  onEditPress?: () => void;
+  onCopyPress?: () => void;
+  onSelectPress?: () => void;
+  onPinPress?: (arg0: MessageProps) => void
   isUser: boolean;
-  onDeletePress: () => void;
+  onDeletePress?: () => void;
   userMessageLastWatched: ILastWatchedMessage | undefined;
+  pinnedMessageScreen: boolean;
 }

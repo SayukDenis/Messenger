@@ -8,7 +8,7 @@ import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
 import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
 import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 
-const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, setMessageMenuVisible, messageID, unpinAllMessagesHandler }:DialogueHeaderProps) => {
+const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress }:DialogueHeaderProps) => {
   if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
 
   const displayName = author.name;
@@ -33,10 +33,13 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author
         navigation={navigation} 
         listOfPinnedMessages={listOfPinnedMessages}
         listOfMessages={listOfMessages}
-        setMessageMenuVisible={setMessageMenuVisible}
         author={author}
         messageID={messageID}
         unpinAllMessagesHandler={unpinAllMessagesHandler}
+        userMessageLastWatched={userMessageLastWatched}
+        onCopyPress={onCopyPress}
+        onUnpinPress={onUnpinPress}
+        onDeletePress={onDeletePress}
       />
     </View>
   );

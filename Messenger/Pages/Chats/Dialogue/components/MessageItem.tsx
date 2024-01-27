@@ -8,7 +8,7 @@ import { MessageItemProps } from './interfaces/IMessageItem';
 import DefaultTextTypeUsingClass from '../MessageViewsAndTypes/DefaultTextTypeUsingClass';
 import ReplyTextTypeUsingClass from '../MessageViewsAndTypes/ReplyTextTypeUsingClass';
 
-const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler }:MessageItemProps) => {
+const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen }:MessageItemProps) => {
    
   const messageViewHandle = ({message}:messageViewHandleProps) => {
     if(message.messageType == EMessageType.text && message.messageResponseId) {
@@ -22,6 +22,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         author={author}
         userMessageLastWatched={userMessageLastWatched}
         selecting={selecting}
+        pinnedMessageScreen={pinnedMessageScreen}
       />;
     }
     else if(message.messageType == EMessageType.text) {
@@ -33,6 +34,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         author={author}
         userMessageLastWatched={userMessageLastWatched}
         selecting={selecting}
+        pinnedMessageScreen={pinnedMessageScreen}
       />;
     }
   };

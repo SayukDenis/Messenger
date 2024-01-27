@@ -19,6 +19,7 @@ import { Layout } from './GeneralInterfaces/ILayout';
 let coord:Layout;
 let messageIdForReplyAndEdit:number;
 let msgs:MessageProps[];
+let pinnedMsgs:MessageProps[] = [];
 
 const user:SelfProfile = {
   userId: 0,
@@ -134,6 +135,10 @@ const Dialogue = ({ navigation, route }:any) => {
     setDeleting(!deleting);
   }
 
+  const onPinnedMessageScreemDeletePress = (message: MessageProps) => {
+    setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
+  }
+
   const handleMessageMenuPress = useCallback(() => {
     setMessageMenuVisible(false);
   }, []);
@@ -151,15 +156,18 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const [listOfPinnedMessages, setListOfPinnedMessages] = useState(dialogue.pinnedMessage as MessageProps[]);
   const pinMessageHandler = (message: MessageProps) => {
+
     if(listOfPinnedMessages.find(m => message.messageId === m.messageId)) {
-      const msgs = listOfPinnedMessages.filter(m => m.messageId !== message.messageId);
-      setListOfPinnedMessages(msgs);
-      if(msgs.length>0) {
-        setPinnedMessage(msgs[msgs.length-1]);
+      pinnedMsgs = pinnedMsgs.filter(m => m.messageId !== message.messageId);
+      if(pinnedMsgs.length === 0)
+        setListOfPinnedMessages([]);
+      if(pinnedMsgs.length>0) {
+        setPinnedMessage(pinnedMsgs[pinnedMsgs.length-1]);
       } else {
         setPinnedMessage({} as MessageProps);
       }
     } else {
+      pinnedMsgs.push(message);
       setListOfPinnedMessages([...listOfPinnedMessages, message])
       setPinnedMessage(message);
     }
@@ -195,6 +203,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onSelectPress={setSelectingHandler}
             onPinPress={pinMessageHandler}
             userMessageLastWatched={userMessageLastWatched}
+            pinnedMessageScreen={false}
           />
           <DialogueHeader 
             navigation={navigation} 
@@ -206,9 +215,12 @@ const Dialogue = ({ navigation, route }:any) => {
             listOfMessages={listOfMessages}
             selecting={selecting}
             cancelSelection={setSelectingHandler}
-            setMessageMenuVisible={handleMessagePressOrSwipe}
             messageID={messageID}
             unpinAllMessagesHandler={unpinAllMessagesHandler}
+            userMessageLastWatched={userMessageLastWatched!}
+            onCopyPress={setCopyHandler}
+            onUnpinPress={pinMessageHandler}
+            onDeletePress={onPinnedMessageScreemDeletePress}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 

@@ -37,6 +37,7 @@ interface DefaultTextMessageProps {
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
   dispatch: Dispatch;
+  pinnedMessageScreen: boolean;
 }
 
 interface DefaultTextMessageState {
@@ -213,7 +214,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   }
 
   render() {
-    const { message, author, userMessageLastWatched, selecting } = this.props;
+    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
 
     return (
@@ -222,6 +223,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
         horizontal={true}
         alwaysBounceHorizontal={false}
         pagingEnabled
+        scrollEnabled={!pinnedMessageScreen}
+        //contentOffset={pinnedMessageScreen?{ x: 5, y: 0 }:{ x: 0, y: 0 }}
         bounces={false}
         overScrollMode={'never'}
         onScrollEndDrag={this.onScrollEndDrag}
@@ -312,7 +315,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
               </View>
             )}
           </View>
-          <View style={{ alignItems: 'center', justifyContent: 'center', width: 55, paddingRight: 10 }}>
+          <View style={{ alignItems: 'center', justifyContent: 'center', width: 55 }}>
             <MessageItemSwipeToReplyIcon />
           </View>
         </TouchableOpacity>

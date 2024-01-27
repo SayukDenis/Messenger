@@ -17,4 +17,5 @@ export interface MessageItemProps {
   userMessageLastWatched?: ILastWatchedMessage | undefined;
   selecting: boolean;
   pinnedMessageHandler?: (message: number, coord: number) => void;
+  pinnedMessageScreen: boolean;
 }

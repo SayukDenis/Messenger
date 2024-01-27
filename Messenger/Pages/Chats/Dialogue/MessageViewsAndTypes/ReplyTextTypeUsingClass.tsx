@@ -213,7 +213,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   replyMessage = this.props.messages.find(m => m.messageId==this.props.message.messageResponseId);
   render() {
-    const { selecting } = this.props;
+    const { message, author, selecting, pinnedMessageScreen } = this.props;
     const { selected } = this.state;
 
     return (
@@ -222,10 +222,16 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
         ref={(ref) => this.scrollViewRef = ref}
         alwaysBounceHorizontal={false} 
         pagingEnabled 
+        scrollEnabled={!pinnedMessageScreen}
+        //contentOffset={pinnedMessageScreen?{ x: 5, y: 0 }:{ x: 0, y: 0 }}
         bounces={false}
         overScrollMode={'never'}
         showsHorizontalScrollIndicator={false}
-        style={[styles.swipeableContainer, { paddingBottom: 5 }, selecting && selected && { backgroundColor: 'rgba(32, 83, 44, 0.2)' }]}
+        style={[
+          styles.swipeableContainer, 
+          { paddingBottom: 5 }, 
+          selecting && selected && { backgroundColor: 'rgba(32, 83, 44, 0.2)' },
+        ]}
         onScrollEndDrag={this.onScrollEndDrag}
       >
         <Animated.View style={[styles.animatedBackground, { opacity: this.fadeAnimTranslate }]} />

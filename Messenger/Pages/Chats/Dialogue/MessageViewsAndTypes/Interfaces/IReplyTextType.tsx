@@ -16,6 +16,7 @@ export interface ReplyTextTypeProps {
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
   dispatch: Dispatch;
+  pinnedMessageScreen: boolean;
 }
 
 export interface ReplyTextTypeState {

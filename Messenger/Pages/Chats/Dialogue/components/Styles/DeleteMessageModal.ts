@@ -1,15 +1,15 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
+import { screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
   modalWindow: {
-    height: screenHeight,
+    height: height,
     width: screenWidth
   },
   touchableBackground: {
-    height: screenHeight,
+    height: height,
     width: screenWidth, 
     backgroundColor:'rgba(0, 0, 0, 0.15)', 
     alignItems:'center', 

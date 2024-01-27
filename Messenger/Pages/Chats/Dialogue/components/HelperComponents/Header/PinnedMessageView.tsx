@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import User from '../../../../../../dao/Models/User';
 import { Layout } from '../../../GeneralInterfaces/ILayout';
+import ILastWatchedMessage from '../../../../../../dao/Models/Chats/ILastWatchedMessage';
 
 interface PinnedMessageViewProps { 
   pinnedMessage: MessageProps;
@@ -18,13 +19,16 @@ interface PinnedMessageViewProps {
   navigation: any;
   listOfPinnedMessages: MessageProps[];
   listOfMessages: MessageProps[];
-  setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void};
   author: User;
   messageID: number;
   unpinAllMessagesHandler: () => void;
+  userMessageLastWatched: ILastWatchedMessage;
+  onCopyPress: () => void;
+  onUnpinPress: (message: MessageProps) => void;
+  onDeletePress: (message: MessageProps) => void;
 }
 
-const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, setMessageMenuVisible, author, messageID, unpinAllMessagesHandler }:PinnedMessageViewProps ) => {
+const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, author, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, }:PinnedMessageViewProps ) => {
   if(!pinnedMessage.messageId) return null;
 
   const dispatch = useDispatch();
@@ -71,10 +75,13 @@ const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPi
                   navigation, 
                   listOfPinnedMessages, 
                   listOfMessages, 
-                  setMessageMenuVisible, 
                   author, 
                   messageID,
-                  unpinAllMessagesHandler
+                  unpinAllMessagesHandler,
+                  userMessageLastWatched,
+                  onCopyPress,
+                  onUnpinPress,
+                  onDeletePress,
                 })}
               >
                 <DialogueMessagesPinnedMessageIcon />

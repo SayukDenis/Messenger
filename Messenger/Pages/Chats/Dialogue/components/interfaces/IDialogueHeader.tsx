@@ -1,5 +1,5 @@
+import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
 import User from "../../../../../dao/Models/User";
-import { Layout } from "../../GeneralInterfaces/ILayout";
 import { MessageProps } from "../../GeneralInterfaces/IMessage";
 
 
@@ -14,7 +14,10 @@ export interface DialogueHeaderProps {
   author: User;
   listOfMessages: MessageProps[];
   listOfPinnedMessages: MessageProps[];
-  setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void};
   messageID: number;
   unpinAllMessagesHandler: () => void;
+  userMessageLastWatched: ILastWatchedMessage;
+  onCopyPress: () => void;
+  onUnpinPress: (message: MessageProps) => void;
+  onDeletePress: (message: MessageProps) => void;
 }

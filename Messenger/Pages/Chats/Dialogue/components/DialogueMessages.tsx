@@ -143,6 +143,7 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
       userMessageLastWatched={userMessageLastWatched}
       selecting={selecting}
       pinnedMessageHandler={setPinnedMessageHandler}
+      pinnedMessageScreen={false}
     />);
   const memoizedItem = useMemo(() => renderItem, [listOfMessages, selecting]);
 

@@ -28,7 +28,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched}:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen }:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -47,14 +47,16 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       text: 'Copy',
       action: async () => {
         await Clipboard.setStringAsync(coord.message?.content!);
-        onCopyPress();
+        if(typeof onCopyPress === 'function')
+          onCopyPress();
       },
       svg: <MessageMenuCopyButton />
     },
     {
       text: 'Pin',
       action: () => {
-        onPinPress(coord.message!);
+        if(typeof onPinPress === 'function')
+          onPinPress(coord.message!);
       },
       svg: <MessageMenuPinButton />
     },
@@ -75,6 +77,37 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       svg: <MessageMenuSelectButton />
     },
   ];
+
+  const pinnedMessageScreenButtons = [
+    {
+      text: 'Copy',
+      action: async () => {
+        await Clipboard.setStringAsync(coord.message?.content!);
+        if(typeof onCopyPress === 'function')
+          onCopyPress();
+      },
+      svg: <MessageMenuCopyButton />
+    },
+    {
+      text: 'Unpin',
+      action: () => {
+        if(typeof onPinPress === 'function')
+          onPinPress(coord.message!);
+      },
+      svg: <MessageMenuPinButton />
+    },
+    {
+      text: 'Forward',
+      action: () => {},
+      svg: <MessageMenuForwardButton />
+    },
+    {
+      text: 'Delete',
+      color: 'red',
+      action: onDeletePress,
+      svg: <MessageMenuDeleteButton />
+    },
+  ]
 
   const durationOfAnimation: number = 10;
   const [state, setState] = useState(1);
@@ -318,23 +351,23 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
         onLayout={onLayout}
         style={[styles.buttonsContainer, handleMenuPosition()]}
       >
-        {buttons.map((button, index) => {
+        {(pinnedMessageScreen?pinnedMessageScreenButtons:buttons).map((button, index) => {
           return button.text=='Edit'&&!isUser? null: 
           <Animated.View key={button.text} style={helperFunc(index)}>
-            {button.text==='Reply'&&(coord?coord.pageY:0) < height-screenHeight*0.06-size.height?
+            {(button.text==='Reply'||(button.text==='Copy'&&pinnedMessageScreen))&&(coord?coord.pageY:0) < height-screenHeight*0.06-size.height?
             <View
               style={handleTrianglePosition()}
             />:null}
             <TouchableOpacity 
               key={index} 
-              onPress={() => {button.action(); onOverlayPress()}} 
+              onPress={() => {button.action!(); onOverlayPress()}} 
               activeOpacity={1} 
               style={styles.button}
             >
               {button.svg}
               <Text style={{color:button.color, marginLeft: 5}}>{button.text}</Text>
             </TouchableOpacity>
-            {button.text==='Select'&&(coord?coord.pageY:0) > height-screenHeight*0.06-size.height?
+            {(button.text==='Select'||(pinnedMessageScreen&&button.text==='Delete'))&&(coord?coord.pageY:0) > height-screenHeight*0.06-size.height?
             <View
               style={handleTrianglePosition()}
             />:null}
