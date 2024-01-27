@@ -5,15 +5,38 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { CHARS_PER_LINE } from '../../../DialogueConstants';
 import DialogueMessagesPinnedMessageIcon from '../../../SVG/DialogueMessagesPinnedMessageIcon';
 import { MessageProps } from '../../../GeneralInterfaces/IMessage';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
+import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import User from '../../../../../../dao/Models/User';
+import { Layout } from '../../../GeneralInterfaces/ILayout';
+import ILastWatchedMessage from '../../../../../../dao/Models/Chats/ILastWatchedMessage';
 
 interface PinnedMessageViewProps { 
   pinnedMessage: MessageProps;
   current: number;
-  total: number 
+  total: number;
+  navigation: any;
+  listOfPinnedMessages: MessageProps[];
+  listOfMessages: MessageProps[];
+  author: User;
+  messageID: number;
+  unpinAllMessagesHandler: () => void;
+  userMessageLastWatched: ILastWatchedMessage;
+  onCopyPress: () => void;
+  onUnpinPress: (message: MessageProps) => void;
+  onDeletePress: (message: MessageProps) => void;
 }
 
-const PinnedMessageView = ({ pinnedMessage, current, total }:PinnedMessageViewProps ) => {
-  if(!pinnedMessage) return null;
+const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, author, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, }:PinnedMessageViewProps ) => {
+  if(!pinnedMessage.messageId) return null;
+
+  const dispatch = useDispatch();
+
+  const scrollToPinedMessage = () => {
+    dispatch(setScrollStateForPinnedMessage(true, pinnedMessage.messageId!));
+    dispatch(setAnimationOfBackgroundForScrolledMessage(pinnedMessage.messageId!));
+  }
 
   return (
     <View style={{ position: 'absolute', bottom: -screenHeight*0.185, backgroundColor: '#fff', overflow: 'hidden', borderRadius: 9999, alignSelf: 'center', alignItems: 'center' }}>
@@ -32,7 +55,11 @@ const PinnedMessageView = ({ pinnedMessage, current, total }:PinnedMessageViewPr
               width: screenWidth,
             }}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: screenWidth*0.9, paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center' }}>
+          <TouchableOpacity 
+            activeOpacity={1}
+            onPress={scrollToPinedMessage}
+            style={{ flexDirection: 'row', justifyContent: 'space-between', width: screenWidth*0.9, paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center' }}
+          >
             <Text>Pinned message: {pinnedMessage?.content?.length>CHARS_PER_LINE?pinnedMessage?.content.slice(0,25).trim()+'...':pinnedMessage?.content}</Text>
             <View style={{ flexDirection: 'row' }}>
               { total>1&&
@@ -42,9 +69,25 @@ const PinnedMessageView = ({ pinnedMessage, current, total }:PinnedMessageViewPr
                   <Text>{total}</Text>
                 </View>
               }
-              <DialogueMessagesPinnedMessageIcon />
+              <TouchableOpacity
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                onPress={() => navigation.navigate('PinnedMessages', {  
+                  navigation, 
+                  listOfPinnedMessages, 
+                  listOfMessages, 
+                  author, 
+                  messageID,
+                  unpinAllMessagesHandler,
+                  userMessageLastWatched,
+                  onCopyPress,
+                  onUnpinPress,
+                  onDeletePress,
+                })}
+              >
+                <DialogueMessagesPinnedMessageIcon />
+              </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
       </View>
   )
 }
