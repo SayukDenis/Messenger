@@ -9,12 +9,12 @@ export interface MessageItemProps {
   item: MessageProps;
   listOfMessages: MessageProps[];
   setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void}; 
-  flatListRef: React.MutableRefObject<null>;
+  flatListRef?: React.MutableRefObject<null>;
   coordsY: [number[]];
   author: User;
   messageID: number;
   setCoordsY: (newCoordsY: any) => void;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
+  userMessageLastWatched?: ILastWatchedMessage | undefined;
   selecting: boolean;
-  pinnedMessageHandler: (message: number, coord: number) => void;
+  pinnedMessageHandler?: (message: number, coord: number) => void;
 }

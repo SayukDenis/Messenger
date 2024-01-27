@@ -27,6 +27,10 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
   }, [])
 
   useEffect(() => {
+    if(pinnedMessages.length <= 0) {
+      pinnedMessagesWithCoords = [];
+      return;
+    }
     let y = 0;
     messagesWithCoords.map(mes => {
       const pinned = pinnedMessages.find(m => m.messageId === mes.message);

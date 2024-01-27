@@ -169,6 +169,10 @@ const Dialogue = ({ navigation, route }:any) => {
     if(pinnedMessage.messageId !== id)
       setPinnedMessage(listOfMessages.find(m => m.messageId === id)!)
   }
+  const unpinAllMessagesHandler = () => {
+    setListOfPinnedMessages([]);
+    setPinnedMessage({} as MessageProps);
+  }
   // useEffect(() => {
   //   setPinnedMessage(listOfPinnedMessages[listOfPinnedMessages.length-1]);
   // }, [listOfPinnedMessages])
@@ -195,13 +199,16 @@ const Dialogue = ({ navigation, route }:any) => {
           <DialogueHeader 
             navigation={navigation} 
             picture={dialogue.linkToPhoto}
-            displayName={dialogue.users[1].name}
+            author={user as User}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage}
-            countOfPinnedMessages={listOfPinnedMessages.length}
-            currentNumOfPinnedMessage={listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage.messageId)+1}
+            listOfPinnedMessages={listOfPinnedMessages}
+            listOfMessages={listOfMessages}
             selecting={selecting}
             cancelSelection={setSelectingHandler}
+            setMessageMenuVisible={handleMessagePressOrSwipe}
+            messageID={messageID}
+            unpinAllMessagesHandler={unpinAllMessagesHandler}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 

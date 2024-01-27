@@ -18,7 +18,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         message={message} 
         setMessageMenuVisible={setMessageMenuVisible} 
         id={message.messageId!} 
-        flatList={flatListRef}
+        flatList={flatListRef!}
         author={author}
         userMessageLastWatched={userMessageLastWatched}
         selecting={selecting}
@@ -46,7 +46,8 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
           newCoordsY[item.messageId!] = [y, height];
           setCoordsY(newCoordsY);
           console.log('y', height);
-          pinnedMessageHandler(item.messageId!, height);
+          if(typeof pinnedMessageHandler === 'function')
+            pinnedMessageHandler(item.messageId!, height);
         }}
         style={{ flex: 1, zIndex: item.messageId === messageID ? 4 : -10 }}
       >

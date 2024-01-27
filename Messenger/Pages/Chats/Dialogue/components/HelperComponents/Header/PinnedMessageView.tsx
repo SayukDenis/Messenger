@@ -8,15 +8,23 @@ import { MessageProps } from '../../../GeneralInterfaces/IMessage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import User from '../../../../../../dao/Models/User';
+import { Layout } from '../../../GeneralInterfaces/ILayout';
 
 interface PinnedMessageViewProps { 
   pinnedMessage: MessageProps;
   current: number;
   total: number;
   navigation: any;
+  listOfPinnedMessages: MessageProps[];
+  listOfMessages: MessageProps[];
+  setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void};
+  author: User;
+  messageID: number;
+  unpinAllMessagesHandler: () => void;
 }
 
-const PinnedMessageView = ({ pinnedMessage, current, total, navigation }:PinnedMessageViewProps ) => {
+const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, setMessageMenuVisible, author, messageID, unpinAllMessagesHandler }:PinnedMessageViewProps ) => {
   if(!pinnedMessage.messageId) return null;
 
   const dispatch = useDispatch();
@@ -59,7 +67,15 @@ const PinnedMessageView = ({ pinnedMessage, current, total, navigation }:PinnedM
               }
               <TouchableOpacity
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                onPress={() => navigation.navigate('PinnedMessages', { navigation })}
+                onPress={() => navigation.navigate('PinnedMessages', {  
+                  navigation, 
+                  listOfPinnedMessages, 
+                  listOfMessages, 
+                  setMessageMenuVisible, 
+                  author, 
+                  messageID,
+                  unpinAllMessagesHandler
+                })}
               >
                 <DialogueMessagesPinnedMessageIcon />
               </TouchableOpacity>

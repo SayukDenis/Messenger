@@ -48,9 +48,9 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       this.setState({ animate: idForAnimation === this.props.message.messageId });
     }
 
-    if (!selecting && prevProps.selecting) {
-      this.resetSelected();
-    }
+    // if (!selecting && prevProps.selecting) {
+    //   this.resetSelected();
+    // }
   }
 
   shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
@@ -59,9 +59,12 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       return true;
     } else if(nextProps.selecting != this.props.selecting) {
       this.setState({ selecting: nextProps.selecting });
+      if(!nextProps.selecting) this.resetSelected();
       return true;
     } else if(nextState.selected != this.state.selected) {
       this.setState({ selected: nextState.selected })
+      return true;
+    } else if(this.state.selected !== nextState.selected) {
       return true;
     } else {
       return false;
@@ -85,8 +88,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   });
 
   resetSelected = () => {
-    const { dispatch } = this.props;
-    dispatch(resetNumberOfSelectedMessages());
+    this.props.dispatch(resetNumberOfSelectedMessages());
     this.setState({ selected: false });
   };
 
@@ -187,13 +189,13 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const { selecting } = this.props;
     const { selected } = this.state;
     
-    if (selecting && Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+    if (selecting && Math.abs(locationX-locationX_In) < 0.3 && Math.abs(locationY-locationY_In) < 0.3) {
       this.setState({ selected: !selected });
       this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       return;
     }
 
-    if (Math.abs(locationX-locationX_In) < 3 && Math.abs(locationY-locationY_In) < 3) {
+    if (Math.abs(locationX-locationX_In) < 0.3 && Math.abs(locationY-locationY_In) < 0.3) {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });

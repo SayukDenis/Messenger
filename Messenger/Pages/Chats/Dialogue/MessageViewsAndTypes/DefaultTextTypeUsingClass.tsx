@@ -72,8 +72,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   }
 
   resetSelected = () => {
-    const { dispatch } = this.props;
-    dispatch(resetNumberOfSelectedMessages());
+    this.props.dispatch(resetNumberOfSelectedMessages());
     this.setState({ selected: false });
   };
 
@@ -182,9 +181,12 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
       return true;
     } else if(nextProps.selecting != this.props.selecting) {
       this.setState({ selecting: nextProps.selecting });
+      if(!nextProps.selecting) this.resetSelected();
       return true;
     } else if(nextState.selected != this.state.selected) {
       this.setState({ selected: nextState.selected })
+      return true;
+    } else if(this.state.selected !== nextState.selected) {
       return true;
     } else {
       return false;
@@ -205,9 +207,9 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
       this.setState({ animate: idForAnimation === this.props.message.messageId });
     }
 
-    if (!selecting && prevProps.selecting) {
-      this.resetSelected();
-    }
+    // if (!selecting && prevProps.selecting) {
+    //   this.resetSelected();
+    // }
   }
 
   render() {
@@ -250,13 +252,13 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
 
-            if (selecting && Math.abs(locationX - locationX_In) < 3 && Math.abs(locationY - locationY_In) < 3) {
+            if (selecting && Math.abs(locationX - locationX_In) < 0.3 && Math.abs(locationY - locationY_In) < 0.3) {
               this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
               this.setState({ selected: !selected });
               return;
             }
 
-            if (Math.abs(locationX - locationX_In) < 3 && Math.abs(locationY - locationY_In) < 3) {
+            if (Math.abs(locationX - locationX_In) < 0.3 && Math.abs(locationY - locationY_In) < 0.3) {
               await this.handlePress(event).then((layout) => {
                 this.props.setMessageMenuVisible(layout, true);
               });
