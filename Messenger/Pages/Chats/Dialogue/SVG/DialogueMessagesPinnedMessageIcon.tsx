@@ -1,11 +1,12 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
+import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 
 function DialogueMessagesPinnedMessageIcon() {
   return (
     <Svg
-      width={16}
-      height={16}
+      width={screenHeight*0.02}
+      height={screenHeight*0.02}
       viewBox="0 0 13 13"
       fill="none"
     >

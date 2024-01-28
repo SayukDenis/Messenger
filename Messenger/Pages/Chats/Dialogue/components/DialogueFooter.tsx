@@ -1,5 +1,5 @@
 import { View, TextInput, TouchableOpacity, Animated, Keyboard, KeyboardEvent,  EasingFunction, Easing } from 'react-native';
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useRef } from 'react';
 import styles from './Styles/DialogueFooter';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
 import { DialogueFooterProps } from './interfaces/IDialoueFooter';
@@ -17,41 +17,48 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
 
   const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
+  const [keyboardActive, setKeyboardActive] = useState(false);
   const [copyPopUpTranslate, setCopyPopUpTranslate] = useState(new Animated.Value(0));
 
 
   const [text, setText] = useState('');
 
   useEffect(() => {
-    if(isEdit)
+    if(isEdit) {
+      textInput.current?.focus();
       setText(editMessage?.content)
-    else
+    } else {
       setText('');
-  }, [editMessage, isEdit]);
+      if(isReply) textInput.current?.focus();
+    }
+  }, [editMessage, isEdit, isReply]);
 
   // In the future make animation using 'react-native-keyboard-controller' library
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       (event: KeyboardEvent) => {
-        console.log('show');
         Animated.timing(keyboardHeight, {
           toValue: -event.endCoordinates.height,
           duration: 200,
-          useNativeDriver: false, // Adjust based on your requirements
+          useNativeDriver: false,
         }).start();
+        setKeyboardActive(true);
       }
     );
 
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        console.log('hide');
         Animated.timing(keyboardHeight, {
           toValue: 0,
           duration: 200,
           useNativeDriver: false, // Adjust based on your requirements
         }).start();
+        setKeyboardActive(false);
+        if(textInput.current) {
+          textInput.current.blur();
+        }
       }
     );
 
@@ -100,6 +107,12 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
     return 0;
   }
 
+  const sendMessageHandler = () => {
+    sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author});
+  }
+
+  const textInput = useRef<TextInput>(null);
+
   return(
     <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
       <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
@@ -122,11 +135,20 @@ const DialogueFooter = memo(({messages, setMessages, isReply, replyMessage, onSe
           <View style={styles.footerContainer}>
             <View style={styles.footer}>
               <LeftPartOfFooter />
-
-              <TextInput value={text} onChangeText={setText} placeholderTextColor={'rgb(137, 130, 130)'} style={styles.messageInput} 
-              placeholder='Льоша блядюга)' onSubmitEditing={() => sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author})} />
-
-              <RightPartOfFooter />
+              <TextInput 
+                ref={textInput}
+                value={text} 
+                onChangeText={setText} 
+                placeholderTextColor={'rgb(137, 130, 130)'} 
+                style={styles.messageInput} 
+                placeholder='Льоша блядюга)' 
+                onSubmitEditing={sendMessageHandler} 
+              />
+              <RightPartOfFooter 
+                sendMessage={keyboardActive} 
+                sendMessageHandler={sendMessageHandler} 
+                pressGalleryButtonHandler={()=>{}} 
+              />
             </View>
           </View>
         </View>

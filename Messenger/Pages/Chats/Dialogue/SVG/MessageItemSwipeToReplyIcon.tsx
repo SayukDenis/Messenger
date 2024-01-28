@@ -1,11 +1,12 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
+import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 
 function MessageItemSwipeToReplyIcon() {
   return (
     <Svg
-      width={24}
-      height={20}
+      width={screenHeight*0.032}
+      height={screenHeight*0.032}
       viewBox="0 0 18 15"
       fill="#fff"
     >

@@ -6,13 +6,73 @@ import { DialogueMessagesProps } from './interfaces/IDialogueMessages';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import MessageItem from './MessageItem';
 import { height } from '../DialogueConstants';
+import { setScrollStateForPinnedMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 
-const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched, selecting, hasPinnedMessage }:DialogueMessagesProps) => {
+interface pinnedMessageProps {
+  message: number;
+  coord: number
+}
 
-  const flatListRef = useRef(null);
+const messagesWithCoords:pinnedMessageProps[] = [];
+let pinnedMessagesWithCoords:pinnedMessageProps[] = [];
+
+const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched, selecting, hasPinnedMessage, pinnedMessages, setPinnedMessage }:DialogueMessagesProps) => {
+
+  useEffect(() => {
+    pinnedMessagesWithCoords = [];
+    console.log(pinnedMessages.length);
+  }, [])
+
+  useEffect(() => {
+    if(pinnedMessages.length <= 0) {
+      pinnedMessagesWithCoords = [];
+      return;
+    }
+    let y = 0;
+    messagesWithCoords.map(mes => {
+      const pinned = pinnedMessages.find(m => m.messageId === mes.message);
+      if(pinned) {
+        const index = pinnedMessagesWithCoords.findIndex(m => m.message === pinned.messageId);
+        if(index >= 0) {
+          pinnedMessagesWithCoords[index].coord = y;
+        } else {
+          pinnedMessagesWithCoords.push({ message: mes.message, coord: y });
+        }
+      } else {
+        y += mes.coord;
+      }
+    });
+    console.log(pinnedMessagesWithCoords, '\n', pinnedMessages.length);
+  }, [pinnedMessages])
+
+  const dispatch = useDispatch();
+
+  const flatListRef = useRef<any>(null);
+  useEffect(() => {
+    console.log('\nscrollToPinnedMessage', scrollToPinnedMessage, '\nidOfPinnedMessage', idOfPinnedMessage);
+    if(scrollToPinnedMessage && flatListRef.current) {
+      const offset = pinnedMessagesWithCoords.find(m => m.message === idOfPinnedMessage)?.coord;
+      console.log('\noffset', offset, '\npinnedMessagesWithCoords', pinnedMessagesWithCoords);
+      if(offset)
+        flatListRef.current.scrollToOffset({ animated: true, offset });
+
+      dispatch(setScrollStateForPinnedMessage(false, 0));
+    }
+  }, [scrollToPinnedMessage])
+
+  const setPinnedMessageHandler = (message:number, coord:number) => {
+    //console.log('setPinnedMessageHandler', message, coord);
+    const mesId = messagesWithCoords.findIndex(m => m.message === message);
+    if(mesId !== -1) {
+      messagesWithCoords[mesId].coord = coord;
+    } else {
+      messagesWithCoords.push({ message, coord });
+    }
+  }
+
   useEffect(() => {
     if (flatListRef.current) {
       (flatListRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
@@ -31,7 +91,7 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
       return insets.top;
     
     return 0;
-  } 
+  }
 
   // In the future make animation using 'react-native-keyboard-controller' library
   const keyboardHeight = new Animated.Value(0);
@@ -82,6 +142,8 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
       setCoordsY={setCoordsYHandler}
       userMessageLastWatched={userMessageLastWatched}
       selecting={selecting}
+      pinnedMessageHandler={setPinnedMessageHandler}
+      pinnedMessageScreen={false}
     />);
   const memoizedItem = useMemo(() => renderItem, [listOfMessages, selecting]);
 
@@ -95,15 +157,35 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
     />
   )
 
+  const checkForPinMessage = (event:any) => {
+    const yOffset = event.nativeEvent.contentOffset.y;
+    let minOffset = 9999;
+    let messageId = 0;
+    pinnedMessagesWithCoords.map((mes) => {
+      const offset = Math.abs(mes.coord - yOffset);
+      if(offset < minOffset) {
+        minOffset = offset;
+        messageId = mes.message;
+      }
+    })
+    setPinnedMessage(messageId);
+  }
+
   return(
     <Animated.View style={[styles.mainContainer, { height: screenHeight * 0.94 + (checkForSoftMenuBar()?insets.top:0), zIndex:0, transform: [{ translateY: keyboardHeight }] }]}>
       <FlatList
+        onScroll={checkForPinMessage}
         ref={flatListRef}
         showsVerticalScrollIndicator={false}
         style={[styles.dialogueChat, { zIndex: 3 }]}
         data={listOfMessages}
         inverted
-        windowSize={20}
+        overScrollMode={'never'}
+        windowSize={15}
+        maxToRenderPerBatch={3}
+        initialNumToRender={20}
+        removeClippedSubviews
+        updateCellsBatchingPeriod={100}
         keyExtractor={keyExtractor}
         renderItem={memoizedItem}
         ListHeaderComponent={ListHeaderComponent}
@@ -113,4 +195,9 @@ const DialogueMessages =({setMessageMenuVisible, messageID, listOfMessages, isRe
   );
 };
 
-export default memo(connect(null)(DialogueMessages))
+const mapStateToProps = (state:any) => ({
+  scrollToPinnedMessage: state.ChatReducer.scrollToPinnedMessage.scroll,
+  idOfPinnedMessage: state.ChatReducer.scrollToPinnedMessage.id
+});
+
+export default memo(connect(mapStateToProps)(DialogueMessages))

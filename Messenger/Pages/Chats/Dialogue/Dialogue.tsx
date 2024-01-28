@@ -19,6 +19,7 @@ import { Layout } from './GeneralInterfaces/ILayout';
 let coord:Layout;
 let messageIdForReplyAndEdit:number;
 let msgs:MessageProps[];
+let pinnedMsgs:MessageProps[] = [];
 
 const user:SelfProfile = {
   userId: 0,
@@ -134,6 +135,10 @@ const Dialogue = ({ navigation, route }:any) => {
     setDeleting(!deleting);
   }
 
+  const onPinnedMessageScreemDeletePress = (message: MessageProps) => {
+    setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
+  }
+
   const handleMessageMenuPress = useCallback(() => {
     setMessageMenuVisible(false);
   }, []);
@@ -146,28 +151,40 @@ const Dialogue = ({ navigation, route }:any) => {
   const [selecting, setSelecting] = useState(false);
   const setSelectingHandler = () => {
     setSelecting(!selecting);
+    coord.selectionCallback!();
   }
 
   const [listOfPinnedMessages, setListOfPinnedMessages] = useState(dialogue.pinnedMessage as MessageProps[]);
   const pinMessageHandler = (message: MessageProps) => {
+
     if(listOfPinnedMessages.find(m => message.messageId === m.messageId)) {
-      const msgs = listOfPinnedMessages.filter(m => m.messageId !== message.messageId);
-      setListOfPinnedMessages(msgs);
-      if(msgs.length>0) {
-        setPinnedMessage(msgs[msgs.length-1]);
+      pinnedMsgs = pinnedMsgs.filter(m => m.messageId !== message.messageId);
+      if(pinnedMsgs.length === 0)
+        setListOfPinnedMessages([]);
+      if(pinnedMsgs.length>0) {
+        setPinnedMessage(pinnedMsgs[pinnedMsgs.length-1]);
       } else {
         setPinnedMessage({} as MessageProps);
       }
     } else {
+      pinnedMsgs.push(message);
       setListOfPinnedMessages([...listOfPinnedMessages, message])
       setPinnedMessage(message);
     }
   }
   const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
+  const setPinnedMessageHandler = (id: number) => {
+    if(pinnedMessage.messageId !== id)
+      setPinnedMessage(listOfMessages.find(m => m.messageId === id)!)
+  }
+  const unpinAllMessagesHandler = () => {
+    setListOfPinnedMessages([]);
+    setPinnedMessage({} as MessageProps);
+  }
   // useEffect(() => {
   //   setPinnedMessage(listOfPinnedMessages[listOfPinnedMessages.length-1]);
   // }, [listOfPinnedMessages])
-  console.log(listOfPinnedMessages.length);
+  //console.log(listOfPinnedMessages.length);
 
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
@@ -186,17 +203,24 @@ const Dialogue = ({ navigation, route }:any) => {
             onSelectPress={setSelectingHandler}
             onPinPress={pinMessageHandler}
             userMessageLastWatched={userMessageLastWatched}
+            pinnedMessageScreen={false}
           />
           <DialogueHeader 
             navigation={navigation} 
             picture={dialogue.linkToPhoto}
-            displayName={dialogue.users[1].name}
+            author={user as User}
             activityTime={'Online recently'} // Last activity from user
-            pinnedMessage={listOfPinnedMessages[listOfPinnedMessages.length-1]}
-            countOfPinnedMessages={listOfPinnedMessages.length}
-            currentNumOfPinnedMessage={listOfPinnedMessages.findIndex(m => m.messageId === pinnedMessage.messageId)+1}
+            pinnedMessage={pinnedMessage}
+            listOfPinnedMessages={listOfPinnedMessages}
+            listOfMessages={listOfMessages}
             selecting={selecting}
             cancelSelection={setSelectingHandler}
+            messageID={messageID}
+            unpinAllMessagesHandler={unpinAllMessagesHandler}
+            userMessageLastWatched={userMessageLastWatched!}
+            onCopyPress={setCopyHandler}
+            onUnpinPress={pinMessageHandler}
+            onDeletePress={onPinnedMessageScreemDeletePress}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
@@ -209,6 +233,8 @@ const Dialogue = ({ navigation, route }:any) => {
             authorMessageLastWatched={authorMessageLastWatched}
             selecting={selecting}
             hasPinnedMessage={listOfPinnedMessages.length>0}
+            pinnedMessages={listOfPinnedMessages}
+            setPinnedMessage={setPinnedMessageHandler}
           />
           <DialogueFooter 
             messages={listOfMessages} 

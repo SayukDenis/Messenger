@@ -1,11 +1,12 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
+import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 
 function MessageItemStatusMessageNotReviewed() {
   return (
     <Svg
-      width={9}
-      height={7}
+      width={screenHeight*0.013}
+      height={screenHeight*0.011}
       viewBox="0 0 9 7"
       fill="none"
     >

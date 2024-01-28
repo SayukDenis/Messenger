@@ -8,8 +8,13 @@ import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
 import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
 import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 
-const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, displayName, activityTime, pinnedMessage, selecting, cancelSelection, currentNumOfPinnedMessage, countOfPinnedMessages }:DialogueHeaderProps) => {
+const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress }:DialogueHeaderProps) => {
   if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
+
+  const displayName = author.name;
+  const countOfPinnedMessages = listOfPinnedMessages.length;
+  const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage.messageId)+1;
+
   return(
     <View style={{ backgroundColor: 'green', zIndex: 10 }}>
       <HeaderContainer>
@@ -21,7 +26,21 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, displa
           </View>
         </View>
       </HeaderContainer>
-      <PinnedMessageView pinnedMessage={pinnedMessage} current={currentNumOfPinnedMessage} total={countOfPinnedMessages} />
+      <PinnedMessageView 
+        pinnedMessage={pinnedMessage} 
+        current={currentNumOfPinnedMessage} 
+        total={countOfPinnedMessages} 
+        navigation={navigation} 
+        listOfPinnedMessages={listOfPinnedMessages}
+        listOfMessages={listOfMessages}
+        author={author}
+        messageID={messageID}
+        unpinAllMessagesHandler={unpinAllMessagesHandler}
+        userMessageLastWatched={userMessageLastWatched}
+        onCopyPress={onCopyPress}
+        onUnpinPress={onUnpinPress}
+        onDeletePress={onDeletePress}
+      />
     </View>
   );
 }
