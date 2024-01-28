@@ -1,27 +1,20 @@
 import { registerRootComponent } from "expo";
 import { StatusBar, AppRegistry } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { Provider } from "react-redux";
 import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./Navigation/Navigation";
-import Test from "./Resources/Test";
-import { globalStyles } from "./Resources/styles";
-import Look from "./Pages/Look/Look";
-import { ThemeProvider } from "./Resources/ThemeProvider";
-import Authorization from "./Pages/Authorization/Authorization";
+
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-
-  //const [isDarkTheme, setTheme] = useState(false);
-
   return (
-    <ThemeProvider>
+    <SafeAreaProvider>
       <StatusBar translucent backgroundColor="transparent" />
       <Provider store={store}>
-        <Look />
+        <Navigation />
       </Provider>
-    </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 registerRootComponent(App);

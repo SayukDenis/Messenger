@@ -12,6 +12,7 @@ import EditUsernamePage from "./MainSettingPage/EdiitPage/EditUserNamePage/EditU
 import AddFolderPage from "./ChatFolderPage/AddFolderPage/AddFolderPage";
 import Notification from "./Notification/MainNotifivationPage/Notification";
 import LanguagePage from "./LanguagePage/LanguagePage";
+import Look from "../Look/Look";
 import { Stack } from "../../Navigation/Navigation";
 
  export const NavigationForSettings = () => {
@@ -29,6 +30,7 @@ import { Stack } from "../../Navigation/Navigation";
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="Question page" component={QuestionPage} />
         <Stack.Screen name="Language" component={LanguagePage} />
+        <Stack.Screen name="Look" component={Look} />
         <Stack.Screen name="Chat folders" component={ChatFolderPageNAvigator} />
         <Stack.Screen
           name="Confidentiality"
