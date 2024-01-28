@@ -8,7 +8,7 @@
     "target": "es2017",
     "strict": true,
     "module": "esnext",
-    "jsx": "react",
+    "jsx": "react"
   },
   "paths": {
     "expo": [

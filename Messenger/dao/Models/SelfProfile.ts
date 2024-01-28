@@ -1,4 +1,3 @@
-import Model from './Model';
 import Tab from './Tab';
 import User from './User';
 

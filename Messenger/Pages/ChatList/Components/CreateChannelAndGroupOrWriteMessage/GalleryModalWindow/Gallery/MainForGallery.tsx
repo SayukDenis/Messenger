@@ -8,7 +8,6 @@ import {
 } from "../../../../Constants/ConstantsForChatlist";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
-import { setPhotoForCreateGroupOrChannel } from "../../../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 interface MainForGalleryProps {
     navigation:any;
     setOnAddPhotoPress:Dispatch<SetStateAction<boolean>>
@@ -29,9 +28,10 @@ const MainForGallery: React.FC<MainForGalleryProps> = ({navigation,setOnAddPhoto
     setPhotos(assets);
   };
   const onPhotoPress=(index:number)=>{
-    dispatch(setPhotoForCreateGroupOrChannel(photos[index].uri));
+    /*dispatch(setPhotoForCreateGroupOrChannel(photos[index].uri));
     setOnAddPhotoPress(false);
-    navigation.goBack();
+    navigation.goBack();*/
+    navigation.navigate("Cropp Image Page",{picture:photos[index],setOnAddPhotoPress})
   }
   const renderItem = ({ item, index }: { item: any; index: number }) => {
     return (

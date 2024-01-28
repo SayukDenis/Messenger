@@ -1,3 +1,4 @@
+import { CroppImageProps } from "../../../Pages/Authorization/Information containers/Cropp image containers/CroppImagePage";
 import { EnumForChatListBlurs } from "../../../Pages/ChatList/Components/Enums/EnumsForChatListBlurs";
 import User from "../../../dao/Models/User";
 

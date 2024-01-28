@@ -11,7 +11,7 @@ export const Stack = createStackNavigator();
 const Navigation=()=>{
     return(
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='ChatListNavigation' screenOptions={{headerShown:false}}>
+            <Stack.Navigator initialRouteName='NavigationForAuthorization' screenOptions={{headerShown:false}}>
                 <Stack.Screen name="ChatListNavigation" component={ChatListNavigation}/>
                 <Stack.Screen name="NavigationForSettings" component={NavigationForSettings}/>
                 <Stack.Screen name="NavigationForAuthorization" component={NavigationForAuthorization} />

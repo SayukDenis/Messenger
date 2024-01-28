@@ -5,13 +5,7 @@ import React, {
   SetStateAction,
   useRef,
 } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-  FlatList,
-} from "react-native";
+import { View, TouchableOpacity, Text, Image, FlatList } from "react-native";
 import {
   screenHeight,
   screenWidth,
@@ -43,6 +37,7 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
     });
     setPhotos(assets);
   };
+  
   const margin = 6;
   const widthOfImage = screenWidth / 5 - margin * 3;
   const borderRadius = 20;
@@ -55,9 +50,9 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
   const onGalleryPress = useRef(() => {
     navigation.navigate("All Photo In Gallery", { setOnAddPhotoPress });
   });
-  const onCameraPress=useRef(()=>{
-    navigation.navigate("Camera Component", { setOnAddPhotoPress })
-  })
+  const onCameraPress = useRef(() => {
+    navigation.navigate("Camera Component", { setOnAddPhotoPress });
+  });
   const renderItem = ({ item, index }: { item: any; index: number }) => {
     // console.log(index);
     const margin = 5;
@@ -108,8 +103,9 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
     return (
       <TouchableOpacity
         onPress={() => {
-          dispatch(setPhotoForCreateGroupOrChannel(item.uri));
-          setOnAddPhotoPress(false);
+          //dispatch(setPhotoForCreateGroupOrChannel(item.uri));
+          //setOnAddPhotoPress(false);
+          navigation.navigate("Cropp Image Page",{picture:item,setOnAddPhotoPress})
         }}
       >
         <Image
