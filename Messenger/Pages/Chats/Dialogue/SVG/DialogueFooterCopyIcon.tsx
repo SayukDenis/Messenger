@@ -1,11 +1,12 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
+import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 
 function DialogueFooterCopyIcon() {
   return (
     <Svg
-      width={14}
-      height={15}
+      width={screenHeight*0.018}
+      height={screenHeight*0.018}
       viewBox="0 0 14 15"
       fill="none"
     >

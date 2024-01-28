@@ -9,4 +9,5 @@ export interface Layout {
   width: number;
   height: number;  
   message: MessageProps|undefined;
+  selectionCallback: (() => void) | undefined;
 }

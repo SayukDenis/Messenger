@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "jsEngine": "jsc",
     
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       
       "resizeMode": "contain",

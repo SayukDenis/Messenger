@@ -1,11 +1,12 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
+import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 
 function ReplyAndEditMenuCancelButton() {
   return (
     <Svg
-      width={12}
-      height={12}
+      width={screenHeight*0.016}
+      height={screenHeight*0.016}
       viewBox="0 0 12 12"
       fill="none"
     >

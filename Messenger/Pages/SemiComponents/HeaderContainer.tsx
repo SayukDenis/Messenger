@@ -4,6 +4,8 @@ import { View, Dimensions } from "react-native";
 import { headerstyles } from "../ChatList/Styles/HeaderStyle";
 import { connect } from "react-redux";
 import { heightOfHeader } from "../ChatList/Constants/ConstantsForChatlist";
+import { Theme, ThemeContext } from "../../Resources/themes";
+import { useContext } from "react";
 interface HeaderContainerProps {
   children?: ReactNode | null;
 }
@@ -11,6 +13,8 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const HeaderContainer: React.FC<HeaderContainerProps> = ({
   children 
 }) => {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <View
       style={[
@@ -30,13 +34,17 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({
     >
       <View style={headerstyles.container}>
         <LinearGradient
-          colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+          colors={[
+            theme.header.backgroundGrad1,
+            theme.header.backgroundGrad2,
+            theme.header.backgroundGrad3,
+          ]}
           locations={[0.25, 0.5, 0.75]}
           start={{ x: 1, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={{
             opacity: 0.7,
-            top: 0,
+            top: -10,
             position: "absolute",
             left: 0,
             right: 0,

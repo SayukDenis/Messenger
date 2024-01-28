@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
+import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -7,6 +8,12 @@ export const styles = StyleSheet.create({
     width: width, 
     alignSelf:'stretch', 
     overflow:'visible'
+  },
+  animatedBackground: {
+    position: 'absolute',
+    width: width,
+    height: height,
+    backgroundColor: '#fff',
   },
   replyContainer: {
     display: 'flex',
@@ -41,6 +48,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     maxWidth: '100%',
     minWidth: '15%'
+  },
+  replyMessageBackground: {
+    position: 'absolute', 
+    height: screenHeight, 
+    width: screenWidth, 
+    zIndex: -1,
   },
   replyMessagePos: {
     marginBottom:-10, 

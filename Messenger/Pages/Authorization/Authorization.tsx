@@ -1,39 +1,70 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ImageBackground, Image, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { styles } from './Style/Style';
+import { useFormattedPhoneNumber } from './FormattedPhoneNumber/FormattedPhoneNumber';
 
-export default function Authorization() {
+export default function Authorization({ route, navigation }) {
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const { phoneNumber, handlePhoneNumberChange } = useFormattedPhoneNumber();
+
+  useEffect(() => {
+    if (route.params && route.params.selectedCountry !== undefined) {
+      setSelectedCountry(route.params.selectedCountry);
+    }
+  }, [route.params]);
+
+  const navigateToRegistration = () => {
+      navigation.navigate('Registration', { selectedCountry, phoneNumber });
+  };
+
+  const navigateToPhoneCodeRegistration = () => {
+    navigation.navigate('PhoneCodeRegistration', { selectedCountry });
+  };
+
+  const navigateToCountrySelection = () => {
+    navigation.navigate('CountrySelection', { originScreen: 'Authorization', selectedCountry });
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Sign in to Telintik</Text>
+    <ImageBackground source={require('./Image/Background.png')} style={styles.backgroundImage}>
+      <View style={styles.containerCenter}>
+        <Text style={styles.header}>Sign in to Telintik</Text>
+        <Image source={require('./Image/AuthorizationImage.png')} style={styles.imageStyle} />
+        <Text style={styles.header}>Phone number</Text>
 
-      <View style={styles.contentContainer}>
-        <Text style={styles.label}>Your phone Number</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="+123 00 000 00 00"
-        />
-    
-      <TouchableOpacity
-        style={styles.signInButton}
-      >
-      <Text style={styles.signInLaber}>SIGN IN →</Text>
-      </TouchableOpacity>
-      </View> 
+        <View style={styles.containerLine}>
+          <View style={styles.line} />
 
-      <View style={styles.containerCreat}>
-      <View style={styles.contentContainer}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text style={styles.createAccount}>Do you want to create an account?</Text>
-      <TouchableOpacity
-        style={styles.createButton}
-        onPress={() => alert('Create button clicked')}
-      >
-      <Text style={styles.createButtonText}>Create</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.row} onPress={navigateToCountrySelection}>
+            <Image source={selectedCountry !== null ? selectedCountry.flag : require('./Pages/CountrySelection/Image/UkraineFlag.png')} style={styles.countryFlag} />
+            <View style={styles.verticalLine} />
+            <Text style={styles.headerText}>{selectedCountry !== null ? selectedCountry.name : 'Ukraine'}</Text>
+          </TouchableOpacity>
+
+          <View style={styles.line} />
+
+          <View style={styles.row}>
+          <Text style={styles.headerTextСountryСode} onPress={navigateToCountrySelection}>{selectedCountry !== null ? selectedCountry.code : '+380'}</Text>
+            <View style={styles.verticalLine} />
+            <TextInput style={styles.input} placeholder="00 000 00 00" 
+             maxLength={12} 
+             keyboardType="numeric"
+             value={phoneNumber}
+             onChangeText={handlePhoneNumberChange}/>
+          </View>
+          <View style={styles.line} />
+        </View>
       </View>
-     </View>
-    </View>
-    </View>
-);
+      <View style={styles.containerStart}>
+        <TouchableOpacity style={styles.linkButton} onPress={navigateToRegistration}>
+          <Text style={styles.linkButtonText}>Create account</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.containerCenter}>
+        <TouchableOpacity style={styles.Button} onPress={navigateToPhoneCodeRegistration}>
+          <Text style={styles.ButtonLaber}>Continue</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
+  );
 }
