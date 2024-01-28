@@ -39,6 +39,11 @@ const Look = () => {
         backgroundColor={theme.header_and_footer_background}
         barStyle={theme.statusbar as any}
       /> */}
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={theme.statusbar as any}
+      />
       <BackGroundGradientView>
         <Header theme_prop={theme} />
         <View style={{ height: heightOfHeader, marginBottom: 5 }} />
