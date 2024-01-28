@@ -1,6 +1,4 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import Settingspage from "./MainSettingPage/settingsPage/Settings";
 import SavedmessagePage from "./SavedMessagePage/SavedMessagePage";
 import EditPage from "./MainSettingPage/EdiitPage/MainEditPage/EditPage";
@@ -12,6 +10,9 @@ import PasswordPage from "./ConfidentialityPage/Password/Password";
 import EditBioPage from "./MainSettingPage/EdiitPage/EditBioPage/EditBioPage";
 import EditUsernamePage from "./MainSettingPage/EdiitPage/EditUserNamePage/EditUserName";
 import AddFolderPage from "./ChatFolderPage/AddFolderPage/AddFolderPage";
+import Notification from "./Notification/MainNotifivationPage/Notification";
+import LanguagePage from "./LanguagePage/LanguagePage";
+import Look from "../Look/Look";
 import { Stack } from "../../Navigation/Navigation";
 
  export const NavigationForSettings = () => {
@@ -26,7 +27,10 @@ import { Stack } from "../../Navigation/Navigation";
         <Stack.Screen name="Settings" component={Settingspage} />
         <Stack.Screen name="Saved message" component={SavedmessagePage} />
         <Stack.Screen name="Edit page" component={EditPageNavigator} />
+        <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="Question page" component={QuestionPage} />
+        <Stack.Screen name="Language" component={LanguagePage} />
+        <Stack.Screen name="Look" component={Look} />
         <Stack.Screen name="Chat folders" component={ChatFolderPageNAvigator} />
         <Stack.Screen
           name="Confidentiality"

@@ -8,13 +8,13 @@ const windowHeight = Dimensions.get('window').height;
 const EditBioCenter =()=>{
     const [text, setText] = useState('');
     const maxCharactersPerLine = 50;
-    const handleTextChange = (inputText) => {
-        let formattedText = inputText;
-        let inputHeigth =windowHeight*0.07;
-        if (formattedText.length % (maxCharactersPerLine + 1) === 0) {
-            formattedText += '\n';
-            setTextInputHeight(inputText.length +inputHeigth);
-        }
+    const handleTextChange = (inputText:string) => {
+    let formattedText = inputText;
+    let inputHeigth =windowHeight*0.07;
+    if (formattedText.length % (maxCharactersPerLine + 1) === 0) {
+        formattedText += '\n';
+        setTextInputHeight(inputText.length +inputHeigth);
+    }
         setText(formattedText);
         
     };

@@ -11,7 +11,7 @@ interface HeaderContainerProps {
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const HeaderContainer: React.FC<HeaderContainerProps> = ({
-  children = null,
+  children 
 }) => {
   const { theme } = useContext(ThemeContext);
 
@@ -53,6 +53,7 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({
           }}
         />
         {children}
+
       </View>
     </View>
   );
