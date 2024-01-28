@@ -9,7 +9,7 @@ interface HeaderContainerProps {
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const HeaderContainer: React.FC<HeaderContainerProps> = ({
-  children = null,
+  children 
 }) => {
   return (
     <View
@@ -45,6 +45,7 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({
           }}
         />
         {children}
+
       </View>
     </View>
   );

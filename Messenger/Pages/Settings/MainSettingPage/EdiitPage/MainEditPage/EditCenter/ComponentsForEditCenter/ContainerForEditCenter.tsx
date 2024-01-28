@@ -21,6 +21,7 @@ ContainerForEditCenter
         borderRadius: 10,
         flexDirection: "row",
         overflow: "hidden",
+        alignItems:"center",
         justifyContent: "space-between",
         marginBottom:"0.4%"
       }}

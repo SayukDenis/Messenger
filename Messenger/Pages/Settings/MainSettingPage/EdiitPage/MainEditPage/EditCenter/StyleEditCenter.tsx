@@ -46,7 +46,7 @@ const StyleEditCenter = StyleSheet.create({
     inputText:{
         width:'90%',
         height:windowHeight*0.07,
-        padding:'3%'
+        paddingLeft:'3%',
     },
 
     buttonConteiner:{

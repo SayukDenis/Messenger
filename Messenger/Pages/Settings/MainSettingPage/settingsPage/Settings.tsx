@@ -6,14 +6,17 @@ import Center from './Center/Center';
 import BackGroundGradientView from '../../../SemiComponents/BackGroundGradientView';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import { heightOfHeader } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Settingspage: React.FC<any> = ({ navigation })=>{
   return <BackGroundGradientView>
-    <View style = {StylesSettings.container}>
-    <HeaderContainer><Header navigation= {navigation}></Header></HeaderContainer>
-   <Center navigation= {navigation}></Center>
-  </View>
+            <View style = {StylesSettings.container}>
+                <HeaderContainer><Header navigation= {navigation}></Header></HeaderContainer>
+                
+                        <Center navigation= {navigation}></Center>
+            </View>
   </BackGroundGradientView>
+  
 }
 
 export default Settingspage;

@@ -4,13 +4,14 @@ const inisialStateNewfolder ={
     listOfNewFolder:[],
 }
 const inisialStaterecomendedfolder ={
-  recomdendedFolders:[],
+  recomdendedFolders:["Personal chats", "Channels", "Groups"],
+  numberOfRecommendedFolders: 3,
 }
 
 const TextInput ={
   TextInput:""
 }
-const NewFolderName= (state = TextInput, action) => {
+const NewFolderName= (state = TextInput, action:any) => {
   switch (action.type) {
     case 'SET_TEXT':
       return {
@@ -22,7 +23,7 @@ const NewFolderName= (state = TextInput, action) => {
   }
 };
 
-const AddNewFoldertReducer = (state = inisialStateNewfolder, action) => {
+const AddNewFoldertReducer = (state = inisialStateNewfolder, action:any) => {
     switch (action.type) {
       case  'ADD_NEW_FOLDER':
         console.log(JSON.stringify(action)+ " nameFolder")
@@ -35,12 +36,18 @@ const AddNewFoldertReducer = (state = inisialStateNewfolder, action) => {
         return state;
     }
 };
-const AddRecomendedFoldertReducer = (state = inisialStaterecomendedfolder, action) => {
+const AddRecomendedFoldertReducer = (state = inisialStaterecomendedfolder, action:any) => {
   switch (action.type) {
-    case 'ADD_RECOMENDED_FOLDER':
+    case 'REMOVE_RECOMENDED_FOLDER':
+      console.log("remove")
+      console.log(JSON.stringify(action) + JSON.stringify(action.payload) + "   12")
+      const folderToRemove = action.payload;
+      const updatedFolders = state.recomdendedFolders.filter(folder => folder !== folderToRemove);
+      console.log(updatedFolders)
       return {
         ...state,
-        recomdendedFolders: [...state.recomdendedFolders, action.payload],
+        recomdendedFolders: updatedFolders,
+        numberOfRecommendedFolders: state.numberOfRecommendedFolders - 1
       };
     default:
       return state;
@@ -50,6 +57,7 @@ const AddRecomendedFoldertReducer = (state = inisialStaterecomendedfolder, actio
 const ListOfSettingsReducer = combineReducers({
     AddNewFolder:AddNewFoldertReducer,
     SaveInputText:NewFolderName,
+    AddRecomendedFoldert:AddRecomendedFoldertReducer,
 });
 
 export default ListOfSettingsReducer;

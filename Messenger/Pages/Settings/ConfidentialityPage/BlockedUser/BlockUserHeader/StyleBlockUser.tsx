@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions, StatusBar,Platform  } from "react-native";
-import Constants from 'expo-constants';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;

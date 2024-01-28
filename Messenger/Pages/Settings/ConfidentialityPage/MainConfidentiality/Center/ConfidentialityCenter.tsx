@@ -13,12 +13,12 @@ const Confidentialitycenter : React.FC<any> = ({ navigation })=>{
        </View>
        <Text style ={StyleConfidentialityCenter.textStyle}>Privacy</Text>
        <View style ={StyleConfidentialityCenter.buttonsConteiner}>   
-            <ButtonForSettings text='Number phone'></ButtonForSettings>
+            <TouchableOpacity><ButtonForSettings text='Number phone'></ButtonForSettings></TouchableOpacity>
        </View>
        <Text style ={StyleConfidentialityCenter.textStyle}>Password</Text>
        <View style ={StyleConfidentialityCenter.buttonsConteiner}>   
             <TouchableOpacity onPress={() => navigation.navigate('PasswordPage')}>
-                <ButtonForSettings text='Password for Telentik'></ButtonForSettings>
+                <ButtonForSettings text='Password for Telentik'/>
             </TouchableOpacity>
        </View>
     </View>

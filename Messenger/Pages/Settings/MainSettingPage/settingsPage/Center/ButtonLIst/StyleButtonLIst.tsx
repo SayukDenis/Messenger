@@ -29,8 +29,10 @@ const StyleButtonList = StyleSheet.create({
     },
 
     styleButListText:{
+        marginTop:"2%",
         marginBottom:"2%",
-        marginTop:'2%'
+        display:"flex",
+        alignSelf:'flex-start'
     }
 });
 

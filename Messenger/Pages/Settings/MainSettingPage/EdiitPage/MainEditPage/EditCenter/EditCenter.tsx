@@ -4,6 +4,11 @@ import StyleEditCenter from './StyleEditCenter';
 import EditPhotoButton from './ComponentsForEditCenter/EditPhotobutt';
 import SVGStiker from '../../../settingsPage/Center/SVGComp/SVGSriker';
 import ContainerForEditCenter from './ComponentsForEditCenter/ContainerForEditCenter';
+import { screenHeight,screenWidth } from '../../../../../ChatList/Constants/ConstantsForChatlist';
+import BackGroundColorForComponents from '../../../../../SemiComponents/BackGroundColorForComponents';
+
+const heightOfEditContainer=screenHeight * 0.047;
+  const widthOfEditContainer= screenWidth * 0.27;
 
 const EditCenter: React.FC<any> = ({ navigation })=>{
     return <View style ={StyleEditCenter.conteiner}>
@@ -24,7 +29,13 @@ const EditCenter: React.FC<any> = ({ navigation })=>{
         <Text style ={StyleEditCenter.paragTextStyle}>Edit info</Text>
         <ContainerForEditCenter><TouchableOpacity style ={StyleEditCenter.buttonConteiner} onPress={() => navigation.navigate('EditUsernamePage')} ><Text>@yourname</Text></TouchableOpacity></ContainerForEditCenter>
         <ContainerForEditCenter><TouchableOpacity style ={StyleEditCenter.buttonConteiner} ><Text>Edit your number</Text></TouchableOpacity></ContainerForEditCenter>
+        <TouchableOpacity style={{alignItems:'center', flexDirection:'row'}} onPress={()=>navigation.goBack()} >
+            <View style={{alignSelf: "center",marginTop:"10%",height: heightOfEditContainer,width: widthOfEditContainer,borderRadius: 14.5,overflow: "hidden",justifyContent: "center", }}>
+                <Text style={{ alignSelf: "center",color: "#6A38AD",fontSize: 17}}>Done</Text>
+                <BackGroundColorForComponents height={heightOfEditContainer} width={widthOfEditContainer} ></BackGroundColorForComponents>
+            </View>
+        </TouchableOpacity>  
     </View>
-}
+} 
 
 export default EditCenter;
