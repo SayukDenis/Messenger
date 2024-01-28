@@ -1,46 +1,52 @@
-import { View, StyleSheet, Text, Button, Image, TouchableOpacity } from 'react-native';
-import styles from './Styles/DialogueHeader';
+import { View } from 'react-native';
 import React from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
-import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
-import HeaderBackButton from '../SVG/HeaderBackButton';
-import HeaderBranchButton from '../SVG/HeaderBranchButton';
 import { connect } from 'react-redux';
+import { DialogueHeaderProps } from './interfaces/IDialogueHeader';
+import RightPartOfHeader from './HelperComponents/Header/RightPartOfHeader';
+import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
+import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
+import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 
-interface DialogueHeaderProps {
-  navigation: any;
-  picture: string | undefined;
-  displayName: string | undefined;
-  activityTime: string | Date;
-}
+const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress }:DialogueHeaderProps) => {
+  if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
 
-const DialogueHeader = ({ navigation, picture, displayName, activityTime }:DialogueHeaderProps) => {
+  const displayName = author.name;
+  const countOfPinnedMessages = listOfPinnedMessages.length;
+  const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage.messageId)+1;
+
   return(
-    <HeaderContainer>
-      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', paddingHorizontal: 20, paddingVertical: 10 }}>
-          <TouchableOpacity 
-            style={{ width: screenWidth * 0.08  }} 
-            hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
-            activeOpacity={1}
-            onPress={() => navigation.goBack()}>
-            <HeaderBackButton />
-          </TouchableOpacity>
-          <View style={styles.chatUserInfo}>
-            <Image 
-              source={{ uri: picture }} 
-              style={styles.chatUserInfoImg}
-            />
-            <View style={styles.chatUserInfoDiv}>
-              <Text style={styles.chatUserInfoUserName}>{displayName}</Text>
-              <Text style={styles.chatUserInfoUserWasOnline}>{activityTime.toString()}</Text>
-            </View>
+    <View style={{ backgroundColor: 'green', zIndex: 10 }}>
+      <HeaderContainer>
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', paddingHorizontal: 20, paddingVertical: 10 }}>
+            <LeftPartOfHeader counterOfSelectedMessages={counterOfSelectedMessages} selecting={selecting} navigation={navigation} />
+            <CenterPartOfHeader picture={picture} displayName={displayName} activityTime={activityTime} />
+            <RightPartOfHeader selecting={selecting} cancelSelection={cancelSelection} />
           </View>
-          <HeaderBranchButton />
         </View>
-      </View>
-    </HeaderContainer>
+      </HeaderContainer>
+      <PinnedMessageView 
+        pinnedMessage={pinnedMessage} 
+        current={currentNumOfPinnedMessage} 
+        total={countOfPinnedMessages} 
+        navigation={navigation} 
+        listOfPinnedMessages={listOfPinnedMessages}
+        listOfMessages={listOfMessages}
+        author={author}
+        messageID={messageID}
+        unpinAllMessagesHandler={unpinAllMessagesHandler}
+        userMessageLastWatched={userMessageLastWatched}
+        onCopyPress={onCopyPress}
+        onUnpinPress={onUnpinPress}
+        onDeletePress={onDeletePress}
+      />
+    </View>
   );
 }
 
-export default connect(null)(DialogueHeader);
+const mapStateToProps = (state:any) => ({
+  counterOfSelectedMessages: state.ChatReducer.counterForSelectedMessages.counterOfSelectedMessages,
+});
+
+export default connect(mapStateToProps)(DialogueHeader);

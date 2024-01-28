@@ -2,9 +2,10 @@ import Model from './Model';
 import Chat from './Chats/Chat';
 
 export default class Folder extends Model {
-    constructor(folderName: string) {
+    constructor(folderName: string, chats?: Array<Chat>) {
         super();
         this.folderName = folderName;
+        this.chats = chats ?? new Array;
     }
     folderId?: number;
     folderName!: string;

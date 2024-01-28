@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import HeaderContainer from "../../../../SemiComponents/HeaderContainer";
 import DefaultContainerInHeader from "../../../../SemiComponents/DefaultContainerInHeader";
 import { Text, TouchableOpacity } from "react-native";
@@ -9,24 +9,35 @@ import {
 import BackButton from "../../../../SemiComponents/BackButton";
 import { View } from "react-native";
 import { TextInput } from "react-native";
+import User from "../../../../../dao/Models/User";
+import { useDispatch } from "react-redux";
+import { addUserForCreateGroupOrChannel } from "../../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 
 interface HeaderForAddMemberProps {
   navigation: any;
-
+  selectedUsers:User[];
 
 }
 
 const HeaderForAddMember: React.FC<HeaderForAddMemberProps> = ({
   navigation,
-
+  selectedUsers
 }) => {
   const inputRef = useRef<TextInput>(null);
+  const dispatch=useDispatch()
   const pressOnBackButton = useRef(() => {
     navigation.goBack();
   });
-  const pressOnDoneButton = useRef(() => {
+  useEffect(()=>{
+    /*selectedUsers.map((user:User)=>{
+      console.log(user.name)
+    })*/
+  },[selectedUsers])
+  const pressOnDoneButton = () => {
+    dispatch(addUserForCreateGroupOrChannel(selectedUsers))
     navigation.goBack()
-  });
+    
+  };
   return (
     <HeaderContainer>
       <DefaultContainerInHeader>
@@ -61,7 +72,7 @@ const HeaderForAddMember: React.FC<HeaderForAddMemberProps> = ({
               keyboardAppearance="dark"
             />
           </View>
-          <TouchableOpacity onPress={pressOnDoneButton.current}
+          <TouchableOpacity onPress={pressOnDoneButton}
             style={{ alignSelf: "center", width: screenWidth * 0.15 }}
           >
             <Text

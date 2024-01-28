@@ -5,14 +5,17 @@ import Chat from './Chat';
 import ILastWatchedMessage from './ILastWatchedMessage';
 
 export default class Branch extends Chat {
-    constructor(title: string) {
-        super();
+    constructor(title: string, haveAccess?: Array<Role>, linkToPhoto?: string, messages?: Array<Message>, branches?: Array<Branch>,
+        pinnedMessage?: Array<Message>, pinnedMessageForAll?: Array<Message>,
+        lastWatchedMessage?: Array<ILastWatchedMessage>) {
+        super(linkToPhoto, messages, branches, pinnedMessage, pinnedMessageForAll, lastWatchedMessage);
         this.title = title;
+        this.haveAccess = haveAccess ?? new Array;
     }
     branchId?: number;
     title!: string;
     //access
-    haveAccess: Array<Role> = new Array;
+    haveAccess: Array<Role>;
     //schema
     static schema = {
         name: 'branches',

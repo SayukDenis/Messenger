@@ -2,9 +2,13 @@ import Model from './Model';
 
 
 export default class User extends Model {
-  constructor(name: string) {
+  constructor(name: string, numberPhone?: string, nickname?: string, description?: string, linkToPhoto?: string) {
     super();
     this.name = name;
+    this.numberPhone = numberPhone;
+    this.nickname = nickname;
+    this.description = description;
+    this.linkToPhoto = linkToPhoto;
   }
   userId?: number;
   name!: string;

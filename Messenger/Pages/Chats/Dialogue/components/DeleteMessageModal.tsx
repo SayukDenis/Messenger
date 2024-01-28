@@ -1,5 +1,5 @@
-import { View, Text, Modal, TouchableOpacity, Dimensions,  } from 'react-native';
-import React, { MutableRefObject, useEffect } from 'react';
+import { View, Text, Modal, TouchableOpacity,  } from 'react-native';
+import React, { useEffect } from 'react';
 import { DeleteMessageModalProps } from './interfaces/IDeleteMessageModal';
 import { styles } from './Styles/DeleteMessageModal';
 import { connect } from 'react-redux';
@@ -9,8 +9,18 @@ const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, messag
     
   }, [setDeletingHandler]);
   return (
-    <Modal style={styles.modalWindow} visible={deleting} transparent={true} onRequestClose={setDeletingHandler} statusBarTranslucent={true} >
-      <TouchableOpacity activeOpacity={1} style={styles.touchableBackground}onPress={setDeletingHandler}>
+    <Modal 
+      style={styles.modalWindow} 
+      visible={deleting} 
+      transparent={true} 
+      onRequestClose={setDeletingHandler} 
+      statusBarTranslucent={true} 
+    >
+      <TouchableOpacity 
+        activeOpacity={1} 
+        style={styles.touchableBackground}
+        onPress={setDeletingHandler}
+      >
         <View style={styles.mainModalMessageContainer}>
           <View style={styles.modalMessageContainer}>
             <Text style={styles.modalMessageText}>
@@ -18,15 +28,25 @@ const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, messag
             </Text>
           </View>
           {message!=undefined?(
-              <View style={styles.modalButtonsContainer}>
-                <TouchableOpacity activeOpacity={1} style={styles.modalLeftButtonContainer} onPress={onDeletePress}>
-                  <Text style={styles.modalButtonText}>{message.author.userId==author.userId?'For me':'Agree'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} style={styles.modalRightButtonContainer} onPress={message.author.userId==author.userId?onDeletePress:setDeletingHandler}>
-                  <Text style={styles.modalButtonText}>{message.author.userId==author.userId?'For everyone':'Disagree'}</Text>
-                </TouchableOpacity>
-              </View>
-            ):null}
+            <View style={styles.modalButtonsContainer}>
+              <TouchableOpacity 
+                activeOpacity={1} 
+                style={styles.modalLeftButtonContainer} 
+                onPress={onDeletePress}
+              >
+                <Text style={styles.modalButtonText}>
+                  {message.author.userId==author.userId?'For me':'Agree'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                activeOpacity={1} 
+                style={styles.modalRightButtonContainer} 
+                onPress={message.author.userId==author.userId?onDeletePress:setDeletingHandler}
+              >
+                <Text style={styles.modalButtonText}>{message.author.userId==author.userId?'For everyone':'Disagree'}</Text>
+              </TouchableOpacity>
+            </View>
+          ):null}
         </View>
       </TouchableOpacity>
     </Modal>

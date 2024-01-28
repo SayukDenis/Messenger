@@ -9,7 +9,7 @@ import Test from "./Resources/Test";
 import { globalStyles } from "./Resources/styles";
 import Look from "./Pages/Look/Look";
 import { ThemeProvider } from "./Resources/ThemeProvider";
-
+import Authorization from "./Pages/Authorization/Authorization";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
 

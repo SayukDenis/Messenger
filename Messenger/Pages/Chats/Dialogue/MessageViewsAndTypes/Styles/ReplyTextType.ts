@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
+import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -8,14 +9,19 @@ export const styles = StyleSheet.create({
     alignSelf:'stretch', 
     overflow:'visible'
   },
+  animatedBackground: {
+    position: 'absolute',
+    width: width,
+    height: height,
+    backgroundColor: '#fff',
+  },
   replyContainer: {
     display: 'flex',
     flexDirection: 'column',
-    width: width,
+    width: width - 5,
   },
   innerReplyContainer: {
     alignSelf: 'stretch',
-    maxWidth: '100%',
     marginRight:10,
     marginLeft:10,
   },
@@ -28,10 +34,10 @@ export const styles = StyleSheet.create({
     display:'flex', 
     flexDirection:'row', 
     maxHeight:'100%',
-    alignSelf:'flex-end'
+    alignSelf:'flex-end',
   },
   messageTypeTextUser: {
-    backgroundColor: 'rgb(102, 191, 255)',
+    //backgroundColor: 'rgb(102, 191, 255)',
     marginLeft: 'auto',
     fontSize: 10,
     display: 'flex',
@@ -42,6 +48,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     maxWidth: '100%',
     minWidth: '15%'
+  },
+  replyMessageBackground: {
+    position: 'absolute', 
+    height: screenHeight, 
+    width: screenWidth, 
+    zIndex: -1,
   },
   replyMessagePos: {
     marginBottom:-10, 
@@ -60,7 +72,7 @@ export const styles = StyleSheet.create({
     overflow:'visible'
   },
   messageTypeTextNotUser: {
-    backgroundColor: 'rgb(231, 230, 228)',
+    //backgroundColor: 'rgb(231, 230, 228)',
     marginRight: 'auto',
     fontSize: 10,
     display: 'flex',

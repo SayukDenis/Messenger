@@ -1,4 +1,4 @@
-import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { View } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 import DialogueHeader from './components/DialogueHeader';
 import DialogueMessages from './components/DialogueMessages';
@@ -10,21 +10,16 @@ import DeleteMessageModal from './components/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 import { MessageProps } from './GeneralInterfaces/IMessage';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
-
-interface Layout {
-  ID: number;
-  pageX: number;
-  pageY: number;
-  width: number;
-  height: number;  
-}
+import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
+import { Layout } from './GeneralInterfaces/ILayout';
 
 let coord:Layout;
-let messageID:number=-1;
+let messageIdForReplyAndEdit:number;
 let msgs:MessageProps[];
+let pinnedMsgs:MessageProps[] = [];
 
 const user:SelfProfile = {
   userId: 0,
@@ -40,57 +35,41 @@ const user:SelfProfile = {
   schema: {} as any
 }
 
+// const user:SelfProfile = useSelector((state: any) => state.selfProfileUser);
+
+let authorMessageLastWatched:ILastWatchedMessage | undefined;
+let userMessageLastWatched:ILastWatchedMessage | undefined;
+let dialogue:DialogueModel.default;
 const Dialogue = ({ navigation, route }:any) => {
-  const dialogue:DialogueModel.default=route.params.chat as DialogueModel.default;
+  
+  dialogue = route.params.chat as DialogueModel.default;
+  authorMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
+  userMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
 
-  // const user = useSelector((state: any) => state.selfProfileUser);
-  // console.log('userId', user.userId);
-
-  // console.log(dialogue.messages.map((m, index) => {
-  //   const mes = {
-  //     messageId: m.messageId,
-  //     author: m.author.userId,
-  //     content: m.content,
-  //     sendingTime: m.sendingTime,
-  //     messageType: m.messageType,
-  //     messageResponseId: m.messageResponseId,
-  //     messageForwardId: m.messageForwardId,
-  //     isEdited: m.isEdited,
-  //     isDeleted: m.isDeleted,
-  //     reactionOnMessage: m.reactionOnMessage,
-  //   }
-  //   return JSON.stringify(mes, null, 2)
-  // }))
+  const [messageID, setMessageID] = useState(-1);
 
   const [messageMenuVisible, setMessageMenuVisible] = useState(false);
-  const [messageMenuVisisbleAppearence, setMessageMenuVisisbleAppearence] = useState(false);
   const [listOfMessages, setListOfMessages] = useState([] as MessageProps[]);
   useEffect(() => {
     setListOfMessages(dialogue.messages.reverse());
   }, [])
   
   const [isReply, setIsReply] = useState(false);
-  const [replyMessage, setReplyMessage] = useState({} as any);
 
   const replyHandler = useCallback(() => {
     setIsReply(!isReply);
     setReplyMessageHandler();
-  },[]);
+  },[messageID]);
 
   const setReplyMessageHandler = () => {
-    if(!isReply) {
-      setReplyMessage(msgs.find(m => m.messageId==messageID));
+    if(!isReply)
       setEditMessage({} as MessageProps);
-    }
-    else
-      setReplyMessage({} as MessageProps);
   }
 
   const sendMessageOrCancelReplyAndEditHandler = useCallback(() => {
     setIsEdit(false);
     setIsReply(false);
     setEditMessage({} as MessageProps);
-    setReplyMessage({} as MessageProps);
   },[]);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -104,25 +83,24 @@ const Dialogue = ({ navigation, route }:any) => {
   const setEditMessageHandler = () => {
     if(!isEdit) {
       setEditMessage(msgs.find(m => m.messageId==messageID)!);
-      setReplyMessage({} as MessageProps);
     }
     else
       setEditMessage({} as MessageProps);
   }
 
-  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed: boolean) => {
+  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed:boolean) => {
+    coord = coordinations;
     if(pressed) {
       setMessageMenuVisible(true);
-      coord = coordinations;
-      setMessageMenuVisisbleAppearence(true);
-      messageID = coordinations.ID;
+      setMessageID(coordinations.ID);
+      messageIdForReplyAndEdit = coordinations.ID;
     } else {
-      messageID = coordinations.ID;
+      setMessageID(coordinations.ID);
+      messageIdForReplyAndEdit = coordinations.ID;
       replyHandler();
     }
   }, []);
 
-  // asdad
   const updateMessageContent = (messageId: number|undefined, newContent: string|undefined) => {
     if(messageId&&newContent)
       setListOfMessages(prevMessages =>
@@ -153,18 +131,62 @@ const Dialogue = ({ navigation, route }:any) => {
 
   // якогось хуя useRef не працює якщо useState з boolean
   const onDeletePress = () => {
-    console.log('hohnpjopo');
     setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
     setDeleting(!deleting);
   }
 
+  const onPinnedMessageScreemDeletePress = (message: MessageProps) => {
+    setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
+  }
+
   const handleMessageMenuPress = useCallback(() => {
     setMessageMenuVisible(false);
-    setMessageMenuVisisbleAppearence(false);
   }, []);
+
+  const [copy, setCopy] = useState(false);
+  const setCopyHandler = () => {
+    setCopy(!copy);
+  }
   
-  console.log('djapowjdpoa');
-  const mes = listOfMessages.find(m => m.messageId==messageID);
+  const [selecting, setSelecting] = useState(false);
+  const setSelectingHandler = () => {
+    setSelecting(!selecting);
+    coord.selectionCallback!();
+  }
+
+  const [listOfPinnedMessages, setListOfPinnedMessages] = useState(dialogue.pinnedMessage as MessageProps[]);
+  const pinMessageHandler = (message: MessageProps) => {
+
+    if(listOfPinnedMessages.find(m => message.messageId === m.messageId)) {
+      pinnedMsgs = pinnedMsgs.filter(m => m.messageId !== message.messageId);
+      if(pinnedMsgs.length === 0)
+        setListOfPinnedMessages([]);
+      if(pinnedMsgs.length>0) {
+        setPinnedMessage(pinnedMsgs[pinnedMsgs.length-1]);
+      } else {
+        setPinnedMessage({} as MessageProps);
+      }
+    } else {
+      pinnedMsgs.push(message);
+      setListOfPinnedMessages([...listOfPinnedMessages, message])
+      setPinnedMessage(message);
+    }
+  }
+  const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
+  const setPinnedMessageHandler = (id: number) => {
+    if(pinnedMessage.messageId !== id)
+      setPinnedMessage(listOfMessages.find(m => m.messageId === id)!)
+  }
+  const unpinAllMessagesHandler = () => {
+    setListOfPinnedMessages([]);
+    setPinnedMessage({} as MessageProps);
+  }
+  // useEffect(() => {
+  //   setPinnedMessage(listOfPinnedMessages[listOfPinnedMessages.length-1]);
+  // }, [listOfPinnedMessages])
+  //console.log(listOfPinnedMessages.length);
+
+  const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
       <View style={styles.dialogueContainer}>
         <BackGroundGradinetView>
@@ -173,24 +195,46 @@ const Dialogue = ({ navigation, route }:any) => {
             isVisible={messageMenuVisible} 
             onOverlayPress={handleMessageMenuPress} 
             coord={coord} 
+            messages={listOfMessages}
             onReplyPress={replyHandler} 
             onEditPress={pressEditButton} 
             onDeletePress={setDeletingHandler} 
+            onCopyPress={setCopyHandler}
+            onSelectPress={setSelectingHandler}
+            onPinPress={pinMessageHandler}
+            userMessageLastWatched={userMessageLastWatched}
+            pinnedMessageScreen={false}
           />
           <DialogueHeader 
             navigation={navigation} 
             picture={dialogue.linkToPhoto}
-            displayName={dialogue.users[1].name}
+            author={user as User}
             activityTime={'Online recently'} // Last activity from user
+            pinnedMessage={pinnedMessage}
+            listOfPinnedMessages={listOfPinnedMessages}
+            listOfMessages={listOfMessages}
+            selecting={selecting}
+            cancelSelection={setSelectingHandler}
+            messageID={messageID}
+            unpinAllMessagesHandler={unpinAllMessagesHandler}
+            userMessageLastWatched={userMessageLastWatched!}
+            onCopyPress={setCopyHandler}
+            onUnpinPress={pinMessageHandler}
+            onDeletePress={onPinnedMessageScreemDeletePress}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
-            messageMenuVisisbleAppearence={messageMenuVisisbleAppearence} 
             messageID={messageID} 
             listOfMessages={listOfMessages} 
             isReply={isReply} 
             isEdit={isEdit}
             author={user as User}
+            userMessageLastWatched={userMessageLastWatched}
+            authorMessageLastWatched={authorMessageLastWatched}
+            selecting={selecting}
+            hasPinnedMessage={listOfPinnedMessages.length>0}
+            pinnedMessages={listOfPinnedMessages}
+            setPinnedMessage={setPinnedMessageHandler}
           />
           <DialogueFooter 
             messages={listOfMessages} 
@@ -200,8 +244,10 @@ const Dialogue = ({ navigation, route }:any) => {
             messageID={messageID} 
             isEdit={isEdit} 
             editMessage={editMessage} 
-            replyMessage={replyMessage} 
+            replyMessage={isReply?msgs.find(m => m.messageId==messageIdForReplyAndEdit)!:{} as MessageProps} 
             onSendMessageOrCancelReplyAndEdit={sendMessageOrCancelReplyAndEditHandler} 
+            copyMessagePopUp={copy}
+            endCopyMessagePopUp={setCopyHandler}
           />
           <DeleteMessageModal 
             deleting={deleting} 
