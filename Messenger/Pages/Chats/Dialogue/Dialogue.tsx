@@ -19,7 +19,7 @@ import { Layout } from './GeneralInterfaces/ILayout';
 let coord:Layout;
 let messageIdForReplyAndEdit:number;
 let msgs:MessageProps[];
-let pinnedMsgs:MessageProps[] = [];
+let deletedMessagesId:number[] = [];
 
 const user:SelfProfile = {
   userId: 0,
@@ -131,11 +131,17 @@ const Dialogue = ({ navigation, route }:any) => {
 
   // якогось хуя useRef не працює якщо useState з boolean
   const onDeletePress = () => {
-    setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
-    setDeleting(!deleting);
+    const message = listOfMessages.find(m => m.messageId === messageID)!;
+    console.log(message.messageId, message.content);
+    pinMessageHandler(message);
+    deletedMessagesId.push(message.messageId!);
+    setTimeout(() => {
+      setListOfMessages([...listOfMessages.filter(m => m.messageId !== messageID)]);
+      setDeleting(!deleting);
+    }, 100);
   }
 
-  const onPinnedMessageScreemDeletePress = (message: MessageProps) => {
+  const onPinnedMessageScreenDeletePress = (message: MessageProps) => {
     setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
   }
 
@@ -156,20 +162,23 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const [listOfPinnedMessages, setListOfPinnedMessages] = useState(dialogue.pinnedMessage as MessageProps[]);
   const pinMessageHandler = (message: MessageProps) => {
-
+    //console.log('message.messageId', message.messageId)
     if(listOfPinnedMessages.find(m => message.messageId === m.messageId)) {
-      pinnedMsgs = pinnedMsgs.filter(m => m.messageId !== message.messageId);
-      if(pinnedMsgs.length === 0)
-        setListOfPinnedMessages([]);
+      const pinnedMsgs = listOfPinnedMessages.filter(m => m.messageId !== message.messageId);
+      //console.log('pinnedMsgs.length', pinnedMsgs.length);
+
       if(pinnedMsgs.length>0) {
         setPinnedMessage(pinnedMsgs[pinnedMsgs.length-1]);
       } else {
+        //console.log('a9wosdiwjspahfwpu')
         setPinnedMessage({} as MessageProps);
       }
+      setListOfPinnedMessages([...pinnedMsgs]);
     } else {
-      pinnedMsgs.push(message);
+      //console.log('pinMessageHandler', message.messageId, message.content);
+      //pinnedMsgs.push(message);
       setListOfPinnedMessages([...listOfPinnedMessages, message])
-      setPinnedMessage(message);
+      //setPinnedMessage(message);
     }
   }
   const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
@@ -220,7 +229,7 @@ const Dialogue = ({ navigation, route }:any) => {
             userMessageLastWatched={userMessageLastWatched!}
             onCopyPress={setCopyHandler}
             onUnpinPress={pinMessageHandler}
-            onDeletePress={onPinnedMessageScreemDeletePress}
+            onDeletePress={onPinnedMessageScreenDeletePress}
           />
           <DialogueMessages 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
@@ -235,6 +244,7 @@ const Dialogue = ({ navigation, route }:any) => {
             hasPinnedMessage={listOfPinnedMessages.length>0}
             pinnedMessages={listOfPinnedMessages}
             setPinnedMessage={setPinnedMessageHandler}
+            deletedMessagesId={deletedMessagesId}
           />
           <DialogueFooter 
             messages={listOfMessages} 

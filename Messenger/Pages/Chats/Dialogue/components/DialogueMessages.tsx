@@ -16,10 +16,10 @@ interface pinnedMessageProps {
   coord: number
 }
 
-const messagesWithCoords:pinnedMessageProps[] = [];
+let messagesWithCoords:pinnedMessageProps[] = [];
 let pinnedMessagesWithCoords:pinnedMessageProps[] = [];
 
-const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched, selecting, hasPinnedMessage, pinnedMessages, setPinnedMessage }:DialogueMessagesProps) => {
+const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageMenuVisible, messageID, listOfMessages, isReply, isEdit, author, userMessageLastWatched, authorMessageLastWatched, selecting, hasPinnedMessage, pinnedMessages, setPinnedMessage, deletedMessagesId }:DialogueMessagesProps) => {
 
   useEffect(() => {
     pinnedMessagesWithCoords = [];
@@ -27,36 +27,33 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
   }, [])
 
   useEffect(() => {
-    if(pinnedMessages.length <= 0) {
-      pinnedMessagesWithCoords = [];
-      return;
-    }
+    pinnedMessagesWithCoords = [];
     let y = 0;
     messagesWithCoords.map(mes => {
+      console.log(mes.message);
       const pinned = pinnedMessages.find(m => m.messageId === mes.message);
       if(pinned) {
-        const index = pinnedMessagesWithCoords.findIndex(m => m.message === pinned.messageId);
-        if(index >= 0) {
-          pinnedMessagesWithCoords[index].coord = y;
-        } else {
-          pinnedMessagesWithCoords.push({ message: mes.message, coord: y });
-        }
-      } else {
-        y += mes.coord;
+        //console.log('pinnedMessages', pinnedMessages.map((m) => `${m.messageId} ${m.content}`))
+        pinnedMessagesWithCoords.push({ message: mes.message, coord: y });
       }
+      if(deletedMessagesId.findIndex(id => id === mes.message) < 0)
+        y += mes.coord;
     });
-    console.log(pinnedMessagesWithCoords, '\n', pinnedMessages.length);
+    if(flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: flatListRef.current._listRef._scrollMetrics.offset + 1, animated: false });
+      flatListRef.current.scrollToOffset({ offset: flatListRef.current._listRef._scrollMetrics.offset - 1, animated: false });
+    }
   }, [pinnedMessages])
 
   const dispatch = useDispatch();
 
   const flatListRef = useRef<any>(null);
   useEffect(() => {
-    console.log('\nscrollToPinnedMessage', scrollToPinnedMessage, '\nidOfPinnedMessage', idOfPinnedMessage);
+    //console.log('\nscrollToPinnedMessage', scrollToPinnedMessage, '\nidOfPinnedMessage', idOfPinnedMessage);
     if(scrollToPinnedMessage && flatListRef.current) {
       const offset = pinnedMessagesWithCoords.find(m => m.message === idOfPinnedMessage)?.coord;
-      console.log('\noffset', offset, '\npinnedMessagesWithCoords', pinnedMessagesWithCoords);
-      if(offset)
+      //console.log('\noffset', offset, '\npinnedMessagesWithCoords', pinnedMessagesWithCoords);
+      if(offset !== undefined)
         flatListRef.current.scrollToOffset({ animated: true, offset });
 
       dispatch(setScrollStateForPinnedMessage(false, 0));
@@ -77,7 +74,6 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
     if (flatListRef.current) {
       (flatListRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
     }
-    console.log('ASIDJAWD0JAWDJAIJWDIWdjpasjdp')
   }, [listOfMessages]);
 
   const [coordsY, setCoordsY]:any = useState([]); 

@@ -20,6 +20,7 @@ export interface DialogueMessagesProps {
   hasPinnedMessage: boolean;
   pinnedMessages: MessageProps[];
   setPinnedMessage: (id: number) => void;
+  deletedMessagesId: number[];
 }
 
 export interface messageViewHandleProps {
