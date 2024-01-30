@@ -19,7 +19,7 @@ import { useFonts } from "expo-font";
 import ChangeBranchParentScreen from "./Screens/BranchesScreen/ChangeBranchScreen/ChangeBranchParentScreen";
 import AlbumScreen from "./Screens/AlbumScreen/AlbumScreen";
 import GalleryWhileAddingNewPhoto from "./Screens/AlbumScreen/GalleryWhileAddingNewPhoto";
-import AvatarsAndInfoScreen from "../DialogueProfile/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
+import AvatarsAndInfoScreen from "./Screens/AvatarsAndInfoScreen/AvatarsAndInfoScreen";
 import ChangeBranchChildScreen from "./Screens/BranchesScreen/ChangeBranchScreen/ChangeBranchChildScreen";
 import PhotoScreen from "./Screens/PhotoScreen/PhotoScreen";
 import SubscribersScreen from "../ChannelProfile/SubscribersScreen/SubscribersScreen";
@@ -115,6 +115,10 @@ const GroupNavigation = () => {
         name="GroupSettingsScreen"
         component={GroupSettingsScreen}
       />
+      <Stack.Screen
+        name="AvatarsAndInfoScreen"
+        component={AvatarsAndInfoScreen}
+      />
       <Stack.Screen name="Album" component={AlbumScreen} />
       <Stack.Screen name="NewAlbumScreen" component={NewAlbumScreen} />
       <Stack.Screen name="AuditLog" component={AuditLog} />
@@ -170,6 +174,10 @@ const ChannelNavigation = () => {
       <Stack.Screen
         name="ChangeBranchParentScreen"
         component={ChangeBranchParentScreen}
+      />
+      <Stack.Screen
+        name="AvatarsAndInfoScreen"
+        component={AvatarsAndInfoScreen}
       />
       <Stack.Screen
         name="ChangeBranchChildScreen"

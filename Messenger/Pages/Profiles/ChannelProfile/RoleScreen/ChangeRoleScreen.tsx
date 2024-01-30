@@ -26,7 +26,7 @@ import {
 } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
 import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import RightArrow from "../../SemiComponents/Assets/Icons/RightArrow";
-import PlusIcon from "../../SemiComponents/Screens/BranchesScreen/Icons/PlusIcon";
+import PlusIcon from "../../SemiComponents/Assets/Icons/PlusIcon";
 import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -332,7 +332,7 @@ const ChangeRoleScreen: React.FC<ChangeRoleScreenProps> = (props) => {
           <TouchableOpacity
             onPress={() => {
               channel.selectedRole.subscribers = subscribers;
-              props.navigation.navigate("AddSubscriberRoleScreen" as never);
+              props.navigation.navigate("ForwardToChatsScreen" as never);
             }}
             style={[
               styles.settingOption,

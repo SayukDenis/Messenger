@@ -11,7 +11,7 @@ import {
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
-import PlusIcon from "../../SemiComponents/Screens/BranchesScreen/Icons/PlusIcon";
+import PlusIcon from "../../SemiComponents/Assets/Icons/PlusIcon";
 import BinIcon from "../../SemiComponents/Screens/MainScreen/Icons/BinIcon";
 import { channel } from "../../SemiComponents/DatabaseSimulation/DBChannel";
 import { useIsFocused } from "@react-navigation/native";

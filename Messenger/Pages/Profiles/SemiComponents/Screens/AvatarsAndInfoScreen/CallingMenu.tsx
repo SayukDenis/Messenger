@@ -3,7 +3,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./Styles";
-import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
+import { user } from "../../DatabaseSimulation/DBUser";
 import * as Clipboard from "expo-clipboard";
 import { LinearGradient } from "expo-linear-gradient";
 

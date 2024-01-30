@@ -3,7 +3,7 @@
 import React from "react";
 import { TouchableOpacity, Text, ViewStyle } from "react-native";
 import { styles } from "./Styles";
-import PlusIcon from "../Screens/BranchesScreen/Icons/PlusIcon";
+import PlusIcon from "../Assets/Icons/PlusIcon";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface ButtonWithPlusProps {

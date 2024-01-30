@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Animated, Easing, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import CopyIcon from "../../SemiComponents/Screens/MainScreen/Icons/CopyIcon";
+import CopyIcon from "../MainScreen/Icons/CopyIcon";
 
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
@@ -32,7 +32,7 @@ const AnimatedMessageAboutCopying: React.FC<
         setTimeout(() => {
           setIsAnimationRunning(false);
           props.onEnd();
-        }, 8000);
+        }, 2000);
       });
     }
   };

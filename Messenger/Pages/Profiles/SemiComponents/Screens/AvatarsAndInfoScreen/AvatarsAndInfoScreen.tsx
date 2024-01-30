@@ -5,27 +5,32 @@ import { View, ScrollView, Dimensions } from "react-native";
 import { styles } from "./Styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
-import Multimedia from "../../SemiComponents/Screens/MainScreen/Multimedia/Multimedia";
-import Blur from "../../SemiComponents/GeneralComponents/Blur";
-import RemovalApproval from "../../SemiComponents/GeneralComponents/RemovalApproval";
-import { GetProfile } from "../../SemiComponents/DatabaseSimulation/DBFunctions";
+import Multimedia from "../MainScreen/Multimedia/Multimedia";
+import Blur from "../../GeneralComponents/Blur";
+import RemovalApproval from "../../GeneralComponents/RemovalApproval";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 import {
   Album,
   PhotoOrVideo,
   File,
   Voice,
   Link,
-} from "../../SemiComponents/DatabaseSimulation/DBClasses";
-import AlbumLongPressedMenu from "../../SemiComponents/Screens/MainScreen/Multimedia/AlbumLongPressedMenu";
-import BottomToolBar from "../../SemiComponents/Screens/MainScreen/ButtomToolBar";
+} from "../../DatabaseSimulation/DBClasses";
+import AlbumLongPressedMenu from "../MainScreen/Multimedia/AlbumLongPressedMenu";
+import BottomToolBar from "../MainScreen/ButtomToolBar";
 import AvatarsNameAndGoBackButton from "./AvatarsNameAndGoBackButton";
-import TopMenuWhenSelection from "../../SemiComponents/GeneralComponents/TopMenuWhenSelection";
+import TopMenuWhenSelection from "../../GeneralComponents/TopMenuWhenSelection";
 import NumberUsernameAndBio from "./NumberUsernameAndBio";
 import CurrentAvatarBar from "./CurrentAvatarBar";
 import MessageAboutCopying from "./MessageAboutCopying";
 import CallingMenu from "./CallingMenu";
 import { GestureResponderEvent } from "react-native-modal";
 import { LinearGradient } from "expo-linear-gradient";
+import { pickedProfile } from "../../DatabaseSimulation/DBVariables";
+import CopyLinkButton from "./CopyLinkButton";
+import SubscribersButton from "./SubscribersButton";
+import * as Clipboard from "expo-clipboard";
+import { channel } from "../../DatabaseSimulation/DBChannel";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -50,17 +55,12 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
     Array<Album | PhotoOrVideo | File | Voice | Link>
   >([]);
   const [currentAvatar, setCurrentAvatar] = useState(GetProfile().avatars[0]);
-  const [isAnyTextCopied, setIsAnyTextCopied] = useState(false);
-  const [phoneUsernameOrBioCopied, setPhoneUsernameOrBioCopied] = useState("");
+  const [copiedInfoName, setCopiedInfoName] = useState("");
   const [isNumberPressed, setIsNumberPressed] = useState(false);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {}, [isFocused]);
-
-  useEffect(() => {
-    console.log(isAnyTextCopied);
-  });
 
   const removalApprovalsTexts: string[] = [
     "delete an album",
@@ -102,6 +102,10 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
         selectedMultimedia.filter((photoOrVideo) => photoOrVideo !== value)
       );
     }
+  };
+
+  const copyToClipboard = (text: string) => {
+    Clipboard.setString(text);
   };
 
   return (
@@ -193,8 +197,7 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
       <CallingMenu
         isVisible={isNumberPressed}
         onCopyPress={() => {
-          setIsAnyTextCopied(true);
-          setPhoneUsernameOrBioCopied("Number");
+          setCopiedInfoName("Number");
         }}
         onCancelPress={() => {
           setIsNumberPressed(false);
@@ -249,15 +252,35 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
 
         <CurrentAvatarBar currentAvatar={currentAvatar} />
 
+        {pickedProfile.current == "channel" && (
+          <>
+            <CopyLinkButton
+              onPress={() => {
+                copyToClipboard(channel.link);
+                setCopiedInfoName("Channel link");
+              }}
+            />
+            <SubscribersButton
+              onPress={() => {
+                navigation.navigate("SubscribersScreen" as never);
+              }}
+            />
+          </>
+        )}
+
         <NumberUsernameAndBio
           onUsernamePress={(text: string) => {
-            setIsAnyTextCopied(true);
-            setPhoneUsernameOrBioCopied(text);
+            setCopiedInfoName(text);
           }}
           onNumberPress={() => setIsNumberPressed(true)}
         />
 
-        <View style={{ height: 0.02 * screenHeight }} />
+        <View
+          style={{
+            top: 0.03 * screenHeight,
+            height: 0.02 * screenHeight,
+          }}
+        />
 
         {/* Multimedia with photo/albums, files, voice, links*/}
         <Multimedia
@@ -316,11 +339,11 @@ const AvatarsAndInfoScreen: React.FC<AvatarsAndInfoScreenProps> = ({
       </ScrollView>
 
       <MessageAboutCopying
-        isVisible={isAnyTextCopied}
+        isVisible={copiedInfoName != ""}
         onEnd={() => {
-          setIsAnyTextCopied(false);
+          setCopiedInfoName("");
         }}
-        text={phoneUsernameOrBioCopied + " is copied"}
+        text={copiedInfoName + " is copied"}
       />
     </LinearGradient>
   );

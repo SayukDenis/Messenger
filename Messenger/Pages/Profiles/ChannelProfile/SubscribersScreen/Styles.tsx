@@ -9,9 +9,13 @@ const figmaHeightPixelConverter = screenHeight / 648;
 const figmaWidthPixelConverter = screenWidth / 356;
 
 export const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "rgb(227, 192, 124)",
+  linearGradient: {
+    top: 0,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: screenHeight,
+    width: screenWidth,
   },
   blurEffect: {
     width: "100%",
@@ -23,29 +27,27 @@ export const styles = StyleSheet.create({
     top: 0.04 * screenHeight,
     width: 0.9 * screenWidth,
     height: 0.05 * screenHeight,
-    backgroundColor: "rgb(218, 182, 113)",
+    backgroundColor: "white",
     borderRadius: 9,
-    borderWidth: 0.5,
-    borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     alignSelf: "center",
     zIndex: 1,
+    overflow: "hidden",
   },
   plusIcon: {
     position: "absolute",
     left: 0.045 * screenWidth,
     width: 18 * figmaWidthPixelConverter,
     height: 18 * figmaWidthPixelConverter,
-    color: "rgb(92, 64, 129)",
   },
   plusSubscriberTitle: {
     position: "absolute",
     left: 0.09 * screenWidth + 22 * figmaWidthPixelConverter,
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 18,
-    color: "rgb(92, 64, 129)",
+    color: "rgb(43, 29, 29)",
   },
   subscriberAvatarInList: {
     width: 0.04 * screenHeight,

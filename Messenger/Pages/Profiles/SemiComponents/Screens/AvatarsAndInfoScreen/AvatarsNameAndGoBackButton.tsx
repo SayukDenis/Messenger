@@ -1,12 +1,12 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import React, { useState } from "react";
+import React from "react";
 import { View, Image, TouchableWithoutFeedback } from "react-native";
 import { styles } from "./Styles";
-import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
-import { PhotoOrVideo } from "../../SemiComponents/DatabaseSimulation/DBClasses";
-import Name from "../../SemiComponents/Screens/MainScreen/Name";
-import GoBackButton from "../../SemiComponents/GeneralComponents/GoBackButton";
+import { PhotoOrVideo } from "../../DatabaseSimulation/DBClasses";
+import Name from "../MainScreen/Name";
+import GoBackButton from "../../GeneralComponents/GoBackButton";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 
 interface AvatarsNameAndGoBackButtonProps {
   onGoBackPress: () => void;
@@ -25,7 +25,7 @@ const AvatarsNameAndGoBackButton: React.FC<AvatarsNameAndGoBackButtonProps> = (
       >
         {/* Running user's name */}
         <Name
-          primaryTitle={user.profileName}
+          primaryTitle={GetProfile().profileName}
           style={styles.profileTitle}
           isBottomLineAbsent={true}
         />

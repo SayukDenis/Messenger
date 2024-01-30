@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "../Styles";
 import { useIsFocused } from "@react-navigation/native";
-import PlusIcon from "../Icons/PlusIcon";
+import PlusIcon from "../../../Assets/Icons/PlusIcon";
 import BinIcon from "../../MainScreen/Icons/BinIcon";
 import { BranchChild } from "../../../DatabaseSimulation/DBClasses";
 import ButtonWithPlus from "../../../GeneralComponents/ButtonWithPlus";

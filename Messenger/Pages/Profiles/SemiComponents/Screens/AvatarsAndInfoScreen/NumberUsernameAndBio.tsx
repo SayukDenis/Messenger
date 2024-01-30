@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { styles } from "./Styles";
-import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
+import { GetProfile } from "../../DatabaseSimulation/DBFunctions";
 import * as Clipboard from "expo-clipboard";
+import { FindingBioHeight } from "./FindingBioHeight";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
@@ -17,25 +18,18 @@ interface NumberUsernameAndBioProps {
 
 const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
   const [bioTextHeight, setBioTextHeight] = useState(0);
-  const [userInfoMainContainerHeight, setUserInfoMainContainerHeight] =
-    useState(0);
   const [isFullBioVisible, setIsFullBioVisible] = useState(false);
 
+  const [userCharacteristicsCount, setUserCharacteristicsCount] = useState(0);
+
   useEffect(() => {
-    let height = 0;
+    let count = 0;
+    if (GetProfile().phoneNumber) count++;
+    if (GetProfile().username) count++;
+    if (GetProfile().bio) count++;
 
-    if (user.phoneNumber) {
-      height += 0.053 * screenHeight;
-    }
-    if (user.username) {
-      height += 0.053 * screenHeight;
-    }
-    if (user.bio) {
-      height += Math.max(bioTextHeight, 0.053 * screenHeight);
-    }
-
-    setUserInfoMainContainerHeight(height);
-  }, [bioTextHeight, user.phoneNumber, user.username, user.bio]);
+    setUserCharacteristicsCount(count);
+  }, [GetProfile().phoneNumber, GetProfile().username, GetProfile().bio]);
 
   const copyToClipboard = (text: string) => {
     Clipboard.setString(text);
@@ -43,42 +37,28 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
 
   return (
     <>
-      {(user.username || user.phoneNumber || user.bio) && (
+      {(GetProfile().username ||
+        GetProfile().phoneNumber ||
+        GetProfile().bio) && (
         <>
-          {/* Finding user's bio height */}
-          <View
-            style={[
-              styles.infoView,
-              { height: "100%", position: "absolute", opacity: 0 },
-            ]}
-          >
-            <Text
-              style={[styles.infoTitle, { color: "rgba(255, 255, 255, 0.54)" }]}
-              onLayout={(event) => {
-                setBioTextHeight(
-                  Math.max(
-                    event.nativeEvent.layout.height * 1.75,
-                    0.05 * screenHeight
-                  )
-                );
-              }}
-            >
-              <Text style={styles.infoTitle}>Bio: </Text>
-              {user.bio}
-            </Text>
-          </View>
+          <FindingBioHeight
+            setBioTextHeight={(value: number) => {
+              setBioTextHeight(value);
+            }}
+          />
 
           <View
             style={[
               styles.userInfoMainContainer,
               {
                 height: isFullBioVisible
-                  ? userInfoMainContainerHeight
-                  : 0.159 * screenHeight,
+                  ? (userCharacteristicsCount - 1) * 0.053 * screenHeight +
+                    bioTextHeight
+                  : userCharacteristicsCount * 0.053 * screenHeight,
               },
             ]}
           >
-            {user.phoneNumber && (
+            {GetProfile().phoneNumber && (
               <>
                 <View style={styles.separatingHorizontalLine} />
 
@@ -97,7 +77,7 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
                       { color: "rgba(255, 255, 255, 0.54)" },
                     ]}
                   >
-                    {user.phoneNumber}
+                    {GetProfile().phoneNumber}
                   </Text>
                 </TouchableOpacity>
 
@@ -105,16 +85,16 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
               </>
             )}
 
-            {user.username && (
+            {GetProfile().username && (
               <>
-                {!user.phoneNumber && (
+                {!GetProfile().phoneNumber && (
                   <View style={styles.separatingHorizontalLine} />
                 )}
 
                 {/* Username */}
                 <TouchableOpacity
                   onPress={() => {
-                    copyToClipboard(user.username);
+                    copyToClipboard(GetProfile().username);
                     props.onUsernamePress("Username");
                   }}
                   style={styles.infoView}
@@ -128,7 +108,7 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
                       { color: "rgba(255, 255, 255, 0.54)", width: "85%" },
                     ]}
                   >
-                    {user.username}
+                    {GetProfile().username}
                   </Text>
                 </TouchableOpacity>
 
@@ -136,9 +116,9 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
               </>
             )}
 
-            {user.bio && (
+            {GetProfile().bio && (
               <>
-                {!user.phoneNumber && !user.username && (
+                {!GetProfile().phoneNumber && !GetProfile().username && (
                   <View style={styles.separatingHorizontalLine} />
                 )}
 
@@ -165,7 +145,7 @@ const NumberUsernameAndBio: React.FC<NumberUsernameAndBioProps> = (props) => {
                       { color: "rgba(255, 255, 255, 0.54)" },
                     ]}
                   >
-                    {user.bio}
+                    {GetProfile().bio}
                   </Text>
                 </TouchableOpacity>
 
