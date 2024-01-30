@@ -5,7 +5,7 @@ import { View, TouchableOpacity, Text } from "react-native";
 import { styles } from "./Styles";
 import Header from "../../SemiComponents/GeneralComponents/Header";
 import { StackNavigationProp } from "@react-navigation/stack";
-import CheckmarkIcon from "./Icons/CheckMarkIcon";
+import CheckMarkIcon from "../../SemiComponents/Screens/MainScreen/Icons/CheckMarkIcon";
 import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 import ToggleButton from "../../SemiComponents/GeneralComponents/ToggleButton";
 import { LinearGradient } from "expo-linear-gradient";
@@ -94,7 +94,7 @@ const PermissionScreen: React.FC<PermissionScreenProps> = ({ navigation }) => {
             />
             <Text style={styles.settingOptionTitle}>{interval.title}</Text>
             {selectedInverval === interval.value && (
-              <CheckmarkIcon
+              <CheckMarkIcon
                 style={styles.checkMark}
                 stroke="rgb(115, 76, 165)"
               />

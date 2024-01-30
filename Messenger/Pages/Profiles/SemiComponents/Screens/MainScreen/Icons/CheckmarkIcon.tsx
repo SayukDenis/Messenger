@@ -6,6 +6,7 @@ import { Svg, Line } from "react-native-svg";
 
 interface CheckMarkIcon {
   style: ViewStyle;
+  stroke?: string;
 }
 
 const CheckMarkIcon: React.FC<CheckMarkIcon> = (props) => {
@@ -16,14 +17,14 @@ const CheckMarkIcon: React.FC<CheckMarkIcon> = (props) => {
         y1="2.50661"
         x2="4.35442"
         y2="6.7032"
-        stroke="white"
+        stroke={props.stroke ? props.stroke : "white"}
       />
       <Line
         x1="3.65273"
         y1="6.61513"
         x2="9.84163"
         y2="0.640394"
-        stroke="white"
+        stroke={props.stroke ? props.stroke : "white"}
       />
     </Svg>
   );
