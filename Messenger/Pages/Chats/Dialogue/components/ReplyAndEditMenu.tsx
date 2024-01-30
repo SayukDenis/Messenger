@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import ReplyAndEditMenuReplyIcon from '../SVG/ReplyAndEditMenuReplyIcon';
 import ReplyAndEditMenuEditIcon from '../SVG/ReplyAndEditMenuEditIcon';
 import ReplyAndEditMenuCancelButton from '../SVG/ReplyAndEditMenuCancelButton';
-import { CHARS_PER_LINE } from '../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE } from '../DialogueConstants';
 
 const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, editMessage }:ReplyAndEditMenuProps) => {
   return (
@@ -20,8 +20,8 @@ const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, e
               <View>
                 <Text style={styles.usernameText}>{isReply?'user name':'Edit'}</Text>
                 <Text style={styles.messageText}>{
-                  isReply?(replyMessage?.content!.length>CHARS_PER_LINE?replyMessage?.content.slice(0,CHARS_PER_LINE)+'...':replyMessage?.content):
-                  (editMessage?.content!.length>CHARS_PER_LINE?editMessage?.content.slice(0,CHARS_PER_LINE)+'...':editMessage?.content)
+                  isReply?(replyMessage?.content!.length>DEFAULT_CHARS_PER_LINE?replyMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content):
+                  (editMessage?.content!.length>DEFAULT_CHARS_PER_LINE?editMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE)+'...':editMessage?.content)
                 }</Text>
               </View>
               <TouchableOpacity 

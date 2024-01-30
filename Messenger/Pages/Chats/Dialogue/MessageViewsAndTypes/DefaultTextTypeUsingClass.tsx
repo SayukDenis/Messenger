@@ -20,12 +20,12 @@ import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import { Layout } from '../GeneralInterfaces/ILayout';
-import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import SelectButton from './SemiComponents/SelectButton';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
-import { CHARS_PER_LINE, height, width } from '../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE, height, width } from '../DialogueConstants';
 import { Dispatch } from 'redux';
 
 interface DefaultTextMessageProps {
@@ -33,17 +33,20 @@ interface DefaultTextMessageProps {
   message: MessageProps;
   setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
   id: number;
+  flatList: React.MutableRefObject<any>;
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
   dispatch: Dispatch;
   pinnedMessageScreen: boolean;
+  messages: MessageProps[];
 }
 
 interface DefaultTextMessageState {
   animate: boolean;
   heightOfMessage: number;
   selected: boolean;
+  message: string;
 }
 
 interface componentPageProps {
@@ -63,13 +66,14 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     animate: false,
     heightOfMessage: 0,
     selected: false,
+    message: '',
   };
 
-  componentDidMount() {
-    const { idForAnimation, message } = this.props;
-    if (idForAnimation === message.messageId) {
-      //this.setState({ animate: true });
-    }
+  componentDidMount(): void {
+    console.log('componentDidMount', this.props.message.content);
+    this.setState({
+      message: this.props.message.content
+    })
   }
 
   resetSelected = () => {
@@ -129,12 +133,20 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
 
     const component = size.find((c) => c.ID === this.props.id);
 
-    const componentPage = await this.measureHandler();
+    const componentPage = (await this.measureHandler() as componentPageProps);
+
+    const { flatList } = this.props;
+    // Make this with animation
+    if(heightOfHeader > componentPage.Y) {
+      if(flatList.current) {
+        flatList.current.scrollToOffset({ offset: flatList.current._listRef._scrollMetrics.offset + (heightOfHeader - componentPage.Y), animated: false });
+      }
+    }
 
     return {
       ID: this.props.id,
-      componentPageX: (componentPage as componentPageProps).X,
-      componentPageY: (componentPage as componentPageProps).Y,
+      componentPageX: componentPage.X,
+      componentPageY: heightOfHeader > componentPage.Y ? heightOfHeader : componentPage.Y,
       pageX: pageX,
       pageY: pageY,
       width: component.layout.width,
@@ -189,14 +201,28 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
       return true;
     } else if(this.state.selected !== nextState.selected) {
       return true;
-    } else {
-      return false;
+    } else if(this.props.message.content !== nextProps.message.content) {
+      return true;
+    } else if(this.messageCompareHandler(nextProps.messages)) {
+      this.setState({ message: nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content })
+      return true;
     }
+
+    return false;
+  }
+
+  messageCompareHandler = (list: MessageProps[]) => {
+    const nextMessage = list.find(m => m.messageId === this.props.message.messageId);
+
+    if(this.state.message && this.state.message !== nextMessage?.content) {
+      return true;
+    }
+
+    return false;
   }
   
   componentDidUpdate(prevProps: DefaultTextMessageProps) {
     const { animate } = this.state;
-    console.log('animate', animate);
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
       this.setState({ animate: false });
@@ -219,6 +245,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
 
     return (
       <ScrollView
+        key={this.props.message.content}
         ref={(ref) => (this.scrollViewRef = ref)}
         horizontal={true}
         alwaysBounceHorizontal={false}
@@ -274,7 +301,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                 onLayout={this.onLayout}
                 style={[
                   message.author.userId == author.userId ? styles.messageTypeTextUser : styles.messageTypeTextNotUser,
-                  message.content.length > CHARS_PER_LINE && styles.longMessage,
+                  message.content.length > DEFAULT_CHARS_PER_LINE && styles.longMessage,
                   { overflow: 'hidden' },
                 ]}
               >
@@ -288,10 +315,10 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                     backgroundColor: message.author.userId === author.userId ? '#E09EFF' : '#fff',
                   }}
                 />
-                <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
+                <Text>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <Text
                   style={
-                    message.content.length > CHARS_PER_LINE
+                    message.content.length > DEFAULT_CHARS_PER_LINE
                       ? [styles.messageTimeStamp, styles.longMessageTimeStamp]
                       : styles.messageTimeStamp
                   }

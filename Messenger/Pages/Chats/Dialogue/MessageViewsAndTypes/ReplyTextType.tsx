@@ -11,7 +11,7 @@ import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageRev
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { Layout } from '../GeneralInterfaces/ILayout';
-import { CHARS_PER_LINE, FONT_SIZE } from '../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from '../DialogueConstants';
 import SelectButton from './SemiComponents/SelectButton';
 import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { useDispatch } from 'react-redux';
@@ -195,7 +195,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, flatList: 
               <View style={[styles.messageTypeTextUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:'#E09EFF' }} /> 
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content?.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content?.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -213,7 +213,7 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, flatList: 
               <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:'#fff' }} /> 
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -225,11 +225,11 @@ const replyTextType = ({messages, message, setMessageMenuVisible, id, flatList: 
           >
             <View 
               onLayout={(event) => onLayout(event)}
-              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginTop:Math.ceil(FONT_SIZE)+1}, message?.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
+              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginTop:Math.ceil(DEFAULT_FONT_SIZE)+1}, message?.content.length>DEFAULT_CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
-              <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
-              <Text style={message?.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+              <Text>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+              <Text style={message?.content.length>DEFAULT_CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}
                 {new Date(message.sendingTime).getHours().toString().padStart(2, '0')}:
                 {new Date(message.sendingTime).getMinutes().toString().padStart(2, '0')}

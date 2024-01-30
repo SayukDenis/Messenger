@@ -66,7 +66,11 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   }
 
   checkListOfMessagesEquality = (list1: MessageProps[], list2: MessageProps[]) => {
-    if(list1.length === list2.length) return true;
+    if(list1.length === list2.length) {
+      return true
+    }
+
+
 
     return false;
   }
@@ -144,9 +148,6 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     const newListOfPinnedMessages = listOfPinnedMessages.filter(m => m.messageId !== coord.message?.messageId);
 
     this.setState({ listOfPinnedMessages: newListOfPinnedMessages });
-
-    if(newListOfPinnedMessages.length === 0) 
-      this.props.route?.params.navigation.goBack();
   }
 
   onDeletePressHandler = () => {

@@ -9,7 +9,6 @@ import DefaultTextTypeUsingClass from '../MessageViewsAndTypes/DefaultTextTypeUs
 import ReplyTextTypeUsingClass from '../MessageViewsAndTypes/ReplyTextTypeUsingClass';
 
 const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen }:MessageItemProps) => {
-   
   const messageViewHandle = ({message}:messageViewHandleProps) => {
     if(message.messageType == EMessageType.text && message.messageResponseId) {
       return <ReplyTextTypeUsingClass
@@ -28,9 +27,11 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
     else if(message.messageType == EMessageType.text) {
       return <DefaultTextTypeUsingClass
         key={message.messageId} 
-        message={message} 
+        message={message}
+        messages={listOfMessages}
         setMessageMenuVisible={setMessageMenuVisible} 
         id={message.messageId!} 
+        flatList={flatListRef!}
         author={author}
         userMessageLastWatched={userMessageLastWatched}
         selecting={selecting}

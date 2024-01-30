@@ -77,6 +77,7 @@ const DialogueMessages =({ scrollToPinnedMessage, idOfPinnedMessage, setMessageM
     if (flatListRef.current) {
       (flatListRef.current as FlatList).scrollToOffset({ animated: true, offset: 0 });
     }
+    console.log('ASIDJAWD0JAWDJAIJWDIWdjpasjdp')
   }, [listOfMessages]);
 
   const [coordsY, setCoordsY]:any = useState([]); 

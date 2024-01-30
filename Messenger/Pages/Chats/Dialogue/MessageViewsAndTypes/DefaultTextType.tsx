@@ -11,7 +11,7 @@ import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageRev
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { Layout } from "../GeneralInterfaces/ILayout";
-import { CHARS_PER_LINE, height, width } from '../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE, height, width } from '../DialogueConstants';
 import SelectButton from './SemiComponents/SelectButton';
 import { connect, useDispatch } from 'react-redux';
 import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
@@ -194,11 +194,11 @@ const DefaultTextType = ({ idForAnimation, message, setMessageMenuVisible, id, a
           >
             <View 
               onLayout={onLayout}
-              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
+              style={[message.author.userId==author.userId?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>DEFAULT_CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting&&selected?1:0.4, backgroundColor:message.author.userId===author.userId?'#E09EFF':'#fff' }} /> 
-              <Text>{wrapText(message.content, CHARS_PER_LINE)}</Text>
-              <Text style={message.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+              <Text>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+              <Text style={message.content.length>DEFAULT_CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}
                 {message.sendingTime.getHours().toString().padStart(2, '0')}:
                 {message.sendingTime.getMinutes().toString().padStart(2, '0')}

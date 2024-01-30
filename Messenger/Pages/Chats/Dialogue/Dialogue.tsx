@@ -118,7 +118,7 @@ const Dialogue = ({ navigation, route }:any) => {
       const m = msgs.find(m => m.messageId==messageID);
       updateMessageContent(m?.messageId, m?.content)
     }
-  }, [listOfMessages]);
+  }, [listOfMessages, messageID]);
 
   useEffect(()=> {
     msgs = listOfMessages;

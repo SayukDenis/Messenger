@@ -4,7 +4,7 @@ import React from 'react';
 import { wrapText } from './../MessageViewsAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { ReplyTextType } from './Interfaces/IReplyText';
-import { CHARS_PER_LINE, FONT_SIZE } from '../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from '../DialogueConstants';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 
@@ -23,7 +23,7 @@ const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLa
               <View style={[styles.messageTypeTextUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:'#E09EFF' }} /> 
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content?.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content?.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </View>
@@ -36,18 +36,18 @@ const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLa
               <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:'#fff' }} /> 
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content.length>=CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,CHARS_PER_LINE)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </View>
           </View>}
           <View >
             <View 
-              style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginTop:Math.ceil(FONT_SIZE)+1}, message?.content.length>CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
+              style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, {marginTop:Math.ceil(DEFAULT_FONT_SIZE)+1}, message?.content.length>DEFAULT_CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
             >
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
-              <Text style={{ height: Math.floor(height-11)-(message.content.length>CHARS_PER_LINE?9.3:0) }}>{wrapText(message.content, CHARS_PER_LINE)}</Text>
-              <Text style={message?.content.length>CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
+              <Text style={{ height: Math.floor(height-11)-(message.content.length>DEFAULT_CHARS_PER_LINE?9.3:0) }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+              <Text style={message?.content.length>DEFAULT_CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
                 {message.isEdited?'edited ':''}
                 {new Date(message.sendingTime).getHours().toString().padStart(2, '0')}:
                 {new Date(message.sendingTime).getMinutes().toString().padStart(2, '0')}

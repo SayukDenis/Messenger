@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   swipeableContainer: {
     width: width, 
     alignSelf:'stretch', 
-    overflow:'visible'
+    overflow:'hidden'
   },
   mainContainer: {
     width:width+50, 

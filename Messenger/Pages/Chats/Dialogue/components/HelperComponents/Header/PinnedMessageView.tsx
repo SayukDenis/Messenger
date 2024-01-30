@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import React from 'react';
 import { screenHeight, screenWidth } from '../../../../../ChatList/Constants/ConstantsForChatlist';
 import { LinearGradient } from 'expo-linear-gradient';
-import { CHARS_PER_LINE } from '../../../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE } from '../../../DialogueConstants';
 import DialogueMessagesPinnedMessageIcon from '../../../SVG/DialogueMessagesPinnedMessageIcon';
 import { MessageProps } from '../../../GeneralInterfaces/IMessage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -60,7 +60,7 @@ const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPi
             onPress={scrollToPinedMessage}
             style={{ flexDirection: 'row', justifyContent: 'space-between', width: screenWidth*0.9, paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center' }}
           >
-            <Text>Pinned message: {pinnedMessage?.content?.length>CHARS_PER_LINE?pinnedMessage?.content.slice(0,25).trim()+'...':pinnedMessage?.content}</Text>
+            <Text>Pinned message: {pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE*0.8).trim()+'...':pinnedMessage?.content}</Text>
             <View style={{ flexDirection: 'row' }}>
               { total>1&&
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 12 }}>

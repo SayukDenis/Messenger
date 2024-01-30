@@ -9,30 +9,38 @@ import {
 } from 'react-native';
 import { styles } from './Styles/ReplyTextType';
 import { wrapText } from './HelperFunctions/wrapText';
-import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { CHARS_PER_LINE, FONT_SIZE, height, width } from '../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, height, width } from '../DialogueConstants';
 import SelectButton from './SemiComponents/SelectButton';
 import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import { ReplyTextTypeProps, ReplyTextTypeState, componentPageProps, coordProps } from './Interfaces/IReplyTextType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
+import { MessageProps } from '../GeneralInterfaces/IMessage';
 
 let size:any[] = [];
 
 class ReplyTextType extends Component<ReplyTextTypeProps> {
-  state = {
+  state: ReplyTextTypeState = {
     sizeOfMessageContainer: [0, 0],
     widthOfMessage: 0,
     widthOfReply: 0,
     selected: false,
     animate: false,
     pressCoordinations: {} as coordProps,
+    replyMessage: '',
+    message: '',
   };
 
-  componentDidMount() { }
+  componentDidMount() { 
+    this.setState({ 
+      replyMessage: this.props.messages.find(m => m.messageId==this.props.message.messageResponseId)?.content,
+      message: this.props.message.content,
+    });
+  }
 
   componentDidUpdate(prevProps: ReplyTextTypeProps) {
     const { animate } = this.state;
@@ -54,6 +62,9 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   }
 
   shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
+    const nextReplyMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content;
+    const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
+
     if(nextProps.idForAnimation === this.props.message.messageId) {
       this.state.animate = true;
       return true;
@@ -66,9 +77,25 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       return true;
     } else if(this.state.selected !== nextState.selected) {
       return true;
-    } else {
-      return false;
+    } else if(this.messageCompareHandler(nextProps.messages)) {
+      this.setState({ message: nextMessage })
+      return true;
+    } else if(this.state.replyMessage && this.state.replyMessage !== nextReplyMessage) {
+      this.setState({ replyMessage: nextReplyMessage })
+      return true;
     }
+    
+    return false;
+  }
+
+  messageCompareHandler = (list: MessageProps[]) => {
+    const nextMessage = list.find(m => m.messageId === this.props.message.messageId);
+
+    if(this.state.message && this.state.message !== nextMessage?.content) {
+      return true;
+    }
+
+    return false;
   }
 
   fadeAnimTranslate = new Animated.Value(0);
@@ -116,11 +143,11 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             pageX: number,
             pageY: number
           ) => {
-            resolve({ X: pageX, Y: pageY });
+            resolve({ y, X: pageX, Y: pageY });
           }
         );
       } else {
-        resolve({ X: 0, Y: 0 });
+        resolve({ y: 0, X: 0, Y: 0 });
       }
     });
   };
@@ -133,12 +160,20 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
     const component = size.find(c => c.ID === this.props.id);
 
-    const componentPage = await this.measureHandler();
+    const componentPage = (await this.measureHandler() as componentPageProps);
+
+    const { flatList } = this.props;
+    // Make this with animation
+    if(heightOfHeader > componentPage.Y) {
+      if(flatList.current) {
+        flatList.current.scrollToOffset({ offset: flatList.current._listRef._scrollMetrics.offset + (heightOfHeader - componentPage.Y), animated: false });
+      }
+    }
 
     return { 
       ID: this.props.id,
-      componentPageX: (componentPage as componentPageProps).X,
-      componentPageY: (componentPage as componentPageProps).Y,
+      componentPageX: componentPage.X,
+      componentPageY: heightOfHeader > componentPage.Y ? heightOfHeader : componentPage.Y,
       pageX: pageX,
       pageY: pageY,
       width: component.layout.width,
@@ -211,7 +246,6 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     return this.state.sizeOfMessageContainer[1] / 2 - 10;
   }
 
-  replyMessage = this.props.messages.find(m => m.messageId==this.props.message.messageResponseId);
   render() {
     const { message, author, selecting, pinnedMessageScreen } = this.props;
     const { selected } = this.state;
@@ -249,7 +283,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             </Text>
             <ReplyMessage 
               message={this.props.message}
-              replyMessage={this.replyMessage!}
+              replyMessage={this.props.messages.find(m => m.messageId === message.messageResponseId)!}
               author={this.props.author}
               selecting={selecting}
               selected={selected}
@@ -262,11 +296,11 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             >
               <View 
                 onLayout={(event) => this.onLayout(event)}
-                style={[this.props.message.author.userId == this.props.author.userId ? styles.messageTypeTextUser : styles.messageTypeTextNotUser, {marginTop:Math.ceil(FONT_SIZE)+1}, this.props.message?.content.length > CHARS_PER_LINE && styles.longMessage, { overflow: 'hidden' }]}
+                style={[this.props.message.author.userId == this.props.author.userId ? styles.messageTypeTextUser : styles.messageTypeTextNotUser, {marginTop:Math.ceil(DEFAULT_FONT_SIZE)+1}, this.props.message?.content.length > DEFAULT_CHARS_PER_LINE && styles.longMessage, { overflow: 'hidden' }]}
               >
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting && selected ? 1 : 0.4, backgroundColor: this.props.message.author.userId === this.props.author.userId ? '#E09EFF' : '#fff' }} /> 
-                <Text>{wrapText(this.props.message.content, CHARS_PER_LINE)}</Text>
-                <Text style={this.props.message?.content.length > CHARS_PER_LINE ? [styles.messageTimeStamp, styles.longMessageTimeStamp] : styles.messageTimeStamp}>
+                <Text>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Text style={this.props.message?.content.length > DEFAULT_CHARS_PER_LINE ? [styles.messageTimeStamp, styles.longMessageTimeStamp] : styles.messageTimeStamp}>
                   {this.props.message.isEdited ? 'edited ' : ''}
                   {new Date(this.props.message.sendingTime).getHours().toString().padStart(2, '0')}:
                   {new Date(this.props.message.sendingTime).getMinutes().toString().padStart(2, '0')}

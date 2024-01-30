@@ -20,12 +20,14 @@ export interface ReplyTextTypeProps {
 }
 
 export interface ReplyTextTypeState {
-  sizeOfMessageContainer: [number, number],
-  widthOfMessage: number,
-  widthOfReply: number,
-  selected: boolean,
-  animate: boolean,
-  pressCoordinations: coordProps,
+  sizeOfMessageContainer: [number, number];
+  widthOfMessage: number;
+  widthOfReply: number;
+  selected: boolean;
+  animate: boolean;
+  pressCoordinations: coordProps;
+  replyMessage: string;
+  message: string;
 }
 
 export interface coordProps {
