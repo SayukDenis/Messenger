@@ -12,6 +12,10 @@ import { ScrollView } from "react-native";
 import CodeVerificationContainer from "./CodeVerificationContainer";
 import FormContainer from "../Authorization containers/FormContainer";
 import FinishButtonForCodeVerification from "./FinishButtonForCodeVerification";
+import {
+  codeForAuthorizationEndPoint,
+  listentingServer,
+} from "../../ChatList/Constants/ServerConection";
 
 interface CodeVerificationPageProps {
   navigation: any;
@@ -21,7 +25,7 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
   navigation,
 }) => {
   const fontSize = 18;
-  const [codeNumber, setCodeNumber] = useState("");
+  const [codeNumber, setCodeNumber] = useState("0228");
   const codeInputRef = useRef<TextInput>(null);
   const pressOnBackButton = () => {
     navigation.goBack();
@@ -29,7 +33,28 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
   const pressOnFinishButton = () => {
     navigation.navigate("Add User Information Page");
   };
+  useEffect(() => {
+    getCode();
+  }, []);
+  const getCode = async () => {
+    const serverUrl = listentingServer + codeForAuthorizationEndPoint;
+    console.log(serverUrl);
+    try {
+      const response = await fetch(serverUrl);
 
+      if (!response.ok) {
+        throw new Error(`HTTP-помилка! Статус: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      console.log("Отримано дані з сервера:", data);
+
+      // Обробка отриманих даних
+    } catch (error) {
+      console.error("Помилка під час отримання даних:", error);
+    }
+  };
   return (
     <BackGroundGradientView>
       <ScrollView scrollEnabled={false}>
@@ -109,4 +134,5 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
     </BackGroundGradientView>
   );
 };
+
 export default CodeVerificationPage;

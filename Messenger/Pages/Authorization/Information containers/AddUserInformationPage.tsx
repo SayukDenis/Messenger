@@ -18,12 +18,13 @@ import UserIconSvg from "../../ChatList/Components/SVG/UserIconSvg";
 import FormContainer from "../Authorization containers/FormContainer";
 import DefaultFormContainer from "../Authorization containers/DefaultFormContainer";
 import ArrowForSettingsButton from "../../ChatList/Components/SVG/ArrowForSettingsButton";
-import SetTagPage from "./Tag containers/SetTagPage";
-import BlurAll from "../../SemiComponents/BlurAll";
-import GalleryModalWindow from "../../ChatList/Components/CreateChannelAndGroupOrWriteMessage/GalleryModalWindow/GalleryModalWindow";
 import { useDispatch, useSelector } from "react-redux";
-import { setPhotoForCreateGroupOrChannel } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+import {
+  setIsVisibleGalleryModalWindow,
+  setPhotoForCreateGroupOrChannel,
+} from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import { CommonActions } from "@react-navigation/native";
+import GalleryModalWindowForUsage from "../../ChatList/Components/CreateChannelAndGroupOrWriteMessage/GalleryModalWindow/Gallery/GalleryModalWindowForUsage";
 
 interface AddUserInformationPageProps {
   navigation: any;
@@ -34,21 +35,21 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
 }) => {
   const radiusOfUserPhoto = screenWidth * 0.3;
   const widthOfFirstContainer = screenWidth * 0.16;
+  const dispatch = useDispatch();
   const [name, setName] = useState<string>("");
   const [surName, setSurname] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [tag, setTag] = useState<string>("");
-  const [startTime, setStartTime] = useState(0);
-  const [endTime, setEndTime] = useState(0);
-  const [onAddPhotoPress, setOnAddPhotoPress] = useState<boolean>(false);
   const nameInputRef = useRef<TextInput>(null);
   const surNameInputRef = useRef<TextInput>(null);
-
   const selectedPhoto: string = useSelector((state: any) => {
     return state.chatListReducer.setPhotoForCreateGroupOrChannel
       .photoForCreateGroupOrChannel;
   });
-  const dispatch = useDispatch();
+  const isVisibleGalleryModalWindow: boolean = useSelector((state: any) => {
+    return state.chatListReducer.isVisibleGalleryModalWindow
+      .isVisibleGalleryModalWindow;
+  });
   const IsValidName = (inputName: string) => {
     if (inputName == "") {
       return inputName == "";
@@ -78,7 +79,7 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
   const onBioPress = () => {
     navigation.navigate("Set Bio Page", { bio, setBio });
   };
-  const onFinishButtonPres = () => {
+  const onFinishButtonPress = () => {
     dispatch(setPhotoForCreateGroupOrChannel(""));
     navigation.dispatch(
       CommonActions.reset({
@@ -86,23 +87,10 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
         routes: [{ name: "ChatList" }],
       })
     );
-    //navigation.goTo("ChatList");
   };
-  const handlePress = () => {
-    setStartTime(Date.now());
-  };
-  useEffect(() => {}, []);
-  function handlePressOut() {
-    setEndTime(Date.now());
-    const duration = startTime - endTime;
-    if (duration < 16) {
-      setOnAddPhotoPress(false);
-      return;
-    }
-    setStartTime(Date.now());
-  }
+
   const pressOnAddPhoto = () => {
-    setOnAddPhotoPress(true);
+    dispatch(setIsVisibleGalleryModalWindow(true));
   };
 
   return (
@@ -445,7 +433,7 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
 
         <TouchableOpacity
           disabled={!isValid}
-          onPress={onFinishButtonPres}
+          onPress={onFinishButtonPress}
           style={{
             alignSelf: "center",
             width: screenWidth * 0.4,
@@ -468,14 +456,10 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
           </Text>
         </TouchableOpacity>
       </ScrollView>
-      {onAddPhotoPress ? (
-        <BlurAll handlePress={handlePress} handlePressOut={handlePressOut}>
-          <GalleryModalWindow
-            setOnAddPhotoPress={setOnAddPhotoPress}
-            navigation={navigation}
-          />
-        </BlurAll>
-      ) : null}
+      <GalleryModalWindowForUsage
+        navigation={navigation}
+        cameFrom={"Add User Information Page"}
+      />
     </BackGroundGradientView>
   );
 };

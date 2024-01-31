@@ -7,15 +7,20 @@ import {
   screenWidth,
 } from "../../../../Constants/ConstantsForChatlist";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 interface MainForGalleryProps {
-    navigation:any;
-    setOnAddPhotoPress:Dispatch<SetStateAction<boolean>>
+  navigation: any;
+
+  route: any;
 }
 
-const MainForGallery: React.FC<MainForGalleryProps> = ({navigation,setOnAddPhotoPress}) => {
+const MainForGallery: React.FC<MainForGalleryProps> = ({
+  navigation,
+  route,
+}) => {
   const [photos, setPhotos] = useState<MediaLibrary.Asset[]>([]);
-  const dispatch=useDispatch();
+
+  const dispatch = useDispatch();
   useEffect(() => {
     getPhotos();
   }, []);
@@ -27,19 +32,22 @@ const MainForGallery: React.FC<MainForGalleryProps> = ({navigation,setOnAddPhoto
     });
     setPhotos(assets);
   };
-  const onPhotoPress=(index:number)=>{
-    /*dispatch(setPhotoForCreateGroupOrChannel(photos[index].uri));
-    setOnAddPhotoPress(false);
-    navigation.goBack();*/
-    navigation.navigate("Cropp Image Page",{picture:photos[index],setOnAddPhotoPress})
-  }
+  const onPhotoPress = (index: number) => {
+    navigation.navigate("Cropp Image Page", {
+      picture: photos[index],
+      cameFrom: route.params.cameFrom,
+    });
+  };
   const renderItem = ({ item, index }: { item: any; index: number }) => {
     return (
-      <TouchableOpacity onPress={()=>onPhotoPress(index)} style={{
-        marginBottom:margin,
-        marginRight:(index+1)%3!=0?margin:0
-      }}
-      activeOpacity={0.8}>
+      <TouchableOpacity
+        onPress={() => onPhotoPress(index)}
+        style={{
+          marginBottom: margin,
+          marginRight: (index + 1) % 3 != 0 ? margin : 0,
+        }}
+        activeOpacity={0.8}
+      >
         <Image
           source={{ uri: item.uri }}
           style={{

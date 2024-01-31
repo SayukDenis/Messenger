@@ -22,7 +22,7 @@ export default function Authorization({ route, navigation }: any) {
   const [selectedCountryNum, setCountry] = useState(0);
   const selectedCountry: countryProps = countryList[selectedCountryNum];
   const sizeOfNumbers: number = 17;
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("961814095");
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState);
