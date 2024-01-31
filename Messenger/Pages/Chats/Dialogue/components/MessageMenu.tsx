@@ -6,16 +6,16 @@ import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
 import * as Clipboard from 'expo-clipboard';
-import MessageMenuSelectButton from "../SVG/MessageMenuSelectButton";
-import MessageMenuDeleteButton from "../SVG/MessageMenuDeleteButton";
-import MessageMenuForwardButton from "../SVG/MessageMenuForwardButton";
-import MessageMenuPinButton from "../SVG/MessageMenuPinButton";
-import MessageMenuCopyButton from "../SVG/MessageMenuCopyButton";
-import MessageMenuEditButton from "../SVG/MessageMenuEditButton";
-import MessageMenuReplyButton from "../SVG/MessageMenuReplyButton";
+import MessageMenuSelectButton from "../../SemiComponents/SVG/MessageMenuSelectButton";
+import MessageMenuDeleteButton from "../../SemiComponents/SVG/MessageMenuDeleteButton";
+import MessageMenuForwardButton from "../../SemiComponents/SVG/MessageMenuForwardButton";
+import MessageMenuPinButton from "../../SemiComponents/SVG/MessageMenuPinButton";
+import MessageMenuCopyButton from "../../SemiComponents/SVG/MessageMenuCopyButton";
+import MessageMenuEditButton from "../../SemiComponents/SVG/MessageMenuEditButton";
+import MessageMenuReplyButton from "../../SemiComponents/SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "../MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "../MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { height, width } from "../DialogueConstants";
+import { height, width } from "../../SemiComponents/ChatConstants";
 
 
 let size:{ width:number, height:number } = { width: 0, height: 0 };

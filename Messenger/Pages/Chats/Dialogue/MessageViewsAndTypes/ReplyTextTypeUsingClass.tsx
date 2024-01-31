@@ -10,10 +10,10 @@ import {
 import { styles } from './Styles/ReplyTextType';
 import { wrapText } from './HelperFunctions/wrapText';
 import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
-import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, height, width } from '../DialogueConstants';
+import MessageItemSwipeToReplyIcon from '../../SemiComponents/SVG/MessageItemSwipeToReplyIcon';
+import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
+import MessageItemStatusMessageNotReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageNotReviewed';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, height, width } from '../../SemiComponents/ChatConstants';
 import SelectButton from './SemiComponents/SelectButton';
 import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';

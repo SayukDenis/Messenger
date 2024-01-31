@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import React, { PureComponent } from 'react';
 import { MessageProps } from '../../GeneralInterfaces/IMessage';
 import User from '../../../../../dao/Models/User';
-import { DEFAULT_CHARS_PER_LINE } from '../../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE } from '../../../SemiComponents/ChatConstants';
 import { styles } from '../Styles/ReplyTextType';
 
 interface ReplyMessageProps {

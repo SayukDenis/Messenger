@@ -1,16 +1,15 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import { screenHeight, screenWidth } from '../../../../../ChatList/Constants/ConstantsForChatlist';
+import { screenHeight, screenWidth } from '../../../../ChatList/Constants/ConstantsForChatlist';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DEFAULT_CHARS_PER_LINE } from '../../../DialogueConstants';
-import DialogueMessagesPinnedMessageIcon from '../../../SVG/DialogueMessagesPinnedMessageIcon';
-import { MessageProps } from '../../../GeneralInterfaces/IMessage';
+import { DEFAULT_CHARS_PER_LINE } from '../../ChatConstants';
+import DialogueMessagesPinnedMessageIcon from '../../SVG/DialogueMessagesPinnedMessageIcon';
+import { MessageProps } from '../../Interfaces/GeneralInterfaces/IMessage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import User from '../../../../../../dao/Models/User';
-import { Layout } from '../../../GeneralInterfaces/ILayout';
-import ILastWatchedMessage from '../../../../../../dao/Models/Chats/ILastWatchedMessage';
+import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import User from '../../../../../dao/Models/User';
+import ILastWatchedMessage from '../../../../../dao/Models/Chats/ILastWatchedMessage';
 
 interface PinnedMessageViewProps { 
   pinnedMessage: MessageProps;

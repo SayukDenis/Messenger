@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import React, { Component, PureComponent } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
-import HeaderBackButton from '../SVG/HeaderBackButton';
+import HeaderBackButton from '../../SemiComponents/SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { height, width } from '../DialogueConstants';
+import { height, width } from '../../SemiComponents/ChatConstants';
 import MessageItem from '../components/MessageItem';
 import { Layout } from '../GeneralInterfaces/ILayout';
 import { MessageProps } from '../GeneralInterfaces/IMessage';

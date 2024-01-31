@@ -1,8 +1,8 @@
 import { TouchableOpacity } from 'react-native';
 import React from 'react';
-import FooterGallaryButton from '../../../SVG/FooterGallaryButton';
+import FooterGallaryButton from '../../../../SemiComponents/SVG/FooterGallaryButton';
 import { screenHeight } from '../../../../../ChatList/Constants/ConstantsForChatlist';
-import FooterSendMessageButton from '../../../SVG/FooterSendMessageButton';
+import FooterSendMessageButton from '../../../../SemiComponents/SVG/FooterSendMessageButton';
 
 interface RightPartOfFooter { 
   sendMessage: boolean;

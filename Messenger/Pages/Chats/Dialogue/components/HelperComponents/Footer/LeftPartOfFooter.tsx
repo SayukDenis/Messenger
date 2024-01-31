@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
-import FooterVideoButton from '../../../SVG/FooterVideoButton';
-import FooterMicrophoneButton from '../../../SVG/FooterMicrophoneButton';
+import FooterVideoButton from '../../../../SemiComponents/SVG/FooterVideoButton';
+import FooterMicrophoneButton from '../../../../SemiComponents/SVG/FooterMicrophoneButton';
 import { screenHeight } from '../../../../../ChatList/Constants/ConstantsForChatlist';
 
 const LeftPartOfFooter = () => {

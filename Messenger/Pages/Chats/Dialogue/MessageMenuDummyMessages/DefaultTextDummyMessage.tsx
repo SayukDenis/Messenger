@@ -4,9 +4,9 @@ import React from 'react';
 import { wrapText } from './../MessageViewsAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { DefaultTextMessageProps } from './Interfaces/IDefaultText';
-import { DEFAULT_CHARS_PER_LINE } from '../DialogueConstants';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
+import { DEFAULT_CHARS_PER_LINE } from '../../SemiComponents/ChatConstants';
+import MessageItemStatusMessageNotReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageNotReviewed';
+import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
 const DefaultTextDummyMessage = ({ message, isUser, height, userMessageLastWatched}:DefaultTextMessageProps) => {
   if(!message) return null;
   return (

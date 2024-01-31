@@ -3,10 +3,10 @@ import React from 'react';
 import { ReplyAndEditMenuProps } from './interfaces/IReplyAndEditMenu';
 import { styles } from './Styles/ReplyAndEditHandle';
 import { connect } from 'react-redux';
-import ReplyAndEditMenuReplyIcon from '../SVG/ReplyAndEditMenuReplyIcon';
-import ReplyAndEditMenuEditIcon from '../SVG/ReplyAndEditMenuEditIcon';
-import ReplyAndEditMenuCancelButton from '../SVG/ReplyAndEditMenuCancelButton';
-import { DEFAULT_CHARS_PER_LINE } from '../DialogueConstants';
+import ReplyAndEditMenuReplyIcon from '../../SemiComponents/SVG/ReplyAndEditMenuReplyIcon';
+import ReplyAndEditMenuEditIcon from '../../SemiComponents/SVG/ReplyAndEditMenuEditIcon';
+import ReplyAndEditMenuCancelButton from '../../SemiComponents/SVG/ReplyAndEditMenuCancelButton';
+import { DEFAULT_CHARS_PER_LINE } from '../../SemiComponents/ChatConstants';
 
 const ReplyAndEditMenu = ({ isReply, replyMessage, cancelReplyAndEdit, isEdit, editMessage }:ReplyAndEditMenuProps) => {
   return (

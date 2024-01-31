@@ -16,16 +16,16 @@ import {
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { styles } from './Styles/DefaultTextType';
 import { wrapText } from './HelperFunctions/wrapText';
-import MessageItemSwipeToReplyIcon from '../SVG/MessageItemSwipeToReplyIcon';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
+import MessageItemSwipeToReplyIcon from '../../SemiComponents/SVG/MessageItemSwipeToReplyIcon';
+import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
+import MessageItemStatusMessageNotReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageNotReviewed';
 import { Layout } from '../GeneralInterfaces/ILayout';
 import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import SelectButton from './SemiComponents/SelectButton';
 import { MessageProps } from '../GeneralInterfaces/IMessage';
-import { DEFAULT_CHARS_PER_LINE, height, width } from '../DialogueConstants';
+import { DEFAULT_CHARS_PER_LINE, height, width } from '../../SemiComponents/ChatConstants';
 import { Dispatch } from 'redux';
 
 interface DefaultTextMessageProps {

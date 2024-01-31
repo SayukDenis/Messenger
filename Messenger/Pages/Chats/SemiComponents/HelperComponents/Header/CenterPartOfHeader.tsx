@@ -1,16 +1,23 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import styles from '../../Styles/DialogueHeader';
+import * as DialogueModel from '../../../../../dao/Models/Chats/Dialogue';
 
 interface CenterPartOfHeaderProps {
   picture: string | undefined;
   displayName: string | undefined;
   activityTime: Date | string;
+  dialogue: DialogueModel.default;
+  navigation: any;
 }
 
-const CenterPartOfHeader = ({ picture, displayName, activityTime }:CenterPartOfHeaderProps ) => {
+const CenterPartOfHeader = ({ picture, displayName, activityTime, dialogue, navigation }:CenterPartOfHeaderProps ) => {
   return (
-    <View style={styles.chatUserInfo}>
+    <TouchableOpacity 
+      style={[styles.chatUserInfo, { backgroundColor: 'red' }]}
+      activeOpacity={1}
+      onPress={() => navigation.navigate('', { dialogue })}
+    >
       <Image 
         source={{ uri: picture }} 
         style={styles.chatUserInfoImg}
@@ -19,7 +26,7 @@ const CenterPartOfHeader = ({ picture, displayName, activityTime }:CenterPartOfH
         <Text style={styles.chatUserInfoUserName}>{displayName}</Text>
         <Text style={styles.chatUserInfoUserWasOnline}>{activityTime.toString()}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

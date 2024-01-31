@@ -4,9 +4,9 @@ import React from 'react';
 import { wrapText } from './../MessageViewsAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { ReplyTextType } from './Interfaces/IReplyText';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from '../DialogueConstants';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from '../../SemiComponents/ChatConstants';
+import MessageItemStatusMessageNotReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageNotReviewed';
+import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
 
 const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLastWatched}:ReplyTextType) => {
   const replyMessage = messages.find(m => m.messageId==message.messageResponseId);

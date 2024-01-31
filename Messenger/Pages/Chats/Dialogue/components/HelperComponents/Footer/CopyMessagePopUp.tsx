@@ -1,6 +1,6 @@
 import { View, Text, Animated } from 'react-native';
 import React from 'react';
-import DialogueFooterCopyIcon from '../../../SVG/DialogueFooterCopyIcon';
+import DialogueFooterCopyIcon from '../../../../SemiComponents/SVG/DialogueFooterCopyIcon';
 import { screenHeight, screenWidth } from '../../../../../ChatList/Constants/ConstantsForChatlist';
 
 interface CopyMessagePopUpProps { 

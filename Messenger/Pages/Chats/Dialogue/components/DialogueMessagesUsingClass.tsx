@@ -4,7 +4,7 @@ import { Animated, FlatList, Keyboard, View, KeyboardEvent } from "react-native"
 import { connect } from "react-redux";
 import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 import Constants from 'expo-constants';
-import { height } from "../DialogueConstants";
+import { height } from "../../SemiComponents/ChatConstants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "./MessageItem";

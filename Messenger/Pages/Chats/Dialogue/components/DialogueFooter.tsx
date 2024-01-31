@@ -10,7 +10,7 @@ import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
 import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
-import { height } from '../DialogueConstants';
+import { height } from '../../SemiComponents/ChatConstants';
 import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

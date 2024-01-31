@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import SelectButtonMarkIcon from '../../SVG/SelectButtonMarkIcon';
+import SelectButtonMarkIcon from '../../../SemiComponents/SVG/SelectButtonMarkIcon';
 
 interface SelectButtonProps {
   selected: boolean;

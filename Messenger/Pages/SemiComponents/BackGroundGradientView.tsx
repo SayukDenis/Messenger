@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { ReactNode } from 'react';
 import { connect } from 'react-redux';
 import { screenHeight, screenWidth } from '../ChatList/Constants/ConstantsForChatlist';
-import { height } from '../Chats/Dialogue/DialogueConstants';
+import { height } from '../Chats/SemiComponents/ChatConstants';
 interface BackGroundGradinetViewProps {
   children?: ReactNode;
 }

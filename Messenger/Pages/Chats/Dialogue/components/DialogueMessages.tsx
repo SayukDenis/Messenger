@@ -8,7 +8,7 @@ import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect, useDispatch } from 'react-redux';
 import MessageItem from './MessageItem';
-import { height } from '../DialogueConstants';
+import { height } from '../../SemiComponents/ChatConstants';
 import { setScrollStateForPinnedMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 
 interface pinnedMessageProps {

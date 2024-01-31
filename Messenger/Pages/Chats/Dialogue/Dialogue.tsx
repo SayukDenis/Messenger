@@ -1,6 +1,5 @@
 import { View } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
-import DialogueHeader from './components/DialogueHeader';
 import DialogueFooter from './components/DialogueFooter';
 import MessageMenu from './components/MessageMenu';
 import styles from './DialogueStyle';
@@ -15,6 +14,7 @@ import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 import { Layout } from './GeneralInterfaces/ILayout';
 import DialogueMessagesUsingClass from './components/DialogueMessagesUsingClass';
+import Header from '../SemiComponents/Header';
 
 let coord:Layout;
 let messageIdForReplyAndEdit:number;
@@ -205,8 +205,9 @@ const Dialogue = ({ navigation, route }:any) => {
             userMessageLastWatched={userMessageLastWatched}
             pinnedMessageScreen={false}
           />
-          <DialogueHeader 
+          <Header 
             navigation={navigation} 
+            chatType={dialogue}
             picture={dialogue.linkToPhoto}
             author={user as User}
             activityTime={'Online recently'} // Last activity from user

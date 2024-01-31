@@ -1,7 +1,10 @@
-import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
-import User from "../../../../../dao/Models/User";
-import { MessageProps } from "../../GeneralInterfaces/IMessage";
-
+import ILastWatchedMessage from "../../../../dao/Models/Chats/ILastWatchedMessage";
+import User from "../../../../dao/Models/User";
+import { MessageProps } from "./GeneralInterfaces/IMessage";
+import * as DialogueModel from '../../../../dao/Models/Chats/Dialogue';
+import * as GroupModel from '../../../../dao/Models/Chats/Group';
+import * as ChannelModel from '../../../../dao/Models/Chats/Channel';
+//Messenger\Pages\Chats\SemiComponents\Interfaces\GeneralInterfaces
 
 export interface DialogueHeaderProps {
   counterOfSelectedMessages: number;
@@ -20,4 +23,5 @@ export interface DialogueHeaderProps {
   onCopyPress: () => void;
   onUnpinPress: (message: MessageProps) => void;
   onDeletePress: (message: MessageProps) => void;
+  chatType: DialogueModel.default | GroupModel.default | ChannelModel.default;
 }
