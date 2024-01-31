@@ -29,13 +29,13 @@ interface PinnedMessageViewProps {
 }
 
 const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, author, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, }:PinnedMessageViewProps ) => {
-  if(!pinnedMessage.messageId) return null;
+  if(!pinnedMessage?.messageId) return null;
 
   const dispatch = useDispatch();
 
   const scrollToPinedMessage = () => {
-    dispatch(setScrollStateForPinnedMessage(true, pinnedMessage.messageId!));
-    dispatch(setAnimationOfBackgroundForScrolledMessage(pinnedMessage.messageId!));
+    dispatch(setScrollStateForPinnedMessage(true, pinnedMessage?.messageId!));
+    dispatch(setAnimationOfBackgroundForScrolledMessage(pinnedMessage?.messageId!));
   }
 
   return (

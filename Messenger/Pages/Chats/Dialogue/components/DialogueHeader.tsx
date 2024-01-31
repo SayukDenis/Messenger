@@ -13,7 +13,7 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author
 
   const displayName = author.name;
   const countOfPinnedMessages = listOfPinnedMessages.length;
-  const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage.messageId)+1;
+  const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage?.messageId)+1;
 
   return(
     <View style={{ backgroundColor: 'green', zIndex: 10 }}>

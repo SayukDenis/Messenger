@@ -15,7 +15,7 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
   }
   if(replyMessage?.content) {
     setMessages({
-      messageId: messages.length,
+      messageId: messages[0].messageId!+1,
       author: (author as User), // SelfProgile == User ?
       content: text,
       sendingTime: new Date(),
@@ -33,7 +33,7 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
     setMessages({} as MessageProps);
   } else {
     setMessages({
-      messageId: messages.length,
+      messageId: messages[0].messageId!+1,
       author: (author as User),
       content: text,
       sendingTime: new Date(),

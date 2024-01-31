@@ -10,7 +10,7 @@ import ReplyTextTypeUsingClass from '../MessageViewsAndTypes/ReplyTextTypeUsingC
 
 const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen }:MessageItemProps) => {
   const messageViewHandle = ({message}:messageViewHandleProps) => {
-    if(message.messageType == EMessageType.text && message.messageResponseId) {
+    if(message.messageType == EMessageType.text && message.messageResponseId && listOfMessages.findIndex(m => m.messageId === message.messageResponseId) >= 0) {
       return <ReplyTextTypeUsingClass
         key={message.messageId} 
         messages={listOfMessages} 

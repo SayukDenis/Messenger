@@ -344,7 +344,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       }}
     >
       <View style={{ top: coord.componentPageY, height: coord.height }}>
-        {coord.message?.messageResponseId?<ReplyTextDummyMessage message={coord.message} messages={messages} isUser={isUser} height={coord.height} userMessageLastWatched={userMessageLastWatched} />:
+        {(coord.message?.messageResponseId&&messages.findIndex(m => m.messageId === coord.message?.messageResponseId)>=0)?<ReplyTextDummyMessage message={coord.message} messages={messages} isUser={isUser} height={coord.height} userMessageLastWatched={userMessageLastWatched} />:
         <DefaultTextDummyMessage message={coord.message} isUser={isUser} height={coord.height} userMessageLastWatched={userMessageLastWatched} />}
       </View>
       <View 

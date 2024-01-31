@@ -1,7 +1,6 @@
 import { View } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 import DialogueHeader from './components/DialogueHeader';
-import DialogueMessages from './components/DialogueMessages';
 import DialogueFooter from './components/DialogueFooter';
 import MessageMenu from './components/MessageMenu';
 import styles from './DialogueStyle';
@@ -15,6 +14,7 @@ import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 import { Layout } from './GeneralInterfaces/ILayout';
+import DialogueMessagesUsingClass from './components/DialogueMessagesUsingClass';
 
 let coord:Layout;
 let messageIdForReplyAndEdit:number;
@@ -132,17 +132,16 @@ const Dialogue = ({ navigation, route }:any) => {
   // якогось хуя useRef не працює якщо useState з boolean
   const onDeletePress = () => {
     const message = listOfMessages.find(m => m.messageId === messageID)!;
-    console.log(message.messageId, message.content);
-    pinMessageHandler(message);
+    if(listOfPinnedMessages.findIndex(m => m.messageId === message.messageId) >= 0) {
+      pinMessageHandler(message);
+    }
     deletedMessagesId.push(message.messageId!);
-    setTimeout(() => {
-      setListOfMessages([...listOfMessages.filter(m => m.messageId !== messageID)]);
-      setDeleting(!deleting);
-    }, 100);
+    setListOfMessages([...listOfMessages.filter(m => m.messageId !== messageID)]);
+    setDeleting(!deleting);
   }
 
   const onPinnedMessageScreenDeletePress = (message: MessageProps) => {
-    setListOfMessages([...listOfMessages.filter(m => m.messageId!=messageID)]);
+    setListOfMessages([...listOfMessages.filter(m => m?.messageId!=messageID)]);
   }
 
   const handleMessageMenuPress = useCallback(() => {
@@ -162,38 +161,30 @@ const Dialogue = ({ navigation, route }:any) => {
 
   const [listOfPinnedMessages, setListOfPinnedMessages] = useState(dialogue.pinnedMessage as MessageProps[]);
   const pinMessageHandler = (message: MessageProps) => {
-    //console.log('message.messageId', message.messageId)
     if(listOfPinnedMessages.find(m => message.messageId === m.messageId)) {
       const pinnedMsgs = listOfPinnedMessages.filter(m => m.messageId !== message.messageId);
-      //console.log('pinnedMsgs.length', pinnedMsgs.length);
 
-      if(pinnedMsgs.length>0) {
+      if(pinnedMsgs.length>0)
         setPinnedMessage(pinnedMsgs[pinnedMsgs.length-1]);
-      } else {
-        //console.log('a9wosdiwjspahfwpu')
+      else 
         setPinnedMessage({} as MessageProps);
-      }
+
       setListOfPinnedMessages([...pinnedMsgs]);
     } else {
-      //console.log('pinMessageHandler', message.messageId, message.content);
-      //pinnedMsgs.push(message);
       setListOfPinnedMessages([...listOfPinnedMessages, message])
-      //setPinnedMessage(message);
     }
   }
   const [pinnedMessage, setPinnedMessage] = useState({} as MessageProps);
   const setPinnedMessageHandler = (id: number) => {
-    if(pinnedMessage.messageId !== id)
+    if(pinnedMessage.messageId !== id) {
       setPinnedMessage(listOfMessages.find(m => m.messageId === id)!)
+      return id;
+    }
   }
   const unpinAllMessagesHandler = () => {
     setListOfPinnedMessages([]);
     setPinnedMessage({} as MessageProps);
   }
-  // useEffect(() => {
-  //   setPinnedMessage(listOfPinnedMessages[listOfPinnedMessages.length-1]);
-  // }, [listOfPinnedMessages])
-  //console.log(listOfPinnedMessages.length);
 
   const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
   return  (
@@ -219,7 +210,7 @@ const Dialogue = ({ navigation, route }:any) => {
             picture={dialogue.linkToPhoto}
             author={user as User}
             activityTime={'Online recently'} // Last activity from user
-            pinnedMessage={pinnedMessage}
+            pinnedMessage={pinnedMessage != undefined ? pinnedMessage : {} as MessageProps}
             listOfPinnedMessages={listOfPinnedMessages}
             listOfMessages={listOfMessages}
             selecting={selecting}
@@ -231,7 +222,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onUnpinPress={pinMessageHandler}
             onDeletePress={onPinnedMessageScreenDeletePress}
           />
-          <DialogueMessages 
+          <DialogueMessagesUsingClass 
             setMessageMenuVisible={handleMessagePressOrSwipe} 
             messageID={messageID} 
             listOfMessages={listOfMessages} 
