@@ -2,11 +2,11 @@ import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 
-function MessageMenuPinButton() {
+function PinButton({ size=screenHeight*0.016 }:{ size?:number }) {
   return (
     <Svg
-      width={screenHeight*0.016}
-      height={screenHeight*0.016}
+      width={size}
+      height={size}
       viewBox="0 0 13 12"
       fill="none"
     >
@@ -20,4 +20,4 @@ function MessageMenuPinButton() {
   );
 }
 
-export default MessageMenuPinButton;
+export default PinButton;

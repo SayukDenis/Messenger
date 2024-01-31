@@ -13,10 +13,10 @@ const DefaultTextDummyMessage = ({ message, isUser, height, userMessageLastWatch
     <View style={[styles.messageBlockContainer, isUser&&{ justifyContent:'flex-end' }]}>
       <View style={[styles.messageContainer, isUser&&{ marginRight: 15 }]}>
         <View 
-          style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>DEFAULT_CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden' }]}
+          style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>DEFAULT_CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden', height: height }]}
         >
           <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
-          <Text style={{ height: Math.floor(height-11)-(message.content.length>DEFAULT_CHARS_PER_LINE?9.3:0) }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+          <Text>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
           <Text style={message.content.length>DEFAULT_CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
             {message.isEdited?'edited ':''}
             {message.sendingTime.getHours().toString().padStart(2, '0')}:

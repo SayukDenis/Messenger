@@ -9,7 +9,7 @@ import * as Clipboard from 'expo-clipboard';
 import MessageMenuSelectButton from "../../SemiComponents/SVG/MessageMenuSelectButton";
 import MessageMenuDeleteButton from "../../SemiComponents/SVG/MessageMenuDeleteButton";
 import MessageMenuForwardButton from "../../SemiComponents/SVG/MessageMenuForwardButton";
-import MessageMenuPinButton from "../../SemiComponents/SVG/MessageMenuPinButton";
+import PinButton from "../../SemiComponents/SVG/PinButton";
 import MessageMenuCopyButton from "../../SemiComponents/SVG/MessageMenuCopyButton";
 import MessageMenuEditButton from "../../SemiComponents/SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "../../SemiComponents/SVG/MessageMenuReplyButton";
@@ -53,12 +53,12 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       svg: <MessageMenuCopyButton />
     },
     {
-      text: 'Pin',
+      text: coord.pinned?'Unpin':'Pin',
       action: () => {
         if(typeof onPinPress === 'function')
           onPinPress(coord.message!);
       },
-      svg: <MessageMenuPinButton />
+      svg: <PinButton />
     },
     {
       text: 'Forward',
@@ -94,7 +94,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
         if(typeof onPinPress === 'function')
           onPinPress(coord.message!);
       },
-      svg: <MessageMenuPinButton />
+      svg: <PinButton />
     },
     {
       text: 'Forward',

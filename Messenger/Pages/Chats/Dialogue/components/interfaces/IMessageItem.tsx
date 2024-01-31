@@ -1,8 +1,8 @@
 
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
 import User from "../../../../../dao/Models/User";
-import { Layout } from "../../GeneralInterfaces/ILayout";
-import { MessageProps } from "../../GeneralInterfaces/IMessage";
+import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
+import { MessageProps } from "../../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 
 
 export interface MessageItemProps { 
@@ -18,4 +18,6 @@ export interface MessageItemProps {
   selecting: boolean;
   pinnedMessageHandler?: (message: number, coord: number) => void;
   pinnedMessageScreen: boolean;
+  listOfPinnedMessages: Array<number>;
+  navigation: any;
 }

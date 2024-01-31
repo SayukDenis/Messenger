@@ -1,20 +1,12 @@
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
-import { MessageProps } from "../../GeneralInterfaces/IMessage";
+import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
+import { MessageProps } from "../../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 
 
 export interface messageMenuProps {
   isVisible: boolean;
   onOverlayPress: () => void;
-  coord: {
-    ID: number;
-    componentPageX: number;
-    componentPageY: number;
-    pageX: number;
-    pageY: number;
-    width: number;
-    height: number;
-    message: MessageProps|undefined;
-  };
+  coord: Layout;
   messages: MessageProps[];
   onReplyPress?: () => void;
   onEditPress?: () => void;

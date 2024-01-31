@@ -2,8 +2,8 @@ import { Dispatch } from "redux";
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
 import { MutableRefObject } from "react";
 import User from "../../../../../dao/Models/User";
-import { MessageProps } from "../../GeneralInterfaces/IMessage";
-import { Layout } from "../../GeneralInterfaces/ILayout";
+import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
+import { MessageProps } from "../../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 
 export interface ReplyTextTypeProps {
   idForAnimation: number;
@@ -17,6 +17,8 @@ export interface ReplyTextTypeProps {
   selecting: boolean;
   dispatch: Dispatch;
   pinnedMessageScreen: boolean;
+  listOfPinnedMessages: Array<number>;
+  navigation: any;
 }
 
 export interface ReplyTextTypeState {

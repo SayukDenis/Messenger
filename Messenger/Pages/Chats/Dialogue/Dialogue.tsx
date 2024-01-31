@@ -7,14 +7,14 @@ import React from 'react';
 import DeleteMessageModal from './components/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
-import { MessageProps } from './GeneralInterfaces/IMessage';
 import { connect } from 'react-redux';
 import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
-import { Layout } from './GeneralInterfaces/ILayout';
 import DialogueMessagesUsingClass from './components/DialogueMessagesUsingClass';
 import Header from '../SemiComponents/Header';
+import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
+import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 
 let coord:Layout;
 let messageIdForReplyAndEdit:number;
@@ -224,6 +224,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onDeletePress={onPinnedMessageScreenDeletePress}
           />
           <DialogueMessagesUsingClass 
+            navigation={navigation}
             setMessageMenuVisible={handleMessagePressOrSwipe} 
             messageID={messageID} 
             listOfMessages={listOfMessages} 

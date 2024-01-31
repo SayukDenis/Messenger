@@ -5,14 +5,14 @@ import HeaderBackButton from '../../SemiComponents/SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
 import { height, width } from '../../SemiComponents/ChatConstants';
 import MessageItem from '../components/MessageItem';
-import { Layout } from '../GeneralInterfaces/ILayout';
-import { MessageProps } from '../GeneralInterfaces/IMessage';
 import User from '../../../../dao/Models/User';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import Constants from 'expo-constants';
 import MessageMenu from '../components/MessageMenu';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import DeleteMessageModal from '../components/DeleteMessageModal';
+import { MessageProps } from '../../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
+import { Layout } from '../../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 
 interface NavigationProps {
   route?: {
@@ -112,6 +112,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
 
   renderItem = ({item}:any) => (
     <MessageItem 
+      navigation={this.props.route?.params.navigation}
       item={item}
       listOfMessages={this.props.route?.params.listOfMessages!}
       setMessageMenuVisible={this.handleMessagePress}
@@ -121,6 +122,9 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       setCoordsY={this.setCoordsYHandler}
       selecting={this.state.selecting}
       pinnedMessageScreen
+      listOfPinnedMessages={this.props.route?.params.listOfPinnedMessages.map((m) => {
+        return m.messageId!
+      })!}  
     />
   );
 

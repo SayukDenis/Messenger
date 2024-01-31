@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
   messageContainer: {
     marginRight: 10,
     marginLeft: 10,
+    flexDirection: 'row'
   },
   messageTypeTextUser: {
     //backgroundColor: 'rgb(102, 191, 255)',

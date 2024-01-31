@@ -10,4 +10,5 @@ export interface Layout {
   height: number;  
   message: MessageProps|undefined;
   selectionCallback: (() => void) | undefined;
+  pinned: boolean;
 }

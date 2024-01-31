@@ -13,22 +13,30 @@ import {
   incrementNumberOfSelectedMessages,
   resetNumberOfSelectedMessages,
   setAnimationOfBackgroundForScrolledMessage,
+  setScrollStateForPinnedMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { styles } from './Styles/DefaultTextType';
 import { wrapText } from './HelperFunctions/wrapText';
-import MessageItemSwipeToReplyIcon from '../../SemiComponents/SVG/MessageItemSwipeToReplyIcon';
+import ReplyIcon from '../../SemiComponents/SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageNotReviewed';
-import { Layout } from '../GeneralInterfaces/ILayout';
 import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import SelectButton from './SemiComponents/SelectButton';
-import { MessageProps } from '../GeneralInterfaces/IMessage';
 import { DEFAULT_CHARS_PER_LINE, height, width } from '../../SemiComponents/ChatConstants';
 import { Dispatch } from 'redux';
+import PinButton from '../../SemiComponents/SVG/PinButton';
+import { MessageProps } from '../../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
+import { Layout } from '../../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
+import ScrollButton from './SemiComponents/ScrollButton';
 
-interface DefaultTextMessageProps {
+interface DefaultTextMessageNavigationProps {
+  dispatch: Dispatch;
+  navigation: any;
+}
+
+interface DefaultTextMessageProps extends DefaultTextMessageNavigationProps {
   idForAnimation: number;
   message: MessageProps;
   setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
@@ -37,9 +45,9 @@ interface DefaultTextMessageProps {
   author: User;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
-  dispatch: Dispatch;
   pinnedMessageScreen: boolean;
   messages: MessageProps[];
+  listOfPinnedMessages: Array<number>
 }
 
 interface DefaultTextMessageState {
@@ -66,15 +74,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     animate: false,
     heightOfMessage: 0,
     selected: false,
-    message: '',
+    message: this.props.message.content,
   };
-
-  componentDidMount(): void {
-    console.log('componentDidMount', this.props.message.content);
-    this.setState({
-      message: this.props.message.content
-    })
-  }
 
   resetSelected = () => {
     this.props.dispatch(resetNumberOfSelectedMessages());
@@ -126,6 +127,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
         height: 0,
         message: undefined,
         selectionCallback: undefined,
+        pinned: false,
       };
 
     const { nativeEvent } = event;
@@ -153,6 +155,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
       height: component.layout.height,
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
+      pinned: this.props.listOfPinnedMessages.findIndex(m => m === this.props.message.messageId) >= 0,
     };
   };
 
@@ -206,6 +209,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     } else if(this.messageCompareHandler(nextProps.messages)) {
       this.setState({ message: nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content })
       return true;
+    } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
+      return true;
     }
 
     return false;
@@ -242,6 +247,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   render() {
     const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
+
+    const isUser = message.author.userId == author.userId;
 
     return (
       <ScrollView
@@ -295,12 +302,20 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
             }
           }}
         >
-          <View style={[styles.messageBlockContainer, message.author.userId == author.userId && { justifyContent: 'flex-end' }]}>
+          <View style={[styles.messageBlockContainer, isUser && { justifyContent: 'flex-end' }]}>
             <View onLayout={(event) => this.setState({ heightOfMessage: event.nativeEvent.layout.height })} style={styles.messageContainer}>
+              { this.props.pinnedMessageScreen && isUser &&
+                <ScrollButton 
+                  navigation={this.props.navigation}
+                  dispatch={this.props.dispatch}
+                  messageId={this.props.message.messageId!}
+                  isUser={isUser}
+                />
+              }
               <View
                 onLayout={this.onLayout}
                 style={[
-                  message.author.userId == author.userId ? styles.messageTypeTextUser : styles.messageTypeTextNotUser,
+                  isUser ? styles.messageTypeTextUser : styles.messageTypeTextNotUser,
                   message.content.length > DEFAULT_CHARS_PER_LINE && styles.longMessage,
                   { overflow: 'hidden' },
                 ]}
@@ -323,16 +338,25 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                       : styles.messageTimeStamp
                   }
                 >
+                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton size={screenHeight*0.008}/>}
                   {message.isEdited ? 'edited ' : ''}
                   {message.sendingTime.getHours().toString().padStart(2, '0')}:
                   {message.sendingTime.getMinutes().toString().padStart(2, '0')}
                 </Text>
               </View>
+              { this.props.pinnedMessageScreen && !isUser &&
+                <ScrollButton 
+                  navigation={this.props.navigation}
+                  dispatch={this.props.dispatch}
+                  messageId={this.props.message.messageId!}
+                  isUser={isUser}
+                />
+              }
               {selecting && (
-                <SelectButton selected={selected} isUser={message.author.userId == author.userId} verticalOffset={heightOfMessage / 2 - 10} horizontalOffset={-(20 + 5)} />
+                <SelectButton selected={selected} isUser={isUser} verticalOffset={heightOfMessage / 2 - 10} horizontalOffset={-(20 + 5)} />
               )}
             </View>
-            {message.author.userId == author.userId && (
+            {isUser && (
               <View style={{ position: 'absolute', right: 0, bottom: 10, marginRight: -2.5 }}>
                 {message.messageId! <= (userMessageLastWatched?.value?.messageId || 0) ? (
                   <MessageItemStatusMessageReviewed />
@@ -343,7 +367,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
             )}
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center', width: 55 }}>
-            <MessageItemSwipeToReplyIcon />
+            <ReplyIcon />
           </View>
         </TouchableOpacity>
       </ScrollView>

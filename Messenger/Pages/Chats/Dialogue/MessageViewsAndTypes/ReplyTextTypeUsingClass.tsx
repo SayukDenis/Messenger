@@ -10,7 +10,7 @@ import {
 import { styles } from './Styles/ReplyTextType';
 import { wrapText } from './HelperFunctions/wrapText';
 import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
-import MessageItemSwipeToReplyIcon from '../../SemiComponents/SVG/MessageItemSwipeToReplyIcon';
+import ReplyIcon from '../../SemiComponents/SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageNotReviewed';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, height, width } from '../../SemiComponents/ChatConstants';
@@ -19,7 +19,8 @@ import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, r
 import { connect } from 'react-redux';
 import { ReplyTextTypeProps, ReplyTextTypeState, componentPageProps, coordProps } from './Interfaces/IReplyTextType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
-import { MessageProps } from '../GeneralInterfaces/IMessage';
+import PinButton from '../../SemiComponents/SVG/PinButton';
+import { MessageProps } from '../../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 
 let size:any[] = [];
 
@@ -82,6 +83,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       return true;
     } else if(this.state.replyMessage && this.state.replyMessage !== nextReplyMessage) {
       this.setState({ replyMessage: nextReplyMessage })
+      return true;
+    } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
       return true;
     }
     
@@ -153,7 +156,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   };
 
   handlePress = async (event: ({ nativeEvent: { pageX: number; pageY: number } } | null)) => {
-    if (!event) return { ID: this.props.id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined, selectionCallback: undefined };
+    if (!event) return { ID: this.props.id, componentPageX:0, componentPageY: 0, pageX: 0, pageY: 0, width: 0, height: 0, message: undefined, selectionCallback: undefined, pinned: false };
 
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
@@ -180,6 +183,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       height: component.layout.height,
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
+      pinned: this.props.listOfPinnedMessages.findIndex(m => m === this.props.message.messageId) >= 0,
     };
   };
 
@@ -301,6 +305,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting && selected ? 1 : 0.4, backgroundColor: this.props.message.author.userId === this.props.author.userId ? '#E09EFF' : '#fff' }} /> 
                 <Text>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <Text style={this.props.message?.content.length > DEFAULT_CHARS_PER_LINE ? [styles.messageTimeStamp, styles.longMessageTimeStamp] : styles.messageTimeStamp}>
+                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton size={screenHeight*0.008}/>}
                   {this.props.message.isEdited ? 'edited ' : ''}
                   {new Date(this.props.message.sendingTime).getHours().toString().padStart(2, '0')}:
                   {new Date(this.props.message.sendingTime).getMinutes().toString().padStart(2, '0')}
@@ -320,7 +325,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             </View> }
         </View>
         <View style={{ alignItems: 'center', justifyContent: 'center', width: 55 }}>
-          <MessageItemSwipeToReplyIcon />
+          <ReplyIcon />
         </View>
       </ScrollView>
     );

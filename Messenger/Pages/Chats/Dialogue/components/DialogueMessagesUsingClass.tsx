@@ -8,9 +8,9 @@ import { height } from "../../SemiComponents/ChatConstants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "./MessageItem";
-import { MessageProps } from "../GeneralInterfaces/IMessage";
 import { EmitterSubscription } from "react-native";
 import { setScrollStateForPinnedMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
+import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 
 interface DialogueMessagesReduxProps {
   dispatch?: Dispatch<any>;
@@ -182,6 +182,7 @@ class DialogueMessagesUsingClass extends Component<DialogueMessagesProps & Dialo
     
     return <MessageItem 
       item={item}
+      navigation={this.props.navigation}
       listOfMessages={listOfMessages}
       setMessageMenuVisible={setMessageMenuVisible}
       flatListRef={this.flatListRef as any}
@@ -193,6 +194,9 @@ class DialogueMessagesUsingClass extends Component<DialogueMessagesProps & Dialo
       selecting={selecting}
       pinnedMessageHandler={this.setPinnedMessageHandler}
       pinnedMessageScreen={false}
+      listOfPinnedMessages={this.props.pinnedMessages.map((m) => {
+        return m.messageId!
+      })}
     />
   };
 
