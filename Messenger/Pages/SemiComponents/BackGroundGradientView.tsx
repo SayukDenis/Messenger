@@ -7,6 +7,7 @@ import {
 } from "../ChatList/Constants/ConstantsForChatlist";
 import { useContext } from "react";
 import { ThemeContext } from "../../Resources/themes";
+import { height } from "../Chats/SemiComponents/ChatConstants";
 interface BackGroundGradinetViewProps {
   children?: ReactNode;
 }
@@ -25,7 +26,7 @@ const BackGroundGradinetView: React.FC<BackGroundGradinetViewProps> = ({
       locations={[0.25, 0.5, 0.75]}
       start={{ x: 1, y: 0 }}
       end={{ x: 0, y: 1 }}
-      style={{ height: screenHeight, width: screenWidth }}
+      style={{ height: height, width: screenWidth }}
     >
       {children}
     </LinearGradient>

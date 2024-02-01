@@ -26,7 +26,7 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({
           elevation: 0.001,
           borderBottomLeftRadius: 30,
           borderBottomRightRadius: 30,
-          height: heightOfHeader,
+          height: heightOfHeader-5,
           justifyContent: "flex-end",
           overflow: "hidden",
         },
@@ -44,7 +44,7 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({
           end={{ x: 0, y: 1 }}
           style={{
             opacity: 0.7,
-            top: -10,
+            top: 0,
             position: "absolute",
             left: 0,
             right: 0,

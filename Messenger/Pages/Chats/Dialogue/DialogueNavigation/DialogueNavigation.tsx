@@ -2,7 +2,7 @@
 import { Stack } from "../../../../Navigation/Navigation";
 import React from "react";
 import Dialogue from "../Dialogue";
-import PinnedMessageScreen from "../Screens/PinnedMessageScreen";
+import PinnedMessageScreen from "../../SemiComponents/Screens/PinnedMessageScreen";
 
 const DialogueNavigation = ({route}:any) => {
 
