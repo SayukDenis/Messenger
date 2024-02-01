@@ -1,17 +1,17 @@
 import { View } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
-import DialogueFooter from './components/DialogueFooter';
-import MessageMenu from './components/MessageMenu';
+import Footer from '../SemiComponents/Footer';
+import MessageMenu from '../SemiComponents/MessageMenu';
 import styles from './DialogueStyle';
 import React from 'react';
-import DeleteMessageModal from './components/DeleteMessageModal';
+import DeleteMessageModal from '../SemiComponents/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 import { connect } from 'react-redux';
 import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
-import DialogueMessagesUsingClass from './components/DialogueMessagesUsingClass';
+import DialogueMessages from './components/DialogueMessages';
 import Header from '../SemiComponents/Header';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
@@ -223,7 +223,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onUnpinPress={pinMessageHandler}
             onDeletePress={onPinnedMessageScreenDeletePress}
           />
-          <DialogueMessagesUsingClass 
+          <DialogueMessages 
             navigation={navigation}
             setMessageMenuVisible={handleMessagePressOrSwipe} 
             messageID={messageID} 
@@ -239,7 +239,7 @@ const Dialogue = ({ navigation, route }:any) => {
             setPinnedMessage={setPinnedMessageHandler}
             deletedMessagesId={deletedMessagesId}
           />
-          <DialogueFooter 
+          <Footer 
             messages={listOfMessages} 
             setMessages={setMessages} 
             isReply={isReply} 

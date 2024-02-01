@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import styles from '../../Styles/DialogueHeader';
+import styles from '../../Styles/Header';
 import * as DialogueModel from '../../../../../dao/Models/Chats/Dialogue';
 
 interface CenterPartOfHeaderProps {
