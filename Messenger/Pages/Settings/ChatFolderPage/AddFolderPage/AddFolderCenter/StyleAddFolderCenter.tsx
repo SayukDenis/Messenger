@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;525
+const windowWidth = Dimensions.get('window').width;
 
 const StyleAddFolderCenter = StyleSheet.create({
     styleAddFolderText:{

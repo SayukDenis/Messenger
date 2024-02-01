@@ -3,7 +3,6 @@ import React, { useState, memo, useEffect, useRef } from 'react';
 import styles from './Styles/Footer';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
 import { DialogueFooterProps } from './Interfaces/IDialoueFooter';
-import { screenHeight, screenWidth } from '../../ChatList/Constants/ConstantsForChatlist';
 import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux';
 import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
@@ -73,7 +72,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
   const easing: EasingFunction = Easing.linear;
   const copyPopUpPositionY = copyPopUpTranslate.interpolate({
     inputRange: [0, 1],
-    outputRange: [screenHeight * 0.07, 0],
+    outputRange: [height * 0.07, 0],
   });
   const animateOfCopyPopUp = Animated.timing(copyPopUpTranslate, {
     toValue: 1, 
@@ -99,14 +98,6 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
     } 
   }, [copyMessagePopUp])
 
-  const insets = useSafeAreaInsets();
-  const checkForSoftMenuBar = () => {
-    if(height-screenHeight-Constants.statusBarHeight > 0)
-      return insets.top;
-    
-    return 0;
-  }
-
   const sendMessageHandler = () => {
     sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author});
   }
@@ -123,7 +114,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
         isEdit={isEdit} 
         editMessage={editMessage}
       />
-      <View style={[styles.mainContainer, { bottom: checkForSoftMenuBar()?-(height-screenHeight-Constants.statusBarHeight):-screenHeight*0.06, }]} >
+      <View style={[styles.mainContainer, { bottom: -height*0.01-1, }]} >
         <View style={styles.gradientContainer}>
           <LinearGradient
             colors={["#cf9b95", "#c98bb8", "#c37adb"]}

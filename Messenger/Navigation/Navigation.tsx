@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import NavigationForSettings from '../Pages/Settings/NavigationForSettings';
+import NavigationForAuthorization from '../Pages/Authorization/NavigationForAuthorization';
 import { connect } from 'react-redux';
 import ChatListNavigation from '../Pages/ChatList/СhatListNavigation/ChatListNavigation';
 import DialogueNavigation from '../Pages/Chats/Dialogue/DialogueNavigation/DialogueNavigation';
@@ -13,6 +14,7 @@ const Navigation=()=>{
             <Stack.Navigator initialRouteName='ChatListNavigation' screenOptions={{headerShown:false}}>
                 <Stack.Screen name="ChatListNavigation" component={ChatListNavigation}/>
                 <Stack.Screen name="NavigationForSettings" component={NavigationForSettings}/>
+                <Stack.Screen name="NavigationForAuthorization" component={NavigationForAuthorization} />
                 <Stack.Screen name="DialogueNavigation" component={DialogueNavigation}/>
             </Stack.Navigator>
         </NavigationContainer>

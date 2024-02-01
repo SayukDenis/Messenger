@@ -25,12 +25,9 @@ const StyleEditCenter = StyleSheet.create({
         marginTop:'5%',
         width:'25%',
         height:'4%',
-        backgroundColor:'#DAB671',
+        backgroundColor:'white',
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
-        borderTopWidth:1,
-        borderLeftWidth:1,
-        borderRightWidth:1,
     },
 
     box:{
@@ -42,17 +39,14 @@ const StyleEditCenter = StyleSheet.create({
     paragTextStyle:{
         alignSelf:'flex-start',
         marginLeft:'5%',
-        marginTop:'10%',
+        marginTop:'5%',
         marginBottom:'3%',
     },
 
     inputText:{
         width:'90%',
         height:windowHeight*0.07,
-        backgroundColor:'#DAB671',
-        borderRadius:10,
-        borderWidth:1,
-        padding:'3%'
+        paddingLeft:'3%',
     },
 
     buttonConteiner:{
@@ -60,10 +54,6 @@ const StyleEditCenter = StyleSheet.create({
         width:'90%',
         padding:'3%',
         justifyContent:'center',
-        height:windowHeight*0.07,
-        backgroundColor:'#DAB671',
-        borderRadius:10,
-        borderWidth:1,
     }
 
 

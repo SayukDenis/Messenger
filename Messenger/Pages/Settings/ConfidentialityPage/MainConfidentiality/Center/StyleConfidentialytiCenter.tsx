@@ -12,6 +12,7 @@ const StyleConfidentialityCenter = StyleSheet.create({
     textStyle:{
         marginTop:"3%",
         marginLeft:"3%",
+        marginBottom:'2%'
     },
 
     buttonsConteiner:{

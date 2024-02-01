@@ -2,7 +2,6 @@ import React, { Component, Dispatch } from "react";
 import { DialogueMessagesProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent } from "react-native";
 import { connect } from "react-redux";
-import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 import Constants from 'expo-constants';
 import { height } from "../../SemiComponents/ChatConstants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -218,30 +217,22 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   }
 
   render() {
-
-    const checkForSoftMenuBar = () => {
-      if(height-screenHeight-Constants.statusBarHeight > 0)
-        return Constants.statusBarHeight;
-      
-      return 0;
-    }
-
     const keyExtractor = (item:any) => {
       return item?.messageId?.toString();
     }
 
     const ListHeaderComponent = () => (
-      <View style={{ height: screenHeight * 0.02+(this.props.isReply||this.props.isEdit?screenHeight*0.06:0) }} />
+      <View style={{ height: (height * 0.07+(this.props.isReply||this.props.isEdit?height*0.06:0)) }} />
     );
   
     const ListFooterComponent = () => (
       <View 
-        style={{ backgroundColor: 'transparent', height: (screenHeight*0.08+(this.props.hasPinnedMessage?screenHeight*0.05:0)+Constants.statusBarHeight) }} 
+        style={{ backgroundColor: 'transparent', height: (height*0.07+(this.props.hasPinnedMessage?height*0.05:0)+Constants.statusBarHeight) }} 
       />
     )
 
     return (
-      <Animated.View style={[styles.mainContainer, { height: screenHeight * 0.94 + checkForSoftMenuBar(), zIndex:0, transform: [{ translateY: this.state.keyboardHeight }] }]}>
+      <Animated.View style={[styles.mainContainer, { height: height * 0.94, zIndex:0, transform: [{ translateY: this.state.keyboardHeight }] }]}>
         <FlatList
           onScroll={this.checkForPinMessage}
           ref={this.flatListRef}

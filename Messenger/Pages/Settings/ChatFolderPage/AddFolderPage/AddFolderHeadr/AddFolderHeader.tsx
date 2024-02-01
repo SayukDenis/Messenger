@@ -25,7 +25,7 @@ const AddFolderHeader: React.FC<any> = ({ navigation })=>{
     return <View >
             <View style = {StyleAddFolderHeader.addFolderHeaderConteiner}>
                 <TouchableOpacity style = {StyleAddFolderHeader.backButt} onPress={()=>navigation.goBack()} ><BackButton></BackButton></TouchableOpacity>
-                <View style={StyleAddFolderHeader.NewFolderArticleConteiner}><Text>New folder</Text></View>
+                <View style={StyleAddFolderHeader.NewFolderArticleConteiner}><Text style = {StyleAddFolderHeader.ArticleNewFolder}>New folder</Text></View>
                 <TouchableOpacity style ={StyleAddFolderHeader.DoneButton} onPress={addItem} ><Text>Done</Text></TouchableOpacity>
             </View>
     </View>

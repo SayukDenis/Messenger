@@ -12,10 +12,11 @@ import { addUserForCreateGroupOrChannel } from "../../../../ReducersAndActions/A
 
 interface AddMembersForMoreThanZeroSelectedProps {
   onMemberTouch: MutableRefObject<() => void>;
+  addNameOfUser: string;
 }
 const AddMembersForMoreThanZeroSelected: React.FC<
   AddMembersForMoreThanZeroSelectedProps
-> = ({ onMemberTouch }) => {
+> = ({ onMemberTouch,addNameOfUser }) => {
   const height = screenHeight * 0.035;
   const width = screenWidth * 0.92;
   const topBorderRadius = 20;
@@ -72,7 +73,7 @@ const AddMembersForMoreThanZeroSelected: React.FC<
             //backgroundColor: "red",
           }}
         >
-          {"Member"}
+          {addNameOfUser}
         </Text>
         <BackGroundColorForComponents height={height} width={width / 2} />
       </TouchableOpacity>
@@ -89,7 +90,7 @@ const AddMembersForMoreThanZeroSelected: React.FC<
             opacity,
           }}
         >
-          {"All members"}
+          {`All ${addNameOfUser}s`}
         </Text>
         <BackGroundColorForComponents height={height} width={width / 2} />
       </TouchableOpacity>
