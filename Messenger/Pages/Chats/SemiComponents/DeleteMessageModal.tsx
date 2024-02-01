@@ -27,7 +27,7 @@ const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, messag
               Do you want to delete this message? {message?.author.userId==author.userId||'It will be deleted only for you.'}
             </Text>
           </View>
-          {message!=undefined?(
+          {message!=undefined&&(
             <View style={styles.modalButtonsContainer}>
               <TouchableOpacity 
                 activeOpacity={1} 
@@ -46,7 +46,7 @@ const DeleteMessageModal = ({deleting, setDeletingHandler, onDeletePress, messag
                 <Text style={styles.modalButtonText}>{message.author.userId==author.userId?'For everyone':'Disagree'}</Text>
               </TouchableOpacity>
             </View>
-          ):null}
+          )}
         </View>
       </TouchableOpacity>
     </Modal>

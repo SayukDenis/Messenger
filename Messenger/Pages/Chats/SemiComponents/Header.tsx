@@ -7,6 +7,7 @@ import RightPartOfHeader from './HelperComponents/Header/RightPartOfHeader';
 import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
 import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
 import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
+import styles from './Styles/Header';
 
 const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, chatType }:DialogueHeaderProps) => {
   if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
@@ -16,27 +17,25 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author
   const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage?.messageId)+1;
 
   return(
-    <View style={{ backgroundColor: 'green', zIndex: 10 }}>
+    <View style={{ zIndex: 10 }}>
       <HeaderContainer>
-        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', paddingHorizontal: 20, paddingVertical: 10 }}>
-            <LeftPartOfHeader 
-              counterOfSelectedMessages={counterOfSelectedMessages} 
-              selecting={selecting} 
-              navigation={navigation} 
-            />
-            <CenterPartOfHeader 
-              picture={picture} 
-              dialogue={chatType}
-              displayName={displayName} 
-              activityTime={activityTime} 
-              navigation={navigation}
-            />
-            <RightPartOfHeader 
-              selecting={selecting} 
-              cancelSelection={cancelSelection} 
-            />
-          </View>
+        <View style={styles.header}>
+          <LeftPartOfHeader 
+            counterOfSelectedMessages={counterOfSelectedMessages} 
+            selecting={selecting} 
+            navigation={navigation} 
+          />
+          <CenterPartOfHeader 
+            picture={picture} 
+            dialogue={chatType}
+            displayName={displayName} 
+            activityTime={activityTime} 
+            navigation={navigation}
+          />
+          <RightPartOfHeader 
+            selecting={selecting} 
+            cancelSelection={cancelSelection} 
+          />
         </View>
       </HeaderContainer>
       <PinnedMessageView 

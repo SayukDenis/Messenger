@@ -4,10 +4,11 @@ import React from 'react';
 import { wrapText } from '../MessageViewAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { ReplyTextType } from './Interfaces/IReplyText';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE } from '../ChatConstants';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import PinButton from '../SVG/PinButton';
+import LineSeparator from '../HelperComponents/General/LineSeparator';
 
 const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLastWatched, pinned}:ReplyTextType) => {
   const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
@@ -16,32 +17,19 @@ const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLa
       <View style={styles.replyContainer} >
         <View style={styles.innerReplyContainer} >
           <Text style={[styles.replyUserNameFont, isUser&&{ alignSelf: 'flex-end' }]}>
-            {isUser?'You':'Denis'}
+            {isUser?'You':'Denis' /* Replace with data from DB */}
           </Text>
-          {isUser?
-          <View style={styles.replyMessageContainer}>
+          <View style={[styles.replyMessageContainer, !isUser&&{ flexDirection: 'row-reverse', alignSelf: 'flex-start' }]}>
             <View>
-              <View style={[styles.messageTypeTextUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
-                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:'#E09EFF' }} /> 
+              <View style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
+                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
                 <Text style={styles.replyMessageFont}>
                   {replyMessage!=undefined&&replyMessage?.content?.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </View>
-            <View style={styles.replyMessageLine}/>
+            <LineSeparator color='blue' height={'175%'} />
           </View>
-          :
-          <View style={styles.replyMessageContainer}>
-            <View style={styles.replyMessageLine}/>
-            <View style={{ flex:1 }} >
-              <View style={[styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
-                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:'#fff' }} /> 
-                <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
-                </Text>
-              </View>
-            </View>
-          </View>}
           <View >
             <View 
               style={[functionalStyles.messageContainer(isUser, message.content.length), { height: height }]}
@@ -66,7 +54,7 @@ const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLa
           </View>
         </View>
         { isUser && 
-          <View style={{ position: 'absolute', right: 0, bottom: 5 , marginRight: -2.5 }}>
+          <View style={styles.messageViewStatus}>
             { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
           </View> }
       </View>

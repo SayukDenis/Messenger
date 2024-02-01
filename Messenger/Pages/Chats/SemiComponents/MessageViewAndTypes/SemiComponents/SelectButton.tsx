@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import SelectButtonMarkIcon from '../../SVG/SelectButtonMarkIcon';
+import { SIZE_OF_SELECT_BUTTON } from '../../ChatConstants';
 
 interface SelectButtonProps {
   selected: boolean;
@@ -20,8 +21,8 @@ const SelectButton = ({ selected, isUser, verticalOffset, horizontalOffset }:Sel
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    width: 20, 
-    height: 20, 
+    width: SIZE_OF_SELECT_BUTTON, 
+    height: SIZE_OF_SELECT_BUTTON, 
     borderRadius: 9999, 
     backgroundColor: '#fff',
     borderWidth: 0.2,

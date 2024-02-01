@@ -3,6 +3,7 @@ import React from 'react';
 import FooterGallaryButton from '../../SVG/FooterGallaryButton';
 import { screenHeight } from '../../../../ChatList/Constants/ConstantsForChatlist';
 import FooterSendMessageButton from '../../SVG/FooterSendMessageButton';
+import { functionalStyles } from './Styles/RightPartOfFooter';
 
 interface RightPartOfFooter { 
   sendMessage: boolean;
@@ -14,7 +15,7 @@ const RightPartOfFooter = ({ sendMessage, sendMessageHandler, pressGalleryButton
   return (
     <TouchableOpacity 
       activeOpacity={1}
-      style={{ backgroundColor: !sendMessage?'rgba(255, 255, 255, 0.8)':'transparent', alignItems: 'center', justifyContent: 'center', borderRadius: 5, width: screenHeight * 0.045, height: screenHeight * 0.045 }}
+      style={functionalStyles.container(sendMessage)}
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
       onPress={sendMessage?sendMessageHandler:pressGalleryButtonHandler}
     >

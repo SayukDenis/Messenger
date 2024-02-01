@@ -11,7 +11,7 @@ import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Con
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, height, width } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
 import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
@@ -229,13 +229,13 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const { selecting } = this.props;
     const { selected } = this.state;
     
-    if (selecting && Math.abs(locationX-locationX_In) < 0.3 && Math.abs(locationY-locationY_In) < 0.3) {
+    if (selecting && Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
       this.setState({ selected: !selected });
       this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       return;
     }
 
-    if (Math.abs(locationX-locationX_In) < 0.3 && Math.abs(locationY-locationY_In) < 0.3) {
+    if (Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });
@@ -244,11 +244,11 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   getSelectOffsetHorizontal = () => {
     const { widthOfMessage, widthOfReply } = this.state;
-    return widthOfMessage > widthOfReply ? this.state.sizeOfMessageContainer[0] - (20 + 5) - widthOfMessage : this.state.sizeOfMessageContainer[0] - (20 + 5) - widthOfReply;
+    return widthOfMessage > widthOfReply ? this.state.sizeOfMessageContainer[0] - (SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL) - widthOfMessage : this.state.sizeOfMessageContainer[0] - (SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL) - widthOfReply;
   }
 
   getSelectOffsetVertical = () => {
-    return this.state.sizeOfMessageContainer[1] / 2 - 10;
+    return (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
   }
 
   render() {

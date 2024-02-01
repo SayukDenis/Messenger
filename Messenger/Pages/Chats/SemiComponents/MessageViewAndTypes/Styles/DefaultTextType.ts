@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, ViewStyle } from "react-native";
 import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
-import { DEFAULT_CHARS_PER_LINE } from "../../ChatConstants";
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, MESSAGE_SWIPE_TO_REPLY_WIDTH } from "../../ChatConstants";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -11,12 +11,12 @@ export const styles = StyleSheet.create({
     overflow:'hidden'
   },
   mainContainer: {
-    width:width+50, 
+    width: width - 5, 
     flexDirection:'row', 
     overflow:'visible'
   },
   messageBlockContainer: {
-    paddingVertical: 5,
+    paddingVertical: MESSAGE_PADDING_VERTICAL,
     flex: 1,
     alignSelf: 'stretch',
     alignItems: 'stretch',
@@ -25,18 +25,17 @@ export const styles = StyleSheet.create({
     width: width
   },
   messageContainer: {
-    marginRight: 10,
-    marginLeft: 10,
+    marginHorizontal: 10,
     flexDirection: 'row'
   },
   messageTypeTextUser: {
     //backgroundColor: 'rgb(102, 191, 255)',
     marginLeft: 'auto',
-    fontSize: 10,
+    fontSize: DEFAULT_FONT_SIZE,
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 6,
-    paddingLeft: 10,
+    paddingVertical: MESSAGE_PADDING_VERTICAL,
+    paddingLeft: MESSAGE_PADDING_HORIZONTAL,
     border: 'none',
     borderRadius: 10,
     maxWidth: '100%',
@@ -45,11 +44,11 @@ export const styles = StyleSheet.create({
   messageTypeTextNotUser: {
     //backgroundColor: 'rgb(231, 230, 228)',
     marginRight: 'auto',
-    fontSize: 10,
+    fontSize: DEFAULT_FONT_SIZE,
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 6,
-    paddingLeft: 10,
+    paddingVertical: MESSAGE_PADDING_VERTICAL,
+    paddingLeft: MESSAGE_PADDING_HORIZONTAL,
     border: 'none',
     borderRadius: 10,
     maxWidth: '100%'
@@ -77,8 +76,8 @@ export const styles = StyleSheet.create({
   messageViewStatus: { 
     position: 'absolute', 
     right: 0, 
-    bottom: 10, 
-    marginRight: -2.5 
+    bottom: MESSAGE_PADDING_VERTICAL, 
+    marginRight: -MESSAGE_PADDING_HORIZONTAL/4 
   },
   messageSwipeToReply: { 
     alignItems: 'center', 

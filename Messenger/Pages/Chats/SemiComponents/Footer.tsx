@@ -53,7 +53,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
         Animated.timing(keyboardHeight, {
           toValue: 0,
           duration: 200,
-          useNativeDriver: false, // Adjust based on your requirements
+          useNativeDriver: false,
         }).start();
         setKeyboardActive(false);
         if(textInput.current) {

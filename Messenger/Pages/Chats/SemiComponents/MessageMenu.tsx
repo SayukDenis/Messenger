@@ -290,18 +290,33 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
   };
   
   const handleMenuPosition = () => {
+    const MESSAGE_HORIZONTAL_PADDING = 10;
+    const USER_GAP_BETWEEN_MENU_AND_MESSAGE = 10; // is greater by 5 beacuse user's message have status (seen/not seen)
+    const NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE = 5;
     if(isUser) {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
-        return { top:(coord?coord.pageY:0), left:(coord?width-coord.width-10:0)-size.width-10 }
+        return { 
+          top:(coord?coord.pageY:0), 
+          left:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+        }
       }
       else {
-        return { top:(coord?coord.pageY:0)-size.height, left:(coord?width-coord.width-10:0)-size.width-10 }
+        return { 
+          top:(coord?coord.pageY:0)-size.height, 
+          left:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+        }
       }
     } else {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
-        return { top:(coord?coord.pageY:0), right:(coord?width-coord.width-10:0)-size.width-5 }
+        return { 
+          top:(coord?coord.pageY:0), 
+          right:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+        }
       } else {
-        return { top:(coord?coord.pageY:0)-size.height, right:(coord?width-coord.width-10:0)-size.width-5 }
+        return { 
+          top:(coord?coord.pageY:0)-size.height, 
+          right:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+        }
       }
     }
   }
@@ -340,7 +355,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       style={styles.container} 
       onPress={() => {
         closeMenu();
-        setTimeout(() => onOverlayPress(), 100)
+        setTimeout(() => onOverlayPress(), durationOfAnimation*10)
       }}
     >
       <View style={{ top: coord.componentPageY, height: coord.height }}>

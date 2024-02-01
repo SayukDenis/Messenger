@@ -21,7 +21,7 @@ import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessage
 import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-import { DEFAULT_CHARS_PER_LINE, height, width } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
 import { Dispatch } from 'redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
@@ -289,13 +289,13 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
 
-            if (selecting && Math.abs(locationX - locationX_In) < 0.3 && Math.abs(locationY - locationY_In) < 0.3) {
+            if (selecting && Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
               this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
               this.setState({ selected: !selected });
               return;
             }
 
-            if (Math.abs(locationX - locationX_In) < 0.3 && Math.abs(locationY - locationY_In) < 0.3) {
+            if (Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
               await this.handlePress(event).then((layout) => {
                 this.props.setMessageMenuVisible(layout, true);
               });
@@ -342,7 +342,12 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                 />
               }
               {selecting && (
-                <SelectButton selected={selected} isUser={isUser} verticalOffset={heightOfMessage / 2 - 10} horizontalOffset={-(20 + 5)} />
+                <SelectButton 
+                  selected={selected} 
+                  isUser={isUser} 
+                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
+                  horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
+                />
               )}
             </View>
             {isUser && (
@@ -355,10 +360,10 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
               </View>
             )}
           </View>
-          <View style={styles.messageSwipeToReply}>
-            <ReplyIcon />
-          </View>
         </TouchableOpacity>
+        <View style={styles.messageSwipeToReply}>
+          <ReplyIcon />
+        </View>
       </ScrollView>
     );
   }

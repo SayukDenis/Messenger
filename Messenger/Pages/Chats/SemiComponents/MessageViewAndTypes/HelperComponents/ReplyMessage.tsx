@@ -4,6 +4,7 @@ import User from '../../../../../dao/Models/User';
 import { DEFAULT_CHARS_PER_LINE } from '../../ChatConstants';
 import { styles } from '../Styles/ReplyTextType';
 import { MessageProps } from '../../Interfaces/GeneralInterfaces/IMessage';
+import LineSeparator from '../../HelperComponents/General/LineSeparator';
 
 interface ReplyMessageProps {
   message: MessageProps;
@@ -22,7 +23,7 @@ class ReplyMessage extends PureComponent<ReplyMessageProps> {
         onLayout={(event) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
         style={[styles.replyMessageContainer, !this.isUser&&{ alignSelf: 'flex-start' }]}
       >
-        { !this.isUser&&<View style={styles.replyMessageLine}/> }
+        { !this.isUser&&<LineSeparator height={'175%'} color='blue' /> }
         <TouchableOpacity 
           activeOpacity={1} 
           onPress={() => { this.props.handleLinkTo(this.props.message!.messageResponseId!) }}
@@ -35,7 +36,7 @@ class ReplyMessage extends PureComponent<ReplyMessageProps> {
             </Text>
           </View>
         </TouchableOpacity>
-        { this.isUser&&<View style={styles.replyMessageLine}/> }
+        { this.isUser&&<LineSeparator height={'175%'} color='blue' /> }
       </View>
     )
   }

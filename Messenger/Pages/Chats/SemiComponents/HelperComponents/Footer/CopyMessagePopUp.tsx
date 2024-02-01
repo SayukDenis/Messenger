@@ -1,7 +1,8 @@
 import { View, Text, Animated } from 'react-native';
 import React from 'react';
 import DialogueFooterCopyIcon from '../../SVG/DialogueFooterCopyIcon';
-import { screenHeight, screenWidth } from '../../../../ChatList/Constants/ConstantsForChatlist';
+import LineSeparator from '../General/LineSeparator';
+import { functionalStyles, styles } from './Styles/CopyMessagePopUp';
 
 interface CopyMessagePopUpProps { 
   show: boolean, 
@@ -11,10 +12,10 @@ interface CopyMessagePopUpProps {
 const CopyMessagePopUp = ({ show, copyPopUpPositionY }: CopyMessagePopUpProps ) => {
   return (
     show &&
-    (<Animated.View style={{ position: 'absolute', bottom: screenHeight*0.03, width: screenWidth*0.9, alignSelf: 'center', transform: [{ translateY: copyPopUpPositionY }] }}>
-      <View style={{ backgroundColor: '#fff', flexDirection: 'row', paddingHorizontal: 20, paddingVertical: 10, alignItems: 'center', borderRadius: 9999,  }}>
+    (<Animated.View style={functionalStyles.animatedContainer(copyPopUpPositionY)}>
+      <View style={styles.container}>
         <DialogueFooterCopyIcon />
-        <View style={{ width: 1, height: '140%', backgroundColor: 'black', marginHorizontal: 5 }} />
+        <LineSeparator color='black' height={'140%'} marginHorizontal={5} />
         <Text>Message Copied</Text>
       </View>
     </Animated.View>)

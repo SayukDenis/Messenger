@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, ViewStyle } from "react-native";
 import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from "../../ChatConstants";
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL } from "../../ChatConstants";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -23,13 +23,12 @@ export const styles = StyleSheet.create({
   },
   innerReplyContainer: {
     alignSelf: 'stretch',
-    marginRight:10,
-    marginLeft:10,
+    marginHorizontal:10,
   },
   replyUserNameFont: {
     alignSelf: 'flex-start',
     color:'rgb(29,78,216)',
-    fontSize:10, 
+    fontSize:DEFAULT_FONT_SIZE, 
   },
   replyMessageContainer: {
     display:'flex', 
@@ -40,11 +39,11 @@ export const styles = StyleSheet.create({
   messageTypeTextUser: {
     //backgroundColor: 'rgb(102, 191, 255)',
     marginLeft: 'auto',
-    fontSize: 10,
+    fontSize: DEFAULT_FONT_SIZE,
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 6,
-    paddingLeft: 10,
+    paddingVertical: MESSAGE_PADDING_VERTICAL,
+    paddingLeft: MESSAGE_PADDING_HORIZONTAL,
     border: 'none',
     borderRadius: 10,
     maxWidth: '100%',
@@ -63,23 +62,16 @@ export const styles = StyleSheet.create({
   },
   replyMessageFont: {
     fontStyle:'italic', 
-    fontSize:10
-  },
-  replyMessageLine: {
-    marginBottom:-25, 
-    width:1, 
-    height:'150%',
-    backgroundColor:'blue',
-    overflow:'visible'
+    fontSize:DEFAULT_FONT_SIZE
   },
   messageTypeTextNotUser: {
     //backgroundColor: 'rgb(231, 230, 228)',
     marginRight: 'auto',
-    fontSize: 10,
+    fontSize: DEFAULT_FONT_SIZE,
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 6,
-    paddingLeft: 10,
+    paddingVertical: MESSAGE_PADDING_VERTICAL,
+    paddingLeft: MESSAGE_PADDING_HORIZONTAL,
     border: 'none',
     borderRadius: 10,
     maxWidth: '100%'
@@ -100,8 +92,8 @@ export const styles = StyleSheet.create({
   messageViewStatus: { 
     position: 'absolute', 
     right: 0, 
-    bottom: 5, 
-    marginRight: -2.5 
+    bottom: MESSAGE_PADDING_VERTICAL, 
+    marginRight: -MESSAGE_PADDING_HORIZONTAL/4
   },
   longMessageTimeStamp: {
     marginRight: 0,

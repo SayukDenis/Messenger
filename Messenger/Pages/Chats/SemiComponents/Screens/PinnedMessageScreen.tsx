@@ -134,6 +134,12 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     />
   );
 
+  ListFooterComponent = () => (
+    <View 
+      style={{ backgroundColor: 'transparent', height: heightOfHeader }} 
+    />
+  );
+
   unpinAllHandler = () => {
     this.props.route?.params.unpinAllMessagesHandler();
     this.props.route?.params.navigation.goBack();
@@ -178,7 +184,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     const mes = listOfMessages.find(m => m.messageId==this.state.messageID);
 
     return (
-      <View style={{ backgroundColor: 'green', zIndex: 10 }}>
+      <View>
         <BackGroundGradinetView>
           <MessageMenu 
             isUser={mes!=undefined&&mes.author.userId===author?.userId} 
@@ -226,6 +232,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
             ListHeaderComponent={this.ListHeaderComponent}
+            ListFooterComponent={this.ListFooterComponent}
             inverted
           />
         </BackGroundGradinetView>

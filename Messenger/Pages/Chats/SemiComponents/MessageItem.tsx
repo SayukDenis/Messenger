@@ -54,7 +54,10 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
           if(typeof pinnedMessageHandler === 'function')
             pinnedMessageHandler(item.messageId!, height);
         }}
-        style={{ flex: 1, zIndex: item.messageId === messageID ? 4 : -10 }}
+        // style={{ 
+        //   flex: 1, 
+        //   zIndex: item.messageId === messageID ? 4 : -10
+        // }}
       >
         {messageViewHandle({ message: item })}
       </View>
