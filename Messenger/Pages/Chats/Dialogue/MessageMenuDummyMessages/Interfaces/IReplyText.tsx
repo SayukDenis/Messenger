@@ -1,5 +1,5 @@
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
-import { MessageProps } from "../../GeneralInterfaces/IMessage";
+import { MessageProps } from "../../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 
 export interface ReplyTextType {
   messages: MessageProps[];
@@ -7,4 +7,5 @@ export interface ReplyTextType {
   isUser: boolean;
   height: number;
   userMessageLastWatched: ILastWatchedMessage|undefined;
+  pinned: boolean;
 }

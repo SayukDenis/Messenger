@@ -7,7 +7,7 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { styles } from './Styles/ReplyTextType';
+import { functionalStyles, styles } from './Styles/ReplyTextType';
 import { wrapText } from './HelperFunctions/wrapText';
 import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import ReplyIcon from '../../SemiComponents/SVG/ReplyIcon';
@@ -21,6 +21,7 @@ import { ReplyTextTypeProps, ReplyTextTypeState, componentPageProps, coordProps 
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import PinButton from '../../SemiComponents/SVG/PinButton';
 import { MessageProps } from '../../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
+import ScrollButton from './SemiComponents/ScrollButton';
 
 let size:any[] = [];
 
@@ -254,6 +255,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const { message, author, selecting, pinnedMessageScreen } = this.props;
     const { selected } = this.state;
 
+    const isUser = this.props.message.author.userId == this.props.author.userId;
+
     return (
       <ScrollView 
         horizontal={true} 
@@ -283,7 +286,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             onPressOut={this.onPressOut}
           >
             <Text style={[styles.replyUserNameFont, this.props.message.author.userId==this.props.author.userId && { alignSelf: 'flex-end' }]}>
-              {this.props.message.author.userId == this.props.author.userId ? 'You' : 'Denis'}
+              {isUser ? 'You' : 'Denis'}
             </Text>
             <ReplyMessage 
               message={this.props.message}
@@ -297,34 +300,61 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               activeOpacity={1} 
               onPressIn={this.onPressIn}
               onPressOut={this.onPressOut}
+              style={{ alignSelf: isUser?'flex-end':'flex-start', flexDirection: 'row' }}
             >
+              { this.props.pinnedMessageScreen && isUser &&
+                <ScrollButton 
+                  navigation={this.props.navigation}
+                  dispatch={this.props.dispatch}
+                  messageId={this.props.message.messageId!}
+                  isUser={isUser}
+                />
+              }
               <View 
                 onLayout={(event) => this.onLayout(event)}
-                style={[this.props.message.author.userId == this.props.author.userId ? styles.messageTypeTextUser : styles.messageTypeTextNotUser, {marginTop:Math.ceil(DEFAULT_FONT_SIZE)+1}, this.props.message?.content.length > DEFAULT_CHARS_PER_LINE && styles.longMessage, { overflow: 'hidden' }]}
+                style={functionalStyles.messageContainer(isUser, message.content.length)}
               >
-                <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: selecting && selected ? 1 : 0.4, backgroundColor: this.props.message.author.userId === this.props.author.userId ? '#E09EFF' : '#fff' }} /> 
+                <View 
+                  style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
+                /> 
                 <Text>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
-                <Text style={this.props.message?.content.length > DEFAULT_CHARS_PER_LINE ? [styles.messageTimeStamp, styles.longMessageTimeStamp] : styles.messageTimeStamp}>
-                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton size={screenHeight*0.008}/>}
-                  {this.props.message.isEdited ? 'edited ' : ''}
-                  {new Date(this.props.message.sendingTime).getHours().toString().padStart(2, '0')}:
-                  {new Date(this.props.message.sendingTime).getMinutes().toString().padStart(2, '0')}
-                </Text>
+                <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
+                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  <Text
+                    style={
+                      message.content.length > DEFAULT_CHARS_PER_LINE
+                        ? [styles.messageTimeStamp, styles.longMessageTimeStamp]
+                        : styles.messageTimeStamp
+                    }
+                  >
+                    {message.isEdited ? 'edited ' : ''}
+                    {message.sendingTime.getHours().toString().padStart(2, '0')}:
+                    {message.sendingTime.getMinutes().toString().padStart(2, '0')}
+                  </Text>
+                </View>
               </View>
+              { this.props.pinnedMessageScreen && !isUser &&
+                <ScrollButton 
+                  navigation={this.props.navigation}
+                  dispatch={this.props.dispatch}
+                  messageId={this.props.message.messageId!}
+                  isUser={isUser}
+                />
+              }
               {selecting && <SelectButton 
                 selected={selected}
-                isUser={this.props.message.author.userId == this.props.author.userId}
+                isUser={isUser}
                 verticalOffset={this.getSelectOffsetVertical()}
                 horizontalOffset={this.getSelectOffsetHorizontal()}
               />}
             </TouchableOpacity>
           </TouchableOpacity>
-          { this.props.message.author.userId == this.props.author.userId && 
-            <View style={{ position: 'absolute', right: 0, bottom: 5 , marginRight: -2.5 }}>
+          { isUser && 
+            <View style={styles.messageViewStatus}>
               { this.props.message.messageId! <= this.props.userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
             </View> }
         </View>
-        <View style={{ alignItems: 'center', justifyContent: 'center', width: 55 }}>
+        <View style={styles.messageSwipeToReply}>
           <ReplyIcon />
         </View>
       </ScrollView>

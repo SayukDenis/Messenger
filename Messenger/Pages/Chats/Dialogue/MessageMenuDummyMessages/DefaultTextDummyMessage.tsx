@@ -7,7 +7,8 @@ import { DefaultTextMessageProps } from './Interfaces/IDefaultText';
 import { DEFAULT_CHARS_PER_LINE } from '../../SemiComponents/ChatConstants';
 import MessageItemStatusMessageNotReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageNotReviewed';
 import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
-const DefaultTextDummyMessage = ({ message, isUser, height, userMessageLastWatched}:DefaultTextMessageProps) => {
+import PinButton from '../../SemiComponents/SVG/PinButton';
+const DefaultTextDummyMessage = ({ message, isUser, height, userMessageLastWatched, pinned }:DefaultTextMessageProps) => {
   if(!message) return null;
   return (
     <View style={[styles.messageBlockContainer, isUser&&{ justifyContent:'flex-end' }]}>
@@ -17,11 +18,20 @@ const DefaultTextDummyMessage = ({ message, isUser, height, userMessageLastWatch
         >
           <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
           <Text>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
-          <Text style={message.content.length>DEFAULT_CHARS_PER_LINE?[styles.messageTimeStamp, styles.longMessageTimeStamp]:styles.messageTimeStamp}>
-            {message.isEdited?'edited ':''}
-            {message.sendingTime.getHours().toString().padStart(2, '0')}:
-            {message.sendingTime.getMinutes().toString().padStart(2, '0')}
-          </Text>
+          <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
+            {pinned&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+            <Text
+              style={
+                message.content.length > DEFAULT_CHARS_PER_LINE
+                  ? [styles.messageTimeStamp, styles.longMessageTimeStamp]
+                  : styles.messageTimeStamp
+              }
+            >
+              {message.isEdited ? 'edited ' : ''}
+              {message.sendingTime.getHours().toString().padStart(2, '0')}:
+              {message.sendingTime.getMinutes().toString().padStart(2, '0')}
+            </Text>
+          </View>
         </View> 
       </View>
       { isUser && 

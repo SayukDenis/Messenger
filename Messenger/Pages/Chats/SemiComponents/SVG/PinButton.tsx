@@ -2,11 +2,12 @@ import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 import { screenHeight } from "../../../ChatList/Constants/ConstantsForChatlist";
 
-function PinButton({ size=screenHeight*0.016 }:{ size?:number }) {
+function PinButton({ size=screenHeight*0.016, style={} }:{ size?:number, style?: any }) {
   return (
     <Svg
       width={size}
       height={size}
+      style={style}
       viewBox="0 0 13 12"
       fill="none"
     >

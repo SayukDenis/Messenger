@@ -1,4 +1,6 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, ViewStyle } from "react-native";
+import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
+import { DEFAULT_CHARS_PER_LINE } from "../../../SemiComponents/ChatConstants";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -59,6 +61,12 @@ export const styles = StyleSheet.create({
   longMessageTimeStamp: {
     marginRight: 0,
   },
+  messageInfoContainer: {
+    alignSelf: 'flex-end', 
+    marginBottom: screenHeight*0.0015, 
+    marginLeft: screenHeight*0.003, 
+    marginRight: -screenHeight*0.001
+  },
   messageTimeStamp: {
     display: 'flex',
     alignSelf: 'flex-end',
@@ -66,4 +74,35 @@ export const styles = StyleSheet.create({
     marginRight: 10,
     fontSize: 8,
   },
+  messageViewStatus: { 
+    position: 'absolute', 
+    right: 0, 
+    bottom: 10, 
+    marginRight: -2.5 
+  },
+  messageSwipeToReply: { 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    width: 55 
+  }
 });
+
+export const functionalStyles = {
+  backgroundWithShadeEffect: (selecting:boolean, selected:boolean, isUser:boolean) => {
+    return {
+      position: 'absolute',
+      height: screenHeight,
+      width: screenWidth,
+      zIndex: -1,
+      opacity: selecting && selected ? 1 : 0.4,
+      backgroundColor: isUser ? '#E09EFF' : '#fff',
+    } as ViewStyle;
+  },
+  messageContainer: (isUser:boolean, mesLength:number) => {
+    return [
+      isUser ? styles.messageTypeTextUser : styles.messageTypeTextNotUser,
+      mesLength > DEFAULT_CHARS_PER_LINE && styles.longMessage,
+      { overflow: 'hidden' }
+    ] as ViewStyle;
+  }
+}

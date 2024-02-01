@@ -15,7 +15,7 @@ import {
   setAnimationOfBackgroundForScrolledMessage,
   setScrollStateForPinnedMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import { styles } from './Styles/DefaultTextType';
+import { styles, functionalStyles } from './Styles/DefaultTextType';
 import { wrapText } from './HelperFunctions/wrapText';
 import ReplyIcon from '../../SemiComponents/SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../../SemiComponents/SVG/MessageItemStatusMessageReviewed';
@@ -248,7 +248,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
 
-    const isUser = message.author.userId == author.userId;
+    const isUser = message.author.userId === author.userId;
 
     return (
       <ScrollView
@@ -314,35 +314,24 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
               }
               <View
                 onLayout={this.onLayout}
-                style={[
-                  isUser ? styles.messageTypeTextUser : styles.messageTypeTextNotUser,
-                  message.content.length > DEFAULT_CHARS_PER_LINE && styles.longMessage,
-                  { overflow: 'hidden' },
-                ]}
+                style={functionalStyles.messageContainer(isUser, message.content.length)}
               >
-                <View
-                  style={{
-                    position: 'absolute',
-                    height: screenHeight,
-                    width: screenWidth,
-                    zIndex: -1,
-                    opacity: selecting && selected ? 1 : 0.4,
-                    backgroundColor: message.author.userId === author.userId ? '#E09EFF' : '#fff',
-                  }}
-                />
+                <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
                 <Text>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
-                <Text
-                  style={
-                    message.content.length > DEFAULT_CHARS_PER_LINE
-                      ? [styles.messageTimeStamp, styles.longMessageTimeStamp]
-                      : styles.messageTimeStamp
-                  }
-                >
-                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton size={screenHeight*0.008}/>}
-                  {message.isEdited ? 'edited ' : ''}
-                  {message.sendingTime.getHours().toString().padStart(2, '0')}:
-                  {message.sendingTime.getMinutes().toString().padStart(2, '0')}
-                </Text>
+                <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
+                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  <Text
+                    style={
+                      message.content.length > DEFAULT_CHARS_PER_LINE
+                        ? [styles.messageTimeStamp, styles.longMessageTimeStamp]
+                        : styles.messageTimeStamp
+                    }
+                  >
+                    {message.isEdited ? 'edited ' : ''}
+                    {message.sendingTime.getHours().toString().padStart(2, '0')}:
+                    {message.sendingTime.getMinutes().toString().padStart(2, '0')}
+                  </Text>
+                </View>
               </View>
               { this.props.pinnedMessageScreen && !isUser &&
                 <ScrollButton 
@@ -357,7 +346,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
               )}
             </View>
             {isUser && (
-              <View style={{ position: 'absolute', right: 0, bottom: 10, marginRight: -2.5 }}>
+              <View style={styles.messageViewStatus}>
                 {message.messageId! <= (userMessageLastWatched?.value?.messageId || 0) ? (
                   <MessageItemStatusMessageReviewed />
                 ) : (
@@ -366,7 +355,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
               </View>
             )}
           </View>
-          <View style={{ alignItems: 'center', justifyContent: 'center', width: 55 }}>
+          <View style={styles.messageSwipeToReply}>
             <ReplyIcon />
           </View>
         </TouchableOpacity>
