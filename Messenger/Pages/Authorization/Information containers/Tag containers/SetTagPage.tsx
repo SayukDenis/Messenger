@@ -16,6 +16,10 @@ import {
 import FormContainer from "../../Authorization containers/FormContainer";
 import ValidTextSVG from "../../../SemiComponents/ValidTextSVG";
 import InValidTextSVG from "../../../SemiComponents/InValidTextSVG";
+import {
+  listentingServer,
+  matchTagForAuthorizationEndPoint,
+} from "../../../ChatList/Constants/ServerConection";
 
 interface SetTagPageProps {
   navigation: any;
@@ -25,6 +29,9 @@ interface SetTagPageProps {
 const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [inputTag, setInputTag] = useState<string>(route.params.tag);
+  const [textOfTipsString, setTextOfTipsString] = useState<string>(
+    "We are waiting for your tag input"
+  );
   const textInputRef = useRef<TextInput>(null);
   const regex = /^[0-9a-z_]{5,16}$/;
   const pressOnBackButton = () => {
@@ -35,13 +42,30 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
     navigation.goBack();
   };
   useEffect(() => {
-    //console.log(inputBio)
-    setIsValid(isValidInput(inputTag));
+    textOfTips(inputTag);
   }, [inputTag]);
-  const isValidInput = (input: string): boolean => {
-    return regex.test(input);
+  const isMatchTags = async (tag: string) => {
+    try {
+      const serverUrl = listentingServer + matchTagForAuthorizationEndPoint;
+      const requestData = {
+        tag,
+      };
+      const response = await fetch(serverUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+      const data = await response.json();
+      console.log("Відповідь від сервера:", data);
+      return data.isMatch;
+    } catch (error) {
+      console.error("Помилка:", error);
+      return undefined;
+    }
   };
-  const colorOfTips = (input: string): string => {
+  const colorOfTips = (input: string) => {
     if (input.length == 0) {
       return "white";
     } else if (isValid) {
@@ -50,18 +74,38 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
       return "red";
     }
   };
-  const textOfTips = (input: string): string => {
+  const textOfTips = async (input: string) => {
     if (input.length == 0) {
-      return "We are waiting for your tag input";
+      setTextOfTipsString("We are waiting for your tag input");
+      return;
     } else if (input.length < 5) {
-      return "Your tag is shorter than 5 characters";
+      setIsValid(false);
+      setTextOfTipsString("Your tag is shorter than 5 characters");
+      return;
     } else if (input.length > 16) {
-      return "Your tag is longer than 16 characters";
+      setIsValid(false);
+      setTextOfTipsString("Your tag is longer than 16 characters");
+      return;
     } else if (!regex.test(input)) {
-      return "Your tag has invalid characters.";
+      setIsValid(false);
+      setTextOfTipsString("Your tag has invalid characters.");
+      return;
+    } else {
+      try {
+        const isMatchTag = await isMatchTags(input);
+        if (isMatchTag) {
+          setIsValid(false);
+          setTextOfTipsString("This tag exists.");
+          return;
+        }
+        setIsValid(true);
+        setTextOfTipsString("Your tag is valid.");
+      } catch (error) {
+        console.error("Error checking if tag exists:", error);
+        setIsValid(false);
+        return "Error checking if tag exists.";
+      }
     }
-
-    return "Your tag is valid.";
   };
   return (
     <BackGroundGradientView>
@@ -112,7 +156,10 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
         >
           {"Your @tag"}
         </Text>
-        <TouchableOpacity  activeOpacity={1} onPress={() => textInputRef.current?.focus()}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => textInputRef.current?.focus()}
+        >
           <FormContainer
             borderTop={true}
             childrenLeft={
@@ -174,7 +221,7 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
             opacity: 0.8,
           }}
         >
-          {textOfTips(inputTag)}
+          {textOfTipsString}
         </Text>
         <Text
           style={{

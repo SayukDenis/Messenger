@@ -4,8 +4,6 @@ import BackButton from "../../../SemiComponents/BackButton";
 import HeaderContainer from "../../../SemiComponents/HeaderContainer";
 import { screenWidth } from "../../Constants/ConstantsForChatlist";
 import DefaultContainerInHeader from "../../../SemiComponents/DefaultContainerInHeader";
-import { useDispatch } from "react-redux";
-import { addUserForCreateGroupOrChannel, setPhotoForCreateGroupOrChannel } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 
 interface HeaderForCreateChannelPageProps {
   navigation: any;
@@ -14,10 +12,8 @@ interface HeaderForCreateChannelPageProps {
 const HeaderForCreateChannelPage: React.FC<HeaderForCreateChannelPageProps> = ({
   navigation,
 }) => {
-  const dispatch = useDispatch();
+
   const pressOnBackButton = useRef(() => {
-    dispatch(addUserForCreateGroupOrChannel([]));
-    dispatch(setPhotoForCreateGroupOrChannel(""));
     navigation.goBack();
   });
 

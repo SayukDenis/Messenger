@@ -22,6 +22,7 @@ import ScaleOfCameraContainer from "./ScaleOfCameraContainer";
 import { Accelerometer } from "expo-sensors";
 import { myFixedNumber } from "./Functions/FunctionsForScaleCamera";
 import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 
 interface CameraProps {
   navigation: any;
@@ -34,6 +35,7 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
   const firstDigit = 1;
   const secondDigit = 2;
   const thirdDigit = 3;
+  const isFocused = useIsFocused();
   const scrollZoomRef = useRef<ScrollView>(null);
   const horizontalScrollZoomRef = useRef<ScrollView>(null);
   const [type, setType] = useState(CameraType.back);
@@ -56,15 +58,19 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
         .photoForCreateGroupOrChannel
   );
   useEffect(() => {
-    Accelerometer.addListener((results) => {
-      const x = results.x;
-      const y = results.y;
-      const angleInRadians = Math.atan2(y, x);
-      const angleInDegrees = angleInRadians * (180 / Math.PI);
-      // console.log(angleInDegrees+" deg")
-      calculateAngle(angleInDegrees);
-    });
-  }, []);
+    if (!isFocused) {
+      Accelerometer.removeAllListeners();
+    } else {
+      Accelerometer.addListener((results) => {
+        const x = results.x;
+        const y = results.y;
+        const angleInRadians = Math.atan2(y, x);
+        const angleInDegrees = angleInRadians * (180 / Math.PI);
+        calculateAngle(angleInDegrees);
+      });
+    }
+  }, [isFocused]);
+
   const calculateAngle = (angle: number) => {
     if (angle < -45 && angle > -135) {
       setOrientation(0);
@@ -137,28 +143,30 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
   const onZoomScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const x = event.nativeEvent.contentOffset.x;
     let zooming: number = x / widthOfEveryContainer + 1;
+
     if (zooming < 1) {
       zooming = 1;
-    } else if (zooming > 8) {
+    } else if (zooming >= 8) {
       zooming = 8;
     }
+
     const finalZooming = myFixedNumber(zooming);
     if (isScrollingForHorizontalScrollView) {
       //console.log("Low scroll");
       scrollZoomRef.current?.scrollResponderZoomTo({
         x: 0,
         y: 0,
-        width: screenWidth / myFixedNumber(finalZooming),
-        height: heightOfCamera / myFixedNumber(finalZooming),
+        width: screenWidth / zooming,
+        height: heightOfCamera / zooming,
       });
     }
+    //console.log(finalZooming);
     setZoom((finalZooming - 1) * 0.01);
   };
-  const onScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {};
+
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const currentSizeHeight = event.nativeEvent.contentSize.height;
     const kefOfIncreaseHeight = currentSizeHeight / heightOfCamera;
-
     let zooming = (kefOfIncreaseHeight - 1) * 0.01;
     if (zooming < 0) {
       zooming = 0;
@@ -166,15 +174,17 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
       zooming = 0.07;
     }
     if (isScrollingForZoomScrollView) {
-      //console.log("High scroll");
       horizontalScrollZoomRef.current?.scrollTo({
         y: 0,
         x: (zooming / 0.01) * widthOfEveryContainer,
         animated: false,
       });
     }
+
     setZoom(zooming < 0 ? 0 : zooming);
   };
+  // useEffect(()=>{console.log(zoom)},[zoom])
+
   return (
     <View style={{ flex: 1, backgroundColor: "black" }}>
       <View
@@ -287,6 +297,22 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
         ref={cameraRef}
         zoom={zoom}
       />
+      {isScrollingForHorizontalScrollView ? (
+        <View
+          style={{
+            // backgroundColor: "blue",
+            position: "absolute",
+            bottom:
+              (screenHeight - heightOfCamera) / 2 + screenHeight * 0.05 + 10,
+            alignSelf: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ alignSelf: "center", color: "#FFDE69" }}>
+            {myFixedNumber(zoom / 0.01 + 1) + "x"}
+          </Text>
+        </View>
+      ) : null}
       <View
         style={{
           //marginTop: (screenHeight - heightOfCamera) / 2,
@@ -334,9 +360,9 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
             width: maxHeightOfCircle * 4,
             height: screenHeight * 0.05,
             position: "absolute",
-            //backgroundColor: "red",
+           // backgroundColor: "red",
             zIndex: 10,
-            //opacity: 0.3,
+            opacity: 0.3,
           }}
         >
           {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
@@ -350,16 +376,15 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
                 //borderWidth: 1,
                 //borderColor: "green",
               }}
-            >
-            </View>
+            ></View>
           ))}
           <View
             style={{
-              width: maxHeightOfCircle * 4 - widthOfEveryContainer,
+              width: maxHeightOfCircle * 4 - widthOfEveryContainer + 1,
               height: screenHeight * 0.05,
-             // backgroundColor: "blue",
+              // backgroundColor: "blue",
               justifyContent: "center",
-             // borderWidth: 1,
+              // borderWidth: 1,
               //borderColor: "green",
             }}
           />
@@ -401,6 +426,7 @@ const CameraComponent: React.FC<CameraProps> = ({ navigation, route }) => {
           <ScaleOfCameraContainer digit={thirdDigit} zoom={zoom} />
         </TouchableOpacity>
       </View>
+
       <ScrollView
         ref={scrollZoomRef}
         showsHorizontalScrollIndicator={false}

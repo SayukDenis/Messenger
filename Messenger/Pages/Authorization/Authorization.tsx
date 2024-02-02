@@ -7,7 +7,7 @@ import {
   countryList,
   countryProps,
 } from "./Select country/Country select containers/CountryNames";
-import { sendCodeSMS } from "./CodeVerification/SendCode";
+
 import { isValidPhoneNumber } from "./Authorization containers/Funtions";
 import Greeting from "./Authorization containers/Greeting";
 import PhoneContainer from "./Authorization containers/PhoneContainer";
@@ -18,7 +18,7 @@ import FirstPhoneNumbers from "./Authorization containers/FirstPhoneNumbers";
 import NumberPhoneInput from "./Authorization containers/NumberPhoneInput";
 import CountryName from "./Authorization containers/CountryName";
 
-export default function Authorization({ route, navigation }: any) {
+export default function Authorization({ navigation }: any) {
   const [selectedCountryNum, setCountry] = useState(0);
   const selectedCountry: countryProps = countryList[selectedCountryNum];
   const sizeOfNumbers: number = 17;
@@ -35,8 +35,7 @@ export default function Authorization({ route, navigation }: any) {
     });
   };
   const pressOnCountinueButton = () => {
-    sendCodeSMS(`+${selectedCountry.phone}${phoneNumber}`);
-    navigation.navigate("Code Verification Page");
+    navigation.navigate("Code Verification Page",{phoneNumber:`+${selectedCountry.phone}${phoneNumber}`});
   };
   useEffect(() => {
     const fetchCountryInfo = async () => {

@@ -14,46 +14,81 @@ import FormContainer from "../Authorization containers/FormContainer";
 import FinishButtonForCodeVerification from "./FinishButtonForCodeVerification";
 import {
   codeForAuthorizationEndPoint,
+  idOfUserForAuthorizationEndPoint,
   listentingServer,
 } from "../../ChatList/Constants/ServerConection";
 
 interface CodeVerificationPageProps {
   navigation: any;
+  route: any;
 }
 
 const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
   navigation,
+  route,
 }) => {
+  const phoneNumber = route.params.phoneNumber;
+  const requestData = {
+    phoneNumber: phoneNumber,
+  };
   const fontSize = 18;
-  const [codeNumber, setCodeNumber] = useState("0228");
+  const [codeNumber, setCodeNumber] = useState("");
+  const [codeForCheck, setCodeForCheck] = useState("");
   const codeInputRef = useRef<TextInput>(null);
   const pressOnBackButton = () => {
     navigation.goBack();
   };
-  const pressOnFinishButton = () => {
-    navigation.navigate("Add User Information Page");
+  const pressOnFinishButton = async () => {
+    if (codeForCheck != codeNumber) {
+      setCodeNumber("");
+      return;
+    }
+    const id = await getId();
+    if (id === -1) {
+      navigation.navigate("Add User Information Page", { phoneNumber });
+    }
   };
   useEffect(() => {
     getCode();
   }, []);
-  const getCode = async () => {
-    const serverUrl = listentingServer + codeForAuthorizationEndPoint;
-    console.log(serverUrl);
+  const getId = async (): Promise<number | undefined> => {
     try {
-      const response = await fetch(serverUrl);
-
-      if (!response.ok) {
-        throw new Error(`HTTP-помилка! Статус: ${response.status}`);
-      }
-
+      let serverUrl = listentingServer + idOfUserForAuthorizationEndPoint;
+      const response = await fetch(serverUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
       const data = await response.json();
-
-      console.log("Отримано дані з сервера:", data);
-
-      // Обробка отриманих даних
+      console.log("Відповідь від сервера:", data);
+      return data.id;
     } catch (error) {
-      console.error("Помилка під час отримання даних:", error);
+      console.error("Помилка:", error);
+      return undefined;
     }
+  };
+  const getCode = async () => {
+    setCodeNumber("");
+    let serverUrl = listentingServer + codeForAuthorizationEndPoint;
+    fetch(serverUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then(async (response) => {
+        return await response.json();
+      })
+      .then((data) => {
+        console.log("Відповідь від сервера:", data);
+        setCodeForCheck(data.code);
+      })
+      .catch((error) => {
+        console.error("Помилка:", error);
+      });
   };
   return (
     <BackGroundGradientView>
@@ -113,7 +148,11 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            getCode();
+          }}
+        >
           <Text
             style={{
               marginLeft: screenWidth * 0.1,

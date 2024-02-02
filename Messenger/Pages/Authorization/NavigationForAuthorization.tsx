@@ -31,10 +31,9 @@ const NavigationForAuthorization = () => {
       />
       <Stack.Screen name="Set Tag Page" component={SetTagPage} />
       <Stack.Screen name="Set Bio Page" component={SetBioPage} />
-      <Stack.Screen name="Camera Component" component={CameraComponent}/>
-      <Stack.Screen name="Cropp Image Page" component={CroppImagePage}/>
-      <Stack.Screen name ="All Photo In Gallery" component={AllPhotoInGallery}/>
-      <Stack.Screen name="ChatList" component={ChatList} />
+      <Stack.Screen name="Camera Component" component={CameraComponent} />
+      <Stack.Screen name="Cropp Image Page" component={CroppImagePage} />
+      <Stack.Screen name="All Photo In Gallery" component={AllPhotoInGallery} />
     </Stack.Navigator>
   );
 };

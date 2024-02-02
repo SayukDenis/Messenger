@@ -179,7 +179,8 @@ const CroppImageVertiacalPage: React.FC<CroppImageVertiacalPageProps> = ({
           to: savePath,
         });
         dispatch(setPhotoForCreateGroupOrChannel(savePath));
-        Accelerometer.removeAllListeners();
+        
+        
         dispatch(setIsVisibleGalleryModalWindow(false));
         navigation.navigate(route.params.cameFrom);
       })

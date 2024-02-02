@@ -162,7 +162,7 @@ const CroppImageHorizontalPage: React.FC<CroppImageHorizontalPageProps> = ({
       .then(() => {
         dispatch(setPhotoForCreateGroupOrChannel(savePath));
         Accelerometer.removeAllListeners();
-       dispatch(setIsVisibleGalleryModalWindow(false));
+        dispatch(setIsVisibleGalleryModalWindow(false));
         navigation.navigate(route.params.cameFrom);
       })
       .catch((error) => {
@@ -177,7 +177,7 @@ const CroppImageHorizontalPage: React.FC<CroppImageHorizontalPageProps> = ({
         //console.log("Delete file");
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     }
   };
 
