@@ -1,10 +1,7 @@
 import { combineReducers } from "redux";
 import { selfProfileUser } from "../../UserReducersAndActions/Reducers/UserReducers";
 import { EnumForChatListBlurs } from "../../../Pages/ChatList/Components/Enums/EnumsForChatListBlurs";
-import {
-
-  SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL,
-} from "../../Actions/ChatListActions/ChatListActions";
+import { SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL } from "../../Actions/ChatListActions/ChatListActions";
 
 const currentTab: number = 0;
 const animationForChatListFolderReducer = (
@@ -84,7 +81,7 @@ const folderSelectedArrayReducer = (
       (_, index) => index === 0
     ),
   },
-  action:any
+  action: any
 ) => {
   switch (action.type) {
     case "SET_FOLDER_SELECTED_ARRAY":
@@ -98,7 +95,7 @@ const folderSelectedArrayReducer = (
 };
 const enumForChatListBlursReducer = (
   state = { enumForChatListBlurs: EnumForChatListBlurs.None },
-  action:any
+  action: any
 ) => {
   switch (action.type) {
     case "SET_ENUM_FOR_CHATLIST_BLURS":
@@ -110,7 +107,7 @@ const enumForChatListBlursReducer = (
       return state;
   }
 };
-const currentTabReducer = (state = { currentTab: 0 }, action:any) => {
+const currentTabReducer = (state = { currentTab: 0 }, action: any) => {
   switch (action.type) {
     case "SET_CURRENT_TAB":
       return {
@@ -123,7 +120,7 @@ const currentTabReducer = (state = { currentTab: 0 }, action:any) => {
 };
 const layoutOfModeOfEmploymentReducer = (
   state = { layoutOfModeOfEmployment: { x: 0, y: 0, height: 0, width: 0 } },
-  action:any
+  action: any
 ) => {
   switch (action.type) {
     case "SET_LAYOUT_OF_MODE_OF_EMPLOYMENT":
@@ -146,14 +143,35 @@ const createGroupOrChannelReducer = (
       return state;
   }
 };
-const setPhotoForCreateGroupOrChannelReducer=(state={photoForCreateGroupOrChannel:""},action:any)=>{
+const setPhotoForCreateGroupOrChannelReducer = (
+  state = { photoForCreateGroupOrChannel: "" },
+  action: any
+) => {
   switch (action.type) {
     case "SET_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL":
-      return{...state,photoForCreateGroupOrChannel:action.photoForCreateGroupOrChannel}
+      return {
+        ...state,
+        photoForCreateGroupOrChannel: action.photoForCreateGroupOrChannel,
+      };
     default:
       return state;
   }
-}
+};
+const isVisibleGalleryModalWindowReducer = (
+  state = { isVisibleGalleryModalWindow: false },
+  action: any
+) => {
+  switch (action.type) {
+    case "SET_IS_VISIBLE_GALLERY_MODAL_WINDOW":
+      return {
+        ...state,
+        isVisibleGalleryModalWindow: action.isVisibleGalleryModalWindow,
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducerChatList = combineReducers({
   animationForChatListFolder: animationForChatListFolderReducer,
   selectedFolder: selectedFolderReducer,
@@ -165,8 +183,9 @@ const rootReducerChatList = combineReducers({
   enumForChatListBlurs: enumForChatListBlursReducer,
   layoutOfModeOfEmployment: layoutOfModeOfEmploymentReducer,
   stateForEndOfBlurForChatList: stateForEndOfBlurForChatListReducer,
-  createGroupOrChannel:createGroupOrChannelReducer,
-  setPhotoForCreateGroupOrChannel:setPhotoForCreateGroupOrChannelReducer
+  createGroupOrChannel: createGroupOrChannelReducer,
+  setPhotoForCreateGroupOrChannel: setPhotoForCreateGroupOrChannelReducer,
+  isVisibleGalleryModalWindow:isVisibleGalleryModalWindowReducer
 });
 
 export default rootReducerChatList;

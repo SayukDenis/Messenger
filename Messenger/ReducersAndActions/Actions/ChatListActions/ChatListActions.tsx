@@ -1,4 +1,3 @@
-import { CroppImageProps } from "../../../Pages/Authorization/Information containers/Cropp image containers/CroppImagePage";
 import { EnumForChatListBlurs } from "../../../Pages/ChatList/Components/Enums/EnumsForChatListBlurs";
 import User from "../../../dao/Models/User";
 
@@ -45,6 +44,10 @@ export const setLayoutOfModeOfEmployment=(layoutOfModeOfEmployment:any)=>({
 export const setPhotoForCreateGroupOrChannel=(photoForCreateGroupOrChannel:string)=>({
   type:"SET_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL",
   photoForCreateGroupOrChannel
+})
+export const setIsVisibleGalleryModalWindow=(isVisibleGalleryModalWindow:boolean)=>({
+  type:"SET_IS_VISIBLE_GALLERY_MODAL_WINDOW",
+  isVisibleGalleryModalWindow
 })
 
 export const SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL = "SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL";

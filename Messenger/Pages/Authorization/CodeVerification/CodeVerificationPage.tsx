@@ -12,25 +12,88 @@ import { ScrollView } from "react-native";
 import CodeVerificationContainer from "./CodeVerificationContainer";
 import FormContainer from "../Authorization containers/FormContainer";
 import FinishButtonForCodeVerification from "./FinishButtonForCodeVerification";
+<<<<<<< HEAD
 import CodeVerificationForm from "./CodeVerificationForm";
+=======
+import {
+  codeForAuthorizationEndPoint,
+  idOfUserForAuthorizationEndPoint,
+  listentingServer,
+} from "../../ChatList/Constants/ServerConection";
+>>>>>>> a83a44da53669d099a88eb11d87f2aef98aed9e9
 
 interface CodeVerificationPageProps {
   navigation: any;
+  route: any;
 }
 
 const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
   navigation,
+  route,
 }) => {
+  const phoneNumber = route.params.phoneNumber;
+  const requestData = {
+    phoneNumber: phoneNumber,
+  };
   const fontSize = 18;
   const [codeNumber, setCodeNumber] = useState("");
+  const [codeForCheck, setCodeForCheck] = useState("");
   const codeInputRef = useRef<TextInput>(null);
   const pressOnBackButton = () => {
     navigation.goBack();
   };
-  const pressOnFinishButton = () => {
-    navigation.navigate("Add User Information Page");
+  const pressOnFinishButton = async () => {
+    if (codeForCheck != codeNumber) {
+      setCodeNumber("");
+      return;
+    }
+    const id = await getId();
+    if (id === -1) {
+      navigation.navigate("Add User Information Page", { phoneNumber });
+    }
   };
-
+  useEffect(() => {
+    getCode();
+  }, []);
+  const getId = async (): Promise<number | undefined> => {
+    try {
+      let serverUrl = listentingServer + idOfUserForAuthorizationEndPoint;
+      const response = await fetch(serverUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+      const data = await response.json();
+      console.log("Відповідь від сервера:", data);
+      return data.id;
+    } catch (error) {
+      console.error("Помилка:", error);
+      return undefined;
+    }
+  };
+  const getCode = async () => {
+    setCodeNumber("");
+    let serverUrl = listentingServer + codeForAuthorizationEndPoint;
+    fetch(serverUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then(async (response) => {
+        return await response.json();
+      })
+      .then((data) => {
+        console.log("Відповідь від сервера:", data);
+        setCodeForCheck(data.code);
+      })
+      .catch((error) => {
+        console.error("Помилка:", error);
+      });
+  };
   return (
     <BackGroundGradientView>
       <ScrollView scrollEnabled={false}>
@@ -59,7 +122,11 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            getCode();
+          }}
+        >
           <Text
             style={{
               marginLeft: screenWidth * 0.1,
@@ -80,4 +147,5 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
     </BackGroundGradientView>
   );
 };
+
 export default CodeVerificationPage;

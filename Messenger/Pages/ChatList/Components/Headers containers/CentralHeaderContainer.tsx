@@ -13,11 +13,11 @@ function CentralHeaderContainer({
   onHamburgerPress,
   OnHamburgerPressForDispatch,
   animationStateForTouchHamburger,
-  navigation
-}:any) {
-  const onMagnifyingGlassPress=useRef(()=>{
-    navigation.navigate("SearchForAllPages")
-  })
+  navigation,
+}: any) {
+  const onMagnifyingGlassPress = () => {
+    navigation.navigate("SearchForAllPages");
+  };
   return (
     <View
       style={[
@@ -25,14 +25,12 @@ function CentralHeaderContainer({
           justifyContent: "space-between",
           flexDirection: "row",
           width: screenWidth * 0.96,
-          
         },
       ]}
     >
       <TouchableOpacity
         style={headerstyles.magnifyingglass}
-        onPress={onMagnifyingGlassPress.current}
-        
+        onPress={onMagnifyingGlassPress}
       >
         <MagnifyingGlass />
       </TouchableOpacity>
