@@ -1,4 +1,4 @@
-export const listentingServer: string = "https://hungry-toys-stick.loca.lt";
+export const listentingServer: string = "https://three-games-poke.loca.lt";
 export const authorizationEndPoint: string = "/auth";
 export const codeForAuthorizationEndPoint: string =
   authorizationEndPoint + "/code";

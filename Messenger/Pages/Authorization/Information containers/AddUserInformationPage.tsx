@@ -31,6 +31,9 @@ import {
   saveInformationAboutUser,
 } from "../../ChatList/Constants/ServerConection";
 import RNFetchBlob from "react-native-fetch-blob";
+import PhotoOrIconContainer from "./Add user information page containers/PhotoOrIconContainer";
+import AddPhotoContainer from "./Add user information page containers/AddPhotoContainer";
+import PhotoAddButtonContainer from "./Add user information page containers/PhotoAddButtonContainer";
 
 interface AddUserInformationPageProps {
   navigation: any;
@@ -42,7 +45,7 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
   route,
 }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const radiusOfUserPhoto = screenWidth * 0.3;
+
   const widthOfFirstContainer = screenWidth * 0.16;
   const dispatch = useDispatch();
   const [name, setName] = useState<string>("Denis");
@@ -113,7 +116,7 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
     }
     //console.log();
     //formData.append("file", blob);
- 
+
     try {
       const response = await fetch(serverUrl, {
         method: "POST",
@@ -177,60 +180,7 @@ const AddUserInformationPage: React.FC<AddUserInformationPageProps> = ({
         >
           <BackButton />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={pressOnAddPhoto}
-          style={{
-            // backgroundColor: "black",
-            justifyContent: "center",
-            alignSelf: "center",
-          }}
-        >
-          <View
-            style={{
-              width: radiusOfUserPhoto,
-              aspectRatio: 1,
-              backgroundColor: "#D9D9D9",
-              overflow: "hidden",
-              borderRadius: 100,
-              alignSelf: "center",
-              justifyContent: "center",
-              marginTop: 10,
-            }}
-          >
-            <View
-              style={{
-                // backgroundColor: "red",
-                alignSelf: "center",
-              }}
-            >
-              {selectedPhoto == "" ? (
-                <UserIconSvg
-                  height={(radiusOfUserPhoto / 4) * 2.5}
-                  width={(radiusOfUserPhoto / 3.5) * 2.5}
-                  color={"#434343"}
-                />
-              ) : (
-                <View>
-                  <Image
-                    source={{ uri: selectedPhoto }}
-                    style={{
-                      width: radiusOfUserPhoto,
-                      aspectRatio: 1,
-                      //position: "absolute",
-                      backgroundColor: "red",
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-          </View>
-
-          <View style={{ alignSelf: "center", marginTop: 15 }}>
-            <Text style={{ color: "#6E23CD", fontSize: 22 }}>
-              {"Add photo"}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <PhotoAddButtonContainer pressOnAddPhoto={pressOnAddPhoto} />
         <Text
           style={{
             color: "white",

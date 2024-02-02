@@ -12,15 +12,8 @@ import { ScrollView } from "react-native";
 import CodeVerificationContainer from "./CodeVerificationContainer";
 import FormContainer from "../Authorization containers/FormContainer";
 import FinishButtonForCodeVerification from "./FinishButtonForCodeVerification";
-<<<<<<< HEAD
 import CodeVerificationForm from "./CodeVerificationForm";
-=======
-import {
-  codeForAuthorizationEndPoint,
-  idOfUserForAuthorizationEndPoint,
-  listentingServer,
-} from "../../ChatList/Constants/ServerConection";
->>>>>>> a83a44da53669d099a88eb11d87f2aef98aed9e9
+import { codeForAuthorizationEndPoint, idOfUserForAuthorizationEndPoint, listentingServer } from "../../ChatList/Constants/ServerConection";
 
 interface CodeVerificationPageProps {
   navigation: any;
