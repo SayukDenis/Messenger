@@ -12,11 +12,15 @@ import { ScrollView } from "react-native";
 import CodeVerificationContainer from "./CodeVerificationContainer";
 import FormContainer from "../Authorization containers/FormContainer";
 import FinishButtonForCodeVerification from "./FinishButtonForCodeVerification";
+<<<<<<< HEAD
+import CodeVerificationForm from "./CodeVerificationForm";
+=======
 import {
   codeForAuthorizationEndPoint,
   idOfUserForAuthorizationEndPoint,
   listentingServer,
 } from "../../ChatList/Constants/ServerConection";
+>>>>>>> a83a44da53669d099a88eb11d87f2aef98aed9e9
 
 interface CodeVerificationPageProps {
   navigation: any;
@@ -100,7 +104,6 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
           <BackButton />
         </TouchableOpacity>
         <CodeVerificationContainer />
-
         <View
           style={{
             marginTop: 23,
@@ -112,39 +115,10 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
             }}
             activeOpacity={1}
           >
-            <FormContainer
-              borderTop={true}
-              childrenLeft={
-                <Text
-                  style={{
-                    alignSelf: "center",
-                    color: "white",
-                    fontSize,
-                  }}
-                >
-                  {"Code"}
-                </Text>
-              }
-              childrenRight={
-                <View style={{ alignSelf: "center", marginLeft: 10 }}>
-                  <TextInput
-                    ref={codeInputRef}
-                    value={codeNumber}
-                    onChangeText={setCodeNumber}
-                    placeholder="0000"
-                    keyboardType="numeric"
-                    placeholderTextColor={"white"}
-                    maxLength={4}
-                    style={{
-                      fontSize,
-                      color: "white",
-                      // backgroundColor: "black",
-                      overflow: "hidden",
-                      width: screenWidth * 0.5,
-                    }}
-                  />
-                </View>
-              }
+            <CodeVerificationForm 
+            ref = {codeInputRef} 
+            codeNumber = {codeNumber}
+            setCodeNumber={setCodeNumber} 
             />
           </TouchableOpacity>
         </View>

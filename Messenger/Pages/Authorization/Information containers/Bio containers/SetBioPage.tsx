@@ -14,7 +14,10 @@ import {
   screenWidth,
 } from "../../../ChatList/Constants/ConstantsForChatlist";
 import FormContainer from "../../Authorization containers/FormContainer";
-
+import DoneButtonComponent from "./DoneButtonComponent";
+import BackButtonComponent from "./BackButtonComponent";
+import ChildrenRightComponent from "./FormContainerChildren/ChildrenRightComponent";
+import ChildrenLeftComponent from "./FormContainerChildren/ChildrenLeftComponent";
 interface SetBioPageProps {
   navigation: any;
   route: any;
@@ -41,31 +44,11 @@ const SetBioPage: React.FC<SetBioPageProps> = ({ navigation, route }) => {
             justifyContent: "space-between",
           }}
         >
-          <TouchableOpacity
-          onPress={pressOnBackButton}
-            style={{
-              width: screenWidth * 0.2, // backgroundColor: "red"
-            }}
-          >
-            <BackButton />
-          </TouchableOpacity>
-          <Text style={{ alignSelf: "center", fontSize: 22, color: "#2B1D1D" }}>
-            {"Bio"}
-          </Text>
-          <TouchableOpacity
-          onPress={pressOnDoneButton}
-            style={{ width: screenWidth * 0.2, justifyContent: "center" }}
-          >
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: 20,
-                color:"#6E23CD"
-              }}
-            >
-              {"Done"}
+          <BackButtonComponent pressOnBackButton = {pressOnBackButton}/>
+            <Text style={{ alignSelf: "center", fontSize: 22, color: "#2B1D1D" }}>
+             {"Bio"}
             </Text>
-          </TouchableOpacity>
+          <DoneButtonComponent pressOnDoneButton={pressOnDoneButton}/>
         </View>
         <Text
           style={{
@@ -85,62 +68,14 @@ const SetBioPage: React.FC<SetBioPageProps> = ({ navigation, route }) => {
           <FormContainer
             borderTop={true}
             childrenLeft={
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 17,
-                  //alignSelf: "center",
-                }}
-              >
-                {"Bio"}
-              </Text>
+              <ChildrenLeftComponent/>
             }
             childrenRight={
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  flex: 1,
-                }}
-              >
-                <View style={{ alignSelf: "center", marginLeft: 10 }}>
-                  <TextInput
-                    placeholder="Enter your bio"
-                    placeholderTextColor="white"
-                    ref={textInputRef}
-                    value={inputBio}
-                    onChangeText={setInputBio}
-                    style={{
-                      fontSize: 18,
-                      color: "white",
-                      width: screenWidth * 0.55,
-                     // backgroundColor: "black",
-                    }}
-                    maxLength={70}
-                  />
-                </View>
-                <View
-                  style={{
-                    alignSelf: "center",
-                    marginRight: 4,
-                    width: screenWidth * 0.08,
-                    //backgroundColor: "red",
-                    justifyContent: "center",
-                  }}
-                >
-  
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      marginTop: 2,
-                      color: "white",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {`${inputBio.length}/70`}
-                  </Text>
-                </View>
-              </View>
+              <ChildrenRightComponent 
+                inputBio = {inputBio}
+                screenWidth = {screenWidth}
+                setInputBio={setInputBio}
+                textInputRef = {textInputRef}/>
             }
           />
         </TouchableOpacity>

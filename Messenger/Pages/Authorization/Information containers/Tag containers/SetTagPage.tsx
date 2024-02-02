@@ -16,11 +16,15 @@ import {
 import FormContainer from "../../Authorization containers/FormContainer";
 import ValidTextSVG from "../../../SemiComponents/ValidTextSVG";
 import InValidTextSVG from "../../../SemiComponents/InValidTextSVG";
+<<<<<<< HEAD
+import FormContainerComponent from "./FormContainerComponent";
+=======
 import {
   listentingServer,
   matchTagForAuthorizationEndPoint,
 } from "../../../ChatList/Constants/ServerConection";
 
+>>>>>>> a83a44da53669d099a88eb11d87f2aef98aed9e9
 interface SetTagPageProps {
   navigation: any;
   route: any;
@@ -156,6 +160,14 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
         >
           {"Your @tag"}
         </Text>
+<<<<<<< HEAD
+        <TouchableOpacity  activeOpacity={1} onPress={() => textInputRef.current?.focus()}>
+          <FormContainerComponent 
+          textInputRef={textInputRef}
+          inputTag={inputTag}
+          setInputTag={setInputTag}
+          isValid={isValid}
+=======
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => textInputRef.current?.focus()}
@@ -210,6 +222,7 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
                 </View>
               </View>
             }
+>>>>>>> a83a44da53669d099a88eb11d87f2aef98aed9e9
           />
         </TouchableOpacity>
         <Text
