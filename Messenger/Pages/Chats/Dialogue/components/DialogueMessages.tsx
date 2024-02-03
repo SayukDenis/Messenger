@@ -277,12 +277,25 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     // pageY - position of press (the menu), componentPageY - top postion of the message
     const mesCoords = messagesWithCoords.find(m => m.message === coord.message?.messageId);
 
-    const HEIGHT_OF_HEADER = (heightOfHeader+(this.props.hasPinnedMessage?height*0.05:0));
+    const HEIGHT_OF_HEADER = heightOfHeader;
     const HEIGHT_OF_FLATLIST = height * 0.94;
     const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
     const isUser = coord.message?.author.userId === this.props.author.userId;
 
-    if(height*0.94 - coord.componentPageY - coord. height < MESSAGE_MENU_HEIGHT) {
+    if(height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - SOFT_MENU_BAR_HEIGHT ) {
+      console.log(mesCoords?.coord);
+      Animated.timing(this.state.tmpHeight, {
+        toValue: -(MESSAGE_MENU_HEIGHT - (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height! + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT))),
+        duration: 200,
+        useNativeDriver: false
+      }).start();
+
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      console.log(coord.componentPageY - mesCoords?.height!, MESSAGE_MENU_HEIGHT);
+      coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
+      coord.pageY = coord.componentPageY + (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+    } else if(height*0.94 - coord.componentPageY - coord. height < MESSAGE_MENU_HEIGHT) {
       this.flatListRef.current.scrollToOffset({ 
         offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
         animated: true,
@@ -307,7 +320,13 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       coord.pageY = coord.componentPageY + mesCoords?.height!;
     }
 
-    this.props.setMessageMenuVisible(coord, pressed);
+    this.props.setMessageMenuVisible(coord, pressed, () => {
+      Animated.timing(this.state.tmpHeight, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false
+      }).start();
+    });
   }
 
   render() {
@@ -326,7 +345,15 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     )
 
     return (
-      <Animated.View style={[styles.mainContainer, { height: height * 0.94, zIndex:0, transform: [{ translateY: this.state.keyboardHeight }] }]}>
+      <Animated.View style={[
+        styles.mainContainer, { 
+          height: height * 0.94, 
+          zIndex:0, 
+          transform: [{   // Create some function to check if keyboard is active or not
+            translateY: (this.state.keyboardHeight as any)._value !== 0 ? this.state.keyboardHeight : this.state.tmpHeight
+          }] 
+        }]}
+      >
         <FlatList
           onScroll={this.checkForPinMessage}
           ref={this.flatListRef}
@@ -345,7 +372,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
           ListHeaderComponent={ListHeaderComponent}
           ListFooterComponent={ListFooterComponent} 
         />
-        <Animated.View style={{}} />
       </Animated.View>
     );
   }

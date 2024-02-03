@@ -9,7 +9,7 @@ export interface DialogueMessagesProps {
   idOfPinnedMessage: number;
   scrollToTappedMessage: boolean;
   idOfTappedMessage: number;
-  setMessageMenuVisible:(arg0: Layout, arg1: boolean)=>void; 
+  setMessageMenuVisible:(coordinations: Layout, pressed: boolean, callback: () => void)=>void; 
   messageID:number;
   listOfMessages:MessageProps[];
   isReply:boolean;
