@@ -40,6 +40,8 @@ const user:SelfProfile = {
 let authorMessageLastWatched:ILastWatchedMessage | undefined;
 let userMessageLastWatched:ILastWatchedMessage | undefined;
 let dialogue:DialogueModel.default;
+let messageMenuCallback: (() => void) | undefined;
+
 const Dialogue = ({ navigation, route }:any) => {
   
   dialogue = route.params.chat as DialogueModel.default;
@@ -88,12 +90,13 @@ const Dialogue = ({ navigation, route }:any) => {
       setEditMessage({} as MessageProps);
   }
 
-  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed:boolean) => {
+  const handleMessagePressOrSwipe = useCallback((coordinations:Layout, pressed:boolean, callback: () => void) => {
     coord = coordinations;
     if(pressed) {
       setMessageMenuVisible(true);
       setMessageID(coordinations.ID);
       messageIdForReplyAndEdit = coordinations.ID;
+      messageMenuCallback = callback;
     } else {
       setMessageID(coordinations.ID);
       messageIdForReplyAndEdit = coordinations.ID;
@@ -145,6 +148,10 @@ const Dialogue = ({ navigation, route }:any) => {
   }
 
   const handleMessageMenuPress = useCallback(() => {
+    if(typeof messageMenuCallback === 'function') {
+      messageMenuCallback();
+      messageMenuCallback = undefined;
+    }
     setMessageMenuVisible(false);
   }, []);
 

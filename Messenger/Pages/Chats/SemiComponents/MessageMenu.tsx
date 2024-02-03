@@ -291,31 +291,30 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
   
   const handleMenuPosition = () => {
     const MESSAGE_HORIZONTAL_PADDING = 10;
-    const USER_GAP_BETWEEN_MENU_AND_MESSAGE = 10; // is greater by 5 beacuse user's message have status (seen/not seen)
     const NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE = 5;
     if(isUser) {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
         return { 
           top:(coord?coord.pageY:0), 
-          left:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+          right: MESSAGE_HORIZONTAL_PADDING*2
         }
       }
       else {
         return { 
           top:(coord?coord.pageY:0)-size.height, 
-          left:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+          right: MESSAGE_HORIZONTAL_PADDING*2
         }
       }
     } else {
       if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
         return { 
           top:(coord?coord.pageY:0), 
-          right:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+          left:MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
         }
       } else {
         return { 
           top:(coord?coord.pageY:0)-size.height, 
-          right:(coord?width-coord.width-MESSAGE_HORIZONTAL_PADDING:0)-size.width-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE 
+          left:MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
         }
       }
     }
@@ -323,29 +322,15 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
   
   const handleTrianglePosition = () => {
     if(isUser) {
-      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
-        return [
-          footerstyles.triangle,
-          footerstyles.positionOfModalWindowRightTop,
-        ]
-      } else {
-        return [
-          footerstyles.triangle,
-          footerstyles.positionOfModalWindowRightBottom,
-        ]
-      }
+      return [
+        footerstyles.triangle,
+        footerstyles.positionOfModalWindowRightTop,
+      ]
     } else {
-      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
-        return [
-          footerstyles.triangle,
-          footerstyles.positionOfModalWindowLeftTop,
-        ]
-      } else {
-        return [
-          footerstyles.triangle,
-          footerstyles.positionOfModalWindowLeftBottom,
-        ]
-      }
+      return [
+        footerstyles.triangle,
+        footerstyles.positionOfModalWindowLeftTop,
+      ]
     }
   }
 
@@ -383,10 +368,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
         {(pinnedMessageScreen?pinnedMessageScreenButtons:buttons).map((button, index) => {
           return button.text=='Edit'&&!isUser? null: 
           <Animated.View key={button.text} style={helperFunc(index)}>
-            {(button.text==='Reply'||(button.text==='Copy'&&pinnedMessageScreen))&&(coord?coord.pageY:0) < height-screenHeight*0.06-size.height?
-            <View
-              style={handleTrianglePosition()}
-            />:null}
+            {(button.text==='Reply'||(button.text==='Copy'&&pinnedMessageScreen)) && <View style={handleTrianglePosition()} />}
             <TouchableOpacity 
               key={index} 
               onPress={() => {button.action!(); onOverlayPress()}} 
@@ -396,10 +378,6 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
               {button.svg}
               <Text style={{color:button.color, marginLeft: 5}}>{button.text}</Text>
             </TouchableOpacity>
-            {(button.text==='Select'||(pinnedMessageScreen&&button.text==='Delete'))&&(coord?coord.pageY:0) > height-screenHeight*0.06-size.height?
-            <View
-              style={handleTrianglePosition()}
-            />:null}
           </Animated.View>
         })}
       </View>

@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../../../../ChatList/Constants/ConstantsForChatlist";
+import { SOFT_MENU_BAR_HEIGHT } from "../../../ChatConstants";
 
 export const styles = StyleSheet.create({
   mainContainer: { 
     position: 'absolute', 
-    bottom: -screenHeight*0.185, 
+    bottom: -screenHeight*0.185 + SOFT_MENU_BAR_HEIGHT*0.6, 
     backgroundColor: '#fff', 
     overflow: 'hidden', 
     borderRadius: 9999, 

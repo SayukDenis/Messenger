@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { MESSAGE_MENU_HEIGHT } from "../ChatConstants";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -17,7 +18,8 @@ export const styles = StyleSheet.create({
     bottom: 0,
   },
   buttonsContainer: {
-    position:'absolute', 
+    position:'absolute',
+    height: MESSAGE_MENU_HEIGHT,
   },
   button: {
     backgroundColor:'rgb(231,230,228)',
@@ -26,7 +28,8 @@ export const styles = StyleSheet.create({
     borderRadius:15, 
     width:width*0.25,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    bottom: screenHeight * 0.006,
   }
 });
 
@@ -44,24 +47,14 @@ export const footerstyles = StyleSheet.create({
     borderBottomColor: "#E7E6E4",
     position: "relative",
   },
-  positionOfModalWindowLeftBottom: {
-    transform: [{ rotate: "100deg" }],
-    bottom: screenHeight * 0.009,
-    left: screenWidth * 0.005,
-  },
-  positionOfModalWindowRightBottom: {
-    transform: [{ rotate: "-100deg" }],
-    bottom: screenHeight * 0.009,
-    left: screenWidth * 0.22,
-  },
   positionOfModalWindowLeftTop: {
     transform: [{ rotate: "322.5deg" }],
-    bottom: -screenHeight * 0.006,
+    bottom: 0,
     left: -screenWidth * 0.008,
   },
   positionOfModalWindowRightTop: {
     transform: [{ rotate: "-322.5deg" }],
-    bottom: -screenHeight * 0.006,
+    bottom: 0,
     left: screenWidth * 0.23,
   },
 });

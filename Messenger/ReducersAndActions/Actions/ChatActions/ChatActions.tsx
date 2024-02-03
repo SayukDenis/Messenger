@@ -13,7 +13,13 @@ export const resetNumberOfSelectedMessages = () => ({
 });
 
 export const setScrollStateForPinnedMessage = (scroll: boolean, id: number) => ({
-  type: 'SCROLL',
+  type: 'SCROLL_TO_PINNED_MESSAGE',
+  scroll, 
+  id
+});
+
+export const setScrollStateTappedMessage = (scroll: boolean, id: number) => ({
+  type: 'SCROLL_TO_TAPPED_MESSAGE',
   scroll, 
   id
 });

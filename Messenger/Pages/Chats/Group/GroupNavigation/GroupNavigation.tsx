@@ -2,7 +2,7 @@ import { Stack } from "../../../../Navigation/Navigation";
 import React from "react";
 import Group from "../Group";
 
-const GroupNavigation = ({route}:any) => {
+export const GroupNavigation = ({route}:any) => {
   return (
     <>
       <Stack.Navigator

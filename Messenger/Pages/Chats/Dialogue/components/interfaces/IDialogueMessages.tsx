@@ -7,7 +7,9 @@ import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILa
 export interface DialogueMessagesProps {
   scrollToPinnedMessage: boolean;
   idOfPinnedMessage: number;
-  setMessageMenuVisible:(arg0: Layout, arg1: boolean)=>void; 
+  scrollToTappedMessage: boolean;
+  idOfTappedMessage: number;
+  setMessageMenuVisible:(coordinations: Layout, pressed: boolean, callback: () => void)=>void; 
   messageID:number;
   listOfMessages:MessageProps[];
   isReply:boolean;

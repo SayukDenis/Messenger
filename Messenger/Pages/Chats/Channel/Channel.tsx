@@ -49,7 +49,7 @@ const user:SelfProfile = {
 
 let authorMessageLastWatched: ILastWatchedMessage | undefined;
 let userMessageLastWatched: ILastWatchedMessage | undefined;
-let channel: ChannelModel.default;
+//let channel: ChannelModel.default;
 
 class Channel extends Component<ChannelNavigationProps> {
   state: ChannelState = {
@@ -60,18 +60,17 @@ class Channel extends Component<ChannelNavigationProps> {
     isEdit: false,
     editMessage: {} as MessageProps,
     pinnedMessage: {} as MessageProps,
-    listOfPinnedMessages: channel.pinnedMessage as MessageProps[],
+    listOfPinnedMessages: (this.props.route.params.chat as ChannelModel.default).pinnedMessage as MessageProps[],
     selecting: false,
     copy: false,
     deleting: false,
   }
   
-  channel = this.props.route.params.chat as ChannelModel.default;
-  authorMessageLastWatched = channel.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
-  userMessageLastWatched = channel.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
+  authorMessageLastWatched = (this.props.route.params.chat as ChannelModel.default).lastWatchedMessage.find(obj => obj.user.userId===user.userId);
+  userMessageLastWatched = (this.props.route.params.chat as ChannelModel.default).lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
 
   componentDidMount(): void {
-    this.setState({ listOfMessages: channel.messages.reverse() })
+    this.setState({ listOfMessages: (this.props.route.params.chat as ChannelModel.default).messages.reverse() })
   }
 
   mes = msgs?msgs.find(m => m.messageId==this.state.messageID):this.state.listOfMessages.find(m => m.messageId==this.state.messageID);
@@ -216,8 +215,8 @@ class Channel extends Component<ChannelNavigationProps> {
         <BackGroundGradientView>
           <Header 
             navigation={this.props.navigation} 
-            chatType={channel}
-            picture={channel.linkToPhoto}
+            chatType={(this.props.route.params.chat as ChannelModel.default)}
+            picture={(this.props.route.params.chat as ChannelModel.default).linkToPhoto}
             author={user as User}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={this.state.pinnedMessage != undefined ? this.state.pinnedMessage : {} as MessageProps}
