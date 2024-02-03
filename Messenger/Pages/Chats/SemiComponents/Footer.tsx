@@ -9,7 +9,7 @@ import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
 import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
-import { height } from './ChatConstants';
+import { SOFT_MENU_BAR_HEIGHT, height } from './ChatConstants';
 import Constants from 'expo-constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -114,7 +114,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
         isEdit={isEdit} 
         editMessage={editMessage}
       />
-      <View style={[styles.mainContainer, { bottom: -height*0.01-1, }]} >
+      <View style={[styles.mainContainer, { bottom: -height*0.0105-Constants.statusBarHeight+SOFT_MENU_BAR_HEIGHT*0.64, }]} >
         <View style={styles.gradientContainer}>
           <LinearGradient
             colors={["#cf9b95", "#c98bb8", "#c37adb"]}

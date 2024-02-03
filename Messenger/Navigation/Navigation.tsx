@@ -6,6 +6,8 @@ import NavigationForAuthorization from '../Pages/Authorization/NavigationForAuth
 import { connect } from 'react-redux';
 import ChatListNavigation from '../Pages/ChatList/СhatListNavigation/ChatListNavigation';
 import DialogueNavigation from '../Pages/Chats/Dialogue/DialogueNavigation/DialogueNavigation';
+import { GroupNavigation } from '../Pages/Chats/Group/GroupNavigation/GroupNavigation';
+import { ChannelNavigation } from '../Pages/Chats/Channel/ChannelNavigation/ChannelNavigation';
 
 export const Stack = createStackNavigator();
 const Navigation=()=>{
@@ -16,6 +18,8 @@ const Navigation=()=>{
                 <Stack.Screen name="NavigationForSettings" component={NavigationForSettings}/>
                 <Stack.Screen name="NavigationForAuthorization" component={NavigationForAuthorization} />
                 <Stack.Screen name="DialogueNavigation" component={DialogueNavigation}/>
+                <Stack.Screen name='ChannelNavigation' component={ChannelNavigation} />
+                <Stack.Screen name='GroupNavigation' component={GroupNavigation} />
             </Stack.Navigator>
         </NavigationContainer>
     )

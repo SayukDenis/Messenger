@@ -60,18 +60,17 @@ class Group extends Component<GroupNavigationProps> {
     isEdit: false,
     editMessage: {} as MessageProps,
     pinnedMessage: {} as MessageProps,
-    listOfPinnedMessages: group.pinnedMessage as MessageProps[],
+    listOfPinnedMessages: (this.props.route.params.chat as GroupModel.default).pinnedMessage as MessageProps[],
     selecting: false,
     copy: false,
     deleting: false,
   }
   
-  group = this.props.route.params.chat as GroupModel.default;
-  authorMessageLastWatched = group.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
-  userMessageLastWatched = group.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
+  authorMessageLastWatched = (this.props.route.params.chat as GroupModel.default).lastWatchedMessage.find(obj => obj.user.userId===user.userId);
+  userMessageLastWatched = (this.props.route.params.chat as GroupModel.default).lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
 
   componentDidMount(): void {
-    this.setState({ listOfMessages: group.messages.reverse() })
+    this.setState({ listOfMessages: (this.props.route.params.chat as GroupModel.default).messages.reverse() })
   }
 
   mes = msgs?msgs.find(m => m.messageId==this.state.messageID):this.state.listOfMessages.find(m => m.messageId==this.state.messageID);
@@ -216,8 +215,8 @@ class Group extends Component<GroupNavigationProps> {
         <BackGroundGradientView>
           <Header 
             navigation={this.props.navigation} 
-            chatType={group}
-            picture={group.linkToPhoto}
+            chatType={this.props.route.params.chat as GroupModel.default}
+            picture={(this.props.route.params.chat as GroupModel.default).linkToPhoto}
             author={user as User}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={this.state.pinnedMessage != undefined ? this.state.pinnedMessage : {} as MessageProps}

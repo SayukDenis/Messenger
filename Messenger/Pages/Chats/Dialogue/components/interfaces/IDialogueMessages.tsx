@@ -7,6 +7,8 @@ import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILa
 export interface DialogueMessagesProps {
   scrollToPinnedMessage: boolean;
   idOfPinnedMessage: number;
+  scrollToTappedMessage: boolean;
+  idOfTappedMessage: number;
   setMessageMenuVisible:(arg0: Layout, arg1: boolean)=>void; 
   messageID:number;
   listOfMessages:MessageProps[];

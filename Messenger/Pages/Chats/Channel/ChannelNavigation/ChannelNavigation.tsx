@@ -2,7 +2,7 @@ import { Stack } from "../../../../Navigation/Navigation";
 import React from "react";
 import Channel from "../Channel";
 
-const ChannelNavigation = ({route}:any) => {
+export const ChannelNavigation = ({route}:any) => {
   return (
     <>
       <Stack.Navigator

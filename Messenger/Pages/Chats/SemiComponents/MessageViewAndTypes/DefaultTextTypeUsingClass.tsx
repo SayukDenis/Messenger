@@ -6,6 +6,7 @@ import {
   ScrollView,
   Animated,
   Easing,
+  GestureResponderEvent,
 } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import {
@@ -13,7 +14,7 @@ import {
   incrementNumberOfSelectedMessages,
   resetNumberOfSelectedMessages,
   setAnimationOfBackgroundForScrolledMessage,
-  setScrollStateForPinnedMessage,
+  setScrollStateTappedMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
@@ -21,7 +22,7 @@ import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessage
 import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-import { DEFAULT_CHARS_PER_LINE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
 import { Dispatch } from 'redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
@@ -137,18 +138,10 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
 
     const componentPage = (await this.measureHandler() as componentPageProps);
 
-    const { flatList } = this.props;
-    // Make this with animation
-    if(heightOfHeader > componentPage.Y) {
-      if(flatList.current) {
-        flatList.current.scrollToOffset({ offset: flatList.current._listRef._scrollMetrics.offset + (heightOfHeader - componentPage.Y), animated: false });
-      }
-    }
-
     return {
       ID: this.props.id,
       componentPageX: componentPage.X,
-      componentPageY: heightOfHeader > componentPage.Y ? heightOfHeader : componentPage.Y,
+      componentPageY: componentPage.Y,
       pageX: pageX,
       pageY: pageY,
       width: component.layout.width,
@@ -317,7 +310,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                 style={functionalStyles.messageContainer(isUser, message.content.length)}
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
-                <Text>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Text style={{ fontSize: DEFAULT_FONT_SIZE }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text

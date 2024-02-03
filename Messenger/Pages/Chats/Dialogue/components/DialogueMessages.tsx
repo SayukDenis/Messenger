@@ -3,13 +3,14 @@ import { DialogueMessagesProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent } from "react-native";
 import { connect } from "react-redux";
 import Constants from 'expo-constants';
-import { height } from "../../SemiComponents/ChatConstants";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
-import { setScrollStateForPinnedMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
+import { setScrollStateForPinnedMessage, setScrollStateTappedMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
 import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
+import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
+import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
 
 interface DialogueMessagesReduxProps {
   dispatch?: Dispatch<any>;
@@ -17,7 +18,8 @@ interface DialogueMessagesReduxProps {
 
 interface pinnedMessageProps {
   message: number;
-  coord: number
+  coord: number;
+  height: number;
 }
 
 interface DialogueMessagesState {
@@ -25,6 +27,8 @@ interface DialogueMessagesState {
   keyboardHeight: Animated.Value;
   pinnedMessageId: number;
   deletedMessagesCount: number;
+  callMessageMenu: boolean;
+  tmpHeight: Animated.Value;
 }
 
   let pinnedMessagesWithCoords:pinnedMessageProps[] = [];  
@@ -36,6 +40,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     keyboardHeight: new Animated.Value(0),
     pinnedMessageId: -1,
     deletedMessagesCount: 0,
+    callMessageMenu: false,
+    tmpHeight: new Animated.Value(0),
   }
 
   keyboardDidShowListener: EmitterSubscription | null = null;
@@ -102,8 +108,18 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       return true;
     } else if(this.state.pinnedMessageId !== nextState.pinnedMessageId) {
       return true;
+    } else if(this.props.isEdit !== nextProps.isEdit) {
+      return true;
+    } else if(this.props.isReply !== nextProps.isReply) {
+      return true;
+    } else if(this.props.scrollToTappedMessage !== nextProps.scrollToTappedMessage) {
+      this.scrollToTappedMessage(nextProps.scrollToTappedMessage, nextProps.idOfTappedMessage)
+      return true;
+    } else if(this.props.idOfTappedMessage !== nextProps.idOfTappedMessage) {
+      this.scrollToTappedMessage(nextProps.scrollToTappedMessage, nextProps.idOfTappedMessage)
+      return true;
     }
-
+    console.log(this.props.scrollToTappedMessage, nextProps.scrollToTappedMessage)
     console.log('not rerendering');
 
     return false;
@@ -113,17 +129,26 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   pinnedMessageChangeHandler = (pinnedMessages: MessageProps[], deletedMessagesId: number[]) => {
     pinnedMessagesWithCoords = [];
-    let y = 0;
-    messagesWithCoords.map(mes => {
-      console.log(mes.message);
-      const pinned = pinnedMessages.find(m => m?.messageId === mes.message);
-      if(pinned) {
-        //console.log('pinnedMessages', pinnedMessages.map((m) => `${m.messageId} ${m.content}`))
-        pinnedMessagesWithCoords.push({ message: mes.message, coord: y });
-      }
-      if(deletedMessagesId.findIndex(id => id === mes.message) < 0)
-        y += mes.coord;
-    });
+    // let y = 0;
+    // messagesWithCoords.map(mes => {
+    //   console.log(mes.message);
+    //   const pinned = pinnedMessages.find(m => m?.messageId === mes.message);
+    //   if(pinned) {
+    //     //console.log('pinnedMessages', pinnedMessages.map((m) => `${m.messageId} ${m.content}`))
+    //     pinnedMessagesWithCoords.push({ message: mes.message, coord: y });
+    //   }
+    //   if(deletedMessagesId.findIndex(id => id === mes.message) < 0)
+    //     y += mes.coord;
+    // });
+
+    pinnedMessages.map(m => {
+      const mes = messagesWithCoords.find(mes => mes.message === m.messageId);
+      pinnedMessagesWithCoords.push({ 
+        message: m.messageId!, 
+        coord: mes?.coord!,
+        height: mes?.height!
+      });
+    })
 
     if(this.flatListRef.current) {
       this.flatListRef.current.scrollToOffset({ offset: this.flatListRef.current._listRef._scrollMetrics.offset + 1, animated: false });
@@ -133,15 +158,35 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   scrollToPinMessage = (scrollToPinnedMessage: boolean, idOfPinnedMessage: number) => {
     if(scrollToPinnedMessage && this.flatListRef.current) {
-      const offset = pinnedMessagesWithCoords.find(m => m.message == idOfPinnedMessage)?.coord;
-      console.log('offset', offset);
-      console.log(pinnedMessagesWithCoords);
-      if(offset !== undefined)
-        this.flatListRef.current.scrollToOffset({ animated: true, offset });
+      const tappedMessage = pinnedMessagesWithCoords.find(m => m.message == idOfPinnedMessage);
+      let deletedMesOffset = 0;
+      for(let i = 0; i < this.props.deletedMessagesId.sort((m1, m2) => m1 - m2).length; i++) {
+        if(this.props.deletedMessagesId[i] < idOfPinnedMessage) deletedMesOffset += messagesWithCoords.find(m => m.message === this.props.deletedMessagesId[i])?.height!;
+        else break;
+      }
+      if(tappedMessage !== undefined)
+        this.flatListRef.current.scrollToOffset({ animated: true, offset: tappedMessage.coord - deletedMesOffset - tappedMessage.height });
 
       if(this.props.dispatch) {
-        console.log('scrolling')
-        this.props.dispatch(setScrollStateForPinnedMessage(false, 0));
+        this.props.dispatch(setScrollStateForPinnedMessage(false, -1));
+      }
+    }
+  }
+
+  scrollToTappedMessage = (scrollToTappedMessage: boolean, idOfTappedMessage: number) => {
+    console.log(scrollToTappedMessage, idOfTappedMessage)
+    if(scrollToTappedMessage && this.flatListRef.current) {
+      const tappedMessage = messagesWithCoords.find(m => m.message === idOfTappedMessage);
+      let deletedMesOffset = 0;
+      for(let i = 0; i < this.props.deletedMessagesId.sort((m1, m2) => m1 - m2).length; i++) {
+        if(this.props.deletedMessagesId[i] > idOfTappedMessage) deletedMesOffset += messagesWithCoords.find(m => m.message === this.props.deletedMessagesId[i])?.height!;
+        else break;
+      }
+      if(tappedMessage !== undefined)
+        this.flatListRef.current.scrollToOffset({ animated: true, offset: tappedMessage.coord - deletedMesOffset - tappedMessage.height });
+
+      if(this.props.dispatch) {
+        this.props.dispatch(setScrollStateTappedMessage(false, 0));
       }
     }
   }
@@ -161,18 +206,25 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   setPinnedMessageHandler = (message:number, coord:number) => {
     //console.log('setPinnedMessageHandler', message, coord);
     const mesId = messagesWithCoords.findIndex(m => m.message === message);
-    if(mesId !== -1) {
+    if(mesId !== -1 && mesId > 0) {
+      messagesWithCoords[mesId].coord = coord + messagesWithCoords[mesId-1].coord;
+      messagesWithCoords[mesId].height = coord;
+    } else if(mesId !== -1) {
       messagesWithCoords[mesId].coord = coord;
+      messagesWithCoords[mesId].height = coord;
+    } else if(messagesWithCoords.length >= 1) {
+      messagesWithCoords.push({ message, coord: coord + messagesWithCoords[messagesWithCoords.length-1].coord, height: coord });
     } else {
-      messagesWithCoords.push({ message, coord });
+      messagesWithCoords.push({ message, coord, height: coord });
     }
   }
+
+  // Try to create function like setMessageMenuVisible and in it I can subtract flatListRef current offset and message offset
 
   flatListRef = React.createRef<any>();
   renderItem = ({item}:any) => {
     const { 
       listOfMessages, 
-      setMessageMenuVisible,
       author,
       messageID,
       userMessageLastWatched,
@@ -183,7 +235,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       item={item}
       navigation={this.props.navigation}
       listOfMessages={listOfMessages}
-      setMessageMenuVisible={setMessageMenuVisible}
+      setMessageMenuVisible={this.messageMenuHandler}
       flatListRef={this.flatListRef as any}
       coordsY={this.state.coordsY}
       author={author}
@@ -216,18 +268,60 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       this.setState({ pinnedMessageId: this.props.setPinnedMessage(messageId) });
   }
 
+  messageMenuHandler = async (coord: Layout, pressed: boolean) => {
+    console.log(
+      '\ncurrent scroll pos:', this.flatListRef.current._listRef._scrollMetrics.offset,
+      '\npressed coords:', coord.componentPageY, coord.pageY,
+      '\nmessage coords in FlatList', messagesWithCoords.find(m => m.message === coord.message?.messageId)?.coord
+    )
+    // pageY - position of press (the menu), componentPageY - top postion of the message
+    const mesCoords = messagesWithCoords.find(m => m.message === coord.message?.messageId);
+
+    const HEIGHT_OF_HEADER = (heightOfHeader+(this.props.hasPinnedMessage?height*0.05:0));
+    const HEIGHT_OF_FLATLIST = height * 0.94;
+    const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
+    const isUser = coord.message?.author.userId === this.props.author.userId;
+
+    if(height*0.94 - coord.componentPageY - coord. height < MESSAGE_MENU_HEIGHT) {
+      this.flatListRef.current.scrollToOffset({ 
+        offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
+        animated: true,
+      });
+
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      coord.componentPageY = HEIGHT_OF_FLATLIST - HEIGHT_OF_HEADER_OFFSET - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.pageY = HEIGHT_OF_FLATLIST - HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+    } else if(coord.componentPageY < HEIGHT_OF_HEADER) {
+      this.flatListRef.current.scrollToOffset({ 
+        offset: this.flatListRef.current._listRef._scrollMetrics.offset + (HEIGHT_OF_HEADER - coord.componentPageY), 
+        animated: true,
+      });
+
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      
+      coord.componentPageY = HEIGHT_OF_HEADER; // - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.pageY = HEIGHT_OF_HEADER + mesCoords?.height!;
+    } else {
+      coord.pageY = coord.componentPageY + mesCoords?.height!;
+    }
+
+    this.props.setMessageMenuVisible(coord, pressed);
+  }
+
   render() {
     const keyExtractor = (item:any) => {
       return item?.messageId?.toString();
     }
 
     const ListHeaderComponent = () => (
-      <View style={{ height: (height * 0.07+(this.props.isReply||this.props.isEdit?height*0.06:0)) }} />
+      <View style={{ height: (height * 0.02+SOFT_MENU_BAR_HEIGHT+(this.props.isReply||this.props.isEdit?height*0.07-SOFT_MENU_BAR_HEIGHT/4:0)) }} />
     );
   
     const ListFooterComponent = () => (
       <View 
-        style={{ backgroundColor: 'transparent', height: (height*0.07+(this.props.hasPinnedMessage?height*0.05:0)+Constants.statusBarHeight) }} 
+        style={{ backgroundColor: 'transparent', height: (heightOfHeader+(this.props.hasPinnedMessage?height*0.05:0)) }} 
       />
     )
 
@@ -242,7 +336,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
           inverted
           overScrollMode={'never'}
           windowSize={15}
-          maxToRenderPerBatch={3}
+          maxToRenderPerBatch={10}
           initialNumToRender={20}
           removeClippedSubviews
           updateCellsBatchingPeriod={100}
@@ -251,6 +345,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
           ListHeaderComponent={ListHeaderComponent}
           ListFooterComponent={ListFooterComponent} 
         />
+        <Animated.View style={{}} />
       </Animated.View>
     );
   }
@@ -258,7 +353,9 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
 const mapStateToProps = (state:any) => ({
   scrollToPinnedMessage: state.ChatReducer.scrollToPinnedMessage.scroll,
-  idOfPinnedMessage: state.ChatReducer.scrollToPinnedMessage.id
+  idOfPinnedMessage: state.ChatReducer.scrollToPinnedMessage.id,
+  scrollToTappedMessage: state.ChatReducer.scrollToTappedMessage.scroll,
+  idOfTappedMessage: state.ChatReducer.scrollToTappedMessage.id,
 });
 
 export default connect(mapStateToProps)(DialogueMessages);
