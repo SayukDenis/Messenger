@@ -8,6 +8,11 @@ import ButtonForAllChat from "./ComponentForAllChat/AllChatButton";
 import RecommendFolderButt from "./ComponentForAllChat/RecommendFolderButt";
 import { addNewFolder, removeRecomendedFolder } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 
+interface Folder{
+  nameOfFolder: string;
+  chats: string[];
+  listofexeptions:string[]
+}
 
 const mapStateToProps = (state :any) => {
   return({
@@ -18,7 +23,8 @@ const mapStateToProps = (state :any) => {
 
 const ChatFolderCenter : React.FC<any> = ({ navigation })=>{
 
-    let arrayOfFolderNames :string[] = useSelector((state :any) => state.SettingsPagesReducers.AddNewFolder.listOfNewFolder);
+    let arrayOfFolderNames :Folder[] = useSelector((state :any) => state.SettingsPagesReducers.AddNewFolder.listOfNewFolder);
+    console.log( useSelector((state :any) => state.SettingsPagesReducers.AddNewFolder.listOfNewFolder));
     let recomendedFolders : string[] = useSelector ((state:any)=> state.SettingsPagesReducers.AddRecomendedFoldert.recomdendedFolders);
     let counerOfGroups : number = useSelector ((state:any)=> state.SettingsPagesReducers.AddRecomendedFoldert.numberOfRecommendedFolders)
     const dispatch = useDispatch();
@@ -43,8 +49,8 @@ const ChatFolderCenter : React.FC<any> = ({ navigation })=>{
                   <ButtonForAllChat text="All Chats"></ButtonForAllChat>
                   </TouchableOpacity>
                   {arrayOfFolderNames.map((item, index) => (
-                    <TouchableOpacity style={{marginTop:"0.5%"}} key={index}  >
-                      <ButtonForSettings text={item}></ButtonForSettings>
+                    <TouchableOpacity  onPress={() => navigation.navigate("AddNewChatToFolder", { nameOfFolder: item.nameOfFolder })} style={{marginTop:"0.5%"}} key={index}  >
+                      <ButtonForSettings text={item.nameOfFolder}></ButtonForSettings>
                       </TouchableOpacity>
                   ))}
                   {counerOfGroups > 0 && (

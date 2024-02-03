@@ -4,7 +4,7 @@ import StyleCentre from "../StyleCenter";
 import BlurAll from "../../../../../SemiComponents/BlurAll";
 import { screenHeight,screenWidth } from "../../../../../ChatList/Constants/ConstantsForChatlist";
 import BackGroundColorForComponents from "../../../../../SemiComponents/BackGroundColorForComponents";
-
+import StyleLogOutModalWindow from "./LogoutModalWindowStyle.";
 
 const LogoutModalWindow = ()=>{
 
@@ -27,7 +27,22 @@ const LogoutModalWindow = ()=>{
              animationType="none"
              transparent={true}
               visible={isModalVisible}
-              onRequestClose={toggleModal}>                                 
+              onRequestClose={toggleModal}> 
+            <View style = {StyleLogOutModalWindow.LogoutModalContainer}>
+                <View style = {StyleLogOutModalWindow.LogoutModalWindow}>
+                    <View style = {StyleLogOutModalWindow.containerLogoutText}>
+                        <Text style = {StyleLogOutModalWindow.TextStyle}>Do you really want to log out?</Text>
+                    </View>
+                    <View style = {StyleLogOutModalWindow.containerOfButtons}>
+                        <TouchableOpacity style = {StyleLogOutModalWindow.AgreeButtonStyle} onPress={toggleModal}>
+                            <Text style = {StyleLogOutModalWindow.TextStyle}>Agree</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = {StyleLogOutModalWindow.DisagreeButtonStyle} onPress={toggleModal}>
+                            <Text style = {StyleLogOutModalWindow.DisadgreeTextStyle}>Disagree</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>                                
         </Modal>
                                    
     </View>
