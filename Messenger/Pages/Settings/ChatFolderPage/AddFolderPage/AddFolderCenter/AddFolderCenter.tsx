@@ -17,14 +17,24 @@ const AddFolderCenter  = ()=>{
        }
     };
 
-    return <View>
-        <Text style ={StyleAddFolderCenter.styleAddFolderText}>Name Folder</Text>
-        <ConteinerForAddFolderComp>
-        <TextInput placeholder="Write name of folder" value={inputText} onChangeText={setinputText} onBlur={saveText}></TextInput>
-        </ConteinerForAddFolderComp>
-        <Text style ={StyleAddFolderCenter.styleAddFolderText}>Exceptions</Text>
-        <TouchableOpacity><AddExeptions text="Exeptions"></AddExeptions></TouchableOpacity>
-    </View>
+    return(
+        <View>
+            <Text style ={StyleAddFolderCenter.styleAddFolderText}>Name Folder</Text>
+            <ConteinerForAddFolderComp>
+                <TextInput 
+                placeholder="Write name of folder" 
+                placeholderTextColor="black" 
+                value={inputText} 
+                onChangeText={setinputText} 
+                onBlur={saveText}
+                style ={{width:"100%"}}/>
+            </ConteinerForAddFolderComp>
+            <Text style ={StyleAddFolderCenter.styleAddFolderText}>Add chat</Text>
+            <TouchableOpacity><AddExeptions text="Add chat">
+                </AddExeptions>
+            </TouchableOpacity>
+        </View>
+    )
 }
 
 export default AddFolderCenter;

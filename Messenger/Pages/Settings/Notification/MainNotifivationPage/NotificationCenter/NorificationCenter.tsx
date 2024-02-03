@@ -5,7 +5,7 @@ import ButtonForSettings from "../../../../SemiComponents/ButtonForSettings";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SwitchButtonContainer from "./SwitchButtonContainer/SwitchButtonContainer";
 
-const NotificationCenter = () => {
+const NotificationCenter: React.FC<any> = ({ navigation })=> {
 
     const ArrayOFBButt : string [] = [ "Privates Chats","Group chats","Channels"];
     const SwitchesButtForNotficationSett : string[] = ["Text notification","Sound", "Vibration"];
@@ -15,11 +15,16 @@ const NotificationCenter = () => {
       setIsEnabled(!isEnabled);
     }
 
+
+    const handleButtonPress = (buttonText: string) => {
+      navigation.navigate('EditNotification', { NameOfPage: buttonText });
+    };
+  
     return <View>
         <View style = {StyleNotificationCenter.articleContainer}><Text style = {StyleNotificationCenter.articleTextStyle}>Notification</Text></View>
         {ArrayOFBButt.map((buttonText, index) => (
         <View style = {{marginBottom:2}}>
-           <TouchableOpacity  key={index} ><ButtonForSettings text={buttonText}  ></ButtonForSettings></TouchableOpacity>
+           <TouchableOpacity  key={index} onPress={() => handleButtonPress(buttonText)}  ><ButtonForSettings text={buttonText}  ></ButtonForSettings></TouchableOpacity>
         </View>
       ))}
       <View style = {StyleNotificationCenter.articleContainer}><Text style = {StyleNotificationCenter.articleTextStyle}>Notification for Telingtik</Text></View>
