@@ -1,9 +1,9 @@
 import { dataSource } from "../../local/database";
-import Chat from '../../Entity/Chats/Chat';
-import Folder from "../../Entity/Folder";
+import Chat from '../../Models/Chats/Chat';
+import Folder from "../../Models/Folder";
 import { readChats } from "./chatOperations";
-import Branch from "../../Entity/Chats/Branch";
-import Role from "../../Entity/Chats/Role";
+import Branch from "../../Models/Chats/Branch";
+import Role from "../../Models/Chats/Role";
 
 const manager = dataSource.manager;
 

@@ -1,7 +1,7 @@
-import Dialogue from "../../Entity/Chats/Dialogue";
-import { EMessageType } from "../../Entity/EMessageType";
-import Message from "../../Entity/Message";
-import User from "../../Entity/User";
+import Dialogue from "../../Models/Chats/Dialogue";
+import { EMessageType } from "../../Models/EMessageType";
+import Message from "../../Models/Message";
+import User from "../../Models/User";
 import { dataSource } from "../../local/database";
 import { readChats } from "./chatOperations";
 import { readMessages } from "./messageOperations";

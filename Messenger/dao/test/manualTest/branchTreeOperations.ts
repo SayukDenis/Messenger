@@ -1,5 +1,5 @@
 import { dataSource } from "../../local/database";
-import Branch from "../../Entity/Chats/Branch";
+import Branch from "../../Models/Chats/Branch";
 
 const manager = dataSource.manager;
 

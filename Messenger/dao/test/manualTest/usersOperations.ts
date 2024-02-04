@@ -1,4 +1,4 @@
-import User from '../../Entity/User';
+import User from '../../Models/User';
 import { dataSource } from '../../local/database';
 
 const manager = dataSource.manager;

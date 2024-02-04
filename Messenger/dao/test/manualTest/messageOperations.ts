@@ -1,7 +1,7 @@
-import User from '../../Entity/User';
+import User from '../../Models/User';
 import { dataSource } from '../../local/database';
-import Message from '../../Entity/Message';
-import { EMessageType } from '../../Entity/EMessageType';
+import Message from '../../Models/Message';
+import { EMessageType } from '../../Models/EMessageType';
 
 const manager = dataSource.manager;
 

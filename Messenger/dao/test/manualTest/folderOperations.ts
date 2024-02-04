@@ -1,6 +1,6 @@
 import { dataSource } from "../../local/database";
-import Chat from '../../Entity/Chats/Chat';
-import Folder from "../../Entity/Folder";
+import Chat from '../../Models/Chats/Chat';
+import Folder from "../../Models/Folder";
 import { readChats } from "./chatOperations";
 
 const manager = dataSource.manager;

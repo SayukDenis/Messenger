@@ -1,10 +1,10 @@
-import SelfProfile from "../../Entity/SelfProfile";
+import SelfProfile from "../../Models/SelfProfile";
 import { dataSource } from "../../local/database";
-import Chat from '../../Entity/Chats/Chat';
-import Tab from '../../Entity/Tab';
+import Chat from '../../Models/Chats/Chat';
+import Tab from '../../Models/Tab';
 import { readChats } from "./chatOperations";
 import { readTabs } from "./tabOperations";
-import User from "../../Entity/User";
+import User from "../../Models/User";
 
 const manager = dataSource.manager;
 

@@ -1,10 +1,10 @@
-import User from '../../Entity/User';
+import User from '../../Models/User';
 import { dataSource } from '../../local/database';
-import Message from '../../Entity/Message';
-import { EMessageType } from '../../Entity/EMessageType';
-import Chat from '../../Entity/Chats/Chat';
-import MainChat from '../../Entity/Chats/MainChat';
-import Branch from '../../Entity/Chats/Branch';
+import Message from '../../Models/Message';
+import { EMessageType } from '../../Models/EMessageType';
+import Chat from '../../Models/Chats/Chat';
+import MainChat from '../../Models/Chats/MainChat';
+import Branch from '../../Models/Chats/Branch';
 import { readBranches } from './branchOperations';
 
 const manager = dataSource.manager;

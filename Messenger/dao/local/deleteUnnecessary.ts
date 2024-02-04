@@ -1,8 +1,8 @@
-import SelfProfile from "../Entity/SelfProfile";
+import SelfProfile from "../Models/SelfProfile";
 import { dataSource } from "./database";
-import Chat from '../Entity/Chats/Chat';
-import Tab from '../Entity/Tab';
-import Folder from "../Entity/Folder";
+import Chat from '../Models/Chats/Chat';
+import Tab from '../Models/Tab';
+import Folder from "../Models/Folder";
 import { readChats } from "../test/manualTest/chatOperations";
 
 const manager = dataSource.manager;

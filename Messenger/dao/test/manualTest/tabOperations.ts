@@ -1,6 +1,6 @@
 import { dataSource } from "../../local/database";
-import Tab from '../../Entity/Tab';
-import Folder from "../../Entity/Folder";
+import Tab from '../../Models/Tab';
+import Folder from "../../Models/Folder";
 import { readFolders } from "./folderOperations";
 
 const manager = dataSource.manager;

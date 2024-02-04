@@ -96,9 +96,6 @@ export function initialization(): SelfProfile {
   const allChatsTab = new Tab("Default");
   const allChatsFolder = new Folder("AllChats");
 
-  allChatsTab.exceptionsDialogues.push(...getRandomElementsFromArray<Dialogue>(dialogues));
-  allChatsTab.exceptionsGroups.push(...getRandomElementsFromArray<Group>(groups));
-  allChatsTab.exceptionsChannels.push(...getRandomElementsFromArray<Channel>(channels));
   allChatsTab.folders.push(allChatsFolder);
   allChatsTab.folders.push(...folders);
 
@@ -127,7 +124,7 @@ function createUsers(count: number): User[] {
 
   for (let i = 1; i <= count; i++) {
     const userName = `User ${i}`;
-    const user = new User(userName);
+    const user = new User(userName, 'nickname');
     user.userId = idUsersToCreate++;
     // Additional properties can be set if needed
     user.numberPhone = `+123456789${i}`;
@@ -151,9 +148,8 @@ function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Di
   for (let i = 0, j = 0; i < count; i++, j++) {
     const user = shuffledUsers[j];
 
-    const dialogue = new Dialogue(selfUser, user);
+    const dialogue = new Dialogue();
 
-    dialogue.dialogueId = idDialogueToCreate++;
     dialogue.linkToPhoto = user.linkToPhoto;
 
     addMessages(dialogue, 100, dialogue.users, messageDialog);
@@ -174,15 +170,12 @@ function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group
   for (let i = 0; i < count; i++) {
     const group = new Group("Group " + i);
 
-    group.groupId = idGroupeToCreate++;
     group.linkToPhoto = images[getRandomNumber(images.length)];
 
     if (Math.random() < 0.4) {
-      group.adminUsers.push(selfUser);
       group.title = "Admin Group" + i;
     }
     group.users.push(selfUser);
-    group.adminUsers.push(...getRandomElementsFromArray<User>(users));
     group.users.push(...getRandomElementsFromArray<User>(users));
     addMessages(group, 100, users, messageGroupsAndChannels);
 
@@ -202,16 +195,13 @@ function createChannel(count: number, selfUser: SelfProfile, users: User[]): Cha
   for (let i = 0; i < count; i++) {
     const channel = new Channel("Channel " + i);
 
-    channel.channelId = idChannelToCreate++;
 
     if (Math.random() < 0.4) {
-      channel.adminUsers.push(selfUser);
       channel.title = "Admin Channel " + i;
     }
     channel.linkToPhoto = images[getRandomNumber(images.length)];
     channel.users.push(selfUser);
     addMessages(channel, 100, users, messageGroupsAndChannels);
-    channel.adminUsers.push(...getRandomElementsFromArray<User>(users));
     channel.users.push(...getRandomElementsFromArray<User>(users));
 
     if (Math.random() < 0.15) addBranch(getRandomNumber(5), channel);
@@ -250,14 +240,12 @@ function createTab(count: number): Tab[] {
 function addBranch(count: number, mainChat: MainChat) {
   for (let i = 0; i < count; i++) {
     const branch = new Branch("Name branch " + i);
-    branch.branchId = idBranchToCrate++;
 
     addMessages(branch, 100, mainChat.users, messageGroupsAndChannels);
     if (Math.random() < 0.3) branch.branches.push(new Branch("Interanl branch " + i));
 
     branch.pinnedMessage.push(...getRandomElementsFromArray<Message>(branch.messages));
     branch.pinnedMessageForAll.push(...getRandomElementsFromArray<Message>(branch.messages));
-    branch.haveAccess.push(...getRandomElementsFromArray(mainChat.roles));
 
     mainChat.branches.push(branch);
   }

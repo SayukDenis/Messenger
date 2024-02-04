@@ -1,8 +1,8 @@
-import User from '../../Entity/User';
+import User from '../../Models/User';
 import { dataSource } from '../../local/database';
-import Message from '../../Entity/Message';
-import { EMessageType } from '../../Entity/EMessageType';
-import Chat from '../../Entity/Chats/Chat';
+import Message from '../../Models/Message';
+import { EMessageType } from '../../Models/EMessageType';
+import Chat from '../../Models/Chats/Chat';
 
 const manager = dataSource.manager;
 
