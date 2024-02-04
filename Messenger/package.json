@@ -72,11 +72,15 @@
     "semver": "^7.5.4",
     "tailwind-react-native-classnames": "^1.5.1",
     "tailwind-rn": "^4.2.0",
-    "tinycolor2": "^1.6.0"
+    "tinycolor2": "^1.6.0",
+    "reflect-metadata": "^0.2.1",
+    "sqlite3": "^5.1.7",
+    "typeorm": "^0.3.19"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
     "@types/react": "~18.2.14",
+    "@types/node": "^20.11.7",
     "@types/react-native": "^0.72.7",
     "@types/redux": "^3.6.0",
     "@types/semver": "^7.5.6",
@@ -92,6 +96,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-native": "^4.1.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "expo-cli": "^6.3.10",
     "typescript": "^5.3.3"
   },

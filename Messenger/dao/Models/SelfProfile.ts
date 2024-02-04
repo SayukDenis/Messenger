@@ -1,40 +1,34 @@
-import Model from './Model';
 import Tab from './Tab';
 import User from './User';
+import Chat from './Chats/Chat';
+import { Entity, Column, OneToMany } from "typeorm";
 
-
+@Entity()
 export default class SelfProfile extends User {
-    constructor(name: string, password: string, email?: string, timeLastEntry?: Date, tabs?: Array<Tab>, numberPhone?: string,
-        nickname?: string, description?: string, linkToPhoto?: string) {
-        super(name, numberPhone, nickname, description, linkToPhoto);
+    constructor(name: string, nickname: string, password: string) {
+        super(name, nickname);
         this.password = password;
-        this.email = email;
-        this.timeLastEntry = timeLastEntry;
-        this.tabs = tabs ?? new Array;
     }
+    @Column('text')
     password!: string;
-    //Additional
+
+    @Column('text', { nullable: true })
     email?: string;
+
     //Information about user
+    @Column('datetime', { nullable: true })
     timeLastEntry?: Date;
+
+    @OneToMany(() => Tab, (tab) => tab.selfProfile, {
+        eager: true,
+        cascade: true
+    })
     tabs: Array<Tab>;
 
-    static schema = {
-        name: 'selfProfiles',
-        properties: {
-            userId: 'integer',
-            name: 'text',
-            password: 'text',
-            numberPhone: 'text',
-            //Additional
-            email: 'text?',
-            nickname: 'text?',
-            description: 'text?',
-            linkToPhoto: 'text?',
-            //Information about user
-            timeLastEntry: 'date?',
-            tabs: { type: 'list', objectType: Tab },
-        },
-        primaryKey: 'userId',
-    };
+    //Blocked chats
+    @OneToMany(() => Chat, (chat) => chat.selfProfile, {
+        eager: true,
+        cascade: true
+    })
+    blockedChats: Array<Chat>;
 };

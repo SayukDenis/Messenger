@@ -1,37 +1,27 @@
-import Message from '../Message';
-import Role from './Role';
-import Model from '../Model';
 import Chat from './Chat';
-import ILastWatchedMessage from './ILastWatchedMessage';
+import { Column, Entity, ManyToOne, Tree, TreeChildren, TreeParent } from 'typeorm';
+import MainChat from './MainChat';
 
+@Entity()
+@Tree("closure-table")
 export default class Branch extends Chat {
-    constructor(title: string, haveAccess?: Array<Role>, linkToPhoto?: string, messages?: Array<Message>, branches?: Array<Branch>,
-        pinnedMessage?: Array<Message>, pinnedMessageForAll?: Array<Message>,
-        lastWatchedMessage?: Array<ILastWatchedMessage>) {
-        super(linkToPhoto, messages, branches, pinnedMessage, pinnedMessageForAll, lastWatchedMessage);
+    constructor(title: string) {
+        super();
         this.title = title;
-        this.haveAccess = haveAccess ?? new Array;
     }
-    branchId?: number;
+
+    @Column('text')
     title!: string;
-    //access
-    haveAccess: Array<Role>;
-    //schema
-    static schema = {
-        name: 'branches',
-        properties: {
-            branchId: { type: 'integer', indexed: true },
-            title: 'text',
-            linkToPhoto: 'text?',
-            messages: { type: 'list', objectType: Message },
-            branches: { type: 'list', objectType: Branch },
-            pinnedMessageForAll: { type: 'list', objectType: Message },
-            pinnedMessage: { type: 'list', objectType: Message },
-            //access
-            haveAccess: { type: 'list', objectType: Role },
-            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
-        },
-        primaryKey: 'branchId',
-        embedded: false,
-    }
+
+    @Column('simple-array', { nullable: true })
+    haveAccessRoleId: Array<number>; //id Roles
+
+    @TreeParent({ onDelete: 'CASCADE' })
+    parent!: Branch
+
+    @TreeChildren({ cascade: true })
+    branches: Array<Branch>;
+
+    @ManyToOne(() => MainChat, (chat) => chat.branches, { onDelete: 'CASCADE' })
+    mainChat!: MainChat
 };
