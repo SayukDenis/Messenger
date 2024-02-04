@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 import StyleEditPageHeader from './StyleEditPageHeader';
+import BackButton from '../../../../../SemiComponents/BackButton';
 
 const EditHeader: React.FC<any> = ({ navigation })=>{
-    return<View style ={StyleEditPageHeader.header}>
-    <TouchableOpacity style ={StyleEditPageHeader.backButt} onPress={() => navigation.goBack() }><Text>but</Text></TouchableOpacity>
-    <View style ={StyleEditPageHeader.conteinterUserName}><Text style={StyleEditPageHeader.UserName}>Alekseks</Text></View>
-    <TouchableOpacity><Text>Done</Text></TouchableOpacity>
+    return<View style ={StyleEditPageHeader.container} >
+    <TouchableOpacity style = {StyleEditPageHeader.backButt} onPress={() => navigation.goBack() }><BackButton/></TouchableOpacity>
+    <View style ={StyleEditPageHeader.userNameConteiner}><Text style ={StyleEditPageHeader.userNameText}>User name</Text></View>
     </View>
 }
 

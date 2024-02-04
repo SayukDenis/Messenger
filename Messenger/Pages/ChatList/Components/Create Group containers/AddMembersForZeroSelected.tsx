@@ -6,10 +6,12 @@ import AddMemberSVG from "../../../SemiComponents/AddMemberSVG";
 interface AddMembersForZeroSelectedProps {
   marginLeft: number;
   onMemberTouch: MutableRefObject<() => void>;
+  addNameOfUser: string;
 }
 const AddMembersForZeroSelected: React.FC<AddMembersForZeroSelectedProps> = ({
   marginLeft,
-  onMemberTouch
+  onMemberTouch,
+  addNameOfUser
 }) => {
   return (
     <TouchableOpacity onPress={onMemberTouch.current}>
@@ -33,7 +35,7 @@ const AddMembersForZeroSelected: React.FC<AddMembersForZeroSelectedProps> = ({
               //backgroundColor: "red",
             }}
           >
-            {"Member"}
+            {addNameOfUser}
           </Text>
         </View>
       </ContainerForButtonForSettings>

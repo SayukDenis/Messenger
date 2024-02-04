@@ -1,34 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import StyleConfidentialityCenter from "./StyleConfidentialytiCenter";
+import ButtonForSettings from '../../../../SemiComponents/ButtonForSettings';
 
 const Confidentialitycenter : React.FC<any> = ({ navigation })=>{
     return <View style ={StyleConfidentialityCenter.centerConteiner}>
        <Text style ={StyleConfidentialityCenter.textStyle}>User</Text>
        <View style ={StyleConfidentialityCenter.buttonsConteiner}>   
-            <TouchableOpacity style ={StyleConfidentialityCenter.centerButtons}  onPress={() => navigation.navigate('BlockUsers')}>
-                <Text style ={StyleConfidentialityCenter.buttonText}>Blocked User</Text>
-                <TouchableOpacity style= {StyleConfidentialityCenter.backButton}>
-                    <Text style ={StyleConfidentialityCenter.buttonText}>back</Text>
-                </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('BlockUsers')}>
+                <ButtonForSettings text='Blocked users'></ButtonForSettings>
             </TouchableOpacity>
        </View>
        <Text style ={StyleConfidentialityCenter.textStyle}>Privacy</Text>
        <View style ={StyleConfidentialityCenter.buttonsConteiner}>   
-            <TouchableOpacity style ={StyleConfidentialityCenter.centerButtons}>
-                <Text style ={StyleConfidentialityCenter.buttonText}>Number phone</Text>
-                <TouchableOpacity style= {StyleConfidentialityCenter.backButton}>
-                    <Text style ={StyleConfidentialityCenter.buttonText}>back</Text>
-                </TouchableOpacity>
-            </TouchableOpacity>
+            <TouchableOpacity><ButtonForSettings text='Number phone'></ButtonForSettings></TouchableOpacity>
        </View>
        <Text style ={StyleConfidentialityCenter.textStyle}>Password</Text>
        <View style ={StyleConfidentialityCenter.buttonsConteiner}>   
-            <TouchableOpacity style ={StyleConfidentialityCenter.centerButtons} onPress={() => navigation.navigate('PasswordPage')}>
-                <Text style ={StyleConfidentialityCenter.buttonText}>Password for Telentik</Text>
-                <TouchableOpacity style= {StyleConfidentialityCenter.backButton}>
-                    <Text style ={StyleConfidentialityCenter.buttonText}>back</Text>
-                </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('PasswordPage')}>
+                <ButtonForSettings text='Password for Telentik'/>
             </TouchableOpacity>
        </View>
     </View>

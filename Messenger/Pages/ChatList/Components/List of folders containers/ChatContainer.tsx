@@ -29,6 +29,8 @@ import ListOfBranches from "./ListOfBranches";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 import { CountOfUnreadMessages } from "./Functions/CountOfUnreadMessage";
 import getNameOfChat from "./Functions/GetNameOfChat";
+import Channel from "../../../../dao/Models/Chats/Channel";
+import Group from "../../../../dao/Models/Chats/Group";
 
 interface ChatProps {
   chat: Chat;
@@ -92,6 +94,10 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting,navigation }) => {
     console.log("Кнопку натиснули");
     if(chat instanceof Dialogue){
       navigation.navigate("DialogueNavigation",{chat:(chat as Dialogue)})
+    } else if(chat instanceof Channel) {
+      navigation.navigate("ChannelNavigation",{chat:(chat as Channel)})
+    } else if(chat instanceof Group) {
+      navigation.navigate("GroupNavigation",{chat:(chat as Group)})
     }
   
     

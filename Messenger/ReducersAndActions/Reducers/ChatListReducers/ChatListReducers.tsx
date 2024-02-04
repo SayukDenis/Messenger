@@ -5,8 +5,6 @@ import {
 
   SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL,
 } from "../../Actions/ChatListActions/ChatListActions";
-import { propsForCreate } from "../../../Pages/ChatList/Constants/ConstantsForChatlist";
-import User from "../../../dao/Models/User";
 
 const currentTab: number = 0;
 const animationForChatListFolderReducer = (
@@ -148,6 +146,14 @@ const createGroupOrChannelReducer = (
       return state;
   }
 };
+const setPhotoForCreateGroupOrChannelReducer=(state={photoForCreateGroupOrChannel:""},action:any)=>{
+  switch (action.type) {
+    case "SET_PHOTO_FOR_CREATE_GROUP_OR_CHANNEL":
+      return{...state,photoForCreateGroupOrChannel:action.photoForCreateGroupOrChannel}
+    default:
+      return state;
+  }
+}
 const rootReducerChatList = combineReducers({
   animationForChatListFolder: animationForChatListFolderReducer,
   selectedFolder: selectedFolderReducer,
@@ -159,7 +165,8 @@ const rootReducerChatList = combineReducers({
   enumForChatListBlurs: enumForChatListBlursReducer,
   layoutOfModeOfEmployment: layoutOfModeOfEmploymentReducer,
   stateForEndOfBlurForChatList: stateForEndOfBlurForChatListReducer,
-  createGroupOrChannel:createGroupOrChannelReducer
+  createGroupOrChannel:createGroupOrChannelReducer,
+  setPhotoForCreateGroupOrChannel:setPhotoForCreateGroupOrChannelReducer
 });
 
 export default rootReducerChatList;

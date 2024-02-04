@@ -13,12 +13,27 @@ function responsiveHeight(baseHeight: number) {
 }
 
 export const styles = StyleSheet.create({
-  container: {
+  backgroundImage: {
     flex: 1,
+    resizeMode: 'cover', 
     justifyContent: 'center',
+    padding: responsiveWidth(0),
+  },
+  containerCenter: {
+    paddingLeft: responsiveWidth(45), 
     alignItems: 'center',
-    backgroundColor: '#e3c07c',
-    paddingHorizontal: responsiveWidth(35),
+    paddingRight: responsiveWidth(45), 
+  },
+  containerStart: {
+    paddingLeft: responsiveWidth(45), 
+    paddingRight: responsiveWidth(45), 
+    alignItems: 'flex-start',
+  },
+  imageStyle: {
+    width: responsiveWidth(106),  
+    height: responsiveHeight(83), 
+    marginBottom: responsiveHeight(5),
+    resizeMode: 'contain', 
   },
   contentContainer: {
     backgroundColor: '#FFFFFF',
@@ -34,62 +49,83 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   header: {
-    fontSize: responsiveHeight(15),
-    color: '#000000',
+    fontSize: responsiveHeight(18),
+    color: '#FFFFFF',
   },
   label: {
     fontSize: responsiveHeight(11),
     marginBottom: responsiveHeight(10),
     color: '#402B2B',
   },
-  input: {
+  Button: {
     width: '100%',
-    padding: responsiveHeight(12),
-    fontSize: responsiveHeight(10),
-    borderWidth: 1,
-    borderColor: '#D99B9B',
-    color: '#9B8D8D',
-    borderRadius: responsiveHeight(4),
-    marginBottom: responsiveHeight(15),
-  },
-  signInButton: {
-    width: responsiveWidth(92),
-    paddingHorizontal: responsiveWidth(7),
-    paddingVertical: responsiveHeight(9),
-    backgroundColor: '#EE4D47',
+    paddingHorizontal: responsiveWidth(0),
+    paddingVertical: responsiveHeight(10),
+    backgroundColor: '#61B7F580',
     borderWidth: 0,
     transition: 'background-color 0.3s',
-    borderRadius: responsiveHeight(10),
-    
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
+    alignItems: 'center',
+    borderRadius: responsiveHeight(5),
   },
-  signInLaber: {
-    fontSize: responsiveHeight(9), 
+  ButtonLaber: {
+    fontSize: responsiveHeight(16), 
     color: '#fff',
   },
 
-  createAccount: {  
-    fontSize: responsiveWidth(8),
-    color: '#555',
-  },
-  containerCreat: { 
-    paddingHorizontal: responsiveWidth(27),
-  },
-  createButton: {
-    marginLeft: responsiveWidth(10),
+  linkButton: {
     paddingHorizontal: responsiveWidth(2),
     paddingVertical: responsiveHeight(4),
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
-  createButtonText: {
-    fontSize: responsiveWidth(8),
-    color: '#1196B3',
+  linkButtonText: {
+    fontSize: responsiveWidth(16),
+    color: '#6E23CD83',
   },
-  sentCodeAgainButtonText: {
-    fontSize: responsiveWidth(11),
-    color: '#1196B3',
-    marginBottom: responsiveHeight(14), 
+
+
+  containerLine: {
+    padding: responsiveWidth(20),
+  },
+  line: {
+    borderBottomColor: '#fff',
+    borderBottomWidth: responsiveWidth(1),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: responsiveWidth(10),
+  },
+  headerText: {
+    fontSize: responsiveWidth(18),
+    color: '#fff',
+  },
+  verticalLine: {
+    height: '100%',
+    width: responsiveWidth(1),
+    backgroundColor: '#fff',
+    marginHorizontal: responsiveWidth(10),
+  },
+  input: {
+    flex: responsiveWidth(1),
+    fontSize: responsiveWidth(18),
+    color: '#fff',
+  },
+
+  countryFlag: {
+    width: responsiveWidth(24),
+    height: responsiveHeight(23),
+    marginRight: responsiveWidth(7),
+    marginLeft: responsiveWidth(11),
+  },
+  headerTextСountryСode: {
+    fontSize: responsiveWidth(18),
+    color: '#fff',
+    width: responsiveWidth(50),
+    marginRight: responsiveWidth(-9),
   },
 });
