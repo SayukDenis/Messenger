@@ -12,7 +12,7 @@ import styles from './Styles/Header';
 const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, users, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, chatType }:DialogueHeaderProps) => {
   if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
 
-  const displayName = users[0].name;
+  const displayName = users[0]?.name;
   const countOfPinnedMessages = listOfPinnedMessages.length;
   const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage?.messageId)+1;
 

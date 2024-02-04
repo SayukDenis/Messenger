@@ -3,8 +3,8 @@ import React, { memo } from 'react'
 import { EMessageType } from '../../../dao/Models/EMessageType';
 import { messageViewHandleProps } from '../Dialogue/components/interfaces/IDialogueMessages';
 import { MessageItemProps } from './Interfaces/IMessageItem';
-import DefaultTextTypeUsingClass from './MessageViewAndTypes/DefaultTextTypeUsingClass';
-import ReplyTextTypeUsingClass from './MessageViewAndTypes/ReplyTextTypeUsingClass';
+import DefaultTextTypeUsingClass from './MessageViewAndTypes/DefaultTextType';
+import ReplyTextTypeUsingClass from './MessageViewAndTypes/ReplyTextType';
 
 const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen, listOfPinnedMessages, navigation, users }:MessageItemProps) => {
   const messageViewHandle = ({message}:messageViewHandleProps) => {
@@ -18,7 +18,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         id={message.messageId!} 
         flatList={flatListRef!}
         author={author}
-        userName={users[0].name}
+        userName={users?users[0]?.name:''}
         userMessageLastWatched={userMessageLastWatched}
         selecting={selecting}
         pinnedMessageScreen={pinnedMessageScreen}

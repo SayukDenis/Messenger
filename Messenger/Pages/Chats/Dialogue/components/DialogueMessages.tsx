@@ -269,17 +269,20 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
     const isUser = coord.message?.author.userId === this.props.author.userId;
 
-    if(height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - SOFT_MENU_BAR_HEIGHT ) {
+    if(height - height*0.06 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - height*0.06 ) {
+      const scrollOffset = this.flatListRef.current._listRef._scrollMetrics.offset;
+      
       Animated.timing(this.state.keyboardHeight, {
-        toValue: -(MESSAGE_MENU_HEIGHT - (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height! + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT))),
+        toValue: -(MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height! + scrollOffset + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT))),
         duration: 200,
         useNativeDriver: false
       }).start();
 
+      this.flatListRef.current.scrollToOffset({ offset: 0, animated: true });
       await new Promise(resolve => setTimeout(resolve, 200));
 
-      coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
-      coord.pageY = coord.componentPageY + (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
+      coord.pageY = (height - height*0.06) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(height*0.94 - coord.componentPageY - coord. height < MESSAGE_MENU_HEIGHT) {
       this.flatListRef.current.scrollToOffset({ 
         offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 

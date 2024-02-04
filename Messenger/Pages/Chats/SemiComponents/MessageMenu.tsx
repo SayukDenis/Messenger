@@ -352,7 +352,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
           height={coord.height} 
           userMessageLastWatched={userMessageLastWatched} 
           pinned={coord.pinned} 
-          userName={users[0].name}
+          userName={users[0]?.name}
         />:
         <DefaultTextDummyMessage 
           message={coord.message}
