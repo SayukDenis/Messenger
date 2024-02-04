@@ -1,4 +1,5 @@
 import ILastWatchedMessage from "../../../../dao/Models/Chats/ILastWatchedMessage";
+import User from "../../../../dao/Models/User";
 import { Layout } from "./GeneralInterfaces/ILayout";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 
@@ -17,4 +18,5 @@ export interface messageMenuProps {
   onDeletePress?: () => void;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   pinnedMessageScreen: boolean;
+  users: User[];
 }

@@ -12,6 +12,7 @@ export interface MessageItemProps {
   flatListRef?: React.MutableRefObject<null>;
   coordsY: [number[]];
   author: User;
+  users: User[];
   messageID: number;
   setCoordsY: (newCoordsY: any) => void;
   userMessageLastWatched?: ILastWatchedMessage | undefined;

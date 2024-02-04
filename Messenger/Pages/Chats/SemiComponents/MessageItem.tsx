@@ -6,7 +6,7 @@ import { MessageItemProps } from './Interfaces/IMessageItem';
 import DefaultTextTypeUsingClass from './MessageViewAndTypes/DefaultTextTypeUsingClass';
 import ReplyTextTypeUsingClass from './MessageViewAndTypes/ReplyTextTypeUsingClass';
 
-const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen, listOfPinnedMessages, navigation }:MessageItemProps) => {
+const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen, listOfPinnedMessages, navigation, users }:MessageItemProps) => {
   const messageViewHandle = ({message}:messageViewHandleProps) => {
     if(message.messageType == EMessageType.text && message.messageResponseId && listOfMessages.findIndex(m => m.messageId === message.messageResponseId) >= 0) {
       return <ReplyTextTypeUsingClass
@@ -18,6 +18,7 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
         id={message.messageId!} 
         flatList={flatListRef!}
         author={author}
+        userName={users[0].name}
         userMessageLastWatched={userMessageLastWatched}
         selecting={selecting}
         pinnedMessageScreen={pinnedMessageScreen}
@@ -54,10 +55,6 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
           if(typeof pinnedMessageHandler === 'function')
             pinnedMessageHandler(item.messageId!, height);
         }}
-        // style={{ 
-        //   flex: 1, 
-        //   zIndex: item.messageId === messageID ? 4 : -10
-        // }}
       >
         {messageViewHandle({ message: item })}
       </View>

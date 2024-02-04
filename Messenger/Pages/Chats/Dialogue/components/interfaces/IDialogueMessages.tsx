@@ -15,6 +15,7 @@ export interface DialogueMessagesProps {
   isReply:boolean;
   isEdit:boolean;
   author: User;
+  users: User[];
   userMessageLastWatched: ILastWatchedMessage | undefined;
   authorMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;

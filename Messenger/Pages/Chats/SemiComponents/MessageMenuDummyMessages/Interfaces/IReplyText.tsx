@@ -5,6 +5,7 @@ export interface ReplyTextType {
   messages: MessageProps[];
   message: MessageProps;
   isUser: boolean;
+  userName: string;
   height: number;
   userMessageLastWatched: ILastWatchedMessage|undefined;
   pinned: boolean;

@@ -10,14 +10,14 @@ import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageRev
 import PinButton from '../SVG/PinButton';
 import LineSeparator from '../HelperComponents/General/LineSeparator';
 
-const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLastWatched, pinned}:ReplyTextType) => {
+const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLastWatched, pinned, userName}:ReplyTextType) => {
   const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
 
   return (
       <View style={styles.replyContainer} >
         <View style={styles.innerReplyContainer} >
           <Text style={[styles.replyUserNameFont, isUser&&{ alignSelf: 'flex-end' }]}>
-            {isUser?'You':'Denis' /* Replace with data from DB */}
+            {isUser?'You':userName /* Replace with data from DB */}
           </Text>
           <View style={[styles.replyMessageContainer, !isUser&&{ flexDirection: 'row-reverse', alignSelf: 'flex-start' }]}>
             <View>

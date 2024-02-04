@@ -28,7 +28,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen }:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen, users }:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -352,6 +352,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
           height={coord.height} 
           userMessageLastWatched={userMessageLastWatched} 
           pinned={coord.pinned} 
+          userName={users[0].name}
         />:
         <DefaultTextDummyMessage 
           message={coord.message}
