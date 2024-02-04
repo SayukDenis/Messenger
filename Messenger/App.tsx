@@ -6,15 +6,9 @@ import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./Navigation/Navigation";
 import { View } from "react-native";
-import { printSelfProfile } from "./Initialization/Print";
-import DataBase from "./dao/dao/Database";
 
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-  //printSelfProfile();
-  
-  DataBase.getInstance().then(db => db.createDatabaseAsync());
-
   return (<View></View>);
 }
 registerRootComponent(App);
