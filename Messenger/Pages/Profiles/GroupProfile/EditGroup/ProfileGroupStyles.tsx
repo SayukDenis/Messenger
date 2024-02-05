@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(218, 182, 113)",
     borderRadius: 10,
     left: "5%",
-    top: "-140%",
+    top: "-40%",
     borderWidth: 0.3,
   },
   PersonIcon: {
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     height: "30%",
     borderRadius: 2,
     backgroundColor: "rgb(218, 182, 150)",
-    top: "-100%",
+    top: "-170%",
     zIndex: 2,
     margin: 100,
     position: "absolute",

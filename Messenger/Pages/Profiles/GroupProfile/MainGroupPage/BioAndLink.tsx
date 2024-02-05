@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, View } from "react-native";
-import { user } from "../../SemiComponents/DBUser";
 import * as Clipboard from "expo-clipboard";
 import Modal from "react-native-modal";
+import { group } from "../../SemiComponents/DatabaseSimulation/DBGroup";
 
 export default function BioAndLink() {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -34,7 +34,7 @@ export default function BioAndLink() {
       </View>
       <View>
         <Text style={{ color: "rgb(124, 79, 145)", top: "40%", left: "2%" }}>
-          Bio: <Text style={{ color: "black" }}>{user.GroupBio}</Text>
+          Bio: <Text style={{ color: "black" }}>{group.bio}</Text>
         </Text>
       </View>
 

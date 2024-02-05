@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { styles } from "./ProfileGroupStyles";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Path, Rect } from "react-native-svg";
+import { styles } from "./ProfileGroupStyles";
+import { user } from "../../SemiComponents/DatabaseSimulation/DBUser";
 
-export const GroupHead = ({
-  setGroupHeadNameExample,
-}: {
-  setGroupHeadNameExample: React.Dispatch<React.SetStateAction<string>>;
+interface GroupHeadProps {
+  GroupHeadName: string;
+  BioText: string;
+}
+
+export const GroupHead: React.FC<GroupHeadProps> = ({
+  GroupHeadName,
+  BioText,
 }) => {
-  const [GroupHeadName, setGroupHeadName] = useState("Group");
-
   const navigation = useNavigation();
 
+  const ChangeNameAndBio = () => {
+    user.profileName = GroupHeadName;
+    user.GroupBio = BioText;
+  };
   const handleEditGroupPress = () => {
-    navigation.navigate("SettingsMenu" as never); // Визначаємо тип рядка як 'never'
+    navigation.navigate("SettingsMenu" as never);
   };
 
   return (
@@ -38,8 +44,11 @@ export const GroupHead = ({
           />
         </Svg>
       </TouchableOpacity>
-      <Text style={{ top: "15%" }}>Group</Text>
-      <TouchableOpacity style={{ left: "38%", top: "-6%" }}>
+      <Text style={{ top: "15%" }}>{GroupHeadName}</Text>
+      <TouchableOpacity
+        style={{ left: "38%", top: "-6%" }}
+        onPress={() => ChangeNameAndBio()}
+      >
         <Text>Done</Text>
       </TouchableOpacity>
     </View>

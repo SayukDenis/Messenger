@@ -1,5 +1,16 @@
 import { combineReducers } from "redux";
 
+const removalApprovalTextReducer = (state = "", action) => {
+  switch (action.type) {
+    case "SET_REMOVAL_APPROVAL_TEXT":
+      return {
+        state: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 const initialBioState = { bioTextHeight: 0 };
 const bioReducer = (state = initialBioState, action) => {
   switch (action.type) {
@@ -91,11 +102,8 @@ const initialMultimediaState = {
   isPhotoAlbumSelectionVisible: false,
   longPressedAlbum: null,
   positionYOfLongPressedAlbum: 0,
-  isDeleteAlbumPressed: false,
   isAlbumSelectionVisible: false,
   selectedAlbums: [],
-  isDeleteAllAlbumsPressed: false,
-  isDeleteSelectedAlbumsPressed: false,
 };
 
 const multimediaReducer = combineReducers({
@@ -143,17 +151,6 @@ const multimediaReducer = combineReducers({
         return state;
     }
   },
-  isDeleteAlbumPressed: (
-    state = initialMultimediaState.isDeleteAlbumPressed,
-    action
-  ) => {
-    switch (action.type) {
-      case "SET_IS_DELETE_ALBUM_PRESSED":
-        return action.payload;
-      default:
-        return state;
-    }
-  },
   isAlbumSelectionVisible: (
     state = initialMultimediaState.isAlbumSelectionVisible,
     action
@@ -173,31 +170,10 @@ const multimediaReducer = combineReducers({
         return state;
     }
   },
-  isDeleteAllAlbumsPressed: (
-    state = initialMultimediaState.isDeleteAllAlbumsPressed,
-    action
-  ) => {
-    switch (action.type) {
-      case "SET_IS_DELETE_ALL_ALBUMS_PRESSED":
-        return action.payload;
-      default:
-        return state;
-    }
-  },
-  isDeleteSelectedAlbumsPressed: (
-    state = initialMultimediaState.isDeleteSelectedAlbumsPressed,
-    action
-  ) => {
-    switch (action.type) {
-      case "SET_IS_DELETE_SELECTED_ALBUMS_PRESSED":
-        return action.payload;
-      default:
-        return state;
-    }
-  },
 });
 
 const AvatarsAndInfoScreenReducer = combineReducers({
+  removalApprovalText: removalApprovalTextReducer,
   bio: bioReducer,
   avatar: avatarReducer,
   copy: copyReducer,
