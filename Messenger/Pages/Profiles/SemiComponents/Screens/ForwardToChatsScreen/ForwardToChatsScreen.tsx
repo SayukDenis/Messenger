@@ -16,7 +16,7 @@ import { channel } from "../../DatabaseSimulation/DBChannel";
 import { contacts } from "../../DatabaseSimulation/DBVariables";
 import { Contact } from "../../DatabaseSimulation/DBClasses";
 import { ScrollView } from "react-native-gesture-handler";
-import CheckmarkIcon from "../../../DialogueProfile/PermissionScreen/Icons/CheckMarkIcon";
+import CheckMarkIcon from "../MainScreen/Icons/CheckMarkIcon";
 import { LinearGradient } from "expo-linear-gradient";
 import DownArrowIcon from "./Icons/DownArrowIcon";
 
@@ -111,7 +111,7 @@ const ForwardToChatsScreen: React.FC<ForwardToChatsScreenProps> = (props) => {
                     </View>
                     <View style={styles.contactCheckMarkContainer}>
                       {selectedChats.includes(item) && (
-                        <CheckmarkIcon
+                        <CheckMarkIcon
                           style={styles.checkmarkIcon}
                           stroke="rgb(115, 76, 165)"
                         />
