@@ -8,6 +8,7 @@ import EditButton from '../../../../SemiComponents/EditButton';
 import { heightOfHeader } from '../../../../ChatList/Constants/ConstantsForChatlist';
 import { useDispatch, useSelector } from 'react-redux';
 import { IsVisibleUserInfo , SetFalseStateForUserInfo  } from '../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions';
+import UserInfoComponent from '../UserInfoComponent/UserInformationContainer';
 
 const Center: React.FC<any> = ({ navigation })=>{
         let isVisibleUserInfo = useSelector((state:any)=>state.SettingsPagesReducers.SetVisibleTextInput.VisibleForUserInfo);
@@ -20,6 +21,9 @@ const Center: React.FC<any> = ({ navigation })=>{
                                 <TouchableOpacity onPress={()=>dispatch(IsVisibleUserInfo())}>
                                                 <Image style={StyleCentre.imgStyle} source={{uri:'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1'}}></Image>
                                 </TouchableOpacity>
+                         )}
+                         {isVisibleUserInfo == true && (
+                              <UserInfoComponent/>
                          )}
                         <View style ={{display:"flex", flexDirection:"row", width:"100%", alignItems:'center',justifyContent:'center',}}>          
                                 <View style={{marginRight:"9%",flexDirection:'row', alignItems:'center'}}>

@@ -8,7 +8,7 @@ import BackGroundGradientView from '../../../SemiComponents/BackGroundGradientVi
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import { heightOfHeader } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { useDispatch, useSelector } from 'react-redux';
-import UserInfoComponent from './UserInfoComponent/StyleUserInfoComponent';
+import UserInfoComponent from './UserInfoComponent/UserInfoComponent';
 import { SetFalseStateForUserInfo } from '../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions';
 
 const Settingspage: React.FC<any> = ({ navigation })=>{

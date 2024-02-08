@@ -2,10 +2,14 @@ import React from "react";
 import { View, Text, ScrollView,StatusBar,Button } from "react-native";
 import QuestionsHeader from "./QuestinsHeader/QuestinsHeader";
 import StyleQuestionsPage from "./StyleQuestionsPage";
+import BackGroundGradientView from "../../SemiComponents/BackGroundGradientView";
+import HeaderContainer from "../../SemiComponents/HeaderContainer";
+import { heightOfHeader } from "../../ChatList/Constants/ConstantsForChatlist";
 
 const QuestionPage: React.FC<any> = ({ navigation })=>{
-    return<View style={StyleQuestionsPage.conteiner}>
-    <QuestionsHeader navigation = {navigation}></QuestionsHeader>
+    return<BackGroundGradientView>
+    <HeaderContainer><QuestionsHeader navigation = {navigation}/></HeaderContainer>
+    <View style = {{marginTop:heightOfHeader}}></View>
     <ScrollView style ={StyleQuestionsPage.textConteinre}>
         <Text>Telintik Social Network Documentation</Text>
         <Text>Introduction:</Text>
@@ -24,7 +28,7 @@ const QuestionPage: React.FC<any> = ({ navigation })=>{
         <Text>Telintik offers high-quality voice and video calling features, a</Text>
     </ScrollView>
 
-    </View>
+    </BackGroundGradientView>
 };
 
 export default QuestionPage;

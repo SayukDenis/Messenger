@@ -12,31 +12,44 @@ const StyleFooterSavedMessage = StyleSheet.create({
         alignItems:'center',
         flexDirection: 'row',
         width: "100%",
-        height: windowHeight*0.08,
+        height: windowHeight*0.1,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        borderBottomLeftRadius:windowHeight*0.03,
-        borderBottomRightRadius:windowHeight*0.03,
-        backgroundColor: '#E7E6E4',
         borderWidth:1,
         borderColor:'#A19C91',
-        justifyContent:"center"
+        overflow:"hidden",
     },
 
-    svgConteiner:{
+    svgConteinerForGallery:{
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
-        width:'10%'
+        width:windowHeight*0.04,
+        height:windowHeight*0.04,
+        backgroundColor:'white',
+        marginLeft:"5%"
+    },
+
+    svgConteinerForVideo:{
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center',
+        width:windowHeight*0.045,
+        height:windowHeight*0.045,
+        borderRadius:10000,
+        backgroundColor:'white',
+        marginLeft:"5%"
     },
 
     textInput:{
-        width:'80%',
-        height:'60%',
+        marginLeft:"5%",
+        paddingLeft:"5%",
+        width:'100%',
+        height:'50%',
         borderRadius:30,
-        backgroundColor:'#272727',
+        backgroundColor:'white',
         color :'#888282',
-        paddingLeft: '5%'
+
     }
 
 });

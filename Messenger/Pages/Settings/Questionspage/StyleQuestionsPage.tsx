@@ -8,7 +8,7 @@ const StyleQuestionsPage = StyleSheet.create({
 
     textConteinre:{
         marginLeft:"3%",
-        marginTop:"5%",
+        marginTop:"2%",
     }
 });
 

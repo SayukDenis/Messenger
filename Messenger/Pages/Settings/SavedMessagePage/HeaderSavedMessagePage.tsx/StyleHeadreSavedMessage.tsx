@@ -5,25 +5,35 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const StyleHeaderSavedMessage = StyleSheet.create({
-    header :{
-        display: "flex",
-        flexDirection: 'row',
-        width: "100%",
-        height: Platform.OS=="android"?windowHeight * 0.08+StatusBar.currentHeight:windowHeight * 0.08+Constants.statusBarHeight,
-        borderBottomLeftRadius:40,
-        borderBottomRightRadius:40,
-        backgroundColor: '#E7E6E4',
-        borderWidth:1,
-        borderColor : '#A19C91'
-    },
-    headerContainer :{
+    container :{
         display: "flex",
         flexDirection: 'row',
         width: '100%',
-        alignItems:'center',
-        justifyContent: 'space-around'
+        height:windowHeight*0.07,
+        paddingLeft:'2%',
+        paddingRight:'2%',
+    },
+    backButt:{
+        alignSelf:'flex-end',
+        paddingBottom:'4%',
+        width:"10%"
     },
 
+    SavedMessagesArticleConteiner:{
+        display:'flex',
+        width:'80%',
+        paddingBottom:'2%',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    SavedMessagesdArticleText:{
+        fontSize: 20,
+    },
+    searchButton:{
+        alignSelf:'flex-end',
+        paddingBottom:'2%',
+        width:"10%",
+    },
 });
 
 export default StyleHeaderSavedMessage;
