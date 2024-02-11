@@ -47,11 +47,14 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
       <View
         key={item.messageId}
         onLayout={(event) => {
-          const newCoordsY = [ ...coordsY ];
           const { y, height } = event.nativeEvent.layout;
-          newCoordsY[item.messageId!] = [y, height];
-          setCoordsY(newCoordsY);
-          console.log('y', height);
+          const newCoordsY = [ ...coordsY ];
+          if(pinnedMessageScreen) {
+            coordsY.push({ id: item.messageId!, y, height } as any);
+          } else {
+            newCoordsY[item.messageId!] = [y, height];
+            setCoordsY(newCoordsY);
+          }
           if(typeof pinnedMessageHandler === 'function')
             pinnedMessageHandler(item.messageId!, height);
         }}

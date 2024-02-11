@@ -52,6 +52,7 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, users,
         onCopyPress={onCopyPress}
         onUnpinPress={onUnpinPress}
         onDeletePress={onDeletePress}
+        users={users}
       />
     </View>
   );

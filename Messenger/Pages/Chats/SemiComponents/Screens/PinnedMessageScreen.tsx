@@ -1,13 +1,12 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Animated } from 'react-native';
 import React, { Component, PureComponent } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import HeaderBackButton from '../SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { height, width } from '../ChatConstants';
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_PADDING_VERTICAL, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, height, width } from '../ChatConstants';
 import MessageItem from '../MessageItem';
 import User from '../../../../dao/Models/User';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import Constants from 'expo-constants';
 import MessageMenu from '../MessageMenu';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import DeleteMessageModal from '../DeleteMessageModal';
@@ -22,6 +21,7 @@ interface NavigationProps {
       listOfMessages: MessageProps[];
       setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void};
       author: User;
+      users: User[];
       messageID: number;
       unpinAllMessagesHandler: () => void;
       userMessageLastWatched: ILastWatchedMessage;
@@ -38,27 +38,32 @@ interface PinnedMessageScreenProps extends NavigationProps {
 
 interface PinnedMessageScreenState {
   selecting: boolean;
-  coordsY: [number[]];
   deleteModalVisisble: boolean;
   messageMenuVisible: boolean;
   messageID: number;
   listOfPinnedMessages: MessageProps[];
+  offsetForMessageMenu: Animated.Value;
 }
 
-let coord:Layout;
+let coord: Layout;
+export interface coordY {
+  id: number;
+  y: number;
+  height: number;
+}
+let coordsY: coordY[] = [];
 
 class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   state: PinnedMessageScreenState = {
     selecting: false,
-    coordsY: [[]],
     messageMenuVisible: false,
     deleteModalVisisble: false,
     messageID: -1,
     listOfPinnedMessages: [],
+    offsetForMessageMenu: new Animated.Value(0),
   }
 
   componentDidMount(): void {
-    console.log('djawjdhawdpawdi')
     this.setState({ 
       messageID: this.props.route?.params.messageID, 
       listOfPinnedMessages: this.props.route?.params.listOfPinnedMessages.reverse()
@@ -98,11 +103,62 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     return item.messageId?.toString();
   }
 
-  setCoordsYHandler = (newCoordsY:any) => {
-    this.setState({ coordsY: [...newCoordsY] });
+  setCoordsYHandler = (newCoordsY:coordY[]) => {
+    coordsY = [...newCoordsY];
   }
 
-  handleMessagePress = (coordinations:Layout) => {
+  flatListRef = React.createRef<any>();
+  handleMessagePress = async (coordinations:Layout) => {
+
+    const HEIGHT_OF_HEADER = heightOfHeader;
+    const HEIGHT_OF_FLATLIST = height * 0.94;
+    const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
+    const MESSAGE_MENU_HEIGHT = MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE;
+
+    const mesCoords = coordsY.find(m => m.id === (coordinations.ID || coordinations.message?.messageId!));
+    
+    const scrollOffset = this.flatListRef.current._listRef._scrollMetrics.offset;
+
+    if(height - SOFT_MENU_BAR_HEIGHT - coordinations.componentPageY - mesCoords?.height! + scrollOffset < MESSAGE_MENU_HEIGHT && scrollOffset < MESSAGE_MENU_HEIGHT) {
+      
+      const toValue = -(MESSAGE_MENU_HEIGHT - (height - SOFT_MENU_BAR_HEIGHT - coordinations.componentPageY - mesCoords?.height! + scrollOffset));
+
+      Animated.timing(this.state.offsetForMessageMenu, {
+        toValue: toValue > 0 ? 0 : toValue ,
+        duration: 200,
+        useNativeDriver: false
+      }).start();
+
+      this.flatListRef.current.scrollToOffset({ offset: 0, animated: true });
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      coordinations.componentPageY += (toValue > 0 ? 0 : toValue ); 
+      coordinations.pageY = height - SOFT_MENU_BAR_HEIGHT; 
+    } else if(height - SOFT_MENU_BAR_HEIGHT - coordinations.componentPageY - coordinations. height < MESSAGE_MENU_HEIGHT) {
+      this.flatListRef.current.scrollToOffset({ 
+        offset: coordinations.componentPageY - mesCoords?.height! - MESSAGE_MENU_HEIGHT,
+        animated: true,
+      });
+
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      coord.componentPageY = height - mesCoords?.height! - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT;
+      coord.pageY = height - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL;
+    } else if(coordinations.componentPageY < HEIGHT_OF_HEADER) {
+      this.flatListRef.current.scrollToOffset({ 
+        offset: this.flatListRef.current._listRef._scrollMetrics.offset + (HEIGHT_OF_HEADER - coordinations.componentPageY), 
+        animated: true,
+      });
+
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      
+      coordinations.componentPageY = HEIGHT_OF_HEADER; // - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coordinations.pageY = HEIGHT_OF_HEADER + MESSAGE_MENU_HEIGHT + mesCoords?.height!;
+    } else {
+      coordinations.pageY = coordinations.componentPageY + mesCoords?.height! + MESSAGE_MENU_HEIGHT;
+    }
+
     coord = coordinations;
     this.setState({ 
       messageMenuVisible: true, 
@@ -114,9 +170,10 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     <MessageItem 
       navigation={this.props.route?.params.navigation}
       item={item}
+      users={this.props.route?.params.users!}
       listOfMessages={this.props.route?.params.listOfMessages!}
       setMessageMenuVisible={this.handleMessagePress}
-      coordsY={this.state.coordsY}
+      coordsY={coordsY}
       author={this.props.route?.params.author!}
       messageID={this.props.route?.params.messageID!}
       setCoordsY={this.setCoordsYHandler}
@@ -147,6 +204,11 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
 
   onOverlayPress = () => {
     this.setState({ messageMenuVisible: false })
+    Animated.timing(this.state.offsetForMessageMenu, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false
+    }).start();
   }
   
   onUnpinPressHandler = () => {
@@ -188,6 +250,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
         <BackGroundGradinetView>
           <MessageMenu 
             isUser={mes!=undefined&&mes.author.userId===author?.userId} 
+            users={this.props.route?.params.users!}
             isVisible={this.state.messageMenuVisible} 
             onOverlayPress={this.onOverlayPress} 
             coord={coord} 
@@ -225,16 +288,23 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
             </View>
           </HeaderContainer>
 
-          <FlatList 
-            key={this.state.listOfPinnedMessages.length}
-            style={{ height: height*0.94 }}
-            data={this.state.listOfPinnedMessages} 
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderItem}
-            ListHeaderComponent={this.ListHeaderComponent}
-            ListFooterComponent={this.ListFooterComponent}
-            inverted
-          />
+          <Animated.View style={{
+            transform: [{
+              translateY: this.state.offsetForMessageMenu
+            }]
+          }}>
+            <FlatList 
+              key={this.state.listOfPinnedMessages.length}
+              ref={this.flatListRef}
+              style={{ height: height }}
+              data={this.state.listOfPinnedMessages} 
+              keyExtractor={this.keyExtractor}
+              renderItem={this.renderItem}
+              ListHeaderComponent={this.ListHeaderComponent}
+              ListFooterComponent={this.ListFooterComponent}
+              inverted
+            />
+          </Animated.View>
         </BackGroundGradinetView>
       </View>
     )

@@ -3,7 +3,7 @@ import { DialogueMessagesProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent } from "react-native";
 import { connect } from "react-redux";
 import Constants from 'expo-constants';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
@@ -161,7 +161,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   }
 
   scrollToTappedMessage = (scrollToTappedMessage: boolean, idOfTappedMessage: number) => {
-    console.log(scrollToTappedMessage, idOfTappedMessage)
     if(scrollToTappedMessage && this.flatListRef.current) {
       const tappedMessage = messagesWithCoords.find(m => m.message === idOfTappedMessage);
       let deletedMesOffset = 0;
@@ -249,8 +248,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
         messageId = mes.message;
       }
     })
-    console.log(pinnedMessagesWithCoords);
-    console.log('DialogueMessages', messageId);
     if(messageId != undefined && messageId >= 0)
       this.setState({ pinnedMessageId: this.props.setPinnedMessage(messageId) });
   }
@@ -285,14 +282,14 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       coord.pageY = (height - height*0.06) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(height*0.94 - coord.componentPageY - coord. height < MESSAGE_MENU_HEIGHT) {
       this.flatListRef.current.scrollToOffset({ 
-        offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
+        offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
         animated: true,
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
       
-      coord.componentPageY = HEIGHT_OF_FLATLIST - HEIGHT_OF_HEADER_OFFSET - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-      coord.pageY = HEIGHT_OF_FLATLIST - HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.componentPageY = height - mesCoords?.height! - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.pageY = height - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(coord.componentPageY < HEIGHT_OF_HEADER) {
       this.flatListRef.current.scrollToOffset({ 
         offset: this.flatListRef.current._listRef._scrollMetrics.offset + (HEIGHT_OF_HEADER - coord.componentPageY), 
@@ -302,10 +299,10 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       await new Promise(resolve => setTimeout(resolve, 200));
 
       
-      coord.componentPageY = HEIGHT_OF_HEADER; // - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-      coord.pageY = HEIGHT_OF_HEADER + mesCoords?.height!;
+      coord.componentPageY = HEIGHT_OF_HEADER;
+      coord.pageY = HEIGHT_OF_HEADER + MESSAGE_MENU_HEIGHT + mesCoords?.height!;
     } else {
-      coord.pageY = coord.componentPageY + mesCoords?.height!;
+      coord.pageY = coord.componentPageY + mesCoords?.height! + MESSAGE_MENU_HEIGHT;
     }
 
     this.props.setMessageMenuVisible(coord, pressed, () => {
