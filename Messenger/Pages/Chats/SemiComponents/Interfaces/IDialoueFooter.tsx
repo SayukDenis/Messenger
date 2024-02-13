@@ -1,8 +1,9 @@
 import SelfProfile from "../../../../dao/Models/SelfProfile";
+import User from "../../../../dao/Models/User";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 
 export interface DialogueFooterProps {
-  author: SelfProfile | undefined;
+  author: User | undefined;
   messages: MessageProps[];
   setMessages: (arg0: MessageProps) => void; 
   isReply: boolean; 
@@ -24,5 +25,5 @@ export interface sendMessageProps {
   onSendMessageOrCancelReplyAndEdit: ()=>void; 
   editMessage: MessageProps; 
   messageID: number;
-  author: SelfProfile|undefined;
+  author: User|undefined;
 }

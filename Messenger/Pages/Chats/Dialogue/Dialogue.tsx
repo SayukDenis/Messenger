@@ -21,20 +21,6 @@ let messageIdForReplyAndEdit:number;
 let msgs:MessageProps[];
 let deletedMessagesId:number[] = [];
 
-const user:SelfProfile = {
-  userId: 0,
-  name: 'Denis',
-  numberPhone: '',
-  nickname: 'Denis',
-  description: '',
-  linkToPhoto: '',
-  password: 'asdoapwd',
-  email: 'dopawdjpa',
-  timeLastEntry: new Date(),
-  tabs: new Array(),
-  schema: {} as any
-}
-
 // const user:SelfProfile = useSelector((state: any) => state.selfProfileUser);
 
 let authorMessageLastWatched:ILastWatchedMessage | undefined;
@@ -45,8 +31,10 @@ let messageMenuCallback: (() => void) | undefined;
 const Dialogue = ({ navigation, route }:any) => {
   
   dialogue = route.params.chat as DialogueModel.default;
-  authorMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId===user.userId);
-  userMessageLastWatched = dialogue.lastWatchedMessage.find(obj => obj.user.userId!==user.userId);
+  const author = dialogue.users[0];
+  const users = dialogue.users.filter(u => u.userId !== 0);
+  authorMessageLastWatched = dialogue.lastWatchedMessage[0];
+  userMessageLastWatched = dialogue.lastWatchedMessage[1];
 
   const [messageID, setMessageID] = useState(-1);
 
@@ -198,7 +186,8 @@ const Dialogue = ({ navigation, route }:any) => {
       <View style={styles.dialogueContainer}>
         <BackGroundGradinetView>
           <MessageMenu 
-            isUser={mes!=undefined&&mes.author.userId===user?.userId} 
+            users={users}
+            isUser={mes!=undefined&&mes.author.userId===author?.userId} 
             isVisible={messageMenuVisible} 
             onOverlayPress={handleMessageMenuPress} 
             coord={coord} 
@@ -216,7 +205,8 @@ const Dialogue = ({ navigation, route }:any) => {
             navigation={navigation} 
             chatType={dialogue}
             picture={dialogue.linkToPhoto}
-            author={user as User}
+            author={author}
+            users={users}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage != undefined ? pinnedMessage : {} as MessageProps}
             listOfPinnedMessages={listOfPinnedMessages}
@@ -237,7 +227,8 @@ const Dialogue = ({ navigation, route }:any) => {
             listOfMessages={listOfMessages} 
             isReply={isReply} 
             isEdit={isEdit}
-            author={user as User}
+            author={author}
+            users={users}
             userMessageLastWatched={userMessageLastWatched}
             authorMessageLastWatched={authorMessageLastWatched}
             selecting={selecting}
@@ -250,7 +241,7 @@ const Dialogue = ({ navigation, route }:any) => {
             messages={listOfMessages} 
             setMessages={setMessages} 
             isReply={isReply} 
-            author={user}
+            author={author}
             messageID={messageID} 
             isEdit={isEdit} 
             editMessage={editMessage} 
@@ -264,7 +255,7 @@ const Dialogue = ({ navigation, route }:any) => {
             setDeletingHandler={setDeletingHandler} 
             onDeletePress={onDeletePress} 
             message={mes} 
-            author={user as User}
+            author={author as User}
           />
         </BackGroundGradinetView>
       </View>

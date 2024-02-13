@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { height, screenWidth } from "../ChatConstants";
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
     elevation: 0.001,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: screenHeight * 0.08,
+    height: height * 0.08,
     justifyContent: "flex-end",
     overflow: 'hidden',
   },
   gradientContainer: {
-    height: screenHeight * 0.08,
+    height: height * 0.08,
     backgroundColor:"white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -28,19 +28,19 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    height: screenHeight,
+    height: height,
     width: screenWidth,
   },
   footerContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    height: screenHeight*0.06,
+    height: height*0.06,
   },
   footer: {
     paddingVertical: 5,
     display: 'flex',
     flexDirection: 'row',
-    height: screenHeight*0.06,
+    height: height*0.06,
     alignSelf: 'stretch',
     borderStyle: 'solid',
     borderTopLeftRadius: 10,

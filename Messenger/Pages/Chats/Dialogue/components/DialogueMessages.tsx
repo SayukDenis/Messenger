@@ -3,7 +3,7 @@ import { DialogueMessagesProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent } from "react-native";
 import { connect } from "react-redux";
 import Constants from 'expo-constants';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
@@ -119,8 +119,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       this.scrollToTappedMessage(nextProps.scrollToTappedMessage, nextProps.idOfTappedMessage)
       return true;
     }
-    console.log(this.props.scrollToTappedMessage, nextProps.scrollToTappedMessage)
-    console.log('not rerendering');
 
     return false;
   }
@@ -129,17 +127,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   pinnedMessageChangeHandler = (pinnedMessages: MessageProps[], deletedMessagesId: number[]) => {
     pinnedMessagesWithCoords = [];
-    // let y = 0;
-    // messagesWithCoords.map(mes => {
-    //   console.log(mes.message);
-    //   const pinned = pinnedMessages.find(m => m?.messageId === mes.message);
-    //   if(pinned) {
-    //     //console.log('pinnedMessages', pinnedMessages.map((m) => `${m.messageId} ${m.content}`))
-    //     pinnedMessagesWithCoords.push({ message: mes.message, coord: y });
-    //   }
-    //   if(deletedMessagesId.findIndex(id => id === mes.message) < 0)
-    //     y += mes.coord;
-    // });
 
     pinnedMessages.map(m => {
       const mes = messagesWithCoords.find(mes => mes.message === m.messageId);
@@ -174,7 +161,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   }
 
   scrollToTappedMessage = (scrollToTappedMessage: boolean, idOfTappedMessage: number) => {
-    console.log(scrollToTappedMessage, idOfTappedMessage)
     if(scrollToTappedMessage && this.flatListRef.current) {
       const tappedMessage = messagesWithCoords.find(m => m.message === idOfTappedMessage);
       let deletedMesOffset = 0;
@@ -219,8 +205,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     }
   }
 
-  // Try to create function like setMessageMenuVisible and in it I can subtract flatListRef current offset and message offset
-
   flatListRef = React.createRef<any>();
   renderItem = ({item}:any) => {
     const { 
@@ -229,6 +213,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       messageID,
       userMessageLastWatched,
       selecting,
+      users
     } = this.props;
     
     return <MessageItem 
@@ -239,6 +224,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       flatListRef={this.flatListRef as any}
       coordsY={this.state.coordsY}
       author={author}
+      users={users}
       messageID={messageID}
       setCoordsY={this.setCoordsYHandler}
       userMessageLastWatched={userMessageLastWatched}
@@ -262,8 +248,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
         messageId = mes.message;
       }
     })
-    console.log(pinnedMessagesWithCoords);
-    console.log('DialogueMessages', messageId);
     if(messageId != undefined && messageId >= 0)
       this.setState({ pinnedMessageId: this.props.setPinnedMessage(messageId) });
   }
@@ -282,29 +266,30 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
     const isUser = coord.message?.author.userId === this.props.author.userId;
 
-    if(height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - SOFT_MENU_BAR_HEIGHT ) {
-      console.log(mesCoords?.coord);
-      Animated.timing(this.state.tmpHeight, {
-        toValue: -(MESSAGE_MENU_HEIGHT - (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height! + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT))),
+    if(height - height*0.06 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - height*0.06 ) {
+      const scrollOffset = this.flatListRef.current._listRef._scrollMetrics.offset;
+      
+      Animated.timing(this.state.keyboardHeight, {
+        toValue: -(MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height! + scrollOffset + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT))),
         duration: 200,
         useNativeDriver: false
       }).start();
 
+      this.flatListRef.current.scrollToOffset({ offset: 0, animated: true });
       await new Promise(resolve => setTimeout(resolve, 200));
 
-      console.log(coord.componentPageY - mesCoords?.height!, MESSAGE_MENU_HEIGHT);
-      coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
-      coord.pageY = coord.componentPageY + (height - SOFT_MENU_BAR_HEIGHT - coord.componentPageY) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
+      coord.pageY = (height - height*0.06) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(height*0.94 - coord.componentPageY - coord. height < MESSAGE_MENU_HEIGHT) {
       this.flatListRef.current.scrollToOffset({ 
-        offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
+        offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
         animated: true,
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
       
-      coord.componentPageY = HEIGHT_OF_FLATLIST - HEIGHT_OF_HEADER_OFFSET - mesCoords?.height! - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-      coord.pageY = HEIGHT_OF_FLATLIST - HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.componentPageY = height - mesCoords?.height! - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.pageY = height - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(coord.componentPageY < HEIGHT_OF_HEADER) {
       this.flatListRef.current.scrollToOffset({ 
         offset: this.flatListRef.current._listRef._scrollMetrics.offset + (HEIGHT_OF_HEADER - coord.componentPageY), 
@@ -314,14 +299,14 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       await new Promise(resolve => setTimeout(resolve, 200));
 
       
-      coord.componentPageY = HEIGHT_OF_HEADER; // - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-      coord.pageY = HEIGHT_OF_HEADER + mesCoords?.height!;
+      coord.componentPageY = HEIGHT_OF_HEADER;
+      coord.pageY = HEIGHT_OF_HEADER + MESSAGE_MENU_HEIGHT + mesCoords?.height!;
     } else {
-      coord.pageY = coord.componentPageY + mesCoords?.height!;
+      coord.pageY = coord.componentPageY + mesCoords?.height! + MESSAGE_MENU_HEIGHT;
     }
 
     this.props.setMessageMenuVisible(coord, pressed, () => {
-      Animated.timing(this.state.tmpHeight, {
+      Animated.timing(this.state.keyboardHeight, {
         toValue: 0,
         duration: 200,
         useNativeDriver: false
@@ -349,8 +334,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
         styles.mainContainer, { 
           height: height * 0.94, 
           zIndex:0, 
-          transform: [{   // Create some function to check if keyboard is active or not
-            translateY: (this.state.keyboardHeight as any)._value !== 0 ? this.state.keyboardHeight : this.state.tmpHeight
+          transform: [{
+            translateY: this.state.keyboardHeight
           }] 
         }]}
       >

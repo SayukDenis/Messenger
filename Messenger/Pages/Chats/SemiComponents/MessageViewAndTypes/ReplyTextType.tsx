@@ -278,7 +278,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             onPressOut={this.onPressOut}
           >
             <Text style={[styles.replyUserNameFont, this.props.message.author.userId==this.props.author.userId && { alignSelf: 'flex-end' }]}>
-              {isUser ? 'You' : 'Denis'}
+              {isUser ? 'You' : this.props.userName}
             </Text>
             <ReplyMessage 
               message={this.props.message}

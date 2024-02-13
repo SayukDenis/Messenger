@@ -217,7 +217,7 @@ class Group extends Component<GroupNavigationProps> {
             navigation={this.props.navigation} 
             chatType={this.props.route.params.chat as GroupModel.default}
             picture={(this.props.route.params.chat as GroupModel.default).linkToPhoto}
-            author={user as User}
+            user={user as User}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={this.state.pinnedMessage != undefined ? this.state.pinnedMessage : {} as MessageProps}
             listOfPinnedMessages={this.state.listOfPinnedMessages}

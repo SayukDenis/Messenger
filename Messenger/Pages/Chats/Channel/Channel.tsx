@@ -217,7 +217,7 @@ class Channel extends Component<ChannelNavigationProps> {
             navigation={this.props.navigation} 
             chatType={(this.props.route.params.chat as ChannelModel.default)}
             picture={(this.props.route.params.chat as ChannelModel.default).linkToPhoto}
-            author={user as User}
+            user={user as User}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={this.state.pinnedMessage != undefined ? this.state.pinnedMessage : {} as MessageProps}
             listOfPinnedMessages={this.state.listOfPinnedMessages}

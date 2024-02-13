@@ -13,6 +13,7 @@ export interface ReplyTextTypeProps {
   id: number;
   flatList: MutableRefObject<any>;
   author: User;
+  userName: string;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
   dispatch: Dispatch;
