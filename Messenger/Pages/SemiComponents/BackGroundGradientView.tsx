@@ -1,10 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { ReactNode } from "react";
 import { connect } from "react-redux";
-import {
-  screenHeight,
-  screenWidth,
-} from "../ChatList/Constants/ConstantsForChatlist";
 import { useContext } from "react";
 import { ThemeContext } from "../../Resources/themes";
 interface BackGroundGradinetViewProps {
@@ -25,7 +21,7 @@ const BackGroundGradinetView: React.FC<BackGroundGradinetViewProps> = ({
       locations={[0.25, 0.5, 0.75]}
       start={{ x: 1, y: 0 }}
       end={{ x: 0, y: 1 }}
-      style={{ height: screenHeight, width: screenWidth }}
+      style={{ flex: 1 }}
     >
       {children}
     </LinearGradient>

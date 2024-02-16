@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Platform } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   screenHeight,
@@ -23,11 +22,6 @@ const FooterContainer: React.FC<FooterContainerProps> = ({
         footerstyles.container,
         {
           zIndex: isTouchableForHeader ? 3 : 5,
-          height:
-            Platform.OS == "ios" && useSafeAreaInsets().bottom != 0
-              ? screenHeight * 0.05 + useSafeAreaInsets().bottom
-              : screenHeight * 0.06,
-          overflow: "hidden",
         },
       ]}
     >
@@ -46,14 +40,7 @@ const FooterContainer: React.FC<FooterContainerProps> = ({
           width: screenWidth,
         }}
       />
-      <View
-        style={{
-          marginBottom: Platform.OS == "ios" ? useSafeAreaInsets().bottom : 0,
-          flex: 1,
-        }}
-      >
-        {children}
-      </View>
+      <View>{children}</View>
     </View>
   );
 };
