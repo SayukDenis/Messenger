@@ -253,20 +253,14 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   }
 
   messageMenuHandler = async (coord: Layout, pressed: boolean) => {
-    console.log(
-      '\ncurrent scroll pos:', this.flatListRef.current._listRef._scrollMetrics.offset,
-      '\npressed coords:', coord.componentPageY, coord.pageY,
-      '\nmessage coords in FlatList', messagesWithCoords.find(m => m.message === coord.message?.messageId)?.coord
-    )
-    // pageY - position of press (the menu), componentPageY - top postion of the message
     const mesCoords = messagesWithCoords.find(m => m.message === coord.message?.messageId);
 
     const HEIGHT_OF_HEADER = heightOfHeader;
-    const HEIGHT_OF_FLATLIST = height * 0.94;
+    const HEIGHT_OF_FLATLIST = height - SOFT_MENU_BAR_HEIGHT;
     const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
     const isUser = coord.message?.author.userId === this.props.author.userId;
 
-    if(height - height*0.06 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - height*0.06 ) {
+    if(pressed && height*0.94 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) - height*0.06 ) {
       const scrollOffset = this.flatListRef.current._listRef._scrollMetrics.offset;
       
       Animated.timing(this.state.keyboardHeight, {
@@ -280,7 +274,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
       coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
       coord.pageY = (height - height*0.06) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-    } else if(height*0.94 - coord.componentPageY - coord. height < MESSAGE_MENU_HEIGHT) {
+    } else if(pressed && height*0.94 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
       this.flatListRef.current.scrollToOffset({ 
         offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
         animated: true,
@@ -288,20 +282,19 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
       await new Promise(resolve => setTimeout(resolve, 200));
       
-      coord.componentPageY = height - mesCoords?.height! - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-      coord.pageY = height - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-    } else if(coord.componentPageY < HEIGHT_OF_HEADER) {
+      coord.componentPageY = HEIGHT_OF_FLATLIST - mesCoords?.height! - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coord.pageY = HEIGHT_OF_FLATLIST - MESSAGE_PADDING_VERTICAL + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+    } else if(pressed && coord.componentPageY < HEIGHT_OF_HEADER) {
       this.flatListRef.current.scrollToOffset({ 
         offset: this.flatListRef.current._listRef._scrollMetrics.offset + (HEIGHT_OF_HEADER - coord.componentPageY), 
         animated: true,
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-
       
       coord.componentPageY = HEIGHT_OF_HEADER;
       coord.pageY = HEIGHT_OF_HEADER + MESSAGE_MENU_HEIGHT + mesCoords?.height!;
-    } else {
+    } else if(pressed) {
       coord.pageY = coord.componentPageY + mesCoords?.height! + MESSAGE_MENU_HEIGHT;
     }
 
