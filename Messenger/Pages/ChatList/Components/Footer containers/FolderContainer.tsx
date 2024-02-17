@@ -1,13 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-  TouchableOpacity,
-  GestureResponderEvent,
-} from "react-native";
+import React, { useEffect, useRef } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
 import { connect, useSelector } from "react-redux";
 import Folder from "../../../../dao/Models/Folder";
@@ -29,26 +21,28 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
         console.log("RERENDER FOLDER CONTAINER IN FOOTER " + folder.folderName);
       }
     });
+
     const OnPressRef = useRef((event: any) => {
       onPress.current(event, index);
     });
+
     const isSelectedThere = useSelector((state: any) => {
       return state.chatListReducer.folderSelectedArray.folderSelectedArray[
         index
       ];
     });
+
     const OnLongPressRef = useRef((event: any) => {
       handleLongPress.current(event, index);
     });
 
     return (
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={OnPressRef.current}
-        onLongPress={OnLongPressRef.current}
-        style={{ flexDirection: "row" }}
-      >
-        <View style={[]}>
+      <View style={footerstyles.folderContainer}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={OnPressRef.current}
+          onLongPress={OnLongPressRef.current}
+        >
           <Text
             style={[
               footerstyles.textPosition,
@@ -57,14 +51,14 @@ const FolderContainer: React.FC<FolderProps> = React.memo(
           >
             {folder.folderName}
           </Text>
-        </View>
-        <View style={{flexDirection:"row",marginRight:5}}>
+        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
           <CountOfUnreadMessageOnFolderComponent
             folder={folder}
             isSelected={isSelected && isSelectedThere}
           />
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 );
