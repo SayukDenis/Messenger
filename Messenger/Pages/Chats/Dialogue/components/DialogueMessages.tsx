@@ -25,10 +25,10 @@ interface pinnedMessageProps {
 interface DialogueMessagesState {
   coordsY: [number[]]
   keyboardHeight: Animated.Value;
+  flatListHeight: Animated.Value;
   pinnedMessageId: number;
   deletedMessagesCount: number;
   callMessageMenu: boolean;
-  tmpHeight: Animated.Value;
 }
 
   let pinnedMessagesWithCoords:pinnedMessageProps[] = [];  
@@ -38,26 +38,26 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   state:DialogueMessagesState = {
     coordsY: [[]],
     keyboardHeight: new Animated.Value(0),
+    flatListHeight: new Animated.Value(height*0.94),
     pinnedMessageId: -1,
     deletedMessagesCount: 0,
     callMessageMenu: false,
-    tmpHeight: new Animated.Value(0),
   }
 
   keyboardDidShowListener: EmitterSubscription | null = null;
   keyboardDidHideListener: EmitterSubscription | null = null;
 
   handleKeyboardDidShow = (event: KeyboardEvent) => {
-    Animated.timing(this.state.keyboardHeight, {
-      toValue: -event.endCoordinates.height,
+    Animated.timing(this.state.flatListHeight, {
+      toValue: height*0.94-event.endCoordinates.height,
       duration: 200,
       useNativeDriver: false
     }).start();
   };
 
   handleKeyboardDidHide = () => {
-    Animated.timing(this.state.keyboardHeight, {
-      toValue: 0,
+    Animated.timing(this.state.flatListHeight, {
+      toValue: height*0.94,
       duration: 200,
       useNativeDriver: false
     }).start();
@@ -325,7 +325,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     return (
       <Animated.View style={[
         styles.mainContainer, { 
-          height: height * 0.94, 
+          height: this.state.flatListHeight, 
           zIndex:0, 
           transform: [{
             translateY: this.state.keyboardHeight

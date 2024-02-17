@@ -30,42 +30,6 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
     }
   }, [editMessage, isEdit, isReply]);
 
-  // In the future make animation using 'react-native-keyboard-controller' library
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      (event: KeyboardEvent) => {
-        Animated.timing(keyboardHeight, {
-          toValue: -event.endCoordinates.height,
-          duration: 200,
-          useNativeDriver: false,
-        }).start();
-        setKeyboardActive(true);
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        Animated.timing(keyboardHeight, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: false,
-        }).start();
-        setKeyboardActive(false);
-        if(textInput.current) {
-          textInput.current.blur();
-        }
-      }
-    );
-
-    // Clean up the event listeners when the component is unmounted
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, [keyboardHeight]);
-
   const durationOfAnimation: number = 200;
   const easing: EasingFunction = Easing.linear;
   const copyPopUpPositionY = copyPopUpTranslate.interpolate({
@@ -103,7 +67,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
   const textInput = useRef<TextInput>(null);
 
   return(
-    <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
+    <Animated.View>
       <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
       <ReplyAndEditMenu 
         isReply={isReply} 
