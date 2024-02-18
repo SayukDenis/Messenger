@@ -25,6 +25,7 @@ import SelfProfile from "../../../dao/Models/SelfProfile";
 import { booleanForLogging } from "../ChatList";
 import BlursForChatList from "./Headers containers/BlursForChatList";
 import { EnumForChatListBlurs } from "./Enums/EnumsForChatListBlurs";
+import ModalWindowChatState from "./List of chats containers/ModalWindowChatState";
 interface MainProps {
   navigation: any;
 }
@@ -219,6 +220,7 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
           handlePress={handlePress}
           handlePressOut={handlePressOut}
         />
+        <ModalWindowChatState />
         <BlursForChatList
           handlePress={handlePress}
           handlePressOut={handlePressOut}
