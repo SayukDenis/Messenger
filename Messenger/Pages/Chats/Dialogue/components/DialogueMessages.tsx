@@ -1,6 +1,6 @@
 import React, { Component, Dispatch } from "react";
 import { DialogueMessagesProps } from "./interfaces/IDialogueMessages";
-import { Animated, FlatList, Keyboard, View, KeyboardEvent } from "react-native";
+import { Animated, FlatList, Keyboard, View, KeyboardEvent, Platform } from "react-native";
 import { connect } from "react-redux";
 import Constants from 'expo-constants';
 import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
@@ -271,7 +271,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
       this.flatListRef.current.scrollToOffset({ offset: 0, animated: true });
       await new Promise(resolve => setTimeout(resolve, 200));
-
+      console.log('MessageMenu does not fit and FlatList cannot be scrolled');
       coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
       coord.pageY = (height - height*0.06) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(pressed && height*0.94 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
@@ -281,7 +281,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-      
+      console.log('MessageMenu does not fit and FlatList can be scrolled', Platform.OS, mesCoords?.coord!, mesCoords?.height!);
       coord.componentPageY = HEIGHT_OF_FLATLIST - mesCoords?.height! - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
       coord.pageY = HEIGHT_OF_FLATLIST - MESSAGE_PADDING_VERTICAL + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(pressed && coord.componentPageY < HEIGHT_OF_HEADER) {
@@ -291,10 +291,11 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-      
+      console.log('Message is above or behind the header');
       coord.componentPageY = HEIGHT_OF_HEADER;
       coord.pageY = HEIGHT_OF_HEADER + MESSAGE_MENU_HEIGHT + mesCoords?.height!;
     } else if(pressed) {
+      console.log('MessageMenu fits and FlatList does not need to be scrolled');
       coord.pageY = coord.componentPageY + mesCoords?.height! + MESSAGE_MENU_HEIGHT;
     }
 
@@ -340,11 +341,11 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
           data={this.props.listOfMessages}
           inverted
           overScrollMode={'never'}
-          windowSize={15}
+          //windowSize={15}
           maxToRenderPerBatch={10}
           initialNumToRender={20}
           removeClippedSubviews
-          updateCellsBatchingPeriod={100}
+          //updateCellsBatchingPeriod={100}
           keyExtractor={keyExtractor}
           renderItem={this.renderItem}
           ListHeaderComponent={ListHeaderComponent}

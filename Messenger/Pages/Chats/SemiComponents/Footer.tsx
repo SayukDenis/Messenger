@@ -9,9 +9,10 @@ import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
 import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
-import { SOFT_MENU_BAR_HEIGHT, height } from './ChatConstants';
+import { SOFT_MENU_BAR_HEIGHT, height, width } from './ChatConstants';
+import CenterPartOfFooter from './HelperComponents/Footer/CenterPartOfFooter';
 
-const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
+const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp, selecting }:DialogueFooterProps) => {
 
   const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
   const [keyboardActive, setKeyboardActive] = useState(false);
@@ -86,21 +87,22 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
             style={styles.gradient}
           />
           <View style={styles.footerContainer}>
-            <View style={styles.footer}>
-              <LeftPartOfFooter />
-              <TextInput 
-                ref={textInput}
-                value={text} 
-                onChangeText={setText} 
-                placeholderTextColor={'rgb(137, 130, 130)'} 
-                style={styles.messageInput} 
-                placeholder='Льоша блядюга)' 
-                onSubmitEditing={sendMessageHandler} 
+            <View style={[styles.footer, selecting&&{ justifyContent: 'space-between', paddingHorizontal: width*0.075, alignItems: 'flex-start' }]}>
+              <LeftPartOfFooter 
+                selecting={selecting}
+              />
+              <CenterPartOfFooter 
+                textInput={textInput}
+                text={text}
+                setText={setText}
+                sendMessageHandler={sendMessageHandler}
+                selecting={selecting}
               />
               <RightPartOfFooter 
                 sendMessage={keyboardActive} 
                 sendMessageHandler={sendMessageHandler} 
                 pressGalleryButtonHandler={()=>{}} 
+                selecting={selecting}
               />
             </View>
           </View>

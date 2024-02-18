@@ -9,12 +9,14 @@ interface CenterPartOfHeaderProps {
   activityTime: Date | string;
   dialogue: DialogueModel.default;
   navigation: any;
+  selecting: boolean;
+  counterOfSelectedMessages: number;
 }
 
-const CenterPartOfHeader = ({ picture, displayName, activityTime, dialogue, navigation }:CenterPartOfHeaderProps ) => {
-  return (
+const CenterPartOfHeader = ({ picture, displayName, activityTime, dialogue, navigation, selecting, counterOfSelectedMessages }:CenterPartOfHeaderProps ) => {
+  return (!selecting ?
     <TouchableOpacity 
-      style={[styles.chatUserInfo, { backgroundColor: 'red' }]}
+      style={styles.chatUserInfo}
       activeOpacity={1}
       onPress={() => navigation.navigate('', { dialogue })}
     >
@@ -26,7 +28,10 @@ const CenterPartOfHeader = ({ picture, displayName, activityTime, dialogue, navi
         <Text style={styles.chatUserInfoUserName}>{displayName}</Text>
         <Text style={styles.chatUserInfoUserWasOnline}>{activityTime.toString()}</Text>
       </View>
-    </TouchableOpacity>
+    </TouchableOpacity> :
+    <View style={{ padding: 10 }}>
+      <Text>Select ({counterOfSelectedMessages})</Text>
+    </View>
   );
 }
 

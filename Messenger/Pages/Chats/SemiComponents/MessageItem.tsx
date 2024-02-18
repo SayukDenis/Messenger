@@ -57,6 +57,8 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
           }
           if(typeof pinnedMessageHandler === 'function')
             pinnedMessageHandler(item.messageId!, height);
+
+          console.log('id', item.messageId)
         }}
       >
         {messageViewHandle({ message: item })}

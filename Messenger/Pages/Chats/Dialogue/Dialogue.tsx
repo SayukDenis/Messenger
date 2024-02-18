@@ -249,6 +249,7 @@ const Dialogue = ({ navigation, route }:any) => {
             onSendMessageOrCancelReplyAndEdit={sendMessageOrCancelReplyAndEditHandler} 
             copyMessagePopUp={copy}
             endCopyMessagePopUp={setCopyHandler}
+            selecting={selecting}
           />
           <DeleteMessageModal 
             deleting={deleting} 

@@ -14,6 +14,7 @@ export interface DialogueFooterProps {
   messageID: number;
   copyMessagePopUp: boolean;
   endCopyMessagePopUp: () => void;
+  selecting: boolean;
 }
 
 export interface sendMessageProps {

@@ -21,7 +21,6 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, users,
       <HeaderContainer>
         <View style={styles.header}>
           <LeftPartOfHeader 
-            counterOfSelectedMessages={counterOfSelectedMessages} 
             selecting={selecting} 
             navigation={navigation} 
           />
@@ -31,6 +30,8 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, users,
             displayName={displayName} 
             activityTime={activityTime} 
             navigation={navigation}
+            selecting={selecting} 
+            counterOfSelectedMessages={counterOfSelectedMessages} 
           />
           <RightPartOfHeader 
             selecting={selecting} 
