@@ -34,10 +34,16 @@ interface ChatProps {
   chat: Chat;
   nesting: number;
   navigation: any;
+  setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat, nesting, navigation }) => {
+const ChatContainer: React.FC<ChatProps> = ({
+  chat,
+  nesting,
+  navigation,
+  setVisibleModalWindowChatState,
+}) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
@@ -89,15 +95,19 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting, navigation }) => {
   const haveUnreadMessagesBool =
     CountOfUnreadMessage != null && CountOfUnreadMessage > 0;
   // console.log(getNameOfChat(chat,selfProfile)+":"+haveUnreadMessagesBool)
+
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
     if (chat instanceof Dialogue) {
       navigation.navigate("DialogueNavigation", { chat: chat as Dialogue });
     }
   });
+
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
     console.log("Кнопку зажали");
+    setVisibleModalWindowChatState.current();
   });
+
   const handleScrollToRightEnd = () => {
     const scrollVarible = positionXForStartOfSwipeable == screenWidth;
     if (

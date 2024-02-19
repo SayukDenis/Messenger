@@ -18,8 +18,8 @@ import { screenHeight } from "../../Constants/ConstantsForChatlist";
 import { modalWindowChatStateStyle } from "../../Styles/ModalWindowChatStateStyle";
 
 interface ChatMenuProps {
-  isVisibleChatMenu: boolean;
-  endAnimationChatMenuRef: () => void;
+  visibleChatMenu: boolean;
+  setEndAnimation: () => void;
 }
 
 const containerWidth = new Animated.Value(0);
@@ -31,8 +31,8 @@ const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
 const ChatMenu: React.FC<ChatMenuProps> = ({
-  isVisibleChatMenu,
-  endAnimationChatMenuRef,
+  visibleChatMenu,
+  setEndAnimation,
 }) => {
   const menuButtons = {
     AddTofolder: {
@@ -186,7 +186,7 @@ const ChatMenu: React.FC<ChatMenuProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!isVisibleChatMenu) {
+    if (!visibleChatMenu) {
       Animated.sequence([
         containerSize,
         animateOfFirstContainer,
@@ -195,9 +195,9 @@ const ChatMenu: React.FC<ChatMenuProps> = ({
         animateOfFourthContainer,
         animateOfFifthContainer,
         animateOfSixthContainer,
-      ]).start(() => endAnimationChatMenuRef());
+      ]).start(() => setEndAnimation());
     }
-  }, [isVisibleChatMenu]);
+  }, [visibleChatMenu]);
 
   return (
     <View style={modalWindowChatStateStyle.chatMenuContainer}>

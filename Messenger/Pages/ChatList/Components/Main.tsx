@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, createRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   ScrollView,
   Dimensions,
@@ -14,7 +14,6 @@ import {
   setFolderSelectedArray,
   setSelectedFolderForChatList,
 } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
-
 import ListOfFolder from "./ListOfFolder";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { setAnimationStateForFolderChatList } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
@@ -26,6 +25,7 @@ import { booleanForLogging } from "../ChatList";
 import BlursForChatList from "./Headers containers/BlursForChatList";
 import { EnumForChatListBlurs } from "./Enums/EnumsForChatListBlurs";
 import ModalWindowChatState from "./List of chats containers/ModalWindowChatState";
+
 interface MainProps {
   navigation: any;
 }
@@ -205,6 +205,16 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
     dispatch(setAnimationStateForFolderChatList(false));
   };
 
+  const [visibleChatModalWindow, setVisibleChatModalWindow] = useState(false);
+
+  const setVisibleModalWindowChatState = useRef(() => {
+    setVisibleChatModalWindow(true);
+  });
+
+  const setHiddenModalWindowChatState = useRef(() => {
+    setVisibleChatModalWindow(false);
+  });
+
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -220,7 +230,10 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
           handlePress={handlePress}
           handlePressOut={handlePressOut}
         />
-        <ModalWindowChatState />
+        <ModalWindowChatState
+          visibleChatModalWindow={visibleChatModalWindow}
+          setHiddenModalWindowChatState={setHiddenModalWindowChatState}
+        />
         <BlursForChatList
           handlePress={handlePress}
           handlePressOut={handlePressOut}
@@ -242,6 +255,7 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
               key={index}
               currentFolder={index}
               navigation={navigation}
+              setVisibleModalWindowChatState={setVisibleModalWindowChatState}
             />
           )}
           onScroll={handleHorizontalScroll}

@@ -1,9 +1,30 @@
 import { StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../Constants/ConstantsForChatlist";
+import { footerstyles } from "./FooterStyle";
+import { headerstyles } from "./HeaderStyle";
 
 export const modalWindowChatStateStyle = StyleSheet.create({
+  modalWindowScreen: {
+    flex: 1,
+    paddingTop: headerstyles.container.height,
+    paddingBottom: footerstyles.container.height,
+  },
+
+  modalWindowContainer: {
+    flex: 1,
+    //backgroundColor: "red",
+    flexDirection: "column",
+  },
+
+  chatWindowContainer: {
+    flex: 1,
+    //backgroundColor: "blue",
+  },
+
   chatMenuContainer: {
-    position: "absolute",
+    //backgroundColor: "green",
+    marginLeft: screenWidth * 0.025,
+    width: screenWidth * 0.45,
   },
 
   chatMenuButton: {
@@ -11,8 +32,8 @@ export const modalWindowChatStateStyle = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#E7E6E4",
-    width: screenWidth * 0.45,
     borderRadius: 100,
+    marginBottom: screenHeight * 0.0008,
     paddingVertical: screenHeight * 0.006,
     paddingHorizontal: screenWidth * 0.03,
     shadowColor: "black",
@@ -31,9 +52,9 @@ export const modalWindowChatStateStyle = StyleSheet.create({
   chatMenuTriangle: {
     width: 0,
     height: 0,
-    top: 2,
-    right: 2,
-    transform: [{ rotate: "-29deg" }],
+    top: screenHeight * 0.005,
+    right: screenWidth * 0.002,
+    transform: [{ rotate: "-33deg" }],
     backgroundColor: "transparent",
     borderStyle: "solid",
     borderLeftWidth: screenWidth * 0.015,

@@ -1,32 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlurAll from "../../../SemiComponents/BlurAll";
 import { View } from "react-native";
 import ChatMenu from "./ChatMenu";
-import {
-  screenHeight,
-  screenWidth,
-} from "../../Constants/ConstantsForChatlist";
+import { modalWindowChatStateStyle } from "../../Styles/ModalWindowChatStateStyle";
 
-interface ModalWindowChatStateProps {}
+interface ModalWindowChatStateProps {
+  visibleChatModalWindow: boolean;
+  setHiddenModalWindowChatState: React.MutableRefObject<() => void>;
+}
 
-const ModalWindowChatState: React.FC<ModalWindowChatStateProps> = () => {
+const ModalWindowChatState: React.FC<ModalWindowChatStateProps> = ({
+  visibleChatModalWindow,
+  setHiddenModalWindowChatState,
+}) => {
+  if (!visibleChatModalWindow) return null;
+
+  const [animation, setAnimation] = useState(true);
+
+  if (!animation) setHiddenModalWindowChatState.current();
+
+  const setEndAnimation = () => setAnimation(false);
+
+  const [visibleChatMenu, setVisibleChatMenu] = useState(true);
+
+  const setHiddenChatMenu = () => setVisibleChatMenu(false);
+
   return (
-    <View
-      style={{
-        opacity: 0.8,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "black",
-        zIndex: 100,
-      }}
-    >
-      <ChatMenu isVisibleChatMenu={true} endAnimationChatMenuRef={() => {}} />
-    </View>
+    <BlurAll handlePress={() => {}} handlePressOut={setHiddenChatMenu}>
+      <View style={modalWindowChatStateStyle.modalWindowScreen}>
+        <View style={modalWindowChatStateStyle.modalWindowContainer}>
+          <View style={modalWindowChatStateStyle.chatWindowContainer}></View>
+          <ChatMenu
+            visibleChatMenu={visibleChatMenu}
+            setEndAnimation={setEndAnimation}
+          />
+        </View>
+      </View>
+    </BlurAll>
   );
 };
 
