@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BlurAll from "../../../SemiComponents/BlurAll";
 import { View } from "react-native";
 import ChatMenu from "./ChatMenu";
 import { modalWindowChatStateStyle } from "../../Styles/ModalWindowChatStateStyle";
+import ChatWindow from "./ChatWindow";
 
 interface ModalWindowChatStateProps {
   visibleChatModalWindow: boolean;
@@ -29,7 +30,7 @@ const ModalWindowChatState: React.FC<ModalWindowChatStateProps> = ({
     <BlurAll handlePress={() => {}} handlePressOut={setHiddenChatMenu}>
       <View style={modalWindowChatStateStyle.modalWindowScreen}>
         <View style={modalWindowChatStateStyle.modalWindowContainer}>
-          <View style={modalWindowChatStateStyle.chatWindowContainer}></View>
+          <ChatWindow />
           <ChatMenu
             visibleChatMenu={visibleChatMenu}
             setEndAnimation={setEndAnimation}

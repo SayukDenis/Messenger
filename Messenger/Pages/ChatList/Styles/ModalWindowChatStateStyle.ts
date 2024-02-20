@@ -12,17 +12,63 @@ export const modalWindowChatStateStyle = StyleSheet.create({
 
   modalWindowContainer: {
     flex: 1,
-    //backgroundColor: "red",
     flexDirection: "column",
   },
 
   chatWindowContainer: {
     flex: 1,
-    //backgroundColor: "blue",
+    overflow: "hidden",
+    flexDirection: "column",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+
+  chatWindowHeaderContainer: {
+    paddingVertical: screenHeight * 0.01,
+    height: screenHeight * 0.07,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  chatWindowHeaderChatInfoContainer: {
+    height: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  chatWindowHeaderChatInfoImage: {
+    height: "100%",
+    aspectRatio: 1,
+    borderRadius: 1000,
+    borderWidth: 1,
+    borderColor: "#2B1D1D",
+    marginRight: screenWidth * 0.017,
+  },
+
+  chatWindowHeaderChatInfoTextContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+
+  chatWindowHeaderChatInfoChatName: {
+    fontSize: screenHeight * 0.016,
+    color: "black",
+  },
+
+  chatWindowHeaderChatInfoActivityTime: {
+    fontSize: screenHeight * 0.011,
+    color: "gray",
+  },
+
+  chatWindowMessagesContainer: {
+    flex: 1,
   },
 
   chatMenuContainer: {
-    //backgroundColor: "green",
     marginLeft: screenWidth * 0.025,
     width: screenWidth * 0.45,
   },
@@ -33,7 +79,7 @@ export const modalWindowChatStateStyle = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#E7E6E4",
     borderRadius: 100,
-    marginBottom: screenHeight * 0.0008,
+    //marginBottom: screenHeight * 0.0008,
     paddingVertical: screenHeight * 0.006,
     paddingHorizontal: screenWidth * 0.03,
     shadowColor: "black",

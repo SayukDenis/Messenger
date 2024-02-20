@@ -21,7 +21,7 @@ import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import RightContainersForSwipe from "./RightContainersForSwipe";
 import LeftContainerForSwipe from "./LeftContainerForSwipe";
 import CentralChatContainer from "./CentralChatContainer";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
@@ -29,6 +29,7 @@ import ListOfBranches from "./ListOfBranches";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 import { CountOfUnreadMessages } from "./Functions/CountOfUnreadMessage";
 import getNameOfChat from "./Functions/GetNameOfChat";
+import { setChatForModalWindowChatState } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 
 interface ChatProps {
   chat: Chat;
@@ -48,7 +49,7 @@ const ChatContainer: React.FC<ChatProps> = ({
     const self: SelfProfile = state.selfProfileUser;
     return self;
   });
-
+  const dispatch = useDispatch();
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
     useState<number | null>(null);
 
@@ -105,6 +106,7 @@ const ChatContainer: React.FC<ChatProps> = ({
 
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
     console.log("Кнопку зажали");
+    dispatch(setChatForModalWindowChatState(chat));
     setVisibleModalWindowChatState.current();
   });
 
