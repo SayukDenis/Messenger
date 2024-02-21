@@ -17,20 +17,22 @@ interface PinnedMessageViewProps {
   pinnedMessage: MessageProps;
   current: number;
   total: number;
-  navigation: any;
-  listOfPinnedMessages: MessageProps[];
-  listOfMessages: MessageProps[];
-  author: User;
-  messageID: number;
-  unpinAllMessagesHandler: () => void;
-  userMessageLastWatched: ILastWatchedMessage;
-  onCopyPress: () => void;
-  onUnpinPress: (message: MessageProps) => void;
-  onDeletePress: (message: MessageProps) => void;
-  users: User[];
+  propsForPinnedMessageScreen: {
+    navigation: any;
+    listOfPinnedMessages: MessageProps[];
+    listOfMessages: MessageProps[];
+    author: User;
+    messageID: number;
+    unpinAllMessagesHandler: () => void;
+    userMessageLastWatched: ILastWatchedMessage;
+    onCopyPress: () => void;
+    onUnpinPress: (message: MessageProps) => void;
+    onDeletePress: (message: MessageProps) => void;
+    users: User[];
+  };
 }
 
-const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, author, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, users }:PinnedMessageViewProps ) => {
+const PinnedMessageView = ({ pinnedMessage, current, total, propsForPinnedMessageScreen }:PinnedMessageViewProps ) => {
   if(!pinnedMessage?.messageId) return null;
 
   const dispatch = useDispatch();
@@ -65,19 +67,7 @@ const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPi
               }
               <TouchableOpacity
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                onPress={() => navigation.navigate('PinnedMessages', {  
-                  navigation, 
-                  listOfPinnedMessages, 
-                  listOfMessages, 
-                  author, 
-                  messageID,
-                  unpinAllMessagesHandler,
-                  userMessageLastWatched,
-                  onCopyPress,
-                  onUnpinPress,
-                  onDeletePress,
-                  users
-                })}
+                onPress={() => propsForPinnedMessageScreen.navigation.navigate('PinnedMessages', propsForPinnedMessageScreen)}
               >
                 <DialogueMessagesPinnedMessageIcon />
               </TouchableOpacity>

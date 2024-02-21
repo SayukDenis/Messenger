@@ -55,11 +55,30 @@ const scrollStateTappedMessageReducer = (state = scrollStateTappedMessageInitial
   }
 }
 
+const selectedMessageHandlerInitialState = {
+  listOfId: []
+}
+const selectedMessageHandlerReducer = (state = selectedMessageHandlerInitialState, action:any) => {
+  switch(action.type) {
+    case 'ADD_SELECTED_MESSAGE':
+      const newListOfId1 = [...state.listOfId, action.id];
+      return { ...state, listOfId: [...newListOfId1] };
+    case 'REMOVE_SELECTED_MESSAGE':
+      const newListOfId2 = state.listOfId.filter(id => id !== action.id);
+      return { ...state, listOfId: [...newListOfId2] };
+    case 'RESET_SELECTED_MESSAGE':
+      return { ...state, listOfId: [] };
+    default:
+      return state;
+  }
+}
+
 const ChatReducer = combineReducers({
   counterForSelectedMessages: counterOfSelectedMessagesReducer,
   scrollToPinnedMessage: scrollToPinnedMessageReducer,
   activateAnimationOfBackgroundForScrolledMessage: activateAnimationOfBackgroundForScrolledMessageReducer,
-  scrollToTappedMessage: scrollStateTappedMessageReducer
+  scrollToTappedMessage: scrollStateTappedMessageReducer,
+  selectedMessageHandler: selectedMessageHandlerReducer
 });
 
 export default ChatReducer;

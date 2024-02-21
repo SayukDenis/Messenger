@@ -7,7 +7,12 @@ import { styles } from './Styles/LeftPartOfFooter';
 import DeleteButton from '../../SVG/DeleteButton';
 import { height } from '../../ChatConstants';
 
-const LeftPartOfFooter = ({ selecting }:{ selecting: boolean }) => {
+interface LeftPartOfFooterProps { 
+  selecting: boolean; 
+  deleteSelectedMessagesHandler: () => void 
+}
+
+const LeftPartOfFooter = ({ selecting, deleteSelectedMessagesHandler }:LeftPartOfFooterProps) => {
   const [video, setVideo] = useState(true);
 
   return (!selecting ?
@@ -21,7 +26,7 @@ const LeftPartOfFooter = ({ selecting }:{ selecting: boolean }) => {
     </TouchableOpacity> :
     <TouchableOpacity
       activeOpacity={1}
-      onPress={()=>{}}
+      onPress={deleteSelectedMessagesHandler}
     >
       <DeleteButton size={height*0.035} />
     </TouchableOpacity>

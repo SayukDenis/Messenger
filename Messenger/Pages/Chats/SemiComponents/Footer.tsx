@@ -12,7 +12,7 @@ import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
 import { SOFT_MENU_BAR_HEIGHT, height, width } from './ChatConstants';
 import CenterPartOfFooter from './HelperComponents/Footer/CenterPartOfFooter';
 
-const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp, selecting }:DialogueFooterProps) => {
+const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp, selecting, deleteSelectedMessages }:DialogueFooterProps) => {
 
   const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
   const [keyboardActive, setKeyboardActive] = useState(false);
@@ -90,6 +90,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
             <View style={[styles.footer, selecting&&{ justifyContent: 'space-between', paddingHorizontal: width*0.075, alignItems: 'flex-start' }]}>
               <LeftPartOfFooter 
                 selecting={selecting}
+                deleteSelectedMessagesHandler={deleteSelectedMessages}
               />
               <CenterPartOfFooter 
                 textInput={textInput}

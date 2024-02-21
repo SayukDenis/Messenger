@@ -10,9 +10,12 @@ import {
 } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import {
+  addSelectedMessage,
   decrementNumberOfSelectedMessages,
   incrementNumberOfSelectedMessages,
+  removeSelectedMessage,
   resetNumberOfSelectedMessages,
+  resetSelectedMessage,
   setAnimationOfBackgroundForScrolledMessage,
   setScrollStateTappedMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
@@ -79,15 +82,17 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   };
 
   resetSelected = () => {
-    this.props.dispatch(resetNumberOfSelectedMessages());
+    const { dispatch } = this.props;
+    dispatch(resetNumberOfSelectedMessages());
+    dispatch(resetSelectedMessage());
     this.setState({ selected: false });
   };
 
   setSelectedCallback = () => {
-    const { dispatch } = this.props;
+    const { dispatch, id } = this.props;
     this.setState({ selected: true });
-    console.log('this state selected', this.state.selected);
     dispatch(incrementNumberOfSelectedMessages());
+    dispatch(addSelectedMessage(id));
   };
 
   onLayout = (event: any) => {
@@ -281,16 +286,18 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
           onPressOut={async (event) => {
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
+            const { dispatch, setMessageMenuVisible, id } = this.props;
 
             if (selecting && Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
-              this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+              dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+              dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
               this.setState({ selected: !selected });
               return;
             }
 
             if (Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
               await this.handlePress(event).then((layout) => {
-                this.props.setMessageMenuVisible(layout, true);
+                setMessageMenuVisible(layout, true);
               });
             }
           }}

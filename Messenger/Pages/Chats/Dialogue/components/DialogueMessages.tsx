@@ -192,6 +192,9 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   setPinnedMessageHandler = (message:number, coord:number) => {
     //console.log('setPinnedMessageHandler', message, coord);
     const mesId = messagesWithCoords.findIndex(m => m.message === message);
+    if(message === 0)
+      console.log(messagesWithCoords);
+
     if(mesId !== -1 && mesId > 0) {
       messagesWithCoords[mesId].coord = coord + messagesWithCoords[mesId-1].coord;
       messagesWithCoords[mesId].height = coord;

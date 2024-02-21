@@ -12,7 +12,7 @@ import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage, setScrollStateTappedMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage, setScrollStateTappedMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
@@ -119,13 +119,17 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   });
 
   resetSelected = () => {
-    this.props.dispatch(resetNumberOfSelectedMessages());
+    const { dispatch } = this.props;
+    dispatch(resetNumberOfSelectedMessages());
+    dispatch(resetSelectedMessage());
     this.setState({ selected: false });
   };
 
   setSelectedCallback = () => {
+    const { dispatch, id } = this.props;
     this.setState({ selected: true });
-    this.props.dispatch(incrementNumberOfSelectedMessages());
+    dispatch(incrementNumberOfSelectedMessages());
+    dispatch(addSelectedMessage(id));
   }
 
   onLayout = (event: any) => {
@@ -195,17 +199,18 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   };
 
   handleLinkTo = (messageID:any) => {
-    const { selecting } = this.props;
+    const { selecting, dispatch, flatList, messages, message, id } = this.props;
     const { selected } = this.state;
     if (selecting) {
       this.setState({ selected: !selected });
-      this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
       return;
     }
 
     if(this.props.flatList.current) {
-      this.props.dispatch(setAnimationOfBackgroundForScrolledMessage(this.props.message.messageResponseId));
-      this.props.flatList.current.scrollToIndex({ index: this.props.messages.length - messageID, animated: true, viewPosition: 0.5 });
+      dispatch(setAnimationOfBackgroundForScrolledMessage(message.messageResponseId));
+      flatList.current.scrollToIndex({ index: messages.length - messageID, animated: true, viewPosition: 0.5 });
     }
   };
   
@@ -218,12 +223,13 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const { locationX, locationY } = event.nativeEvent;
     const { locationX_In, locationY_In } = this.state.pressCoordinations;
 
-    const { selecting } = this.props;
+    const { selecting, dispatch, id } = this.props;
     const { selected } = this.state;
     
     if (selecting && Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
       this.setState({ selected: !selected });
-      this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
       return;
     }
 
@@ -244,10 +250,10 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   }
 
   render() {
-    const { message, author, selecting, pinnedMessageScreen } = this.props;
+    const { message, author, selecting, messages, pinnedMessageScreen } = this.props;
     const { selected } = this.state;
 
-    const isUser = this.props.message.author.userId == this.props.author.userId;
+    const isUser = message.author.userId == author.userId;
 
     return (
       <ScrollView 
@@ -281,9 +287,9 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               {isUser ? 'You' : this.props.userName}
             </Text>
             <ReplyMessage 
-              message={this.props.message}
-              replyMessage={this.props.messages.find(m => m.messageId === message.messageResponseId)!}
-              author={this.props.author}
+              message={message}
+              replyMessage={messages.find(m => m.messageId === message.messageResponseId)!}
+              author={author}
               selecting={selecting}
               selected={selected}
               handleLinkTo={this.handleLinkTo}

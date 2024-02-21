@@ -28,3 +28,17 @@ export const setAnimationOfBackgroundForScrolledMessage = (id: number = -1) => (
   type: 'SET_ANIMATION_OF_BACKGROUND_FOR_SCROOLED_MESSAGE',
   id
 })
+
+export const addSelectedMessage = (id: number) => ({
+  type: 'ADD_SELECTED_MESSAGE',
+  id
+})
+
+export const removeSelectedMessage = (id: number) => ({
+  type: 'REMOVE_SELECTED_MESSAGE',
+  id
+})
+
+export const resetSelectedMessage = () => ({
+  type: 'RESET_SELECTED_MESSAGE'
+})
