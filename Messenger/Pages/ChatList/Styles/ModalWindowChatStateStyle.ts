@@ -17,10 +17,22 @@ export const modalWindowChatStateStyle = StyleSheet.create({
 
   chatWindowContainer: {
     flex: 1,
+    zIndex: 10,
     overflow: "hidden",
     flexDirection: "column",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  chatWindowContainerAnimated: {
+    flex: 1,
+    overflow: "hidden",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
   },
@@ -28,7 +40,7 @@ export const modalWindowChatStateStyle = StyleSheet.create({
   chatWindowHeaderContainer: {
     paddingVertical: screenHeight * 0.01,
     height: screenHeight * 0.07,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFFB2",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -55,13 +67,14 @@ export const modalWindowChatStateStyle = StyleSheet.create({
   },
 
   chatWindowHeaderChatInfoChatName: {
+    fontWeight: "400",
     fontSize: screenHeight * 0.016,
-    color: "black",
+    color: "#2B1D1D",
   },
 
-  chatWindowHeaderChatInfoActivityTime: {
+  chatWindowHeaderChatInfoChatStatus: {
     fontSize: screenHeight * 0.011,
-    color: "gray",
+    color: "#493A3A",
   },
 
   chatWindowMessagesContainer: {
@@ -79,12 +92,15 @@ export const modalWindowChatStateStyle = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#E7E6E4",
     borderRadius: 100,
-    //marginBottom: screenHeight * 0.0008,
-    paddingVertical: screenHeight * 0.006,
+    height: screenHeight * 0.04,
     paddingHorizontal: screenWidth * 0.03,
     shadowColor: "black",
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
+  },
+
+  chatMenuFirstButton: {
+    marginTop: screenHeight * 0.0085,
   },
 
   chatMenuSvgContainer: {
@@ -98,8 +114,6 @@ export const modalWindowChatStateStyle = StyleSheet.create({
   chatMenuTriangle: {
     width: 0,
     height: 0,
-    top: screenHeight * 0.005,
-    right: screenWidth * 0.002,
     transform: [{ rotate: "-33deg" }],
     backgroundColor: "transparent",
     borderStyle: "solid",
@@ -109,6 +123,7 @@ export const modalWindowChatStateStyle = StyleSheet.create({
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
     borderBottomColor: "#E7E6E4",
-    position: "relative",
+    position: "absolute",
+    marginBottom: screenWidth * 0.03,
   },
 });

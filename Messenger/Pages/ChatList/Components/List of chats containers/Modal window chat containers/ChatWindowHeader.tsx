@@ -5,13 +5,13 @@ import { modalWindowChatStateStyle } from "../../../Styles/ModalWindowChatStateS
 interface ChatWindowHeaderProps {
   chatPicture: string | undefined;
   chatName: string | undefined;
-  activityTime: Date | string;
+  chatStatus: Date | string;
 }
 
 const ChatWindowHeader: React.FC<ChatWindowHeaderProps> = ({
   chatPicture,
   chatName,
-  activityTime,
+  chatStatus,
 }) => {
   return (
     <View style={modalWindowChatStateStyle.chatWindowHeaderContainer}>
@@ -31,11 +31,9 @@ const ChatWindowHeader: React.FC<ChatWindowHeaderProps> = ({
             {chatName}
           </Text>
           <Text
-            style={
-              modalWindowChatStateStyle.chatWindowHeaderChatInfoActivityTime
-            }
+            style={modalWindowChatStateStyle.chatWindowHeaderChatInfoChatStatus}
           >
-            {activityTime.toString()}
+            {chatStatus.toString()}
           </Text>
         </View>
       </View>

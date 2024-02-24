@@ -1,15 +1,15 @@
-import React, { memo } from "react";
+import React from "react";
 import { Text, View } from "react-native";
-import { modalWindowChatStateStyle } from "../../Styles/ModalWindowChatStateStyle";
-import { connect, useSelector } from "react-redux";
-import ChatWindowHeader from "./Chat window containers/ChatWindowHeader";
-import ChatWindowMessages from "./Chat window containers/ChatWindowMessages";
-import Dialogue from "../../../../dao/Models/Chats/Dialogue";
-import Group from "../../../../dao/Models/Chats/Group";
-import Channel from "../../../../dao/Models/Chats/Channel";
-import SelfProfile from "../../../../dao/Models/SelfProfile";
-import User from "../../../../dao/Models/User";
-import DialogueMessages from "../../../Chats/Dialogue/components/DialogueMessages";
+import { useSelector } from "react-redux";
+import ChatWindowHeader from "./ChatWindowHeader";
+import Dialogue from "../../../../../dao/Models/Chats/Dialogue";
+import Group from "../../../../../dao/Models/Chats/Group";
+import Channel from "../../../../../dao/Models/Chats/Channel";
+import SelfProfile from "../../../../../dao/Models/SelfProfile";
+import User from "../../../../../dao/Models/User";
+import DialogueMessages from "../../../../Chats/Dialogue/components/DialogueMessages";
+import { modalWindowChatStateStyle } from "../../../Styles/ModalWindowChatStateStyle";
+import BackGroundGradinetView from "../../../../SemiComponents/BackGroundGradientView";
 
 interface ChatWindowProps {}
 
@@ -27,23 +27,22 @@ const user: SelfProfile = {
   schema: {} as any,
 };
 
-const ChatWindow = memo(({}: ChatWindowProps) => {
+const ChatWindow = ({}: ChatWindowProps) => {
   const currentChat = useSelector((state: any) => {
     return state.chatListReducer.chatForModalWindowChatState.chat;
   });
 
-  const modalWindowChatStateComponent = () => {
+  const chatWindowComponent = () => {
     switch (currentChat.constructor) {
       case Dialogue:
-        console.log("THIS IS DIALOGUE");
         return (
           <>
             <ChatWindowHeader
               chatPicture={currentChat.linkToPhoto}
               chatName={"Denis"}
-              activityTime={"Online recently"}
+              chatStatus={"Online recently"}
             />
-            <ChatWindowMessages>
+            <View style={modalWindowChatStateStyle.chatWindowMessagesContainer}>
               <DialogueMessages
                 setMessageMenuVisible={() => {}}
                 messageID={-1}
@@ -62,11 +61,10 @@ const ChatWindow = memo(({}: ChatWindowProps) => {
                 pinnedMessages={currentChat.pinnedMessage}
                 setPinnedMessage={() => {}}
               />
-            </ChatWindowMessages>
+            </View>
           </>
         );
       case Group:
-        console.log("THIS IS GROUP");
         return (
           <View
             style={{
@@ -76,11 +74,10 @@ const ChatWindow = memo(({}: ChatWindowProps) => {
               justifyContent: "center",
             }}
           >
-            <Text>THIS IS GROUP</Text>
+            <Text>THIS IS A GROUP</Text>
           </View>
         );
       case Channel:
-        console.log("THIS IS CHANNEL");
         return (
           <View
             style={{
@@ -90,7 +87,7 @@ const ChatWindow = memo(({}: ChatWindowProps) => {
               justifyContent: "center",
             }}
           >
-            <Text>THIS IS CHANNEL</Text>
+            <Text>THIS IS A CHANNEL</Text>
           </View>
         );
       default:
@@ -99,10 +96,8 @@ const ChatWindow = memo(({}: ChatWindowProps) => {
   };
 
   return (
-    <View style={modalWindowChatStateStyle.chatWindowContainer}>
-      {modalWindowChatStateComponent()}
-    </View>
+    <BackGroundGradinetView>{chatWindowComponent()}</BackGroundGradinetView>
   );
-});
+};
 
-export default connect(null)(ChatWindow);
+export default React.memo(ChatWindow);
