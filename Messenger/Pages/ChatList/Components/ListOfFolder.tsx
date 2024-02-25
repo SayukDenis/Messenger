@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Dimensions, FlatList } from "react-native";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
@@ -10,11 +10,13 @@ import { footerstyles } from "../Styles/FooterStyle";
 interface ListOfFolderProps {
   currentFolder: number;
   navigation: any;
+  setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
 }
 
 const ListOfFolder: React.FC<ListOfFolderProps> = ({
   currentFolder,
   navigation,
+  setVisibleModalWindowChatState,
 }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -42,6 +44,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
       chat={item}
       nesting={0}
       navigation={navigation}
+      setVisibleModalWindowChatState={setVisibleModalWindowChatState}
     />
   );
 

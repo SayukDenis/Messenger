@@ -19,6 +19,21 @@ const animationForChatListFolderReducer = (
   }
 };
 
+const chatForModalWindowChatStateReducer = (
+  state = { chat: null },
+  action: any
+) => {
+  switch (action.type) {
+    case "SET_CHAT_FOR_MODAL_WINDOW_CHAT_STATE":
+      return {
+        ...state,
+        chat: action.chat,
+      };
+    default:
+      return state;
+  }
+};
+
 const selectedFolderReducer = (state = { selectedFolder: 0 }, action: any) => {
   switch (action.type) {
     case "SET_SELECTED_FOLDER_FOR_CHATLIST_STATE":
@@ -185,7 +200,8 @@ const rootReducerChatList = combineReducers({
   stateForEndOfBlurForChatList: stateForEndOfBlurForChatListReducer,
   createGroupOrChannel: createGroupOrChannelReducer,
   setPhotoForCreateGroupOrChannel: setPhotoForCreateGroupOrChannelReducer,
-  isVisibleGalleryModalWindow:isVisibleGalleryModalWindowReducer
+  isVisibleGalleryModalWindow: isVisibleGalleryModalWindowReducer,
+  chatForModalWindowChatState: chatForModalWindowChatStateReducer,
 });
 
 export default rootReducerChatList;

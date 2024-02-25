@@ -21,7 +21,7 @@ import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import RightContainersForSwipe from "./RightContainersForSwipe";
 import LeftContainerForSwipe from "./LeftContainerForSwipe";
 import CentralChatContainer from "./CentralChatContainer";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
@@ -29,20 +29,27 @@ import ListOfBranches from "./ListOfBranches";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 import { CountOfUnreadMessages } from "./Functions/CountOfUnreadMessage";
 import getNameOfChat from "./Functions/GetNameOfChat";
+import { setChatForModalWindowChatState } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 
 interface ChatProps {
   chat: Chat;
   nesting: number;
   navigation: any;
+  setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const ChatContainer: React.FC<ChatProps> = ({ chat, nesting, navigation }) => {
+const ChatContainer: React.FC<ChatProps> = ({
+  chat,
+  nesting,
+  navigation,
+  setVisibleModalWindowChatState,
+}) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
   });
-
+  const dispatch = useDispatch();
   const [positionXForStartOfSwipeable, setPositionXForStartOfSwipeable] =
     useState<number | null>(null);
 
@@ -89,15 +96,20 @@ const ChatContainer: React.FC<ChatProps> = ({ chat, nesting, navigation }) => {
   const haveUnreadMessagesBool =
     CountOfUnreadMessage != null && CountOfUnreadMessage > 0;
   // console.log(getNameOfChat(chat,selfProfile)+":"+haveUnreadMessagesBool)
+
   const handlePress = useRef(() => {
     console.log("Кнопку натиснули");
     if (chat instanceof Dialogue) {
       navigation.navigate("DialogueNavigation", { chat: chat as Dialogue });
     }
   });
+
   const onLongPressChat = useRef((e: GestureResponderEvent) => {
     console.log("Кнопку зажали");
+    dispatch(setChatForModalWindowChatState(chat));
+    setVisibleModalWindowChatState.current();
   });
+
   const handleScrollToRightEnd = () => {
     const scrollVarible = positionXForStartOfSwipeable == screenWidth;
     if (
