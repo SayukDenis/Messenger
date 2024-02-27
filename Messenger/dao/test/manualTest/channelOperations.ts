@@ -19,17 +19,17 @@ export async function channelOperations() {
     const selfProfile = await saveSelfProfile();
 
     //Save Users
-    const user1 = new User('User1', 'nickname1');
+    const user1 = new User('User1', 'nicknameChannel1');
     user1.numberPhone = '123-456-7890';
     user1.description = 'This is User1';
     user1.linkToPhoto = 'https://example.com/user1photo.jpg';
 
-    const user2 = new User('User2', 'nickname2');
+    const user2 = new User('User2', 'nicknameChannel2');
     user2.numberPhone = '987-654-3210';
     user2.description = 'This is User2';
     user2.linkToPhoto = undefined;
 
-    const user3 = new User('User3', 'nickname3');
+    const user3 = new User('User3', 'nicknameChannel3');
     user3.numberPhone = '555-9999';
     user3.description = undefined;
     user3.linkToPhoto = undefined;

@@ -34,7 +34,4 @@ export default class Chat extends Model {
 
     @Column({ type: 'simple-json', nullable: true })
     lastWatchedMessage: Array<ILastWatchedMessage>;
-
-    @ManyToOne(() => SelfProfile, (selfProfile) => selfProfile.blockedChats, { onDelete: 'CASCADE' })
-    selfProfile: SelfProfile;
 };

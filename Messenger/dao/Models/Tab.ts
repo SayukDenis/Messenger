@@ -34,13 +34,13 @@ export default class Tab extends Model {
     folders: Array<Folder>;
 
     //Exceptions "MessageOn"
-    @Column('simple-array')
+    @Column('simple-array', { nullable: true })
     exceptionsDialoguesId: Array<number>;
 
-    @Column('simple-array')
+    @Column('simple-array', { nullable: true })
     exceptionsGroupsId: Array<number>;
 
-    @Column('simple-array')
+    @Column('simple-array', { nullable: true })
     exceptionsChannelsId: Array<number>;
 
     @ManyToOne(() => SelfProfile, (selfProfile) => selfProfile.tabs, { onDelete: 'CASCADE' })
