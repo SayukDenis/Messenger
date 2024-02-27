@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForMessages } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import ReplyIcon from '../../SVG/ReplyIcon';
 import { Dispatch } from 'redux';
 
@@ -21,7 +21,7 @@ const ScrollButton = ({ navigation, dispatch, messageId, isUser }: ScrollButtonP
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       onPress={() => {
         navigation.goBack();
-        dispatch(setScrollStateForMessages(true, messageId));
+        dispatch(setScrollStateForPinnedMessage(true, messageId));
         dispatch(setAnimationOfBackgroundForScrolledMessage(messageId));
       }}
     >

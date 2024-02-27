@@ -15,6 +15,7 @@ export interface DialogueHeaderProps {
   selecting: boolean;
   cancelSelection: () => void;
   author: User;
+  users: User[];
   listOfMessages: MessageProps[];
   listOfPinnedMessages: MessageProps[];
   messageID: number;

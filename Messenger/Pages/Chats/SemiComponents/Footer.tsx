@@ -1,4 +1,4 @@
-import { View, TextInput, TouchableOpacity, Animated, Keyboard, KeyboardEvent,  EasingFunction, Easing } from 'react-native';
+import { View, TextInput, Animated, Keyboard, KeyboardEvent,  EasingFunction, Easing } from 'react-native';
 import React, { useState, memo, useEffect, useRef } from 'react';
 import styles from './Styles/Footer';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
@@ -10,8 +10,6 @@ import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
 import { SOFT_MENU_BAR_HEIGHT, height } from './ChatConstants';
-import Constants from 'expo-constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
 
@@ -114,7 +112,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
         isEdit={isEdit} 
         editMessage={editMessage}
       />
-      <View style={[styles.mainContainer, { bottom: -height*0.0105-Constants.statusBarHeight+SOFT_MENU_BAR_HEIGHT*0.64, }]} >
+      <View style={[styles.mainContainer, { bottom: -height*0.06+SOFT_MENU_BAR_HEIGHT, }]} >
         <View style={styles.gradientContainer}>
           <LinearGradient
             colors={["#cf9b95", "#c98bb8", "#c37adb"]}

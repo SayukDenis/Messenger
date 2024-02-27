@@ -9,36 +9,31 @@ const figmaHeightPixelConverter = screenHeight / 648;
 const figmaWidthPixelConverter = screenWidth / 356;
 
 export const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "rgb(227, 192, 124)",
-  },
   settingOption: {
     top: 0.04 * screenHeight,
     width: 0.9 * screenWidth,
     height: 0.07 * screenHeight,
-    backgroundColor: "rgb(218, 182, 113)",
+    backgroundColor: "white",
     borderRadius: 9,
-    borderWidth: 0.5,
-    borderColor: "rgb(161, 156, 145)",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     alignSelf: "center",
+    overflow: "hidden",
   },
   settingOptionTitle: {
     position: "absolute",
     left: 0.05 * screenWidth,
     fontFamily: "JacquesFrancois-Regular",
     fontSize: 20,
-    color: "rgb(92, 64, 129)",
+    color: "rgb(43, 29, 29)",
   },
   settingOptionRightArrow: {
     position: "absolute",
     right: 0.045 * screenWidth,
     width: 11 * figmaWidthPixelConverter,
     height: 17 * figmaWidthPixelConverter,
-    color: "rgb(111, 111, 111)",
+    color: "rgb(43, 29, 29)",
   },
   settingTitle: {
     fontFamily: "JacquesFrancois-Regular",
@@ -56,26 +51,14 @@ export const styles = StyleSheet.create({
     height: 13 * figmaHeightPixelConverter,
     position: "absolute",
     right: 0.05 * screenWidth,
-    color: "rgb(41, 121, 179)",
   },
-  toggleButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+  linearGradient: {
+    top: 0,
     position: "absolute",
-    right: 0.05 * screenWidth,
-  },
-  toggleButtonBackground: {
-    width: 0.16 * screenWidth,
-    height: 0.034 * screenHeight,
-    backgroundColor: "rgb(161, 156, 145)",
-    borderRadius: 20,
-    justifyContent: "center",
-    padding: 0.003 * screenHeight,
-  },
-  toggleButtonCircle: {
-    height: 0.027 * screenHeight,
-    width: 0.027 * screenHeight,
-    borderRadius: 20,
-    backgroundColor: "white",
+    left: 0,
+    right: 0,
+    height: screenHeight,
+    width: screenWidth,
+    opacity: 0.7,
   },
 });

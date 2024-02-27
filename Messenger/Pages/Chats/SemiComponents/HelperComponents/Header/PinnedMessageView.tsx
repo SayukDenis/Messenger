@@ -27,9 +27,10 @@ interface PinnedMessageViewProps {
   onCopyPress: () => void;
   onUnpinPress: (message: MessageProps) => void;
   onDeletePress: (message: MessageProps) => void;
+  users: User[];
 }
 
-const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, author, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, }:PinnedMessageViewProps ) => {
+const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, author, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, users }:PinnedMessageViewProps ) => {
   if(!pinnedMessage?.messageId) return null;
 
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPi
                   onCopyPress,
                   onUnpinPress,
                   onDeletePress,
+                  users
                 })}
               >
                 <DialogueMessagesPinnedMessageIcon />

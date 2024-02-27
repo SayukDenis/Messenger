@@ -15,7 +15,7 @@ import MessageMenuEditButton from "./SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "./SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { height, width } from "./ChatConstants";
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, height, width } from "./ChatConstants";
 
 
 let size:{ width:number, height:number } = { width: 0, height: 0 };
@@ -28,7 +28,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen }:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen, users }:messageMenuProps) => {
   if(!isVisible) 
       return null;
     
@@ -287,35 +287,21 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
   const onLayout = (event:any) => {
     const { width, height } = event.nativeEvent.layout;
     size = { width, height }
+
   };
   
   const handleMenuPosition = () => {
     const MESSAGE_HORIZONTAL_PADDING = 10;
     const NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE = 5;
     if(isUser) {
-      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height){
-        return { 
-          top:(coord?coord.pageY:0), 
-          right: MESSAGE_HORIZONTAL_PADDING*2
-        }
-      }
-      else {
-        return { 
-          top:(coord?coord.pageY:0)-size.height, 
-          right: MESSAGE_HORIZONTAL_PADDING*2
-        }
+      return { 
+        top:(coord?coord.pageY:0)-size.height, 
+        right: MESSAGE_HORIZONTAL_PADDING*2
       }
     } else {
-      if((coord?coord.pageY:0) < height-screenHeight*0.06-size.height) {
-        return { 
-          top:(coord?coord.pageY:0), 
-          left:MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
-        }
-      } else {
-        return { 
-          top:(coord?coord.pageY:0)-size.height, 
-          left:MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
-        }
+      return { 
+        top:(coord?coord.pageY:0)-size.height, 
+        left:MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
       }
     }
   }
@@ -352,6 +338,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
           height={coord.height} 
           userMessageLastWatched={userMessageLastWatched} 
           pinned={coord.pinned} 
+          userName={users[0]?.name}
         />:
         <DefaultTextDummyMessage 
           message={coord.message}
@@ -363,7 +350,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       </View>
       <View 
         onLayout={onLayout}
-        style={[styles.buttonsContainer, handleMenuPosition()]}
+        style={[styles.buttonsContainer, handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT*4+MESSAGE_TRIANGLE_SIZE }]}
       >
         {(pinnedMessageScreen?pinnedMessageScreenButtons:buttons).map((button, index) => {
           return button.text=='Edit'&&!isUser? null: 

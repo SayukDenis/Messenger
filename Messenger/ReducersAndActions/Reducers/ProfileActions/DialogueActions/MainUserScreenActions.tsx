@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import { combineReducers } from "redux";
-import { user } from "../../../../Pages/Profiles/SemiComponents/DBUser";
+import { user } from "../../../../Pages/Profiles/SemiComponents/DatabaseSimulation/DBUser";
 
 const initialState = {
   pressedMultimediaButton: "Photos",
@@ -12,6 +12,19 @@ const initialState = {
   isBlocked: user.isBlocked,
   longPressedAlbum: null,
   positionYOfLongPressedAlbum: 0,
+  removalText: "",
+};
+
+const removalAppovalTextReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "SET_REMOVAL_APPROVAL_TEXT":
+      return {
+        ...state,
+        removalAppovalTextReducer: action.payload,
+      };
+    default:
+      return state;
+  }
 };
 
 const multimediaReducer = (state = initialState, action) => {
@@ -77,11 +90,6 @@ const albumReducer = (state = initialState, action) => {
         ...state,
         positionYOfLongPressedAlbum: action.payload,
       };
-    case "SET_IS_DELETE_ALBUM_PRESSED":
-      return {
-        ...state,
-        isDeleteAlbumPressed: action.payload,
-      };
     case "SET_IS_ALBUM_SELECTION_VISIBLE":
       return {
         ...state,
@@ -92,22 +100,13 @@ const albumReducer = (state = initialState, action) => {
         ...state,
         selectedAlbums: action.payload,
       };
-    case "SET_IS_DELETE_ALL_ALBUMS_PRESSED":
-      return {
-        ...state,
-        isDeleteAllAlbumsPressed: action.payload,
-      };
-    case "SET_IS_DELETE_SELECTED_ALBUMS_PRESSED":
-      return {
-        ...state,
-        isDeleteSelectedAlbumsPressed: action.payload,
-      };
     default:
       return state;
   }
 };
 
 const MainUserScreenReducer = combineReducers({
+  removalAppovalText: removalAppovalTextReducer,
   multimedia: multimediaReducer,
   visibility: visibilityReducer,
   userStatus: userStatusReducer,

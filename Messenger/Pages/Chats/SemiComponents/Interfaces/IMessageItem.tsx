@@ -1,6 +1,7 @@
 
 import ILastWatchedMessage from "../../../../dao/Models/Chats/ILastWatchedMessage";
 import User from "../../../../dao/Models/User";
+import { coordY } from "../Screens/PinnedMessageScreen";
 import { Layout } from "./GeneralInterfaces/ILayout";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 
@@ -10,8 +11,9 @@ export interface MessageItemProps {
   listOfMessages: MessageProps[];
   setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void}; 
   flatListRef?: React.MutableRefObject<null>;
-  coordsY: [number[]];
+  coordsY: [number[]] | coordY[];
   author: User;
+  users: User[];
   messageID: number;
   setCoordsY: (newCoordsY: any) => void;
   userMessageLastWatched?: ILastWatchedMessage | undefined;

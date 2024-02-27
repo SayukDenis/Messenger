@@ -9,10 +9,10 @@ import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
 import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 import styles from './Styles/Header';
 
-const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, chatType }:DialogueHeaderProps) => {
+const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, users, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, chatType }:DialogueHeaderProps) => {
   if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
 
-  const displayName = author.name;
+  const displayName = users[0]?.name;
   const countOfPinnedMessages = listOfPinnedMessages.length;
   const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage?.messageId)+1;
 
@@ -52,6 +52,7 @@ const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, author
         onCopyPress={onCopyPress}
         onUnpinPress={onUnpinPress}
         onDeletePress={onDeletePress}
+        users={users}
       />
     </View>
   );
