@@ -8,6 +8,14 @@ import Navigation from "./Navigation/Navigation";
 import StartPage from "./Pages/Profiles/SemiComponents/Navigation";
 export default function App() {
   StatusBar.setBarStyle("dark-content");
+
+  useEffect(() => {
+    StatusBar.setBarStyle("dark-content");
+    const fetchData = async () => {
+      await initialization();
+    };
+    fetchData();
+  }, []);
   return (
     <SafeAreaProvider>
       <StatusBar translucent backgroundColor="transparent" />

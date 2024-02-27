@@ -15,6 +15,9 @@ export default class SelfProfile extends User {
     @Column('text', { nullable: true })
     email?: string;
 
+    @Column('text')
+    numberPhone: string;
+
     //Information about user
     @Column('datetime', { nullable: true })
     timeLastEntry?: Date;
@@ -26,9 +29,6 @@ export default class SelfProfile extends User {
     tabs: Array<Tab>;
 
     //Blocked chats
-    @OneToMany(() => Chat, (chat) => chat.selfProfile, {
-        eager: true,
-        cascade: true
-    })
-    blockedChats: Array<Chat>;
+    @Column('simple-array', { nullable: true })
+    blockedChatsId: Array<number>;
 };

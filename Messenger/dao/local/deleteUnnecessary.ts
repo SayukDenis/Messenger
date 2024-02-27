@@ -61,3 +61,7 @@ async function deleteUnnecessaryChats() {
 //console.log('SelfProfile has been saved')
 //await manager.save(User,selfProfile);
 //console.log('SelfProfile like as User has been saved')
+
+
+
+// User with SelfProfile and id -1 

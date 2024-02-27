@@ -8,8 +8,12 @@ import Folder from "../dao/Models/Folder";
 import User from "../dao/Models/User";
 import Branch from "../dao/Models/Chats/Branch";
 import MainChat from "../dao/Models/Chats/MainChat";
-import { addMessages, initializationLastWatchedMessageChat, initializationPinnedMessage, initializationPinnedMessageForAll } from './initializationMessage';
 import { getRandomElementsFromArray, getRandomNumber, shuffleArray } from "./functions";
+import { dataSource } from "../dao/local/database";
+import { EntityManager, Not } from "typeorm";
+import Chat from "../dao/Models/Chats/Chat";
+import { EMessageType } from "../dao/Models/EMessageType";
+import { Run } from "../dao/test/manualTest/_orchestrator";
 
 const messageDialog: string[] = [
   "Привіт",
@@ -60,193 +64,261 @@ const images: string[] = [
   "https://cdn.discordapp.com/attachments/1043985846715564102/1154700004942950501/image.png"
 ]
 
-const numberOfUsersToCreate = 20;
-const numberOfFolderToCreate = 5;
-const numberOfTabToCreate = 4;
-const numberOfDialogueToCreate = 15;
-const numberOfGroupeToCreate = 3;
-const numberOfChannelToCreate = 3;
+export async function initialization() {
 
-//id
-let idUsersToCreate = 1;
-let idFolderToCreate = 0;
-let idTabToCreate = 0;
-let idDialogueToCreate = 0;
-let idGroupeToCreate = 0;
-let idChannelToCreate = 0;
-let idBranchToCrate = 0;
+  const numberOfUsersToCreate = 20;
+  const numberOfTabToCreate = 3;
+  const numberOfFolderToCreate = 5;
+  const numberOfDialogueToCreate = 15;
+  const numberOfGroupToCreate = 10;
+  const numberOfChannelToCreate = 10;
 
-export function initialization(): SelfProfile {
+  await Run();
+
+  if (!dataSource.isInitialized) {
+    await dataSource.initialize();
+  }
+  const manager = dataSource.manager;
+
+  await initializationSelfProfile(manager);
+  console.log("succsess initializationSelfProfile")
+
+  await initializationUsers(manager, numberOfUsersToCreate);
+  console.log("succsess initializationUsers")
+
+  await initializationTabs(manager, numberOfTabToCreate);
+  console.log("succsess initializationTabs")
+
+  await initializationFoldersForAllTab(manager, numberOfFolderToCreate);
+  console.log("succsess initializationFolder")
+
+  await initializationDialogue(manager, numberOfDialogueToCreate);
+  console.log("succsess initializationDialogue")
+
+  await initializationGroup(manager, numberOfGroupToCreate);
+  console.log("succsess initializationGroup")
+
+  await initializationChannel(manager, numberOfChannelToCreate);
+  console.log("succsess initializationChannel")
+
+  // add folder in tabs:
+  const tabs = await manager.find(Tab);
+  const folders = await manager.find(Folder);
+  for (let tab of tabs) {
+    tab.folders.push(...getRandomElementsFromArray<Folder>(folders))
+  }
+  await manager.save(tabs);
+  console.log("succsess add folder in tabs")
+
+  const dialogues = await manager.find(Dialogue);
+  const groups = await manager.find(Group);
+  const channels = await manager.find(Channel);
+
+  // save chats in folders
+  for (let folder of folders) {
+    folder.chats.push(...getRandomElementsFromArray<Dialogue>(dialogues));
+    folder.chats.push(...getRandomElementsFromArray<Group>(groups));
+    folder.chats.push(...getRandomElementsFromArray<Channel>(channels));
+  }
+  await manager.save(folders);
+  console.log("succsess save chats in folders")
+
+  // initialization branch
+  const chats = await manager.find(MainChat);
+  await initializationBranch(manager, 5, chats)
+  console.log("succsess initializationBranch")
+
+  // add message in dialogues
+  initializationMessage(manager, dialogues, messageDialog);
+  // add massage in groups
+  initializationMessage(manager, groups, messageGroupsAndChannels);
+  // add massage in channels
+  initializationMessage(manager, channels, messageGroupsAndChannels);
+  console.log("succsess add all massage")
+}
+
+async function initializationSelfProfile(manager: EntityManager) {
   const selfProfile = new SelfProfile('Денис', 'password123', '1234567890');
   selfProfile.email = 'john.doe@example.com';
   selfProfile.nickname = 'johndoe';
   selfProfile.description = 'A description about John Doe';
   selfProfile.linkToPhoto = 'data:image/jpeg;base64,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';
   selfProfile.timeLastEntry = new Date();
-  selfProfile.tabs = [];
-  selfProfile.userId = 0;
+  // create default tab and folder
+  const folder = new Folder('Main Folder');
+  const tab = new Tab('Main Tab');
+  tab.folders = [folder];
+  selfProfile.tabs = [tab];
 
-  const users = createUsers(numberOfUsersToCreate);
-  const dialogues = createDialogue(numberOfDialogueToCreate, selfProfile, users);
-  const groups = createGroup(numberOfGroupeToCreate, selfProfile, users);
-  const channels = createChannel(numberOfChannelToCreate, selfProfile, users);
-  const folders = createFolder(numberOfFolderToCreate);
-  const tabs = createTab(numberOfTabToCreate);
-
-  const allChatsTab = new Tab("Default");
-  const allChatsFolder = new Folder("AllChats");
-
-  allChatsTab.folders.push(allChatsFolder);
-  allChatsTab.folders.push(...folders);
-
-  //add all in main Folder
-  allChatsFolder.chats.push(...channels);
-  allChatsFolder.chats.push(...groups);
-  allChatsFolder.chats.push(...dialogues);
-
-  for (let folder of folders) {
-    folder.chats.push(...getRandomElementsFromArray<Dialogue>(dialogues));
-    folder.chats.push(...getRandomElementsFromArray<Group>(groups));
-    folder.chats.push(...getRandomElementsFromArray<Channel>(channels));
-  }
-  for (let tab of tabs) {
-    tab.folders.push(...getRandomElementsFromArray<Folder>(folders));
-  }
-
-  selfProfile.tabs.push(allChatsTab);
-  selfProfile.tabs.push(...tabs);
-
-  return selfProfile;
+  await manager.save(SelfProfile, selfProfile);
+  await manager.save(User, selfProfile);
 }
 
-function createUsers(count: number): User[] {
+async function initializationUsers(manager: EntityManager, count: number) {
   const users: User[] = [];
 
   for (let i = 1; i <= count; i++) {
-    const userName = `User ${i}`;
-    const user = new User(userName, 'nickname');
-    user.userId = idUsersToCreate++;
-    // Additional properties can be set if needed
+    const user = new User(`User ${i}`, 'nickname');
     user.numberPhone = `+123456789${i}`;
     user.nickname = `@Nickname${i}`;
     user.description = `Description for User${i}`;
     user.linkToPhoto = images[getRandomNumber(images.length)];
     users.push(user);
   }
-
-  return users;
+  await manager.insert(User, users);
 }
-//Create chats:
-function createDialogue(count: number, selfUser: SelfProfile, users: User[]): Dialogue[] {
-  const dialogues: Dialogue[] = [];
 
-  if (users.length < count) throw Error("users are less than the required number of dialogues");
+async function initializationTabs(manager: EntityManager, count: number) {
+  const tabs: Tab[] = [];
+
+  const selfProfile = await manager.findOneBy(SelfProfile, { userId: 1 });
+  if (selfProfile == null)
+    throw Error("Didn't save selfProfile");
+
+  for (let i = 1; i <= count; i++) {
+    const tab = new Tab(`Tab ${i}`);
+    tab.isDialogueMessageOn = Math.random() < 0.5;
+    tab.isGroupsMessageOn = Math.random() < 0.5;
+    tab.isChannelMessageOn = Math.random() < 0.5;
+    tab.selfProfile = selfProfile;
+    tabs.push(tab);
+  }
+  manager.insert(Tab, tabs);
+}
+
+async function initializationFoldersForAllTab(manager: EntityManager, count: number) {
+  const folders: Folder[] = [];
+  const tabs: Tab[] = await manager.find(Tab);
+
+  for (let i = 0; i < count; i++) {
+    const folder = new Folder(`Folder${i}`);
+    folders.push(folder);
+  }
+
+  for (const tab of tabs) {
+    tab.folders = [...folders];
+  }
+  await manager.save(tabs);
+
+}
+
+async function initializationDialogue(manager: EntityManager, count: number) {
+  const dialogues: Dialogue[] = [];
+  const folder = (await manager.find(Folder))[0];
+  const selfProfile = await manager.findOneBy(SelfProfile, { userId: 1 });
+  const users = await manager.find(User, { where: { userId: Not(1) } });
+
+  if (selfProfile == null || users.length < count)
+    throw Error("There is no  selfProfile and/or users");
 
   const shuffledUsers = [...users];
   shuffleArray(shuffledUsers);
 
   for (let i = 0, j = 0; i < count; i++, j++) {
     const user = shuffledUsers[j];
-
     const dialogue = new Dialogue();
 
     dialogue.linkToPhoto = user.linkToPhoto;
+    dialogue.users = [selfProfile, user];
+    //dialogue.branches = [new Branch(`Main branch in dialog with ${user.userId}`)];
+    dialogue.auditLog = [{ message: "New dialog has created", sendTime: new Date() }]
 
-    addMessages(dialogue, 100, dialogue.users, messageDialog);
-    if (Math.random() < 0.10) addBranch(getRandomNumber(5), dialogue); //branches
-    initializationLastWatchedMessageChat(dialogue);
-    initializationPinnedMessage(dialogue);
-    initializationPinnedMessageForAll(dialogue);
     dialogues.push(dialogue);
   }
 
-  return dialogues;
+  folder?.chats.push(...dialogues);
+  await manager.save(folder);
 }
-function createGroup(count: number, selfUser: SelfProfile, users: User[]): Group[] {
-  const groups: Group[] = [];
 
-  if (users.length < 1) throw Error("must be minimum 1 users");
+async function initializationGroup(manager: EntityManager, count: number) {
+  const groups: Group[] = [];
+  const folder = (await manager.find(Folder))[0];
+  const selfProfile = await manager.findOneBy(SelfProfile, { userId: 1 });
+  const users = await manager.find(User, { where: { userId: Not(1) } });
+
+  if (selfProfile == null || users.length < count)
+    throw Error("There is no  selfProfile and/or users");
 
   for (let i = 0; i < count; i++) {
-    const group = new Group("Group " + i);
-
+    const group = new Group(`Group${i}`);
     group.linkToPhoto = images[getRandomNumber(images.length)];
-
-    if (Math.random() < 0.4) {
-      group.title = "Admin Group" + i;
-    }
-    group.users.push(selfUser);
+    group.users = [selfProfile];
     group.users.push(...getRandomElementsFromArray<User>(users));
-    addMessages(group, 100, users, messageGroupsAndChannels);
+    //group.branches = [new Branch(`Main  branch in group${i}`)];
 
-    if (Math.random() < 0.1) addBranch(getRandomNumber(5), group);
-    initializationLastWatchedMessageChat(group);
-    initializationPinnedMessage(group);
-    initializationPinnedMessageForAll(group);
     groups.push(group);
   }
-  return groups;
-}
-function createChannel(count: number, selfUser: SelfProfile, users: User[]): Channel[] {
-  const channels: Channel[] = [];
 
-  if (users.length < 1) throw Error("must be minimum 1 users");
+  folder?.chats.push(...groups);
+  await manager.save(folder);
+}
+
+async function initializationChannel(manager: EntityManager, count: number) {
+  const channels: Channel[] = [];
+  const folder = (await manager.find(Folder))[0];
+  const selfProfile = await manager.findOneBy(SelfProfile, { userId: 1 });
+  const users = await manager.find(User, { where: { userId: Not(1) } });
+
+  if (selfProfile == null || users.length < count)
+    throw Error("There is no  selfProfile and/or users");
 
   for (let i = 0; i < count; i++) {
-    const channel = new Channel("Channel " + i);
-
+    const channel = new Channel(`Channel${i}`);
 
     if (Math.random() < 0.4) {
-      channel.title = "Admin Channel " + i;
+      channel.title = `Admin Channel${i}`;
+      channel.adminUserId = [selfProfile.userId];
     }
     channel.linkToPhoto = images[getRandomNumber(images.length)];
-    channel.users.push(selfUser);
-    addMessages(channel, 100, users, messageGroupsAndChannels);
+    channel.users = [selfProfile];
     channel.users.push(...getRandomElementsFromArray<User>(users));
+    //channel.branches = [new Branch(`Main branch in channel${i}`)];
 
-    if (Math.random() < 0.15) addBranch(getRandomNumber(5), channel);
-    initializationLastWatchedMessageChat(channel);
-    initializationPinnedMessage(channel);
-    initializationPinnedMessageForAll(channel);
     channels.push(channel);
   }
-  return channels;
-}
-function createFolder(count: number): Folder[] {
-  const folders: Folder[] = [];
 
-  for (let i = 0; i < count; i++) {
-    const folder = new Folder("Folder " + i);
-    folder.folderId = idFolderToCreate++;
-    folders.push(folder);
+  folder?.chats.push(...channels);
+  await manager.save(folder);
+}
+
+async function initializationBranch(manager: EntityManager, count: number, chats: MainChat[]) {
+  for (let chat of chats) {
+    if (Math.random() < 0.40) {
+      for (let i = 0; i < count; i++) {
+        const branch = new Branch(`Name branch${i}`);
+
+        if (chat.branches == undefined)
+          chat.branches = [];
+        chat.branches.push(branch);
+      }
+    }
   }
-  return folders;
+  await manager.save(chats);
 }
-function createTab(count: number): Tab[] {
-  const tabs: Tab[] = [];
 
-  for (let i = 0; i < count; i++) {
-    const tab = new Tab("Tab " + i);
-    tab.tabId = idTabToCreate++;
+async function initializationMessage(manager: EntityManager, chats: MainChat[], messages: string[]) {
+  for (const chat of chats) {
+    for (const branch of chat.branches) {
+      addMessages(branch, 100, chat.users, messages);
 
-    // Configure properties for each tab
-    tab.isDialogueMessageOn = Math.random() < 0.5;
-    tab.isGroupsMessageOn = Math.random() < 0.5;
-    tab.isChannelMessageOn = Math.random() < 0.5;
-    tabs.push(tab);
+      branch.pinnedMessage.push(...getRandomElementsFromArray<Message>(branch.messages));
+      branch.pinnedMessageForAll.push(...getRandomElementsFromArray<Message>(branch.messages));
+    }
   }
-  return tabs;
+  await manager.save(chats);
 }
-function addBranch(count: number, mainChat: MainChat) {
+
+function addMessages(chat: Chat, count: number, users: User[], texts: string[]) {
+  if (chat.messages == undefined) chat.messages = [];
+
+  if (users.length === 0) throw new Error("must be more than 1 users");
+
   for (let i = 0; i < count; i++) {
-    const branch = new Branch("Name branch " + i);
+    const message = new Message(users[getRandomNumber(users.length)], texts[getRandomNumber(texts.length)], EMessageType.text);
+    // Additional properties can be set if needed
+    //if (Math.random() < 0.15) message.messageResponseId = idMessageToCreate - 2; // Set response ID to the previous message ID
+    if (Math.random() < 0.35) message.isEdited = true; // Set isEdited 
 
-    addMessages(branch, 100, mainChat.users, messageGroupsAndChannels);
-    if (Math.random() < 0.3) branch.branches.push(new Branch("Interanl branch " + i));
-
-    branch.pinnedMessage.push(...getRandomElementsFromArray<Message>(branch.messages));
-    branch.pinnedMessageForAll.push(...getRandomElementsFromArray<Message>(branch.messages));
-
-    mainChat.branches.push(branch);
+    chat.messages.push(message);
   }
 }

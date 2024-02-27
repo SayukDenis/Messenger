@@ -28,7 +28,7 @@ export async function selfProfileOperations() {
     selfProfile.email = 'dinis_soska_777@gmai.com';
     selfProfile.linkToPhoto = 'file_path_to_file';
     selfProfile.timeLastEntry = new Date();
-    selfProfile.blockedChats = [chat1, chat2, chat3];
+    selfProfile.blockedChatsId = [chat1.id, chat2.id, chat3.id];
     selfProfile.tabs = [tab1, tab2, tab3];
 
 
@@ -76,6 +76,7 @@ export async function saveSelfProfile() {
 
     const selfProfile = new SelfProfile('selfProfile', 'nickname', 'hashPassword');
     selfProfile.email = 'dinis_soska_777@gmai.com';
+    selfProfile.numberPhone = '029880213'; 
     selfProfile.linkToPhoto = 'file_path_to_file';
     selfProfile.timeLastEntry = new Date();
     await manager.save(selfProfile);
