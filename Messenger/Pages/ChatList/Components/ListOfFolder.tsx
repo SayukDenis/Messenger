@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import { View, Dimensions, FlatList } from "react-native";
+import { View, Dimensions, FlatList, Platform } from "react-native";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
 import { connect, useSelector } from "react-redux";
 import SelfProfile from "../../../dao/Models/SelfProfile";
 import { booleanForLogging } from "../ChatList";
 import { footerstyles } from "../Styles/FooterStyle";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ListOfFolderProps {
   currentFolder: number;
@@ -53,7 +54,13 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
   );
 
   const ListFooterComponent = () => (
-    <View style={{ height: footerstyles.container.height }}></View>
+    <View
+      style={{
+        height:
+          footerstyles.container.height +
+          (Platform.OS === "ios" ? useSafeAreaInsets().bottom : 0),
+      }}
+    ></View>
   );
 
   const ItemSeparatorComponent = () => (
