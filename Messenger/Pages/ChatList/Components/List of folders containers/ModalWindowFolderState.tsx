@@ -1,11 +1,12 @@
 import React from "react";
-import { TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, Text, View, Platform } from "react-native";
 import { footerstyles } from "../../Styles/FooterStyle";
 import FolderModalWindow from "../Footer containers/FolderModalWindow";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { useSelector } from "react-redux";
 import BlurAll from "../../../SemiComponents/BlurAll";
 import CountOfUnreadMessageOnFolderComponent from "../Footer containers/CountOfUnreadMessageOnFolderComponent";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ModalWindowProps {
   isVisibleForModalFolder: boolean;
@@ -60,7 +61,8 @@ const ModalWindowFolderState: React.FC<ModalWindowProps> = ({
             flexDirection: "row",
             bottom:
               footerstyles.listOfFoldersButtons.marginBottom +
-              footerstyles.selectedFolder.height,
+              footerstyles.selectedFolder.height +
+              (Platform.OS === "ios" ? useSafeAreaInsets().bottom : 0),
             backgroundColor: "#CBB2FF",
             paddingHorizontal: footerstyles.folderContainer.paddingHorizontal,
             paddingVertical: footerstyles.folderContainer.paddingVertical,

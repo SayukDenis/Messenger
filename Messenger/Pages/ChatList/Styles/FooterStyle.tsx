@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../Constants/ConstantsForChatlist";
 
 export const footerstyles = StyleSheet.create({
@@ -45,6 +45,8 @@ export const footerstyles = StyleSheet.create({
     backgroundColor: "#5A0085",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    borderBottomLeftRadius: Platform.OS === "ios" ? 10 : 0,
+    borderBottomRightRadius: Platform.OS === "ios" ? 10 : 0,
   },
 
   modalWindowContainerStyle: {

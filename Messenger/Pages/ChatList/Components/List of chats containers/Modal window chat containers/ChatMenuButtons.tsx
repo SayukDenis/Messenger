@@ -44,7 +44,7 @@ const menuButtons = {
 
 const buttonActiveOpacity = 0.9;
 
-const ChatMenuButtonsContainers = [
+const ChatMenuButtonsContainers: React.JSX.Element[] = [
   <TouchableOpacity
     activeOpacity={buttonActiveOpacity}
     style={[

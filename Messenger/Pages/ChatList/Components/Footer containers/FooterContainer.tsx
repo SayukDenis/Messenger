@@ -1,11 +1,12 @@
 import React from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   screenHeight,
   screenWidth,
 } from "../../Constants/ConstantsForChatlist";
 import { footerstyles } from "../../Styles/FooterStyle";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface FooterContainerProps {
   isTouchableForHeader: boolean;
@@ -21,6 +22,10 @@ const FooterContainer: React.FC<FooterContainerProps> = ({
       style={[
         footerstyles.container,
         {
+          height:
+            footerstyles.container.height +
+            (Platform.OS === "ios" ? useSafeAreaInsets().bottom : 0),
+          paddingBottom: Platform.OS === "ios" ? useSafeAreaInsets().bottom : 0,
           zIndex: isTouchableForHeader ? 3 : 5,
         },
       ]}

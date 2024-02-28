@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import ChatWindowHeader from "./ChatWindowHeader";
@@ -10,27 +10,23 @@ import User from "../../../../../dao/Models/User";
 import DialogueMessages from "../../../../Chats/Dialogue/components/DialogueMessages";
 import { modalWindowChatStateStyle } from "../../../Styles/ModalWindowChatStateStyle";
 import BackGroundGradinetView from "../../../../SemiComponents/BackGroundGradientView";
+import getNameOfChat from "../../List of folders containers/Functions/GetNameOfChat";
 
 interface ChatWindowProps {}
-
-const user: SelfProfile = {
-  userId: 0,
-  name: "Denis",
-  numberPhone: "",
-  nickname: "Denis",
-  description: "",
-  linkToPhoto: "",
-  password: "asdoapwd",
-  email: "dopawdjpa",
-  timeLastEntry: new Date(),
-  tabs: new Array(),
-  schema: {} as any,
-};
 
 const ChatWindow = ({}: ChatWindowProps) => {
   const currentChat = useSelector((state: any) => {
     return state.chatListReducer.chatForModalWindowChatState.chat;
   });
+
+  const selfProfile: SelfProfile = useSelector((state: any) => {
+    const self: SelfProfile = state.selfProfileUser;
+    return self;
+  });
+  const nameOfChat = useMemo(
+    () => getNameOfChat(currentChat, selfProfile),
+    [currentChat]
+  );
 
   const chatWindowComponent = () => {
     switch (currentChat.constructor) {
@@ -39,7 +35,7 @@ const ChatWindow = ({}: ChatWindowProps) => {
           <>
             <ChatWindowHeader
               chatPicture={currentChat.linkToPhoto}
-              chatName={"Denis"}
+              chatName={nameOfChat}
               chatStatus={"Online recently"}
             />
             <View style={modalWindowChatStateStyle.chatWindowMessagesContainer}>
@@ -49,12 +45,12 @@ const ChatWindow = ({}: ChatWindowProps) => {
                 listOfMessages={currentChat.messages.reverse()}
                 isReply={false}
                 isEdit={false}
-                author={user as User}
+                author={selfProfile as User}
                 userMessageLastWatched={currentChat.lastWatchedMessage.find(
-                  (obj: any) => obj.user.userId !== user.userId
+                  (obj: any) => obj.user.userId !== selfProfile.userId
                 )}
                 authorMessageLastWatched={currentChat.lastWatchedMessage.find(
-                  (obj: any) => obj.user.userId === user.userId
+                  (obj: any) => obj.user.userId === selfProfile.userId
                 )}
                 selecting={false}
                 hasPinnedMessage={currentChat.pinnedMessage.length > 0}
@@ -66,29 +62,45 @@ const ChatWindow = ({}: ChatWindowProps) => {
         );
       case Group:
         return (
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "yellow",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text>THIS IS A GROUP</Text>
-          </View>
+          <>
+            <ChatWindowHeader
+              chatPicture={currentChat.linkToPhoto}
+              chatName={currentChat.title}
+              chatStatus={`${currentChat.users.length} members`}
+            />
+            <View style={modalWindowChatStateStyle.chatWindowMessagesContainer}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text>THIS IS A GROUP</Text>
+              </View>
+            </View>
+          </>
         );
       case Channel:
         return (
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "yellow",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text>THIS IS A CHANNEL</Text>
-          </View>
+          <>
+            <ChatWindowHeader
+              chatPicture={currentChat.linkToPhoto}
+              chatName={currentChat.title}
+              chatStatus={`${currentChat.users.length} subscribers`}
+            />
+            <View style={modalWindowChatStateStyle.chatWindowMessagesContainer}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text>THIS IS A CHANNEL</Text>
+              </View>
+            </View>
+          </>
         );
       default:
         return null;
