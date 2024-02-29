@@ -7,7 +7,7 @@ import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, S
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
-import { setScrollStateForPinnedMessage, setScrollStateTappedMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
+import { addCoordinationsOfMessage, setScrollStateForPinnedMessage, setScrollStateTappedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
 import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
@@ -16,7 +16,7 @@ interface DialogueMessagesReduxProps {
   dispatch?: Dispatch<any>;
 }
 
-interface pinnedMessageProps {
+export interface messageCoordsProps {
   message: number;
   coord: number;
   height: number;
@@ -31,8 +31,7 @@ interface DialogueMessagesState {
   callMessageMenu: boolean;
 }
 
-  let pinnedMessagesWithCoords:pinnedMessageProps[] = [];  
-  let messagesWithCoords:pinnedMessageProps[] = []; 
+  let pinnedMessagesWithCoords:messageCoordsProps[] = [];
 
 class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessagesReduxProps> {
   state:DialogueMessagesState = {
@@ -129,10 +128,10 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     pinnedMessagesWithCoords = [];
 
     pinnedMessages.map(m => {
-      const mes = messagesWithCoords.find(mes => mes.message === m.messageId);
+      const mes = this.props.messagesWithCoords.find(mes => mes.id === m.messageId);
       pinnedMessagesWithCoords.push({ 
         message: m.messageId!, 
-        coord: mes?.coord!,
+        coord: mes?.coords!,
         height: mes?.height!
       });
     })
@@ -146,13 +145,9 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   scrollToPinMessage = (scrollToPinnedMessage: boolean, idOfPinnedMessage: number) => {
     if(scrollToPinnedMessage && this.flatListRef.current) {
       const tappedMessage = pinnedMessagesWithCoords.find(m => m.message == idOfPinnedMessage);
-      let deletedMesOffset = 0;
-      for(let i = 0; i < this.props.deletedMessagesId.sort((m1, m2) => m1 - m2).length; i++) {
-        if(this.props.deletedMessagesId[i] < idOfPinnedMessage) deletedMesOffset += messagesWithCoords.find(m => m.message === this.props.deletedMessagesId[i])?.height!;
-        else break;
-      }
+      
       if(tappedMessage !== undefined)
-        this.flatListRef.current.scrollToOffset({ animated: true, offset: tappedMessage.coord - deletedMesOffset - tappedMessage.height });
+        this.flatListRef.current.scrollToOffset({ animated: true, offset: tappedMessage.coord - tappedMessage.height });
 
       if(this.props.dispatch) {
         this.props.dispatch(setScrollStateForPinnedMessage(false, -1));
@@ -162,14 +157,10 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   scrollToTappedMessage = (scrollToTappedMessage: boolean, idOfTappedMessage: number) => {
     if(scrollToTappedMessage && this.flatListRef.current) {
-      const tappedMessage = messagesWithCoords.find(m => m.message === idOfTappedMessage);
-      let deletedMesOffset = 0;
-      for(let i = 0; i < this.props.deletedMessagesId.sort((m1, m2) => m1 - m2).length; i++) {
-        if(this.props.deletedMessagesId[i] > idOfTappedMessage) deletedMesOffset += messagesWithCoords.find(m => m.message === this.props.deletedMessagesId[i])?.height!;
-        else break;
-      }
+      const tappedMessage = this.props.messagesWithCoords.find(m => m.id === idOfTappedMessage);
+
       if(tappedMessage !== undefined)
-        this.flatListRef.current.scrollToOffset({ animated: true, offset: tappedMessage.coord - deletedMesOffset - tappedMessage.height });
+        this.flatListRef.current.scrollToOffset({ animated: true, offset: tappedMessage.coords - tappedMessage.height });
 
       if(this.props.dispatch) {
         this.props.dispatch(setScrollStateTappedMessage(false, 0));
@@ -191,21 +182,12 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   setPinnedMessageHandler = (message:number, coord:number) => {
     //console.log('setPinnedMessageHandler', message, coord);
-    const mesId = messagesWithCoords.findIndex(m => m.message === message);
-    if(message === 0)
-      console.log(messagesWithCoords);
+    const { messagesWithCoords, dispatch } = this.props;
+    const mesId = messagesWithCoords?.findIndex(m => m.id === message);
+    if(mesId >= 0)
+      return;
 
-    if(mesId !== -1 && mesId > 0) {
-      messagesWithCoords[mesId].coord = coord + messagesWithCoords[mesId-1].coord;
-      messagesWithCoords[mesId].height = coord;
-    } else if(mesId !== -1) {
-      messagesWithCoords[mesId].coord = coord;
-      messagesWithCoords[mesId].height = coord;
-    } else if(messagesWithCoords.length >= 1) {
-      messagesWithCoords.push({ message, coord: coord + messagesWithCoords[messagesWithCoords.length-1].coord, height: coord });
-    } else {
-      messagesWithCoords.push({ message, coord, height: coord });
-    }
+    dispatch!(addCoordinationsOfMessage(message, coord));
   }
 
   flatListRef = React.createRef<any>();
@@ -256,35 +238,38 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   }
 
   messageMenuHandler = async (coord: Layout, pressed: boolean) => {
-    const mesCoords = messagesWithCoords.find(m => m.message === coord.message?.messageId);
+    const mesCoords = this.props.messagesWithCoords.find(m => m.id === coord.message?.messageId);
 
     const HEIGHT_OF_HEADER = heightOfHeader;
     const HEIGHT_OF_FLATLIST = height - SOFT_MENU_BAR_HEIGHT;
     const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
     const isUser = coord.message?.author.userId === this.props.author.userId;
 
-    if(pressed && height*0.94 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) && this.flatListRef.current._listRef._scrollMetrics.offset < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) - height*0.06 ) {
+    // Виправити перевірку в цьому if'і
+    if(pressed && HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) && mesCoords?.coords! - mesCoords?.height! + height*0.08 < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
       const scrollOffset = this.flatListRef.current._listRef._scrollMetrics.offset;
-      
+
       Animated.timing(this.state.keyboardHeight, {
-        toValue: -(MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height! + scrollOffset + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT))),
-        duration: 200,
+        toValue: -(MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) - (mesCoords?.coords! - mesCoords?.height! + height*0.08)),
+        duration: scrollOffset <= 39 ? 200 : 100,
         useNativeDriver: false
       }).start();
 
       this.flatListRef.current.scrollToOffset({ offset: 0, animated: true });
+
       await new Promise(resolve => setTimeout(resolve, 200));
+      
       console.log('MessageMenu does not fit and FlatList cannot be scrolled');
-      coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (height - height*0.06 - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
-      coord.pageY = (height - height*0.06) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
-    } else if(pressed && height*0.94 - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
+      coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
+      coord.pageY = HEIGHT_OF_FLATLIST + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+    } else if(pressed && HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
       this.flatListRef.current.scrollToOffset({ 
-        offset: mesCoords?.coord! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
+        offset: mesCoords?.coords! - mesCoords?.height! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
         animated: true,
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-      console.log('MessageMenu does not fit and FlatList can be scrolled', Platform.OS, mesCoords?.coord!, mesCoords?.height!);
+      console.log('MessageMenu does not fit and FlatList can be scrolled', Platform.OS, mesCoords?.coords!, mesCoords?.height!);
       coord.componentPageY = HEIGHT_OF_FLATLIST - mesCoords?.height! - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
       coord.pageY = HEIGHT_OF_FLATLIST - MESSAGE_PADDING_VERTICAL + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(pressed && coord.componentPageY < HEIGHT_OF_HEADER) {
@@ -364,6 +349,7 @@ const mapStateToProps = (state:any) => ({
   idOfPinnedMessage: state.ChatReducer.scrollToPinnedMessage.id,
   scrollToTappedMessage: state.ChatReducer.scrollToTappedMessage.scroll,
   idOfTappedMessage: state.ChatReducer.scrollToTappedMessage.id,
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
 export default connect(mapStateToProps)(DialogueMessages);

@@ -15,7 +15,8 @@ import DialogueMessages from './components/DialogueMessages';
 import Header from '../SemiComponents/Header';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
-import { resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage, updateCoordinationsOfMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { SOFT_MENU_BAR_HEIGHT, height, width } from '../SemiComponents/ChatConstants';
 
 let coord: Layout;
 let messageIdForReplyAndEdit: number;
@@ -137,6 +138,7 @@ const Dialogue = ({ listOfId, navigation, route }:DialogueProps) => {
     }
     deletedMessagesId.push(message.messageId!);
     setListOfMessages([...listOfMessages.filter(m => m.messageId !== messageID)]);
+    dispatch(updateCoordinationsOfMessage(messageID, 0));
     setDeleting(!deleting);
   }
 
@@ -190,7 +192,10 @@ const Dialogue = ({ listOfId, navigation, route }:DialogueProps) => {
     setPinnedMessage({} as MessageProps);
   }
 
-  const deleteAllButtonHandler = () => setListOfMessages([]);
+  const deleteAllButtonHandler = () => {
+    setListOfMessages([]);
+    dispatch(removeCoordinationsOfAllMessages());
+  }
 
   const deleteSelectedMessages = () => {
     listOfId.sort((a, b) => b - a);
@@ -204,6 +209,7 @@ const Dialogue = ({ listOfId, navigation, route }:DialogueProps) => {
     }
     setListOfMessages([...listOfMessages]);
     setSelecting(false);
+    dispatch(removeCoordinationsOfSelectedMessages(listOfId));
     dispatch(resetSelectedMessage());
   }
 
