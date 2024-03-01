@@ -84,43 +84,71 @@ const setCoordinationsOfMessage = {
 const setCoordinationsOfMessageReducer = (state = setCoordinationsOfMessage, action:any) => {
   switch(action.type) {
     case 'ADD_COORDINATIONS_OF_MESSAGE':
-      return { ...state, messagesWithCoords: [...state.messagesWithCoords, { 
-        id: action.id, 
-        coords: action.height + (state.messagesWithCoords.length > 0 ? state.messagesWithCoords[state.messagesWithCoords.length - 1].coords : 0),
-        height: action.height
-      }] };
-    case 'UPDATE_COORDINATIONS_OF_MESSAGE':
-      if(state.messagesWithCoords[action.id].height === action.height) return state;
+      const addToMessagesWithCoords = state.messagesWithCoords;
 
-      console.log('messagesWithCoords', state.messagesWithCoords);
-      const updatedMessagesWithCoords = state.messagesWithCoords;
-      const updateIdx = updatedMessagesWithCoords.findIndex(m => m.id === action.id);
-
-      updatedMessagesWithCoords[updateIdx].coords -= updatedMessagesWithCoords[updateIdx].height;
-      updatedMessagesWithCoords[updateIdx].height = action.height;
-      
-      for(let i = updateIdx + 1; i < updatedMessagesWithCoords.length; i++) {
-        if(!updatedMessagesWithCoords[i - 1])
-          console.log(updatedMessagesWithCoords[i - 1], i, updatedMessagesWithCoords.length, updatedMessagesWithCoords);
-        updatedMessagesWithCoords[i].coords = updatedMessagesWithCoords[i].height + updatedMessagesWithCoords[i - 1].coords;
+      if(addToMessagesWithCoords.length > 0 && action.id < addToMessagesWithCoords[addToMessagesWithCoords.length - 1].id) {
+        addToMessagesWithCoords.unshift({
+          id: action.id, 
+          coords: 0,
+          height: action.height
+        });
+      } else {
+        addToMessagesWithCoords.push({
+          id: action.id, 
+          coords: 0,
+          height: action.height
+        });
       }
-      console.log('updatedMessagesWithCoords', updatedMessagesWithCoords);
+
+      for(let i = addToMessagesWithCoords.length - 2; i >= 0; i--) {
+        addToMessagesWithCoords[i].coords = addToMessagesWithCoords[i + 1].height + addToMessagesWithCoords[i + 1].coords;
+      }
+
+      return { ...state, messagesWithCoords: [...addToMessagesWithCoords] };
+    case 'UPDATE_COORDINATIONS_OF_MESSAGE':
+      const updatedMessagesWithCoords = state.messagesWithCoords;
+
+      updatedMessagesWithCoords[action.id].height = action.height;
+
+      for(let i = action.id - 1; i >= 0; i--) {
+        updatedMessagesWithCoords[i].coords = updatedMessagesWithCoords[i + 1].height + updatedMessagesWithCoords[i + 1].coords;
+      }
+
       return { ...state, messagesWithCoords: [...updatedMessagesWithCoords] };
     case 'REMOVE_COORDINATIONS_OF_MESSAGE':
-      return { ...state, messagesWithCoords: state.messagesWithCoords.filter(m => m.id !== action.id) };
+      const removeFromMessagesWithCoords = state.messagesWithCoords;
+      const n1 = removeFromMessagesWithCoords.length;
+
+      if(removeFromMessagesWithCoords[n1 - 1].id === action.id) {
+        removeFromMessagesWithCoords[n1 - 1].height = 0;
+      }
+
+      for(let i = n1 - 2; i >= 0; i--) {
+        if(removeFromMessagesWithCoords[i].id === action.id) {
+          removeFromMessagesWithCoords[i].height = 0;
+        }
+        removeFromMessagesWithCoords[i].coords = removeFromMessagesWithCoords[i + 1].height + removeFromMessagesWithCoords[i + 1].coords;
+      }
+
+      return { ...state, messagesWithCoords: [...removeFromMessagesWithCoords] };
     case 'REMOVE_COORDINATIONS_OF_SELECTED_MESSAGES':
       const newMessagesWithCoords = state.messagesWithCoords;
       let idx = 0;
-      for(let i = 0; i < state.messagesWithCoords.length; i++) {
+      const n2 = newMessagesWithCoords.length;
+
+      if(newMessagesWithCoords[n2 - 1].id === action.listOfId[idx]) {
+        newMessagesWithCoords[n2 - 1].height = 0;
+        idx++;
+      }
+
+      for(let i = newMessagesWithCoords.length - 2; i >= 0; i--) {
         if(newMessagesWithCoords[i].id === action.listOfId[idx]) {
           newMessagesWithCoords[i].height = 0;
           idx++;
         }
-        if(i > 0)
-          newMessagesWithCoords[i].coords = newMessagesWithCoords[i].height + newMessagesWithCoords[i - 1].coords;
-        else
-          newMessagesWithCoords[i].coords = 0;
+        newMessagesWithCoords[i].coords = newMessagesWithCoords[i + 1].height + newMessagesWithCoords[i + 1].coords;
       }
+
       return { ...state, messagesWithCoords: [...newMessagesWithCoords] };
     case 'REMOVE_COORDINATIONS_OF_ALL_MESSAGES':
       return { ...state, messagesWithCoords: [] };

@@ -138,7 +138,7 @@ const Dialogue = ({ listOfId, navigation, route }:DialogueProps) => {
     }
     deletedMessagesId.push(message.messageId!);
     setListOfMessages([...listOfMessages.filter(m => m.messageId !== messageID)]);
-    dispatch(updateCoordinationsOfMessage(messageID, 0));
+    dispatch(removeCoordinationsOfMessage(messageID));
     setDeleting(!deleting);
   }
 

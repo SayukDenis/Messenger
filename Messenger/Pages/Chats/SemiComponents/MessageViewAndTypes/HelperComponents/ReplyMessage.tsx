@@ -13,6 +13,7 @@ interface ReplyMessageProps {
   selecting: boolean;
   selected: boolean;
   handleLinkTo: (messageID: number) => void;
+  onLayout: (event:any) => void;
 }
 
 class ReplyMessage extends PureComponent<ReplyMessageProps> {
@@ -20,7 +21,7 @@ class ReplyMessage extends PureComponent<ReplyMessageProps> {
   render(): React.ReactNode {
     return (
       <View 
-        onLayout={(event) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
+        onLayout={(event) => this.props.onLayout(event)}
         style={[styles.replyMessageContainer, !this.isUser&&{ alignSelf: 'flex-start' }]}
       >
         { !this.isUser&&<LineSeparator height={'175%'} color='blue' /> }

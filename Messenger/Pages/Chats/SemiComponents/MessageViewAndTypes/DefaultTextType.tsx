@@ -255,7 +255,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
         horizontal={true}
         alwaysBounceHorizontal={false}
         pagingEnabled
-        scrollEnabled={!pinnedMessageScreen}
+        scrollEnabled={!pinnedMessageScreen&&!selecting}
         //contentOffset={pinnedMessageScreen?{ x: 5, y: 0 }:{ x: 0, y: 0 }}
         bounces={false}
         overScrollMode={'never'}
@@ -284,6 +284,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
             this.pressCoordinations = { locationX_In: locationX, locationY_In: locationY };
           }}
           onPressOut={async (event) => {
+            console.log('DefaultTextType:', this.props.id, this.props.message.messageId);
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
             const { dispatch, setMessageMenuVisible, id } = this.props;

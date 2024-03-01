@@ -242,7 +242,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   getSelectOffsetHorizontal = () => {
     const { widthOfMessage, widthOfReply } = this.state;
-    return widthOfMessage > widthOfReply ? this.state.sizeOfMessageContainer[0] - (SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL) - widthOfMessage : this.state.sizeOfMessageContainer[0] - (SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL) - widthOfReply;
+    return -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
   getSelectOffsetVertical = () => {
@@ -293,6 +293,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               selecting={selecting}
               selected={selected}
               handleLinkTo={this.handleLinkTo}
+              onLayout={(event:any) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
             />
             <TouchableOpacity 
               activeOpacity={1} 
