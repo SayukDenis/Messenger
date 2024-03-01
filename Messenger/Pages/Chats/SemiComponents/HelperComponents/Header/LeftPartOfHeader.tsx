@@ -4,15 +4,20 @@ import HeaderBackButton from '../../SVG/HeaderBackButton';
 import { screenWidth } from '../../../../ChatList/Constants/ConstantsForChatlist';
 
 interface LeftPartOfHeaderProps { 
-  counterOfSelectedMessages: number, 
   selecting: boolean, 
   navigation: any 
 }
 
-const LeftPartOfHeader = ({ counterOfSelectedMessages, selecting, navigation }:LeftPartOfHeaderProps ) => {
+const LeftPartOfHeader = ({ selecting, navigation }:LeftPartOfHeaderProps ) => {
   return (
     selecting?
-      <Text>{counterOfSelectedMessages}</Text> :
+      <TouchableOpacity
+        activeOpacity={1}
+        style={{ padding: 10 }}
+        onPress={()=>{}}
+      >
+        <Text>Delete all</Text>
+      </TouchableOpacity> :
       <TouchableOpacity 
         style={{ width: screenWidth * 0.08  }} 
         hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}

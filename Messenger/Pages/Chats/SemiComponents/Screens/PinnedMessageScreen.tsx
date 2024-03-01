@@ -111,8 +111,6 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   handleMessagePress = async (coordinations:Layout) => {
 
     const HEIGHT_OF_HEADER = heightOfHeader;
-    const HEIGHT_OF_FLATLIST = height * 0.94;
-    const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
     const MESSAGE_MENU_HEIGHT = MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE;
 
     const mesCoords = coordsY.find(m => m.id === (coordinations.ID || coordinations.message?.messageId!));
@@ -134,16 +132,17 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
 
       coordinations.componentPageY += (toValue > 0 ? 0 : toValue ); 
       coordinations.pageY = height - SOFT_MENU_BAR_HEIGHT; 
-    } else if(height - SOFT_MENU_BAR_HEIGHT - coordinations.componentPageY - coordinations. height < MESSAGE_MENU_HEIGHT) {
+    } else if((height - SOFT_MENU_BAR_HEIGHT) - coordinations.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT) {
+      const scrollOffset = MESSAGE_MENU_HEIGHT - ((height - SOFT_MENU_BAR_HEIGHT) - coordinations.componentPageY - mesCoords?.height!);
       this.flatListRef.current.scrollToOffset({ 
-        offset: coordinations.componentPageY - mesCoords?.height! - MESSAGE_MENU_HEIGHT,
+        offset: this.flatListRef.current._listRef._scrollMetrics.offset - scrollOffset, 
         animated: true,
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-      
-      coord.componentPageY = height - mesCoords?.height! - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT;
-      coord.pageY = height - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL;
+
+      coordinations.componentPageY = (height - SOFT_MENU_BAR_HEIGHT) - MESSAGE_MENU_HEIGHT - mesCoords?.height!; 
+      coordinations.pageY = (height - SOFT_MENU_BAR_HEIGHT);
     } else if(coordinations.componentPageY < HEIGHT_OF_HEADER) {
       this.flatListRef.current.scrollToOffset({ 
         offset: this.flatListRef.current._listRef._scrollMetrics.offset + (HEIGHT_OF_HEADER - coordinations.componentPageY), 

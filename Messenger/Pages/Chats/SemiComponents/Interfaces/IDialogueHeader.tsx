@@ -8,21 +8,24 @@ import * as ChannelModel from '../../../../dao/Models/Chats/Channel';
 
 export interface DialogueHeaderProps {
   counterOfSelectedMessages: number;
-  navigation: any;
   picture: string | undefined;
   activityTime: string | Date;
   pinnedMessage: MessageProps;
   selecting: boolean;
   cancelSelection: () => void;
-  author: User;
-  users: User[];
-  listOfMessages: MessageProps[];
-  listOfPinnedMessages: MessageProps[];
-  messageID: number;
-  unpinAllMessagesHandler: () => void;
-  userMessageLastWatched: ILastWatchedMessage;
-  onCopyPress: () => void;
-  onUnpinPress: (message: MessageProps) => void;
-  onDeletePress: (message: MessageProps) => void;
   chatType: DialogueModel.default | GroupModel.default | ChannelModel.default;
+  propsForPinnedMessageScreen: {
+    navigation: any;
+    listOfPinnedMessages: MessageProps[];
+    listOfMessages: MessageProps[];
+    author: User;
+    messageID: number;
+    unpinAllMessagesHandler: () => void;
+    userMessageLastWatched: ILastWatchedMessage;
+    onCopyPress: () => void;
+    onUnpinPress: (message: MessageProps) => void;
+    onDeletePress: (message: MessageProps) => void;
+    users: User[];
+  };
+  deleteAllButtonHandler: () => void;
 }

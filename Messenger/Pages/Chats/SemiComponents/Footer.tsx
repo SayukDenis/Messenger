@@ -9,9 +9,10 @@ import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
 import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
-import { SOFT_MENU_BAR_HEIGHT, height } from './ChatConstants';
+import { SOFT_MENU_BAR_HEIGHT, height, width } from './ChatConstants';
+import CenterPartOfFooter from './HelperComponents/Footer/CenterPartOfFooter';
 
-const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
+const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp, selecting, deleteSelectedMessages }:DialogueFooterProps) => {
 
   const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
   const [keyboardActive, setKeyboardActive] = useState(false);
@@ -29,42 +30,6 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
       if(isReply) textInput.current?.focus();
     }
   }, [editMessage, isEdit, isReply]);
-
-  // In the future make animation using 'react-native-keyboard-controller' library
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      (event: KeyboardEvent) => {
-        Animated.timing(keyboardHeight, {
-          toValue: -event.endCoordinates.height,
-          duration: 200,
-          useNativeDriver: false,
-        }).start();
-        setKeyboardActive(true);
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        Animated.timing(keyboardHeight, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: false,
-        }).start();
-        setKeyboardActive(false);
-        if(textInput.current) {
-          textInput.current.blur();
-        }
-      }
-    );
-
-    // Clean up the event listeners when the component is unmounted
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, [keyboardHeight]);
 
   const durationOfAnimation: number = 200;
   const easing: EasingFunction = Easing.linear;
@@ -103,7 +68,7 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
   const textInput = useRef<TextInput>(null);
 
   return(
-    <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
+    <Animated.View>
       <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
       <ReplyAndEditMenu 
         isReply={isReply} 
@@ -122,21 +87,23 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
             style={styles.gradient}
           />
           <View style={styles.footerContainer}>
-            <View style={styles.footer}>
-              <LeftPartOfFooter />
-              <TextInput 
-                ref={textInput}
-                value={text} 
-                onChangeText={setText} 
-                placeholderTextColor={'rgb(137, 130, 130)'} 
-                style={styles.messageInput} 
-                placeholder='Льоша блядюга)' 
-                onSubmitEditing={sendMessageHandler} 
+            <View style={[styles.footer, selecting&&{ justifyContent: 'space-between', paddingHorizontal: width*0.075, alignItems: 'flex-start' }]}>
+              <LeftPartOfFooter 
+                selecting={selecting}
+                deleteSelectedMessagesHandler={deleteSelectedMessages}
+              />
+              <CenterPartOfFooter 
+                textInput={textInput}
+                text={text}
+                setText={setText}
+                sendMessageHandler={sendMessageHandler}
+                selecting={selecting}
               />
               <RightPartOfFooter 
                 sendMessage={keyboardActive} 
                 sendMessageHandler={sendMessageHandler} 
                 pressGalleryButtonHandler={()=>{}} 
+                selecting={selecting}
               />
             </View>
           </View>

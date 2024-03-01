@@ -7,7 +7,7 @@ import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
 import * as Clipboard from 'expo-clipboard';
 import MessageMenuSelectButton from "./SVG/MessageMenuSelectButton";
-import MessageMenuDeleteButton from "./SVG/MessageMenuDeleteButton";
+import DeleteButton from "./SVG/DeleteButton";
 import MessageMenuForwardButton from "./SVG/MessageMenuForwardButton";
 import PinButton from "./SVG/PinButton";
 import MessageMenuCopyButton from "./SVG/MessageMenuCopyButton";
@@ -69,7 +69,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       text: 'Delete',
       color: 'red',
       action: onDeletePress,
-      svg: <MessageMenuDeleteButton />
+      svg: <DeleteButton />
     },
     {
       text: 'Select',
@@ -105,7 +105,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       text: 'Delete',
       color: 'red',
       action: onDeletePress,
-      svg: <MessageMenuDeleteButton />
+      svg: <DeleteButton />
     },
   ]
 
@@ -330,7 +330,7 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       }}
     >
       <View style={{ top: coord.componentPageY, height: coord.height }}>
-        {(coord.message?.messageResponseId&&messages.findIndex(m => m.messageId === coord.message?.messageResponseId)>=0)?
+        {(coord.message?.messageResponseId&&messages.find(m => m.messageId === coord.message?.messageResponseId)?.content)?
         <ReplyTextDummyMessage 
           message={coord.message} 
           messages={messages} 

@@ -4,11 +4,18 @@ import { TouchableOpacity } from 'react-native';
 import FooterVideoButton from '../../SVG/FooterVideoButton';
 import FooterMicrophoneButton from '../../SVG/FooterMicrophoneButton';
 import { styles } from './Styles/LeftPartOfFooter';
+import DeleteButton from '../../SVG/DeleteButton';
+import { height } from '../../ChatConstants';
 
-const LeftPartOfFooter = () => {
+interface LeftPartOfFooterProps { 
+  selecting: boolean; 
+  deleteSelectedMessagesHandler: () => void 
+}
+
+const LeftPartOfFooter = ({ selecting, deleteSelectedMessagesHandler }:LeftPartOfFooterProps) => {
   const [video, setVideo] = useState(true);
 
-  return (
+  return (!selecting ?
     <TouchableOpacity 
       activeOpacity={1}
       onPress={() => setVideo(!video)}
@@ -16,6 +23,12 @@ const LeftPartOfFooter = () => {
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
     >
       {video?<FooterVideoButton/>:<FooterMicrophoneButton/>} 
+    </TouchableOpacity> :
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={deleteSelectedMessagesHandler}
+    >
+      <DeleteButton size={height*0.035} />
     </TouchableOpacity>
   );
 }

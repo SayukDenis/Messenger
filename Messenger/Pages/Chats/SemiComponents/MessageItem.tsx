@@ -6,9 +6,11 @@ import { MessageItemProps } from './Interfaces/IMessageItem';
 import DefaultTextTypeUsingClass from './MessageViewAndTypes/DefaultTextType';
 import ReplyTextTypeUsingClass from './MessageViewAndTypes/ReplyTextType';
 
-const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen, listOfPinnedMessages, navigation, users }:MessageItemProps) => {
+const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen, listOfPinnedMessages, navigation, users }:MessageItemProps) => {  
   const messageViewHandle = ({message}:messageViewHandleProps) => {
-    if(message.messageType == EMessageType.text && message.messageResponseId && listOfMessages.findIndex(m => m.messageId === message.messageResponseId) >= 0) {
+    if(!message.content) return null;
+
+    if(message.messageType == EMessageType.text && message.messageResponseId && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && m.content) >= 0) {
       return <ReplyTextTypeUsingClass
         navigation={navigation}
         key={message.messageId} 
@@ -57,6 +59,8 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
           }
           if(typeof pinnedMessageHandler === 'function')
             pinnedMessageHandler(item.messageId!, height);
+
+          console.log('id', item.messageId)
         }}
       >
         {messageViewHandle({ message: item })}

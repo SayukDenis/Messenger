@@ -7,7 +7,7 @@ import React from 'react';
 import DeleteMessageModal from '../SemiComponents/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
@@ -15,11 +15,13 @@ import DialogueMessages from './components/DialogueMessages';
 import Header from '../SemiComponents/Header';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
+import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage, updateCoordinationsOfMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { SOFT_MENU_BAR_HEIGHT, height, width } from '../SemiComponents/ChatConstants';
 
-let coord:Layout;
-let messageIdForReplyAndEdit:number;
-let msgs:MessageProps[];
-let deletedMessagesId:number[] = [];
+let coord: Layout;
+let messageIdForReplyAndEdit: number;
+let msgs: MessageProps[];
+let deletedMessagesId: number[] = [];
 
 // const user:SelfProfile = useSelector((state: any) => state.selfProfileUser);
 
@@ -28,7 +30,15 @@ let userMessageLastWatched:ILastWatchedMessage | undefined;
 let dialogue:DialogueModel.default;
 let messageMenuCallback: (() => void) | undefined;
 
-const Dialogue = ({ navigation, route }:any) => {
+interface DialogueProps {
+  listOfId: number[];
+  navigation: any;
+  route: any;
+}
+
+const Dialogue = ({ listOfId, navigation, route }:DialogueProps) => {
+
+  const dispatch = useDispatch();
   
   dialogue = route.params.chat as DialogueModel.default;
   const author = dialogue.users[0];
@@ -128,6 +138,7 @@ const Dialogue = ({ navigation, route }:any) => {
     }
     deletedMessagesId.push(message.messageId!);
     setListOfMessages([...listOfMessages.filter(m => m.messageId !== messageID)]);
+    dispatch(removeCoordinationsOfMessage(messageID));
     setDeleting(!deleting);
   }
 
@@ -181,7 +192,28 @@ const Dialogue = ({ navigation, route }:any) => {
     setPinnedMessage({} as MessageProps);
   }
 
-  const mes = msgs?msgs.find(m => m.messageId==messageID):listOfMessages.find(m => m.messageId==messageID);
+  const deleteAllButtonHandler = () => {
+    setListOfMessages([]);
+    dispatch(removeCoordinationsOfAllMessages());
+  }
+
+  const deleteSelectedMessages = () => {
+    listOfId.sort((a, b) => b - a);
+    console.log(listOfId);
+    let idx = 0;
+    for(let i = 0; i < listOfMessages.length; i++) {
+      if(listOfMessages[i].messageId === listOfId[idx]) {
+        listOfMessages[i] = { messageId: listOfMessages[i].messageId } as MessageProps;
+        idx++;
+      }
+    }
+    setListOfMessages([...listOfMessages]);
+    setSelecting(false);
+    dispatch(removeCoordinationsOfSelectedMessages(listOfId));
+    dispatch(resetSelectedMessage());
+  }
+
+  const mes = msgs?msgs.find(m => m.messageId === messageID && m.content):listOfMessages.find(m => m.messageId === messageID && m.content);
   return  (
       <View style={styles.dialogueContainer}>
         <BackGroundGradinetView>
@@ -202,23 +234,26 @@ const Dialogue = ({ navigation, route }:any) => {
             pinnedMessageScreen={false}
           />
           <Header 
-            navigation={navigation} 
             chatType={dialogue}
             picture={dialogue.linkToPhoto}
-            author={author}
-            users={users}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage != undefined ? pinnedMessage : {} as MessageProps}
-            listOfPinnedMessages={listOfPinnedMessages}
-            listOfMessages={listOfMessages}
             selecting={selecting}
             cancelSelection={setSelectingHandler}
-            messageID={messageID}
-            unpinAllMessagesHandler={unpinAllMessagesHandler}
-            userMessageLastWatched={userMessageLastWatched!}
-            onCopyPress={setCopyHandler}
-            onUnpinPress={pinMessageHandler}
-            onDeletePress={onPinnedMessageScreenDeletePress}
+            propsForPinnedMessageScreen={{
+              navigation,
+              listOfPinnedMessages,
+              listOfMessages,
+              author,
+              messageID,
+              unpinAllMessagesHandler,
+              userMessageLastWatched,
+              onCopyPress: setCopyHandler,
+              onUnpinPress: pinMessageHandler,
+              onDeletePress,
+              users
+            }}
+            deleteAllButtonHandler={deleteAllButtonHandler}
           />
           <DialogueMessages 
             navigation={navigation}
@@ -249,6 +284,8 @@ const Dialogue = ({ navigation, route }:any) => {
             onSendMessageOrCancelReplyAndEdit={sendMessageOrCancelReplyAndEditHandler} 
             copyMessagePopUp={copy}
             endCopyMessagePopUp={setCopyHandler}
+            selecting={selecting}
+            deleteSelectedMessages={deleteSelectedMessages}
           />
           <DeleteMessageModal 
             deleting={deleting} 
@@ -262,4 +299,8 @@ const Dialogue = ({ navigation, route }:any) => {
   );
 };
 
-export default connect(null)(Dialogue);
+const mapStateToProps = (state:any) => ({
+  listOfId: state.ChatReducer.selectedMessageHandler.listOfId,
+});
+
+export default connect(mapStateToProps)(Dialogue);
