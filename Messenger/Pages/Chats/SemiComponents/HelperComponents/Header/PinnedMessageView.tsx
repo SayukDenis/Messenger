@@ -1,6 +1,5 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import { screenHeight, screenWidth } from '../../../../ChatList/Constants/ConstantsForChatlist';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DEFAULT_CHARS_PER_LINE, FONT_SCALE } from '../../ChatConstants';
 import DialogueMessagesPinnedMessageIcon from '../../SVG/DialogueMessagesPinnedMessageIcon';

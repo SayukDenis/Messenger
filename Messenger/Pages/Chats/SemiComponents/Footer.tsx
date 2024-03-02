@@ -1,4 +1,4 @@
-import { View, TextInput, Animated, Keyboard, KeyboardEvent,  EasingFunction, Easing } from 'react-native';
+import { View, TextInput, Animated, EasingFunction, Easing } from 'react-native';
 import React, { useState, memo, useEffect, useRef } from 'react';
 import styles from './Styles/Footer';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
@@ -14,7 +14,6 @@ import CenterPartOfFooter from './HelperComponents/Footer/CenterPartOfFooter';
 
 const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp, selecting, deleteSelectedMessages }:DialogueFooterProps) => {
 
-  const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
   const [keyboardActive, setKeyboardActive] = useState(false);
   const [copyPopUpTranslate, setCopyPopUpTranslate] = useState(new Animated.Value(0));
 

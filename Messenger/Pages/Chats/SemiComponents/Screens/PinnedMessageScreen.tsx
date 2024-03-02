@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, FlatList, Animated } from 'react-native';
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import HeaderBackButton from '../SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_PADDING_VERTICAL, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, height, width } from '../ChatConstants';
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, height, width } from '../ChatConstants';
 import MessageItem from '../MessageItem';
 import User from '../../../../dao/Models/User';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';

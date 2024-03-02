@@ -15,7 +15,7 @@ import MessageMenuEditButton from "./SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "./SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, height, width } from "./ChatConstants";
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE } from "./ChatConstants";
 
 
 let size:{ width:number, height:number } = { width: 0, height: 0 };
@@ -372,4 +372,8 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
   );
 })
 
-export default connect(null)(MessageMenu);
+const mapStateToProps = (state:any) => ({
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords
+});
+
+export default connect(mapStateToProps)(MessageMenu);

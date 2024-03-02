@@ -7,12 +7,12 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage, setScrollStateTappedMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON } from '../ChatConstants';
+import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
@@ -23,7 +23,14 @@ import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 
-let size:any[] = [];
+interface sizeProps {
+  ID: number;
+  layout: {
+    height: number;
+    width: number;
+  }
+}
+let size: sizeProps[] = [];
 
 class ReplyTextType extends Component<ReplyTextTypeProps> {
   state: ReplyTextTypeState = {
@@ -134,7 +141,15 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   onLayout = (event: any) => {
     const { width, height } = event.nativeEvent.layout;
-    size = [...size, { ID: this.props.id, layout: { width, height } }];
+    const idx = size.findIndex(m => m.ID === this.props.id);
+    if(idx >= 0) {
+      if(size[idx].layout.height !== height || size[idx].layout.width !== width) {
+        size[idx].layout.height = height;
+        size[idx].layout.width = width;
+      }
+    } else {
+      size = [...size, { ID: this.props.id, layout: { width, height } }];
+    }
     this.setState({ widthOfMessage: width });
   };
 
@@ -176,8 +191,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       componentPageY: componentPage.Y,
       pageX: pageX,
       pageY: pageY,
-      width: component.layout.width,
-      height: component.layout.height,
+      width: component!.layout.width,
+      height: component!.layout.height,
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
       pinned: this.props.listOfPinnedMessages.findIndex(m => m === this.props.message.messageId) >= 0,

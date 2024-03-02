@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import SelectButtonMarkIcon from '../../SVG/SelectButtonMarkIcon';
 import { SIZE_OF_SELECT_BUTTON } from '../../ChatConstants';

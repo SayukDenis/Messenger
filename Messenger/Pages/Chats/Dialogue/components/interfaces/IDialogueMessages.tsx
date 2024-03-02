@@ -26,7 +26,6 @@ export interface DialogueMessagesProps {
   deletedMessagesId: number[];
   navigation: any;
   messagesWithCoords: coordinationsOfMessage[];
-  totalCoords: number;
 }
 
 export interface messageViewHandleProps {

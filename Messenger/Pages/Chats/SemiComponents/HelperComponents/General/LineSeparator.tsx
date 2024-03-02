@@ -1,4 +1,4 @@
-import { View, Text, DimensionValue } from 'react-native';
+import { View, DimensionValue } from 'react-native';
 import React from 'react';
 
 interface LineSeparatorProps {
