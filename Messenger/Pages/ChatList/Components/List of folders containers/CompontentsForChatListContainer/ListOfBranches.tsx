@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Chat from "../../../../dao/Models/Chats/Chat";
-import ChatContainer from "./ChatContainer";
+import Chat from "../../../../../dao/Models/Chats/Chat";
+import ChatContainer from "../ChatContainer";
 import { connect } from "react-redux";
-import { Animated, Easing, Dimensions, FlatList } from "react-native";
-import { screenHeight } from "../../Constants/ConstantsForChatlist";
+import { Animated, Easing, Dimensions, FlatList, View } from "react-native";
+import {
+  screenHeight,
+  screenWidth,
+} from "../../../Constants/ConstantsForChatlist";
+import { listOfChatsStyle } from "../../../Styles/ListOfChatsStyle";
 interface ListOfBranchesProps {
   chat: Chat;
   nesting: number;
   setBranchOpen: () => void;
   stateForBranchesShow: boolean;
+  setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
   navigation: any;
 }
 const ListOfBranches: React.FC<ListOfBranchesProps> = ({
@@ -16,7 +21,8 @@ const ListOfBranches: React.FC<ListOfBranchesProps> = ({
   nesting,
   setBranchOpen,
   stateForBranchesShow,
-  navigation
+  setVisibleModalWindowChatState,
+  navigation,
 }) => {
   const arrayOfBranchesValues = Array.from(
     { length: chat.branches.length },
@@ -53,10 +59,16 @@ const ListOfBranches: React.FC<ListOfBranchesProps> = ({
     });
   }, [stateForBranchesShow]);
 
+  const ItemSeparatorComponent = () => (
+    <View style={listOfChatsStyle.itemSeparatorComponent} />
+  );
+
   return (
     <FlatList
       data={chat.branches}
       keyExtractor={(item, index) => index.toString()}
+      ListHeaderComponent={ItemSeparatorComponent}
+      ItemSeparatorComponent={ItemSeparatorComponent}
       renderItem={({ item, index }) => (
         <Animated.View
           style={{
@@ -68,6 +80,7 @@ const ListOfBranches: React.FC<ListOfBranchesProps> = ({
             chat={item}
             nesting={nesting}
             navigation={navigation}
+            setVisibleModalWindowChatState={setVisibleModalWindowChatState}
           />
         </Animated.View>
       )}

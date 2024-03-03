@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { View, Dimensions, FlatList, Platform } from "react-native";
+import React, { useEffect } from "react";
+import { View, FlatList, Platform } from "react-native";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
 import { connect, useSelector } from "react-redux";
@@ -19,8 +19,6 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
   navigation,
   setVisibleModalWindowChatState,
 }) => {
-  const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-
   useEffect(() => {
     if (booleanForLogging) {
       console.log("RERENDER LIST OF FOLDERS");
@@ -64,14 +62,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
   );
 
   const ItemSeparatorComponent = () => (
-    <View
-      style={{
-        width: screenWidth,
-        height: 2,
-        opacity: 0.1,
-        backgroundColor: "gray",
-      }}
-    />
+    <View style={listOfChatsStyle.itemSeparatorComponent} />
   );
 
   return (

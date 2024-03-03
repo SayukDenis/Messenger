@@ -1,6 +1,6 @@
-import SelectForLeftChatContainer from "./CompontentsForChatListContainer/SelectForLeftChatContainer";
-import ReadOrUnreadForSwipeForContainer from "./CompontentsForChatListContainer/ReadOrUnreadForSwipeForContainer";
-import React, {  useRef } from "react";
+import SelectContainer from "./LeftContainerForSwipeComponents/SelectContainer";
+import ReadOrUnreadContainer from "./LeftContainerForSwipeComponents/ReadOrUnreadContainer";
+import React, { useRef } from "react";
 import { Animated } from "react-native";
 import { Dimensions } from "react-native";
 import { connect } from "react-redux";
@@ -37,12 +37,12 @@ const LeftContainerForSwipe: React.FC<LeftContainerForSwipeProps> = ({
         height: screenHeight * 0.08,
       }}
     >
-      <ReadOrUnreadForSwipeForContainer
+      <ReadOrUnreadContainer
         scale1ForLeft={scale1ForLeft}
         procentOfSwipe={procentOfSwipe}
         haveUnreadMessagesBool={haveUnreadMessagesBool}
       />
-      <SelectForLeftChatContainer
+      <SelectContainer
         scaleForNotRender={scaleForNotRender}
         procentOfSwipe={procentOfSwipe}
       />

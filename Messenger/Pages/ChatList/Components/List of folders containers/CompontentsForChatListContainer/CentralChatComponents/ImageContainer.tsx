@@ -1,16 +1,14 @@
 import React from "react";
 import { Image, View } from "react-native";
-import { listOfChatsStyle } from "../../../Styles/ListOfChatsStyle";
-import ModeActivity from "../../Status Content/ModeActivity";
+import { listOfChatsStyle } from "../../../../Styles/ListOfChatsStyle";
+import ModeActivity from "../../../Status Content/ModeActivity";
 import { connect } from "react-redux";
 
 interface ImageContainerProps {
-  urlToPhoto: string|undefined;
+  urlToPhoto: string | undefined;
 }
 
-const ImageContainerForChatListContainer: React.FC<ImageContainerProps> = ({
-  urlToPhoto,
-}) => {
+const ImageContainer: React.FC<ImageContainerProps> = ({ urlToPhoto }) => {
   return (
     <View style={listOfChatsStyle.imageContainer}>
       <Image
@@ -24,4 +22,4 @@ const ImageContainerForChatListContainer: React.FC<ImageContainerProps> = ({
   );
 };
 
-export default connect(null)(ImageContainerForChatListContainer);
+export default connect(null)(ImageContainer);

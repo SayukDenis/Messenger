@@ -1,19 +1,21 @@
-
 import React from "react";
 import { Animated } from "react-native";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import ReadForSwipeableSvg from "../../SVG/ReadForSwipeableSvg";
-import UnReadMessageSvg from "../../SVG/UnReadMessageSvg";
-import { screenHeight, screenWidth } from "../../../Constants/ConstantsForChatlist";
+import ReadForSwipeableSvg from "../../../SVG/ReadForSwipeableSvg";
+import UnReadMessageSvg from "../../../SVG/UnReadMessageSvg";
+import {
+  screenHeight,
+  screenWidth,
+} from "../../../../Constants/ConstantsForChatlist";
 
-interface ReadOrUnreadForSwipeForContainerProps {
+interface ReadOrUnreadContainerProps {
   procentOfSwipe: number;
   haveUnreadMessagesBool: boolean;
   scale1ForLeft: any;
 }
 
-const ReadOrUnreadForSwipeForContainer: React.FC<ReadOrUnreadForSwipeForContainerProps> = ({
+const ReadOrUnreadContainer: React.FC<ReadOrUnreadContainerProps> = ({
   procentOfSwipe,
   haveUnreadMessagesBool,
   scale1ForLeft,
@@ -89,4 +91,4 @@ const ReadOrUnreadForSwipeForContainer: React.FC<ReadOrUnreadForSwipeForContaine
   );
 };
 
-export default connect(null)(ReadOrUnreadForSwipeForContainer);
+export default connect(null)(ReadOrUnreadContainer);

@@ -1,11 +1,9 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Svg, Path } from 'react-native-svg';
-import { listOfChatsStyle } from '../../Styles/ListOfChatsStyle';
+import React from "react";
+import { Svg, Path } from "react-native-svg";
 
 const UnViewedMessage = () => {
   return (
-    <Svg width={14} height={14} viewBox="0 0 11 8" fill="none" style={listOfChatsStyle.positionOfFirstCheckMarkStyle}>
+    <Svg width={14} height={14} viewBox="0 0 11 8" fill="none">
       <Path
         d="M0.355713 3.06128L3.6395 6.6024"
         stroke="white"
@@ -24,7 +22,5 @@ const UnViewedMessage = () => {
     </Svg>
   );
 };
-
-
 
 export default UnViewedMessage;

@@ -1,5 +1,5 @@
-import DeleteContainerForRightContainerForSwipe from "./CompontentsForChatListContainer/DeleteContainerForRightContainerForSwipe";
-import NotificationStatusContainerForRightContainerForSwipe from "./CompontentsForChatListContainer/NotificationStatusContainerForRightContainerForSwipe";
+import DeleteContainer from "./RightContainerForSwipeComponents/DeleteContainer";
+import NotificationStatusContainer from "./RightContainerForSwipeComponents/NotificationStatusContainer";
 import React, { useEffect } from "react";
 import { View, Dimensions } from "react-native";
 import { connect } from "react-redux";
@@ -7,11 +7,9 @@ import { connect } from "react-redux";
 interface RightContainersForSwipeProps {
   rightDragXposition: any;
   rightDragXpositionForRerender: number;
-
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
-
   rightDragXposition,
   rightDragXpositionForRerender,
 }) => {
@@ -38,28 +36,21 @@ const RightContainersForSwipe: React.FC<RightContainersForSwipeProps> = ({
   const procentOfSwipe =
     (rightDragXpositionForRerender - screenWidth) / screenWidth;
 
-
   return (
     <View
       style={{
         height: screenHeight * 0.08,
         width: screenWidth,
-
         flexDirection: "row",
       }}
     >
-      <NotificationStatusContainerForRightContainerForSwipe
+      <NotificationStatusContainer
         scaleForNotRender={scaleForNotRender}
-
-   
         procentOfSwipe={procentOfSwipe}
-
       />
-      <DeleteContainerForRightContainerForSwipe
+      <DeleteContainer
         scale1ForRight={scale1ForRight}
         procentOfSwipe={procentOfSwipe}
-
-
       />
     </View>
   );

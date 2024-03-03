@@ -18,14 +18,14 @@ import {
   Platform,
 } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
-import RightContainersForSwipe from "./RightContainersForSwipe";
-import LeftContainerForSwipe from "./LeftContainerForSwipe";
-import CentralChatContainer from "./CentralChatContainer";
+import RightContainersForSwipe from "./CompontentsForChatListContainer/RightContainerForSwipe";
+import LeftContainerForSwipe from "./CompontentsForChatListContainer/LeftContainerForSwipe";
+import CentralChatContainer from "./CompontentsForChatListContainer/CentralChatContainer";
 import { connect, useDispatch, useSelector } from "react-redux";
 import Chat from "../../../../dao/Models/Chats/Chat";
 import Message from "../../../../dao/Models/Message";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
-import ListOfBranches from "./ListOfBranches";
+import ListOfBranches from "./CompontentsForChatListContainer/ListOfBranches";
 import Dialogue from "../../../../dao/Models/Chats/Dialogue";
 import { CountOfUnreadMessages } from "./Functions/CountOfUnreadMessage";
 import getNameOfChat from "./Functions/GetNameOfChat";
@@ -261,6 +261,7 @@ const ChatContainer: React.FC<ChatProps> = ({
             nesting={nesting + 1}
             setBranchOpen={setBranchPressOpen}
             stateForBranchesShow={stateForBranchesShow}
+            setVisibleModalWindowChatState={setVisibleModalWindowChatState}
             navigation={navigation}
           />
         ) : null}
@@ -351,6 +352,7 @@ const ChatContainer: React.FC<ChatProps> = ({
           nesting={nesting + 1}
           setBranchOpen={setBranchPressOpen}
           stateForBranchesShow={stateForBranchesShow}
+          setVisibleModalWindowChatState={setVisibleModalWindowChatState}
           navigation={navigation}
         />
       ) : null}

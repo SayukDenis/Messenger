@@ -1,23 +1,23 @@
-// NotificationStatusContainerForRightContainerForSwipe.tsx
 import React, { MutableRefObject, useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import MuteForSwipeableSvg from "../../SVG/MuteForSwipeableSvg";
-import UnMuteForSwipeableSvg from "../../SVG/UnMuteForSwipeableSvg";
-import { screenHeight, screenWidth } from "../../../Constants/ConstantsForChatlist";
+import MuteForSwipeableSvg from "../../../SVG/MuteForSwipeableSvg";
+import UnMuteForSwipeableSvg from "../../../SVG/UnMuteForSwipeableSvg";
+import {
+  screenHeight,
+  screenWidth,
+} from "../../../../Constants/ConstantsForChatlist";
 
 interface NotificationStatusContainerProps {
   procentOfSwipe: number;
-  scaleForNotRender:any
+  scaleForNotRender: any;
 }
 
-const NotificationStatusContainerForRightContainerForSwipe: React.FC<NotificationStatusContainerProps> = ({
-  procentOfSwipe,
-  scaleForNotRender,
-
-}) => {
-  const   randomBoolean:MutableRefObject<boolean>=useRef(false)
+const NotificationStatusContainer: React.FC<
+  NotificationStatusContainerProps
+> = ({ procentOfSwipe, scaleForNotRender }) => {
+  const randomBoolean: MutableRefObject<boolean> = useRef(false);
   useEffect(() => {
     randomBoolean.current = Math.random() < 0.5;
   }, []);
@@ -103,4 +103,4 @@ const NotificationStatusContainerForRightContainerForSwipe: React.FC<Notificatio
   );
 };
 
-export default connect(null)(NotificationStatusContainerForRightContainerForSwipe);
+export default connect(null)(NotificationStatusContainer);

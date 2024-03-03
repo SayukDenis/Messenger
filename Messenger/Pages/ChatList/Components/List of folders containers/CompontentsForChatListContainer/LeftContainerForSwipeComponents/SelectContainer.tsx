@@ -3,15 +3,18 @@ import React from "react";
 import { Animated } from "react-native";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import SelectForSwipeableSvg from "../../SVG/SelectForSwipeableSvg";
-import { screenHeight, screenWidth } from "../../../Constants/ConstantsForChatlist";
+import SelectForSwipeableSvg from "../../../SVG/SelectForSwipeableSvg";
+import {
+  screenHeight,
+  screenWidth,
+} from "../../../../Constants/ConstantsForChatlist";
 
-interface SelectForLeftChatContainerProps {
+interface SelectContainerProps {
   procentOfSwipe: number;
   scaleForNotRender: any;
 }
 
-const SelectForLeftChatContainer: React.FC<SelectForLeftChatContainerProps> = ({
+const SelectContainer: React.FC<SelectContainerProps> = ({
   procentOfSwipe,
   scaleForNotRender,
 }) => {
@@ -88,4 +91,4 @@ const SelectForLeftChatContainer: React.FC<SelectForLeftChatContainerProps> = ({
   );
 };
 
-export default connect(null)(SelectForLeftChatContainer);
+export default connect(null)(SelectContainer);
