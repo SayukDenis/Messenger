@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 
 const DialogueNavigation = ({route}:any) => {
 
+  const dispatch = useDispatch();
+
   return (
     <>
       <Stack.Navigator
@@ -19,12 +21,12 @@ const DialogueNavigation = ({route}:any) => {
         <Stack.Screen
           name="Dialogue"
           component={Dialogue}
-          initialParams={route.params}
+          initialParams={{...route.params, dispatch}}
         />
         <Stack.Screen 
           name='PinnedMessages'
           component={PinnedMessageScreen}
-          initialParams={route.params}
+          initialParams={{...route.params, dispatch}}
         />
       </Stack.Navigator>
     </>

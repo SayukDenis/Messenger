@@ -54,6 +54,7 @@ class Dialogue extends Component<DialogueProps> {
     super(props);
 
     console.log('#2');
+    console.log(props.route.params.dispatch);
     
     dialogue = props.route.params.chat;
     author = dialogue.users[0];
@@ -170,7 +171,7 @@ class Dialogue extends Component<DialogueProps> {
     }
     deletedMessagesId.push(message.messageId!);
     this.setState({ listOfMessages: [...listOfMessages.filter(m => m.messageId !== messageID)], deleting: !this.state.deleting });
-    this.props.route.dispatch(removeCoordinationsOfMessage(messageID));
+    this.props.route.params.dispatch(removeCoordinationsOfMessage(messageID));
   }
 
   onPinnedMessageScreenDeletePress = (message: MessageProps) => {
@@ -225,13 +226,13 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   deleteAllButtonHandler = () => {
-    this.props.route.dispatch(removeCoordinationsOfAllMessages());
+    this.props.route.params.dispatch(removeCoordinationsOfAllMessages());
     this.setState({ listOfMessages: [] });
   }
 
   deleteSelectedMessages = () => {
     const { listOfId } = this.props;
-    const { dispatch } = this.props.route;
+    const { dispatch } = this.props.route.params;
     const { listOfMessages } = this.state;
 
     listOfId.sort((a, b) => b - a);
