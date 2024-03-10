@@ -46,7 +46,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   componentDidMount() { 
     this.setState({ 
-      replyMessage: this.props.messages.find(m => m.messageId==this.props.message.messageResponseId)?.content,
+      replyMessage: this.props.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content,
       message: this.props.message.content,
     });
   }
@@ -93,6 +93,10 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       this.setState({ replyMessage: nextReplyMessage })
       return true;
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
+      return true;
+    } else if(this.state.widthOfReply !== nextState.widthOfMessage) {
+      return true;
+    } else if(this.state.widthOfReply !== nextState.widthOfReply) {
       return true;
     }
     
@@ -253,6 +257,12 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
         this.props.setMessageMenuVisible(layout, true);
       });
     }
+
+    if(this.props.pinnedMessageScreen) {
+      await this.handlePress(event).then((layout) => {
+        this.props.setMessageMenuVisible(layout, true);
+      });
+    }
   }
 
   getSelectOffsetHorizontal = () => {
@@ -307,7 +317,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               author={author}
               selecting={selecting}
               selected={selected}
-              handleLinkTo={this.handleLinkTo}
+              pinnedMessageScreen={this.props.pinnedMessageScreen}
+              handleLinkTo={this.props.pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
               onLayout={(event:any) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
             />
             <TouchableOpacity 
@@ -322,6 +333,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
                 />
               }
               <View 
@@ -353,6 +365,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
                 />
               }
               {selecting && <SelectButton 

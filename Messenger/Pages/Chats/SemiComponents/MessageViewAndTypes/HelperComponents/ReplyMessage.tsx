@@ -12,8 +12,9 @@ interface ReplyMessageProps {
   author: User;
   selecting: boolean;
   selected: boolean;
-  handleLinkTo: (messageID: number) => void;
+  handleLinkTo: (messageID: number | any) => void;
   onLayout: (event:any) => void;
+  pinnedMessageScreen: boolean;
 }
 
 class ReplyMessage extends PureComponent<ReplyMessageProps> {
@@ -27,7 +28,12 @@ class ReplyMessage extends PureComponent<ReplyMessageProps> {
         { !this.isUser&&<LineSeparator height={'175%'} color='blue' /> }
         <TouchableOpacity 
           activeOpacity={1} 
-          onPress={() => { this.props.handleLinkTo(this.props.message!.messageResponseId!) }}
+          onPress={(event) => { 
+            if(!this.props.pinnedMessageScreen)
+              this.props.handleLinkTo(this.props.message!.messageResponseId!);
+            else
+              this.props.handleLinkTo(event);
+          }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
         >
           <View style={[this.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
