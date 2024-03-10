@@ -1,8 +1,10 @@
 // DialogueNavigation.js
 import { Stack } from "../../../../Navigation/Navigation";
 import React from "react";
-import Dialogue from "../Dialogue";
+// import Dialogue from "../Dialogue";
+import Dialogue from "../DialougeUsingClass";
 import PinnedMessageScreen from "../../SemiComponents/Screens/PinnedMessageScreen";
+import { useDispatch } from "react-redux";
 
 const DialogueNavigation = ({route}:any) => {
 
