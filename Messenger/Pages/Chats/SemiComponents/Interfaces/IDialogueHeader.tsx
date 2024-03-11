@@ -4,6 +4,7 @@ import { MessageProps } from "./GeneralInterfaces/IMessage";
 import * as DialogueModel from '../../../../dao/Models/Chats/Dialogue';
 import * as GroupModel from '../../../../dao/Models/Chats/Group';
 import * as ChannelModel from '../../../../dao/Models/Chats/Channel';
+import { Dispatch } from "redux";
 //Messenger\Pages\Chats\SemiComponents\Interfaces\GeneralInterfaces
 
 export interface DialogueHeaderProps {
@@ -28,4 +29,5 @@ export interface DialogueHeaderProps {
     users: User[];
   };
   deleteAllButtonHandler: () => void;
+  dispatch: Dispatch;
 }
