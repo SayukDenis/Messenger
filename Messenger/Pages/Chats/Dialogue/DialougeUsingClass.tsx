@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { useState, useCallback, useEffect, Component } from 'react';
 import Footer from '../SemiComponents/FooterUsingClass';
-import MessageMenu from '../SemiComponents/MessageMenu';
+import MessageMenu from '../SemiComponents/MessageMenuUsingClass';
 import styles from './DialogueStyle';
 import React from 'react';
 import DeleteMessageModal from '../SemiComponents/DeleteMessageModal';
