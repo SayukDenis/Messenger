@@ -33,9 +33,6 @@ let messageMenuCallback: (() => void) | undefined;
 class Dialogue extends Component<DialogueProps> {
   constructor(props:any) {
     super(props);
-
-    console.log('#2');
-    console.log(props.route.params.dispatch);
     
     dialogue = props.route.params.chat;
     author = dialogue.users[0];
@@ -234,8 +231,6 @@ class Dialogue extends Component<DialogueProps> {
     const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && m.content);
     const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, copy, deleting } = this.state;
     const { navigation } = this.props;
-
-    console.log('#1');
 
     return  (
       <View style={styles.dialogueContainer}>

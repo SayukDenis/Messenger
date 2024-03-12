@@ -73,13 +73,13 @@ const selectedMessageHandlerReducer = (state = selectedMessageHandlerInitialStat
   }
 }
 
-export interface coordinationsOfMessage {
+export interface CoordinationsOfMessage {
   id: number;
   coords: number;
   height: number;
 }
 const setCoordinationsOfMessage = {
-  messagesWithCoords: [] as coordinationsOfMessage[]
+  messagesWithCoords: [] as CoordinationsOfMessage[]
 }
 const setCoordinationsOfMessageReducer = (state = setCoordinationsOfMessage, action:any) => {
   switch(action.type) {

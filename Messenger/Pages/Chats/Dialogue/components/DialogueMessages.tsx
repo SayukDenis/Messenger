@@ -75,6 +75,10 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     );
   }
 
+  componentDidUpdate(prevProps: Readonly<DialogueMessagesProps & DialogueMessagesReduxProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    console.log('DialogueMessages was updated');
+  }
+
   componentWillUnmount() {
     this.keyboardDidShowListener!.remove();
     this.keyboardDidHideListener!.remove();
@@ -240,16 +244,13 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   }
 
   messageMenuHandler = async (coord: Layout, pressed: boolean) => {
-    const mesCoords = this.props.messagesWithCoords[coord.message?.messageId!];
-
-    console.log(coord.message?.messageId, mesCoords);
+    const mesCoords = this.props.messagesWithCoords.find(m => m.id === coord.message?.messageId!);
 
     const HEIGHT_OF_HEADER = heightOfHeader;
     const HEIGHT_OF_FLATLIST = height - SOFT_MENU_BAR_HEIGHT;
     const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
     const isUser = coord.message?.author.userId === this.props.author.userId;
 
-    // Виправити перевірку в цьому if'і
     if(pressed && HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) && mesCoords?.coords! + height*0.08 < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
       const scrollOffset = this.flatListRef.current._listRef._scrollMetrics.offset;
 

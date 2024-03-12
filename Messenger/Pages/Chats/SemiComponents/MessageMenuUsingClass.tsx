@@ -293,15 +293,16 @@ class MessageMenu extends Component<MessageMenuProps> {
     const { isUser, coord } = this.props;
     const MESSAGE_HORIZONTAL_PADDING = 10;
     const NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE = 5;
+
     if(isUser) {
       return { 
-        top:(coord?coord.pageY:0)-size.height, 
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - size.height, 
         right: MESSAGE_HORIZONTAL_PADDING*2
       }
     } else {
       return { 
-        top:(coord?coord.pageY:0)-size.height, 
-        left:MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - size.height, 
+        left: MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
       }
     }
   };
@@ -378,8 +379,4 @@ class MessageMenu extends Component<MessageMenuProps> {
   }
 }
 
-const mapStateToProps = (state:any) => ({
-  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords
-});
-
-export default connect(mapStateToProps)(MessageMenu);
+export default connect(null)(MessageMenu);
