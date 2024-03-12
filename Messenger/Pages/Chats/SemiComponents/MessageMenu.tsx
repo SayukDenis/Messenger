@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import { TouchableOpacity, View, Text, Animated, EasingFunction, Easing } from "react-native";
 import React from 'react';
-import { messageMenuProps } from "./Interfaces/IMessageMenu";
+import { MessageMenuProps } from "./Interfaces/IMessageMenu";
 import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
@@ -28,7 +28,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen, users }:messageMenuProps) => {
+const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen, users }:MessageMenuProps) => {
   if(!isVisible) 
       return null;
     

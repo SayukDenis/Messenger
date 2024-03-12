@@ -31,3 +31,7 @@ export interface DialogueHeaderProps {
   deleteAllButtonHandler: () => void;
   dispatch: Dispatch;
 }
+
+export interface DialogueHeaderState {
+
+}

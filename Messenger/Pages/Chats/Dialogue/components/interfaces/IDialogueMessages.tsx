@@ -28,6 +28,6 @@ export interface DialogueMessagesProps {
   messagesWithCoords: coordinationsOfMessage[];
 }
 
-export interface messageViewHandleProps {
+export interface MessageViewHandleProps {
   message: MessageProps; 
 }

@@ -1,17 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import styles from '../../Styles/Header';
-import * as DialogueModel from '../../../../../dao/Models/Chats/Dialogue';
-
-interface CenterPartOfHeaderProps {
-  picture: string | undefined;
-  displayName: string | undefined;
-  activityTime: Date | string;
-  dialogue: DialogueModel.default;
-  navigation: any;
-  selecting: boolean;
-  counterOfSelectedMessages: number;
-}
+import { CenterPartOfHeaderProps } from './Interfaces/ICenterPartOfHeader';
 
 class CenterPartOfHeader extends Component<CenterPartOfHeaderProps> {
   render(): React.ReactNode {

@@ -1,15 +1,8 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import { styles } from './Styles/CenterPartOfFooter';
 import FooterExportButton from '../../SVG/FooterExportButton';
-
-interface CenterPartOfFooterProps { 
-  textInput: React.RefObject<TextInput>;
-  text: string;
-  setText: (text: string) => void;
-  sendMessageHandler: () => void;
-  selecting: boolean;
-}
+import { CenterPartOfFooterProps } from './Interfaces/ICenterPartOfFooter';
 
 class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
   render(): React.ReactNode {

@@ -1,21 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React, { PureComponent } from 'react';
-import User from '../../../../../dao/Models/User';
 import { DEFAULT_CHARS_PER_LINE } from '../../ChatConstants';
 import { styles } from '../Styles/ReplyTextType';
-import { MessageProps } from '../../Interfaces/GeneralInterfaces/IMessage';
 import LineSeparator from '../../HelperComponents/General/LineSeparator';
-
-interface ReplyMessageProps {
-  message: MessageProps;
-  replyMessage: MessageProps;
-  author: User;
-  selecting: boolean;
-  selected: boolean;
-  handleLinkTo: (messageID: number | any) => void;
-  onLayout: (event:any) => void;
-  pinnedMessageScreen: boolean;
-}
+import { ReplyMessageProps } from './Interfaces/IReplyMessage';
 
 class ReplyMessage extends PureComponent<ReplyMessageProps> {
   isUser = this.props.message.author.userId == this.props.author.userId;

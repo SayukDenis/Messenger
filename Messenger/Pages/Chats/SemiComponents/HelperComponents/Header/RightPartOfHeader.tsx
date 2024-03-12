@@ -2,11 +2,7 @@ import { View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import HeaderBranchButton from '../../SVG/HeaderBranchButton';
-
-interface RightPartOfHeaderProps { 
-  selecting: boolean, 
-  cancelSelection: () => void 
-}
+import { RightPartOfHeaderProps } from './Interfaces/IRightPartOfHeader';
 
 class RightPartOfHeader extends Component<RightPartOfHeaderProps> {
   shouldComponentUpdate(nextProps: Readonly<RightPartOfHeaderProps>, nextState: Readonly<{}>, nextContext: any): boolean {

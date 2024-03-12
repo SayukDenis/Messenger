@@ -16,20 +16,14 @@ import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberO
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { ReplyTextTypeProps, ReplyTextTypeState, componentPageProps, coordProps } from './Interfaces/IReplyTextType';
+import { ReplyTextTypeProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
 import { functionalStyles, styles } from './Styles/ReplyTextType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
+import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 
-interface sizeProps {
-  ID: number;
-  layout: {
-    height: number;
-    width: number;
-  }
-}
 let size: sizeProps[] = [];
 
 class ReplyTextType extends Component<ReplyTextTypeProps> {

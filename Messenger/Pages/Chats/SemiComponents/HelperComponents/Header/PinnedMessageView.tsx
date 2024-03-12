@@ -3,35 +3,11 @@ import React, { Component } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DEFAULT_CHARS_PER_LINE, FONT_SCALE } from '../../ChatConstants';
 import DialogueMessagesPinnedMessageIcon from '../../SVG/DialogueMessagesPinnedMessageIcon';
-import { MessageProps } from '../../Interfaces/GeneralInterfaces/IMessage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import User from '../../../../../dao/Models/User';
-import ILastWatchedMessage from '../../../../../dao/Models/Chats/ILastWatchedMessage';
 import LineSeparator from '../General/LineSeparator';
 import { styles } from './Styles/PinnedMessageView';
-import { Dispatch } from 'redux';
-
-interface PinnedMessageViewProps { 
-  pinnedMessage: MessageProps;
-  current: number;
-  total: number;
-  propsForPinnedMessageScreen: {
-    navigation: any;
-    listOfPinnedMessages: MessageProps[];
-    listOfMessages: MessageProps[];
-    author: User;
-    messageID: number;
-    unpinAllMessagesHandler: () => void;
-    userMessageLastWatched: ILastWatchedMessage;
-    onCopyPress: () => void;
-    onUnpinPress: (message: MessageProps) => void;
-    onDeletePress: (message: MessageProps) => void;
-    users: User[];
-  };
-  dispatch: Dispatch;
-}
+import { PinnedMessageViewProps } from './Interfaces/IPinnedMessageView';
 
 class PinnedMessageView extends Component<PinnedMessageViewProps> {
   

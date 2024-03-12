@@ -1,14 +1,14 @@
 import { View } from 'react-native'
 import React, { Component, memo } from 'react'
 import { EMessageType } from '../../../dao/Models/EMessageType';
-import { messageViewHandleProps } from '../Dialogue/components/interfaces/IDialogueMessages';
+import { MessageViewHandleProps } from '../Dialogue/components/interfaces/IDialogueMessages';
 import { MessageItemProps } from './Interfaces/IMessageItem';
 import DefaultTextTypeUsingClass from './MessageViewAndTypes/DefaultTextType';
 import ReplyTextTypeUsingClass from './MessageViewAndTypes/ReplyTextType';
 
 class MessageItem extends Component<MessageItemProps> {
 
-  messageViewHandle = ({message}:messageViewHandleProps) => {
+  messageViewHandle = ({message}:MessageViewHandleProps) => {
     if(!message.content) return null;
 
     const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users } = this.props;

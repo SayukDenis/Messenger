@@ -3,14 +3,8 @@ import React, { Component } from 'react';
 import FooterGallaryButton from '../../SVG/FooterGallaryButton';
 import FooterSendMessageButton from '../../SVG/FooterSendMessageButton';
 import { functionalStyles } from './Styles/RightPartOfFooter';
-import FooterForwardButton from '../../SVG/FooterForwardButton';
-
-interface RightPartOfFooterProps { 
-  sendMessage: boolean;
-  sendMessageHandler: () => void;
-  pressGalleryButtonHandler: () => void;
-  selecting: boolean;
-}
+import FooterForwardButton from '../../SVG/FooterForwardButton'
+import { RightPartOfFooterProps } from './Interfaces/IRightPartOfFooter';
 
 class RightPartOfFooter extends Component<RightPartOfFooterProps> {
   render(): React.ReactNode {

@@ -1,12 +1,6 @@
 import { View, DimensionValue } from 'react-native';
 import React, { Component } from 'react';
-
-interface LineSeparatorProps {
-  color?: string;
-  width?: string | number;
-  height?: string | number;
-  marginHorizontal?: number;
-}
+import { LineSeparatorProps } from './Interfaces/ILineSeparator';
 
 class LineSeparator extends Component<LineSeparatorProps> {
   render(): React.ReactNode {

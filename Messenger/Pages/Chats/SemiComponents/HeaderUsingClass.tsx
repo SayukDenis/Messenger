@@ -2,23 +2,19 @@ import { View } from 'react-native';
 import React, { Component } from 'react';
 import HeaderContainer from '../../SemiComponents/HeaderContainer';
 import { connect } from 'react-redux';
-import { DialogueHeaderProps } from './Interfaces/IDialogueHeader';
+import { DialogueHeaderProps, DialogueHeaderState } from './Interfaces/IDialogueHeader';
 import RightPartOfHeader from './HelperComponents/Header/RightPartOfHeader';
 import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
 import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
 import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 import styles from './Styles/Header';
 
-interface DialogueHeaderState {
-
-}
-
 class Header extends Component<DialogueHeaderProps> {
   state: DialogueHeaderState = {
 
   }
 
-  componentDidUpdate(prevProps: Readonly<DialogueHeaderProps>, prevState: Readonly<{}>, snapshot?: any): void {
+  componentDidUpdate(prevProps: Readonly<DialogueHeaderProps>, prevState: Readonly<DialogueHeaderState>, snapshot?: any): void {
     if(this.props.selecting !== prevProps.selecting && this.props.selecting && this.props.counterOfSelectedMessages !== prevProps.counterOfSelectedMessages && this.props.counterOfSelectedMessages <= 0) this.props.cancelSelection();
   }
 

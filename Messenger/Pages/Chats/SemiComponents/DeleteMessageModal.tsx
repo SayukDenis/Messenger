@@ -1,5 +1,5 @@
 import { View, Text, Modal, TouchableOpacity,  } from 'react-native';
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import { DeleteMessageModalProps } from './Interfaces/IDeleteMessageModal';
 import { styles } from './Styles/DeleteMessageModal';
 import { connect } from 'react-redux';

@@ -1,7 +1,7 @@
-import { Component, memo, useEffect, useState } from "react";
+import { Component } from "react";
 import { TouchableOpacity, View, Text, Animated, EasingFunction, Easing } from "react-native";
 import React from 'react';
-import { messageMenuProps } from "./Interfaces/IMessageMenu";
+import { MessageMenuProps } from "./Interfaces/IMessageMenu";
 import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
@@ -27,7 +27,7 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-class MessageMenu extends Component<messageMenuProps> {
+class MessageMenu extends Component<MessageMenuProps> {
   state = {
     state: 1,
   }
@@ -212,22 +212,10 @@ class MessageMenu extends Component<messageMenuProps> {
   });
 
   containerSize = Animated.timing(containerWidth, {
-    toValue: this.state.state, // Кінцева ширина
-    duration: this.durationOfAnimation, // Тривалість анімації (в мілісекундах)
-    useNativeDriver: true, // Вимагається для анімації стилів
+    toValue: this.state.state,
+    duration: this.durationOfAnimation,
+    useNativeDriver: true,
   });
-
-  // useEffect(() => {
-  //   Animated.sequence([
-  //     containerSize,
-  //     animateOfFirstContainer,
-  //     animateOfSecondContainer,
-  //     animateOfThirdContainer,
-  //     animateOfFourthContainer,
-  //     animateOfFifthContainer,
-  //     animateOfSixthContainer,
-  //   ]).start(() => setState(0));
-  // }, []);
 
   componentDidMount(): void {
       Animated.sequence([

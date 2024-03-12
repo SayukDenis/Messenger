@@ -2,15 +2,7 @@ import { TouchableOpacity } from 'react-native'
 import React, { Component } from 'react'
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import ReplyIcon from '../../SVG/ReplyIcon';
-import { Dispatch } from 'redux';
-
-interface ScrollButtonProps { 
-  navigation: any;
-  dispatch: Dispatch;
-  messageId: number;
-  isUser: boolean;
-  additionalGap?: number;
-}
+import { ScrollButtonProps } from './Interfaces/IScrollButton';
 
 const GAP = 10;
 

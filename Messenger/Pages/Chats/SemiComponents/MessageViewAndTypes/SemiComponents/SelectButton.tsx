@@ -2,13 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 import SelectButtonMarkIcon from '../../SVG/SelectButtonMarkIcon';
 import { SIZE_OF_SELECT_BUTTON } from '../../ChatConstants';
-
-interface SelectButtonProps {
-  selected: boolean;
-  isUser: boolean;
-  verticalOffset: number;
-  horizontalOffset: number;
-}
+import { SelectButtonProps } from './Interfaces/ISelectButton';
 
 class SelectButton extends Component<SelectButtonProps> {
   render(): React.ReactNode {

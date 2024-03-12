@@ -1,20 +1,12 @@
 
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
 import FooterVideoButton from '../../SVG/FooterVideoButton';
 import FooterMicrophoneButton from '../../SVG/FooterMicrophoneButton';
 import { styles } from './Styles/LeftPartOfFooter';
 import DeleteButton from '../../SVG/DeleteButton';
 import { height } from '../../ChatConstants';
-
-interface LeftPartOfFooterProps { 
-  selecting: boolean; 
-  deleteSelectedMessagesHandler: () => void 
-}
-
-interface LeftPartOfFooterState {
-  video: boolean;
-}
+import { LeftPartOfFooterProps, LeftPartOfFooterState } from './Interfaces/ILeftPartOfFooter';
 
 class LeftPartOfFooter extends Component<LeftPartOfFooterProps> {
   state: LeftPartOfFooterState = {

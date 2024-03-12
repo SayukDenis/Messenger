@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { useState, useCallback, useEffect, Component } from 'react';
+import { Component } from 'react';
 import Footer from '../SemiComponents/FooterUsingClass';
 import MessageMenu from '../SemiComponents/MessageMenuUsingClass';
 import styles from './DialogueStyle';
@@ -7,7 +7,7 @@ import React from 'react';
 import DeleteMessageModal from '../SemiComponents/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 import DialogueMessages from './components/DialogueMessages';
@@ -15,27 +15,7 @@ import Header from '../SemiComponents/HeaderUsingClass';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import { Dispatch } from 'redux';
-
-interface DialogueProps {
-  listOfId: number[];
-  navigation: any;
-  route: any;
-}
-
-interface DialogueState {
-  messageID: number;
-  messageMenuVisible: boolean;
-  listOfMessages: MessageProps[];
-  isReply: boolean;
-  isEdit: boolean;
-  editMessage: MessageProps;
-  deleting: boolean;
-  copy: boolean;
-  selecting: boolean;
-  listOfPinnedMessages: MessageProps[];
-  pinnedMessage: MessageProps;
-}
+import { DialogueProps, DialogueState } from './IDialogue';
 
 let coord: Layout;
 let messageIdForReplyAndEdit: number;

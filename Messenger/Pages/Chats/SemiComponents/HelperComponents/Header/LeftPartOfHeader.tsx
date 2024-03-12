@@ -2,11 +2,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import HeaderBackButton from '../../SVG/HeaderBackButton';
 import { screenWidth } from '../../../../ChatList/Constants/ConstantsForChatlist';
-
-interface LeftPartOfHeaderProps { 
-  selecting: boolean, 
-  navigation: any 
-}
+import { LeftPartOfHeaderProps } from './Interfaces/ILeftPartOfHeader';
 
 class LeftPartOfHeader extends Component<LeftPartOfHeaderProps> {
   render(): React.ReactNode {

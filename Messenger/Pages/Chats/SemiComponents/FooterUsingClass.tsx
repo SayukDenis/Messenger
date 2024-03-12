@@ -1,7 +1,7 @@
 import React from "react";
 import { Component, RefObject } from "react";
-import { DialogueFooterProps } from "./Interfaces/IDialoueFooter";
-import { Animated, EasingFunction, TextInput, View } from "react-native";
+import { DialogueFooterProps, DialogueFooterState } from "./Interfaces/IDialoueFooter";
+import { Animated, TextInput, View } from "react-native";
 import { SOFT_MENU_BAR_HEIGHT, height, width } from "./ChatConstants";
 import { sendMessage } from "./HelperComponents/Footer/sendMessageFunc";
 import ReplyAndEditMenu from "./ReplyAndEditMenu";
@@ -11,11 +11,6 @@ import LeftPartOfFooter from "./HelperComponents/Footer/LeftPartOfFooter";
 import CenterPartOfFooter from "./HelperComponents/Footer/CenterPartOfFooter";
 import RightPartOfFooter from "./HelperComponents/Footer/RightPartOfFooter";
 import { connect } from "react-redux";
-
-interface DialogueFooterState {
-  keyboardActive: boolean;
-  text: string;
-}
 
 class Footer extends Component<DialogueFooterProps> {
   state: DialogueFooterState = {

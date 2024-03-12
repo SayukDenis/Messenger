@@ -4,6 +4,7 @@ import { MutableRefObject } from "react";
 import User from "../../../../../dao/Models/User";
 import { Layout } from "../../Interfaces/GeneralInterfaces/ILayout";
 import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
+import { coordProps } from "./IGeneralInterfaces";
 
 export interface ReplyTextTypeProps {
   idForAnimation: number;
@@ -31,14 +32,4 @@ export interface ReplyTextTypeState {
   pressCoordinations: coordProps;
   replyMessage: string;
   message: string;
-}
-
-export interface coordProps {
-  locationX_In: number;
-  locationY_In: number;
-}
-
-export interface componentPageProps {
-  X: number;
-  Y: number;
 }

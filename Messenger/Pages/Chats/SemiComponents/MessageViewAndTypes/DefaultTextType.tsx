@@ -32,50 +32,9 @@ import { functionalStyles, styles } from './Styles/DefaultTextType';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
+import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
+import { DefaultTextMessageProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
 
-interface DefaultTextMessageNavigationProps {
-  dispatch: Dispatch;
-  navigation: any;
-}
-
-interface DefaultTextMessageProps extends DefaultTextMessageNavigationProps {
-  idForAnimation: number;
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
-  id: number;
-  flatList: React.MutableRefObject<any>;
-  author: User;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-  pinnedMessageScreen: boolean;
-  messages: MessageProps[];
-  listOfPinnedMessages: Array<number>
-}
-
-interface DefaultTextMessageState {
-  animate: boolean;
-  heightOfMessage: number;
-  selected: boolean;
-  message: string;
-}
-
-interface componentPageProps {
-  X: number;
-  Y: number;
-}
-
-interface coordProps {
-  locationX_In: number;
-  locationY_In: number;
-}
-
-interface sizeProps {
-  ID: number;
-  layout: {
-    height: number;
-    width: number;
-  }
-}
 let size: sizeProps[] = [];
 
 class DefaultTextType extends Component<DefaultTextMessageProps> {

@@ -4,7 +4,7 @@ import { Layout } from "./GeneralInterfaces/ILayout";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 
 
-export interface messageMenuProps {
+export interface MessageMenuProps {
   isVisible: boolean;
   onOverlayPress: () => void;
   coord: Layout;
