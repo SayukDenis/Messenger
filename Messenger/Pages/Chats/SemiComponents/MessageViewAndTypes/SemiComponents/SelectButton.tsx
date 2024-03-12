@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { Component } from 'react';
 import SelectButtonMarkIcon from '../../SVG/SelectButtonMarkIcon';
 import { SIZE_OF_SELECT_BUTTON } from '../../ChatConstants';
 
@@ -10,12 +10,15 @@ interface SelectButtonProps {
   horizontalOffset: number;
 }
 
-const SelectButton = ({ selected, isUser, verticalOffset, horizontalOffset }:SelectButtonProps) => {
-  return (
-    <View style={[styles.container, { bottom: verticalOffset, }, isUser?{left: horizontalOffset}:{right: horizontalOffset}]} >
-      {selected && <SelectButtonMarkIcon />}  
-    </View>
-  );
+class SelectButton extends Component<SelectButtonProps> {
+  render(): React.ReactNode {
+    const { selected, isUser, verticalOffset, horizontalOffset } = this.props;
+    return (
+      <View style={[styles.container, { bottom: verticalOffset, }, isUser?{left: horizontalOffset}:{right: horizontalOffset}]} >
+        {selected && <SelectButtonMarkIcon />}  
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

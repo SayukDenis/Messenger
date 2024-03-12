@@ -33,51 +33,6 @@ interface PinnedMessageViewProps {
   dispatch: Dispatch;
 }
 
-// const PinnedMessageView = ({ pinnedMessage, current, total, propsForPinnedMessageScreen }:PinnedMessageViewProps ) => {
-//   if(!pinnedMessage?.messageId) return null;
-
-//   const dispatch = useDispatch();
-
-//   const scrollToPinedMessage = () => {
-//     dispatch(setScrollStateForPinnedMessage(true, pinnedMessage?.messageId!));
-//     dispatch(setAnimationOfBackgroundForScrolledMessage(pinnedMessage?.messageId!));
-//   }
-
-//   return (
-//     <View style={styles.mainContainer}>
-//         <LinearGradient
-//             colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-//             locations={[0.25, 0.5, 0.75]}
-//             start={{ x: 1, y: 0 }}
-//             end={{ x: 0, y: 1 }}
-//             style={styles.gradient}
-//           />
-//           <TouchableOpacity 
-//             activeOpacity={1}
-//             onPress={scrollToPinedMessage}
-//             style={styles.container}
-//           >
-//             <Text>Pinned message: {pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE*0.55/FONT_SCALE).trim()+'...':pinnedMessage?.content}</Text>
-//             <View style={{ flexDirection: 'row' }}>
-//               { total>1&&
-//                 <View style={styles.trackCurrentAndTotal}>
-//                   <Text>{current}</Text>
-//                   <LineSeparator width={1.4} height={'100%'} color='black' marginHorizontal={5} />
-//                   <Text>{total}</Text>
-//                 </View>
-//               }
-//               <TouchableOpacity
-//                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-//                 onPress={() => propsForPinnedMessageScreen.navigation.navigate('PinnedMessages', propsForPinnedMessageScreen)}
-//               >
-//                 <DialogueMessagesPinnedMessageIcon />
-//               </TouchableOpacity>
-//             </View>
-//           </TouchableOpacity>
-//       </View>
-//   )
-// }
-
 class PinnedMessageView extends Component<PinnedMessageViewProps> {
   
   scrollToPinedMessage = () => {
@@ -91,36 +46,36 @@ class PinnedMessageView extends Component<PinnedMessageViewProps> {
 
     return (
       <View style={styles.mainContainer}>
-          <LinearGradient
-              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-              locations={[0.25, 0.5, 0.75]}
-              start={{ x: 1, y: 0 }}
-              end={{ x: 0, y: 1 }}
-              style={styles.gradient}
-            />
-            <TouchableOpacity 
-              activeOpacity={1}
-              onPress={this.scrollToPinedMessage}
-              style={styles.container}
-            >
-              <Text>Pinned message: {pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE*0.55/FONT_SCALE).trim()+'...':pinnedMessage?.content}</Text>
-              <View style={{ flexDirection: 'row' }}>
-                { total>1&&
-                  <View style={styles.trackCurrentAndTotal}>
-                    <Text>{current}</Text>
-                    <LineSeparator width={1.4} height={'100%'} color='black' marginHorizontal={5} />
-                    <Text>{total}</Text>
-                  </View>
-                }
-                <TouchableOpacity
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  onPress={() => propsForPinnedMessageScreen.navigation.navigate('PinnedMessages', propsForPinnedMessageScreen)}
-                >
-                  <DialogueMessagesPinnedMessageIcon />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-        </View>
+        <LinearGradient
+            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+            locations={[0.25, 0.5, 0.75]}
+            start={{ x: 1, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.gradient}
+          />
+          <TouchableOpacity 
+            activeOpacity={1}
+            onPress={this.scrollToPinedMessage}
+            style={styles.container}
+          >
+            <Text>Pinned message: {pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE*0.55/FONT_SCALE).trim()+'...':pinnedMessage?.content}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              { total>1&&
+                <View style={styles.trackCurrentAndTotal}>
+                  <Text>{current}</Text>
+                  <LineSeparator width={1.4} height={'100%'} color='black' marginHorizontal={5} />
+                  <Text>{total}</Text>
+                </View>
+              }
+              <TouchableOpacity
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                onPress={() => propsForPinnedMessageScreen.navigation.navigate('PinnedMessages', propsForPinnedMessageScreen)}
+              >
+                <DialogueMessagesPinnedMessageIcon />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+      </View>
     );
   }
 }

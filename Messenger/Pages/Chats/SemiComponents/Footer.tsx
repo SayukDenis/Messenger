@@ -5,7 +5,6 @@ import ReplyAndEditMenu from './ReplyAndEditMenu';
 import { DialogueFooterProps } from './Interfaces/IDialoueFooter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux';
-import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
 import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
@@ -68,7 +67,6 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
 
   return(
     <Animated.View>
-      <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
       <ReplyAndEditMenu 
         isReply={isReply} 
         replyMessage={replyMessage} 

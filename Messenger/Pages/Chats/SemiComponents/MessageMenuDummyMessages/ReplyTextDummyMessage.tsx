@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import { functionalStyles, styles } from '../MessageViewAndTypes/Styles/ReplyTextType';
-import React from 'react';
+import React, { Component } from 'react';
 import { wrapText } from '../MessageViewAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { ReplyTextType } from './Interfaces/IReplyText';
@@ -10,10 +10,12 @@ import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageRev
 import PinButton from '../SVG/PinButton';
 import LineSeparator from '../HelperComponents/General/LineSeparator';
 
-const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLastWatched, pinned, userName}:ReplyTextType) => {
-  const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
+class ReplyTextDummyMessage extends Component<ReplyTextType> {
+  render(): React.ReactNode {
+    const { messages, message, isUser, height, userMessageLastWatched, pinned, userName } = this.props;
+    const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
 
-  return (
+    return (
       <View style={styles.replyContainer} >
         <View style={styles.innerReplyContainer} >
           <Text style={[styles.replyUserNameFont, isUser&&{ alignSelf: 'flex-end' }]}>
@@ -58,6 +60,8 @@ const ReplyTextDummyMessage = ({messages, message, isUser, height, userMessageLa
             { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
           </View> }
       </View>
-)};
+    );
+  }
+}
 
 export default ReplyTextDummyMessage;
