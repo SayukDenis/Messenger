@@ -1,14 +1,17 @@
 import { View } from 'react-native'
-import React, { memo } from 'react'
+import React, { Component, memo } from 'react'
 import { EMessageType } from '../../../dao/Models/EMessageType';
-import { messageViewHandleProps } from '../Dialogue/components/interfaces/IDialogueMessages';
+import { MessageViewHandleProps } from '../Dialogue/components/interfaces/IDialogueMessages';
 import { MessageItemProps } from './Interfaces/IMessageItem';
 import DefaultTextTypeUsingClass from './MessageViewAndTypes/DefaultTextType';
 import ReplyTextTypeUsingClass from './MessageViewAndTypes/ReplyTextType';
 
-const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef, coordsY, author, messageID, setCoordsY, userMessageLastWatched, selecting, pinnedMessageHandler, pinnedMessageScreen, listOfPinnedMessages, navigation, users }:MessageItemProps) => {  
-  const messageViewHandle = ({message}:messageViewHandleProps) => {
+class MessageItem extends Component<MessageItemProps> {
+
+  messageViewHandle = ({message}:MessageViewHandleProps) => {
     if(!message.content) return null;
+
+    const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users } = this.props;
 
     if(message.messageType == EMessageType.text && message.messageResponseId && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && m.content) >= 0) {
       return <ReplyTextTypeUsingClass
@@ -45,7 +48,10 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
     }
   };
 
-  return (
+  render(): React.ReactNode {
+    const { item, coordsY, setCoordsY, pinnedMessageHandler, pinnedMessageScreen } = this.props;
+
+    return (
       <View
         key={item.messageId}
         onLayout={(event) => {
@@ -63,10 +69,11 @@ const MessageItem = ({ item, listOfMessages, setMessageMenuVisible, flatListRef,
           console.log('id', item.messageId)
         }}
       >
-        {messageViewHandle({ message: item })}
+        {this.messageViewHandle({ message: item })}
       </View>
     );
   }
+}
 
 
 export default memo(MessageItem);

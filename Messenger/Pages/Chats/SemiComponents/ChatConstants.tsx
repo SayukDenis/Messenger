@@ -1,4 +1,4 @@
-import { PixelRatio, Dimensions, Platform } from "react-native";
+import { PixelRatio, Dimensions } from "react-native";
 import Constants from 'expo-constants';
 
 export const { width, height } = Dimensions.get('screen');

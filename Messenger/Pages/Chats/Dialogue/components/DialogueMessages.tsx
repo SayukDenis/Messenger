@@ -2,7 +2,6 @@ import React, { Component, Dispatch } from "react";
 import { DialogueMessagesProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent, Platform } from "react-native";
 import { connect } from "react-redux";
-import Constants from 'expo-constants';
 import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
@@ -355,7 +354,6 @@ const mapStateToProps = (state:any) => ({
   scrollToTappedMessage: state.ChatReducer.scrollToTappedMessage.scroll,
   idOfTappedMessage: state.ChatReducer.scrollToTappedMessage.id,
   messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
-  totalCoords: state.ChatReducer.setCoordinationsOfMessage.totalCoords,
 });
 
 export default connect(mapStateToProps)(DialogueMessages);

@@ -6,9 +6,8 @@ import {
   ScrollView,
   Animated,
   Easing,
-  GestureResponderEvent,
 } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import {
   addSelectedMessage,
   decrementNumberOfSelectedMessages,
@@ -17,12 +16,11 @@ import {
   resetNumberOfSelectedMessages,
   resetSelectedMessage,
   setAnimationOfBackgroundForScrolledMessage,
-  setScrollStateTappedMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
@@ -34,44 +32,10 @@ import { functionalStyles, styles } from './Styles/DefaultTextType';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
+import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
+import { DefaultTextMessageProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
 
-interface DefaultTextMessageNavigationProps {
-  dispatch: Dispatch;
-  navigation: any;
-}
-
-interface DefaultTextMessageProps extends DefaultTextMessageNavigationProps {
-  idForAnimation: number;
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
-  id: number;
-  flatList: React.MutableRefObject<any>;
-  author: User;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-  pinnedMessageScreen: boolean;
-  messages: MessageProps[];
-  listOfPinnedMessages: Array<number>
-}
-
-interface DefaultTextMessageState {
-  animate: boolean;
-  heightOfMessage: number;
-  selected: boolean;
-  message: string;
-}
-
-interface componentPageProps {
-  X: number;
-  Y: number;
-}
-
-interface coordProps {
-  locationX_In: number;
-  locationY_In: number;
-}
-
-let size: any[] = [];
+let size: sizeProps[] = [];
 
 class DefaultTextType extends Component<DefaultTextMessageProps> {
   state: DefaultTextMessageState = {
@@ -97,7 +61,15 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
 
   onLayout = (event: any) => {
     const { width, height } = event.nativeEvent.layout;
-    size = [...size, { ID: this.props.id, layout: { width, height } }];
+    const idx = size.findIndex(m => m.ID === this.props.id);
+    if(idx >= 0) {
+      if(size[idx].layout.height !== height || size[idx].layout.width !== width) {
+        size[idx].layout.height = height;
+        size[idx].layout.width = width;
+      }
+    } else {
+      size = [...size, { ID: this.props.id, layout: { width, height } }];
+    }
   };
 
   measureHandler = async () => {
@@ -149,8 +121,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
       componentPageY: componentPage.Y,
       pageX: pageX,
       pageY: pageY,
-      width: component.layout.width,
-      height: component.layout.height,
+      width: component!.layout.width,
+      height: component!.layout.height,
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
       pinned: this.props.listOfPinnedMessages.findIndex(m => m === this.props.message.messageId) >= 0,

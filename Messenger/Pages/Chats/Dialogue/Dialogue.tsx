@@ -8,15 +8,13 @@ import DeleteMessageModal from '../SemiComponents/DeleteMessageModal';
 import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView';
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 import { connect, useDispatch } from 'react-redux';
-import SelfProfile from '../../../dao/Models/SelfProfile';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 import DialogueMessages from './components/DialogueMessages';
 import Header from '../SemiComponents/Header';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
-import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage, updateCoordinationsOfMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import { SOFT_MENU_BAR_HEIGHT, height, width } from '../SemiComponents/ChatConstants';
+import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 
 let coord: Layout;
 let messageIdForReplyAndEdit: number;

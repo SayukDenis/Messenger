@@ -18,6 +18,11 @@ export interface DialogueFooterProps {
   deleteSelectedMessages: () => void;
 }
 
+export interface DialogueFooterState {
+  keyboardActive: boolean;
+  text: string;
+}
+
 export interface sendMessageProps {
   text: string; 
   setText: (arg0: string)=>void;

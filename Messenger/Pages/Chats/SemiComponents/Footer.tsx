@@ -1,11 +1,10 @@
-import { View, TextInput, Animated, Keyboard, KeyboardEvent,  EasingFunction, Easing } from 'react-native';
+import { View, TextInput, Animated, EasingFunction, Easing } from 'react-native';
 import React, { useState, memo, useEffect, useRef } from 'react';
 import styles from './Styles/Footer';
 import ReplyAndEditMenu from './ReplyAndEditMenu';
 import { DialogueFooterProps } from './Interfaces/IDialoueFooter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux';
-import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
 import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
 import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
 import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
@@ -14,7 +13,6 @@ import CenterPartOfFooter from './HelperComponents/Footer/CenterPartOfFooter';
 
 const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp, selecting, deleteSelectedMessages }:DialogueFooterProps) => {
 
-  const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
   const [keyboardActive, setKeyboardActive] = useState(false);
   const [copyPopUpTranslate, setCopyPopUpTranslate] = useState(new Animated.Value(0));
 
@@ -69,7 +67,6 @@ const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessag
 
   return(
     <Animated.View>
-      <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
       <ReplyAndEditMenu 
         isReply={isReply} 
         replyMessage={replyMessage} 

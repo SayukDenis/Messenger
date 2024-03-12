@@ -7,23 +7,24 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage, setScrollStateTappedMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON } from '../ChatConstants';
+import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { ReplyTextTypeProps, ReplyTextTypeState, componentPageProps, coordProps } from './Interfaces/IReplyTextType';
+import { ReplyTextTypeProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
 import { functionalStyles, styles } from './Styles/ReplyTextType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
+import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 
-let size:any[] = [];
+let size: sizeProps[] = [];
 
 class ReplyTextType extends Component<ReplyTextTypeProps> {
   state: ReplyTextTypeState = {
@@ -39,7 +40,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   componentDidMount() { 
     this.setState({ 
-      replyMessage: this.props.messages.find(m => m.messageId==this.props.message.messageResponseId)?.content,
+      replyMessage: this.props.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content,
       message: this.props.message.content,
     });
   }
@@ -86,6 +87,10 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       this.setState({ replyMessage: nextReplyMessage })
       return true;
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
+      return true;
+    } else if(this.state.widthOfReply !== nextState.widthOfMessage) {
+      return true;
+    } else if(this.state.widthOfReply !== nextState.widthOfReply) {
       return true;
     }
     
@@ -134,7 +139,15 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   onLayout = (event: any) => {
     const { width, height } = event.nativeEvent.layout;
-    size = [...size, { ID: this.props.id, layout: { width, height } }];
+    const idx = size.findIndex(m => m.ID === this.props.id);
+    if(idx >= 0) {
+      if(size[idx].layout.height !== height || size[idx].layout.width !== width) {
+        size[idx].layout.height = height;
+        size[idx].layout.width = width;
+      }
+    } else {
+      size = [...size, { ID: this.props.id, layout: { width, height } }];
+    }
     this.setState({ widthOfMessage: width });
   };
 
@@ -176,8 +189,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       componentPageY: componentPage.Y,
       pageX: pageX,
       pageY: pageY,
-      width: component.layout.width,
-      height: component.layout.height,
+      width: component!.layout.width,
+      height: component!.layout.height,
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
       pinned: this.props.listOfPinnedMessages.findIndex(m => m === this.props.message.messageId) >= 0,
@@ -238,6 +251,12 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
         this.props.setMessageMenuVisible(layout, true);
       });
     }
+
+    if(this.props.pinnedMessageScreen) {
+      await this.handlePress(event).then((layout) => {
+        this.props.setMessageMenuVisible(layout, true);
+      });
+    }
   }
 
   getSelectOffsetHorizontal = () => {
@@ -292,7 +311,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               author={author}
               selecting={selecting}
               selected={selected}
-              handleLinkTo={this.handleLinkTo}
+              pinnedMessageScreen={this.props.pinnedMessageScreen}
+              handleLinkTo={this.props.pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
               onLayout={(event:any) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
             />
             <TouchableOpacity 
@@ -307,6 +327,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
                 />
               }
               <View 
@@ -338,6 +359,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
                 />
               }
               {selecting && <SelectButton 

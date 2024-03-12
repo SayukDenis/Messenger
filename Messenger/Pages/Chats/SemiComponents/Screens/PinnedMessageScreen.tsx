@@ -1,56 +1,18 @@
 import { View, Text, TouchableOpacity, FlatList, Animated } from 'react-native';
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import HeaderBackButton from '../SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_PADDING_VERTICAL, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, height, width } from '../ChatConstants';
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, height, width } from '../ChatConstants';
 import MessageItem from '../MessageItem';
-import User from '../../../../dao/Models/User';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import MessageMenu from '../MessageMenu';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import DeleteMessageModal from '../DeleteMessageModal';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
-
-interface NavigationProps {
-  route?: {
-    params: {
-      navigation: any;
-      listOfPinnedMessages: MessageProps[];
-      listOfMessages: MessageProps[];
-      setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void};
-      author: User;
-      users: User[];
-      messageID: number;
-      unpinAllMessagesHandler: () => void;
-      userMessageLastWatched: ILastWatchedMessage;
-      onCopyPress: () => void;
-      onUnpinPress: (message: MessageProps) => void;
-      onDeletePress: (message: MessageProps) => void;
-    }
-  };
-}
-
-interface PinnedMessageScreenProps extends NavigationProps {
-  
-}
-
-interface PinnedMessageScreenState {
-  selecting: boolean;
-  deleteModalVisisble: boolean;
-  messageMenuVisible: boolean;
-  messageID: number;
-  listOfPinnedMessages: MessageProps[];
-  offsetForMessageMenu: Animated.Value;
-}
+import { PinnedMessageScreenProps, PinnedMessageScreenState, coordY } from '../Interfaces/IPinnedMessageScreen';
 
 let coord: Layout;
-export interface coordY {
-  id: number;
-  y: number;
-  height: number;
-}
 let coordsY: coordY[] = [];
 
 class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {

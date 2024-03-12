@@ -1,20 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React, { PureComponent } from 'react';
-import User from '../../../../../dao/Models/User';
 import { DEFAULT_CHARS_PER_LINE } from '../../ChatConstants';
 import { styles } from '../Styles/ReplyTextType';
-import { MessageProps } from '../../Interfaces/GeneralInterfaces/IMessage';
 import LineSeparator from '../../HelperComponents/General/LineSeparator';
-
-interface ReplyMessageProps {
-  message: MessageProps;
-  replyMessage: MessageProps;
-  author: User;
-  selecting: boolean;
-  selected: boolean;
-  handleLinkTo: (messageID: number) => void;
-  onLayout: (event:any) => void;
-}
+import { ReplyMessageProps } from './Interfaces/IReplyMessage';
 
 class ReplyMessage extends PureComponent<ReplyMessageProps> {
   isUser = this.props.message.author.userId == this.props.author.userId;
@@ -27,7 +16,12 @@ class ReplyMessage extends PureComponent<ReplyMessageProps> {
         { !this.isUser&&<LineSeparator height={'175%'} color='blue' /> }
         <TouchableOpacity 
           activeOpacity={1} 
-          onPress={() => { this.props.handleLinkTo(this.props.message!.messageResponseId!) }}
+          onPress={(event) => { 
+            if(!this.props.pinnedMessageScreen)
+              this.props.handleLinkTo(this.props.message!.messageResponseId!);
+            else
+              this.props.handleLinkTo(event);
+          }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}
         >
           <View style={[this.isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
