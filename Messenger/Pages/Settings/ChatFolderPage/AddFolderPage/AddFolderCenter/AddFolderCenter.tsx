@@ -30,8 +30,8 @@ const AddFolderCenter  = ()=>{
                 style ={{width:"100%"}}/>
             </ConteinerForAddFolderComp>
             <Text style ={StyleAddFolderCenter.styleAddFolderText}>Add chat</Text>
-            <TouchableOpacity><AddExeptions text="Add chat">
-                </AddExeptions>
+            <TouchableOpacity>
+                <AddExeptions text="Add chat"/>
             </TouchableOpacity>
         </View>
     )

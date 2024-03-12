@@ -16,10 +16,17 @@ import  StyleLogOutModalWindow from "..//..//..//MainSettingPage//settingsPage//
 const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
 
     const [isModalVisible, setModalVisible] = useState(false);
-        const toggleModal = () => {
-            setModalVisible(!isModalVisible);
-        };
-
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+    const initialSwitchStates = Array(2).fill(false);
+    const [switchStates, setSwitchStates] = useState (initialSwitchStates);
+    const SwitchStateFunck = (index: any) => {
+        const newSwitchStates = [...switchStates];
+        newSwitchStates[index] = !newSwitchStates[index];
+        setSwitchStates(newSwitchStates);
+        console.log(switchStates + "      fffff" );
+    };
     let SwitchButtons : string[] = ["Text notification","Sound"];
     const NameOfPage = route.params.NameOfPage;
     const dispatch = useDispatch();
@@ -50,7 +57,9 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
             <View style = {{marginTop:"5%"}}>
                 {SwitchButtons.map((switchButtonText, index) => (
                     <View style = {{marginBottom:2}}>
-                        <TouchableOpacity key={index} ><SwitchButtonContainer text={switchButtonText} switchState= {false} ></SwitchButtonContainer></TouchableOpacity>
+                        <TouchableOpacity key={index} onPress={()=>SwitchStateFunck(index)}>
+                            <SwitchButtonContainer updateState={SwitchStateFunck} index={index} text={switchButtonText} switchState= {switchStates[index]} />
+                        </TouchableOpacity>
                     </View>
                 ))}
             </View>

@@ -9,12 +9,9 @@ interface ContainerForButtonForSettings {
 const BlockUserContainer: React.FC<ContainerForButtonForSettings> = ({ children }) => {
   return (
     <ContainerForButtonForSettings>
-    <View style={{ alignItems: "center", position: "relative", flexDirection:'row', justifyContent:'center', marginLeft:5 }}>
+    <View style={{ alignItems: "center", position: "relative", flexDirection:'row', justifyContent:"space-between", marginLeft:5, width:'95%' }}>
     {children}  
     </View>
-     
-        
-      
     </ContainerForButtonForSettings>
   );
 };

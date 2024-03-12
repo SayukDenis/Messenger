@@ -14,6 +14,11 @@ import { SetFalseStateForUserInfo } from '../../../../ReducersAndActions/Actions
 const Settingspage: React.FC<any> = ({ navigation })=>{
   let isVisibleUserInfo = useSelector((state:any)=>state.SettingsPagesReducers.SetVisibleTextInput.VisibleForUserInfo);
 
+  const initialSwitchStates = Array(6).fill(false);
+  useEffect(() => {
+    navigation.setParams('Notification', { initialSwitchStates: initialSwitchStates });
+  }, []);
+
   const dispatch = useDispatch();
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {

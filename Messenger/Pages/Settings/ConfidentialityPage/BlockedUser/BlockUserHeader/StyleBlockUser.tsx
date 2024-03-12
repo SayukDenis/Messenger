@@ -1,7 +1,5 @@
 import { StyleSheet, Dimensions, StatusBar,Platform  } from "react-native";
-
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
+import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
 
 const StyleBlockUserHeader = StyleSheet.create({
 
@@ -9,7 +7,7 @@ const StyleBlockUserHeader = StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         width: '100%',
-        height:windowHeight*0.07,
+        height:screenHeight*0.07,
         paddingLeft:'2%',
         paddingRight:'2%',
     },
@@ -35,6 +33,9 @@ const StyleBlockUserHeader = StyleSheet.create({
     UnblockButt:{
         marginRight:"5%",
         alignSelf:'center',
+        width:screenWidth*0.2,
+        height:screenHeight*0.1,
+        justifyContent:'center',
     }
     
 });

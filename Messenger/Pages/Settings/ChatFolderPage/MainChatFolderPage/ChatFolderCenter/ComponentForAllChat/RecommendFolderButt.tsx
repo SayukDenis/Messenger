@@ -26,7 +26,6 @@ const RecommendFolderButt: React.FC<ButtonForSettingsProps> = ({ text }) => {
           fontSize: 16,
           marginLeft: 15,
           alignSelf: "center",
-          color: "#6A38AD",
         }}
       >
         {text}

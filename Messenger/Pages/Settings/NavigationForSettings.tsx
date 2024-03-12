@@ -87,6 +87,7 @@ export const ChatFolderPageNAvigator = () => {
       <Stack.Screen name="AddFolderPage" component={AddFolderPage} />
       <Stack.Screen name="Chatfolders" component={ChatFolderPage} />
       <Stack.Screen name="AddNewChatToFolder" component={AddNewChatToFolder} />
+      <Stack.Screen name="AddExeptionsNotifiPage" component={AddExeptionsNotifiPage} />
     </Stack.Navigator>
   );
 };

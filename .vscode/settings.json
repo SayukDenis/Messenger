@@ -3,5 +3,6 @@
         "DATETIME",
         "generatefield",
         "messageid"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }

@@ -1,16 +1,24 @@
 import { State } from 'react-native-gesture-handler';
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'; 
 
 const inisialStateNewfolder ={
     listOfNewFolder:[],
 }
 const inisialStaterecomendedfolder ={
-  recomdendedFolders:["Channels", "Groups", "Important", "News", "Personal chats"],
-  numberOfRecommendedFolders: 5,
+  recomdendedFolders:["Channels", "Groups", "News", "Personal chats"],
+  numberOfRecommendedFolders: 4,
 }
 
 const TextInput ={
   TextInput:""
+}
+
+const VisibleOfRadioButtons ={
+  VisibleOfRadioButtons:false,
+  BlockedUsersList :[{id:0, userName : "Денис"},{id:1, userName : "Кирило"},{id:2, userName : "Роман"},{id:3, userName : "Максим"},
+  {id:4, userName : "Зеновій"},{id:5, userName : "Василь"}],
+  UnblockUsersId : [],
+  counter:0
 }
 
 const SetVisibleTextInput ={
@@ -39,6 +47,50 @@ const inisialStateExeptionForNotificationPrivateChats ={
     'Travel Channel','Science Channel','HGTV',
   ] 
 }
+
+
+
+const RadioButtonsReducer = (state = VisibleOfRadioButtons, action:any) => {
+  switch (action.type) {
+    case 'SET_VISIVLE_FOR_RADIO_BUTTONS':
+      console.log(state.VisibleOfRadioButtons)
+      return {
+        ...state,
+        VisibleOfRadioButtons:!state.VisibleOfRadioButtons,
+      };
+    case 'UNBLOCK_BLOKED_USER':
+      for(let i =0; i<state.UnblockUsersId.length;i++){
+        for(let j =0; j<state.BlockedUsersList.length;j++){
+          if(state.UnblockUsersId[i]==state.BlockedUsersList[j].id){
+            state.BlockedUsersList.splice(j,1);
+          }
+        }
+      }
+      return {
+        ...state,
+        BlockedUsersList: state.BlockedUsersList,
+        UnblockUsersId: [],
+        counter: state.counter+1,
+      };
+    case 'ADD_BLOCKUSER_ID':
+      console.log(JSON.stringify(state.UnblockUsersId))
+      return {
+         ...state,
+         UnblockUsersId: [...state.UnblockUsersId,action.payload],
+      };
+    case 'DELETE_BLOCKUSER_ID':
+      const idBlockedUser = action.payload;
+      const updatedListOfId = state.UnblockUsersId.filter(id => id !== idBlockedUser);
+      console.log(updatedListOfId)
+      return {
+          ...state,
+          UnblockUsersId: updatedListOfId,
+      };               
+    default:
+      return state;
+  }
+};
+
 
 const NewFolderName= (state = TextInput, action:any) => {
   switch (action.type) {
@@ -190,6 +242,7 @@ const ListOfSettingsReducer = combineReducers({
     AddRecomendedFoldert:AddRecomendedFoldertReducer,
     SetVisibleTextInput:SetVisibleTextInputForComp,
     AddNotifiExeptions:AddExeptionsNotification,
+    RadioButtons:RadioButtonsReducer,
 });
 
 export default ListOfSettingsReducer;

@@ -5,16 +5,20 @@ import ContainerForButtonForSettings from "../../../../../SemiComponents/Contain
 interface SwitchButtonContainerProps {
   text: string;
   switchState:boolean,
+  updateState:(index :number) => void,
+  index:number
 }
 
-const SwitchButtonContainer: React.FC<SwitchButtonContainerProps> = ({ text,switchState}) => {
-    const [isEnabled, setIsEnabled] = useState(false);
+const SwitchButtonContainer: React.FC<SwitchButtonContainerProps> = ({ text,switchState,index , updateState}) => {
+    const [isEnabled, setIsEnabled] = useState(switchState);
     const toggleSwitch = () => {
       setIsEnabled(previousState => !previousState);
+      updateState(index);
       console.log(text)
     };
     useEffect (()=>{
       setIsEnabled(switchState);
+      console.log(switchState + " our state now")
     },[switchState])
   return (
     <ContainerForButtonForSettings>
