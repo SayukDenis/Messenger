@@ -15,9 +15,7 @@ import MessageMenuEditButton from "./SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "./SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE } from "./ChatConstants";
-
-let size:{ width:number, height:number } = { width: 0, height: 0 };
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_TRIANGLE_SIZE } from "./ChatConstants";
 
 const containerWidth = new Animated.Value(0); 
 const firstContainerTranslate = new Animated.Value(0); 
@@ -294,11 +292,6 @@ class MessageMenu extends Component<MessageMenuProps> {
     }
   };
 
-  onLayout = (event:any) => {
-    const { width, height } = event.nativeEvent.layout;
-    size = { width, height }
-  };
-
   handleMenuPosition = () => {
     const { isUser, coord } = this.props;
     const MESSAGE_HORIZONTAL_PADDING = 10;
@@ -306,12 +299,12 @@ class MessageMenu extends Component<MessageMenuProps> {
 
     if(isUser) {
       return { 
-        top: ((coord && coord.pageY) ? coord.pageY : 0) - size.height, 
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - MESSAGE_MENU_HEIGHT, 
         right: MESSAGE_HORIZONTAL_PADDING*2
       }
     } else {
       return { 
-        top: ((coord && coord.pageY) ? coord.pageY : 0) - size.height, 
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - MESSAGE_MENU_HEIGHT, 
         left: MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
       }
     }
@@ -332,8 +325,10 @@ class MessageMenu extends Component<MessageMenuProps> {
   };
 
   render(): React.ReactNode {
-    if(!this.props.isVisible) 
+    if(!this.props.isVisible) {
+      console.log('aboba');
       return null;
+    }
     const { onOverlayPress, coord, messages, isUser, userMessageLastWatched, pinnedMessageScreen, users } = this.props;
 
     return (
@@ -365,7 +360,6 @@ class MessageMenu extends Component<MessageMenuProps> {
           />}
         </View>
         <View 
-          onLayout={this.onLayout}
           style={[styles.buttonsContainer, this.handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT*4+MESSAGE_TRIANGLE_SIZE }]}
         >
           {(pinnedMessageScreen?this.pinnedMessageScreenButtons:this.buttons).map((button, index) => {
