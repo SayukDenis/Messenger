@@ -5,6 +5,19 @@ import FooterExportButton from '../../SVG/FooterExportButton';
 import { CenterPartOfFooterProps } from './Interfaces/ICenterPartOfFooter';
 
 class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
+
+  shouldComponentUpdate(nextProps: Readonly<CenterPartOfFooterProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    if(this.props.selecting !== nextProps.selecting) {
+      return true;
+    } else if(this.props.text !== nextProps.text) {
+      return true;
+    } else if(this.props.textInput.current !== nextProps.textInput.current) {
+      return true;
+    }
+
+    return false;
+  }
+
   render(): React.ReactNode {
     const { selecting, textInput, text, setText, sendMessageHandler } = this.props;
 

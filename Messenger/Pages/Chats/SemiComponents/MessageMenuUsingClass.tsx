@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { TouchableOpacity, View, Text, Animated, EasingFunction, Easing } from "react-native";
 import React from 'react';
-import { MessageMenuProps } from "./Interfaces/IMessageMenu";
+import { MessageMenuProps, MessageMenuState } from "./Interfaces/IMessageMenu";
 import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
@@ -28,8 +28,18 @@ const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
 class MessageMenu extends Component<MessageMenuProps> {
-  state = {
+  state: MessageMenuState = {
     state: 1,
+  }
+
+  shouldComponentUpdate(nextProps: Readonly<MessageMenuProps>, nextState: Readonly<MessageMenuState>, nextContext: any): boolean {
+    if(this.state.state !== nextState.state) {
+      return true;
+    } else if(this.props.isVisible !== nextProps.isVisible) {
+      return true;
+    }
+
+    return false;
   }
 
   buttons = [

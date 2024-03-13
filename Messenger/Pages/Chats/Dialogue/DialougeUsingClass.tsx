@@ -16,6 +16,7 @@ import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMe
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { DialogueProps, DialogueState } from './IDialogue';
+import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
 
 let coord: Layout;
 let messageIdForReplyAndEdit: number;
@@ -66,11 +67,36 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   shouldComponentUpdate(nextProps: Readonly<DialogueProps>, nextState: Readonly<DialogueState>, nextContext: any): boolean {
-    if(nextState !== this.state) {
-      console.log("Did update");
+    if(this.props !== nextProps) {
+      console.log('Dialogue update props');
       return true;
-    } else if(this.props !== nextProps) {
-      console.log("Did update");
+    }
+
+    console.log('Dialogue update state');
+    
+    const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, copy, selecting, listOfPinnedMessages, pinnedMessage } = this.state;
+
+    if(messageID !== nextState.messageID) {
+      return true;
+    } else if(messageMenuVisible !== nextState.messageMenuVisible) {
+      return true;
+    } else if(checkListOfMessagesDifference(listOfMessages, nextState.listOfMessages)) {
+      return true;
+    } else if(isReply !== nextState.isReply) {
+      return true;
+    } else if(isEdit !== nextState.isEdit) {
+      return true;
+    } else if(editMessage.messageId !== nextState.editMessage.messageId) {
+      return true;
+    } else if(deleting !== nextState.deleting) {
+      return true;
+    } else if(copy !== nextState.copy) {
+      return true;
+    } else if(selecting !== nextState.selecting) {
+      return true;
+    } else if(checkListOfMessagesDifference(listOfPinnedMessages, nextState.listOfPinnedMessages)) {
+      return true;
+    } else if(pinnedMessage.messageId !== nextState.pinnedMessage.messageId) {
       return true;
     }
 

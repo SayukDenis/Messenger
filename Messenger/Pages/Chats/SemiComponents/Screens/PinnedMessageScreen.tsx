@@ -37,12 +37,12 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       return true
     }
 
-
-
     return false;
   }
   shouldComponentUpdate(nextProps: Readonly<PinnedMessageScreenProps>, nextState: Readonly<PinnedMessageScreenState>, nextContext: any): boolean {
     if(!this.checkListOfMessagesEquality(this.state.listOfPinnedMessages, nextState.listOfPinnedMessages)) {
+      return true;
+    } else if(this.state.selecting !== nextState.selecting) {
       return true;
     } else if(this.state.messageMenuVisible !== nextState.messageMenuVisible) {
       return true;

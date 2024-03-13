@@ -16,7 +16,7 @@ class LeftPartOfFooter extends Component<LeftPartOfFooterProps> {
   shouldComponentUpdate(nextProps: Readonly<LeftPartOfFooterProps>, nextState: Readonly<LeftPartOfFooterState>, nextContext: any): boolean {
     if(this.state.video !== nextState.video) {
       return true;
-    } else if(this.props != nextProps) {
+    } else if(this.props.selecting !== nextProps.selecting) {
       return true;
     }
 

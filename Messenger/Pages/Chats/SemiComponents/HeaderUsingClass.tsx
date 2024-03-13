@@ -14,6 +14,16 @@ class Header extends Component<DialogueHeaderProps> {
 
   }
 
+  shouldComponentUpdate(nextProps: Readonly<DialogueHeaderProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    if(this.props.selecting !== nextProps.selecting) {
+      return true;
+    } else if(this.props.counterOfSelectedMessages !== nextProps.counterOfSelectedMessages) {
+      return true;
+    }
+
+    return false;
+  }
+
   componentDidUpdate(prevProps: Readonly<DialogueHeaderProps>, prevState: Readonly<DialogueHeaderState>, snapshot?: any): void {
     if(this.props.selecting !== prevProps.selecting && this.props.selecting && this.props.counterOfSelectedMessages !== prevProps.counterOfSelectedMessages && this.props.counterOfSelectedMessages <= 0) this.props.cancelSelection();
   }
