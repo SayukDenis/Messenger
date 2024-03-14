@@ -29,3 +29,5 @@ export const SIZE_OF_SELECT_BUTTON = 20;
 export const MESSAGE_BUTTON_HEIGHT = height*0.029;
 export const MESSAGE_TRIANGLE_SIZE = height*0.011;
 export const MESSAGE_MENU_HEIGHT = MESSAGE_BUTTON_HEIGHT*7+MESSAGE_TRIANGLE_SIZE;
+
+export const FLATLIST_HEIGHT = height*0.762;

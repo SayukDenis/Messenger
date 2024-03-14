@@ -28,7 +28,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   componentDidMount(): void {
     this.setState({ 
       messageID: this.props.route?.params.messageID, 
-      listOfPinnedMessages: this.props.route?.params.listOfPinnedMessages.reverse()
+      listOfPinnedMessages: [...this.props.route?.params.listOfPinnedMessages!].sort((m1, m2) => m2.messageId! - m1.messageId!)
     })
   }
 

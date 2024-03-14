@@ -11,7 +11,7 @@ import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON } from '../ChatConstants';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
@@ -230,7 +230,11 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
     if(this.props.flatList.current) {
       dispatch(setAnimationOfBackgroundForScrolledMessage(message.messageResponseId));
-      flatList.current.scrollToIndex({ index: messages.length - messageID, animated: true, viewPosition: 0.5 });
+      const mes = this.props.messagesWithCoords.find(m => m.id === messageID);
+      flatList.current.scrollToOffset({ 
+        animated: true, 
+        offset: mes!.coords - ((FLATLIST_HEIGHT - mes!.height) / 2)
+      });
     }
   };
   
@@ -392,6 +396,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
 const mapStateToProps = (state: any) => ({
   idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
 export default connect(mapStateToProps)(ReplyTextType);
