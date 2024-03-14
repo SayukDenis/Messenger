@@ -44,7 +44,7 @@ class Footer extends Component<DialogueFooterProps> {
 
   componentDidUpdate(prevProps: Readonly<DialogueFooterProps>, prevState: Readonly<DialogueFooterState>, snapshot?: any): void {
     const { isEdit, isReply, editMessage } = this.props;
-    if(isEdit === prevProps.isEdit) return;
+    if(isEdit === prevProps.isEdit && isReply === prevProps.isReply) return;
 
     if (isEdit && editMessage) {
       this.textInput.current && this.textInput.current.focus();

@@ -18,4 +18,5 @@ export interface DialogueState {
   selecting: boolean;
   listOfPinnedMessages: MessageProps[];
   pinnedMessage: MessageProps;
+  messageIdForReplyAndEdit: number;
 }

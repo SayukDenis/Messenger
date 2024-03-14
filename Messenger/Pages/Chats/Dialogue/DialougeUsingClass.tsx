@@ -19,7 +19,6 @@ import { DialogueProps, DialogueState } from './IDialogue';
 import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
 
 let coord: Layout;
-let messageIdForReplyAndEdit: number;
 let deletedMessagesId: number[] = [];
 let author: User;
 let users: User[];
@@ -53,7 +52,8 @@ class Dialogue extends Component<DialogueProps> {
     copy: false,
     selecting: false, 
     listOfPinnedMessages: [],
-    pinnedMessage: {} as MessageProps
+    pinnedMessage: {} as MessageProps,
+    messageIdForReplyAndEdit: -1
   }
 
   componentDidMount(): void {
@@ -106,7 +106,8 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   replyHandler = () => {
-    this.setState({ isReply: !this.state.isReply  });
+    if(!this.state.isReply)
+      this.setState({ isReply: !this.state.isReply  });
     this.setReplyMessageHandler();
   };
 
@@ -135,12 +136,10 @@ class Dialogue extends Component<DialogueProps> {
   handleMessagePressOrSwipe = (coordinations:Layout, pressed:boolean, callback: () => void) => {
     coord = coordinations;
     if(pressed) {
-      this.setState({ messageMenuVisible: true, messageID: coordinations.ID });
-      messageIdForReplyAndEdit = coordinations.ID;
+      this.setState({ messageMenuVisible: true, messageID: coordinations.ID, messageIdForReplyAndEdit: coordinations.ID });
       messageMenuCallback = callback;
     } else {
-      this.setState({ messageID: coordinations.ID });
-      messageIdForReplyAndEdit = coordinations.ID;
+      this.setState({ messageID: coordinations.ID, messageIdForReplyAndEdit: coordinations.ID });
       this.replyHandler();
     }
   };
@@ -255,7 +254,7 @@ class Dialogue extends Component<DialogueProps> {
   
   render(): React.ReactNode {
     const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && m.content);
-    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, copy, deleting } = this.state;
+    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, copy, deleting, messageIdForReplyAndEdit } = this.state;
     const { navigation } = this.props;
 
     return  (
@@ -325,7 +324,7 @@ class Dialogue extends Component<DialogueProps> {
             messageID={messageID} 
             isEdit={isEdit} 
             editMessage={editMessage} 
-            replyMessage={isReply?this.state.listOfMessages.find(m => m.messageId==messageIdForReplyAndEdit)!:{} as MessageProps} 
+            replyMessage={isReply ? listOfMessages.find(m => m.messageId === messageIdForReplyAndEdit)! : {} as MessageProps} 
             onSendMessageOrCancelReplyAndEdit={this.sendMessageOrCancelReplyAndEditHandler} 
             copyMessagePopUp={copy}
             endCopyMessagePopUp={this.setCopyHandler}
