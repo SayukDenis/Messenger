@@ -205,13 +205,14 @@ class Dialogue extends Component<DialogueProps> {
       const pinnedMsgs = listOfPinnedMessages.filter(m => m.messageId !== message.messageId);
 
       if(pinnedMsgs.length>0)
-        this.setState({ pinnedMessages: pinnedMsgs[pinnedMsgs.length-1] });
+        this.setState({ pinnedMessage: pinnedMsgs[pinnedMsgs.length-1] });
       else 
-        this.setState({ pinnedMessages: {} as MessageProps });
+        this.setState({ pinnedMessage: {} as MessageProps });
 
       this.setState({ listOfPinnedMessages: [...pinnedMsgs] });
     } else {
-      this.setState({ listOfPinnedMessages: [...listOfPinnedMessages, message] });
+      console.log('Add pin message');
+      this.setState({ listOfPinnedMessages: [...listOfPinnedMessages, message].sort((m1, m2) => m1.messageId! - m2.messageId!) });
     }
   }
 
@@ -279,6 +280,7 @@ class Dialogue extends Component<DialogueProps> {
           <Header 
             chatType={dialogue}
             picture={dialogue.linkToPhoto}
+            displayName={author.name}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage != undefined ? pinnedMessage : {} as MessageProps}
             selecting={selecting}
@@ -296,6 +298,8 @@ class Dialogue extends Component<DialogueProps> {
               onDeletePress: this.onDeletePress,
               users
             }}
+            countOfPinnedMessages={listOfPinnedMessages.length}
+            currentNumOfPinnedMessage={listOfPinnedMessages.findIndex(m => m.messageId === pinnedMessage.messageId) + 1}
             deleteAllButtonHandler={this.deleteAllButtonHandler}
             //dispatch={this.props.route.params.dispatch}
           />

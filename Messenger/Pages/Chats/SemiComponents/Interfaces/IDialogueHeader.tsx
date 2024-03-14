@@ -9,6 +9,9 @@ import { Dispatch } from "redux";
 
 export interface DialogueHeaderProps {
   counterOfSelectedMessages: number;
+  currentNumOfPinnedMessage: number;
+  countOfPinnedMessages: number;
+  displayName: string;
   picture: string | undefined;
   activityTime: string | Date;
   pinnedMessage: MessageProps;
