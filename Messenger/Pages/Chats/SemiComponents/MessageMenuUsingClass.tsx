@@ -17,13 +17,13 @@ import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummy
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
 import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_TRIANGLE_SIZE } from "./ChatConstants";
 
-const containerWidth = new Animated.Value(0); 
-const firstContainerTranslate = new Animated.Value(0); 
-const secondContainerTranslate = new Animated.Value(0);
-const thirdContainerTranslate = new Animated.Value(0);
-const fourthContainerTranslate = new Animated.Value(0);
-const fifthContainerTranslate = new Animated.Value(0);
-const sixthContainerTranslate = new Animated.Value(0);
+  const containerWidth = new Animated.Value(0); 
+  const firstContainerTranslate = new Animated.Value(0); 
+  const secondContainerTranslate = new Animated.Value(0);
+  const thirdContainerTranslate = new Animated.Value(0);
+  const fourthContainerTranslate = new Animated.Value(0);
+  const fifthContainerTranslate = new Animated.Value(0);
+  const sixthContainerTranslate = new Animated.Value(0);
 
 class MessageMenu extends Component<MessageMenuProps> {
   state: MessageMenuState = {
@@ -117,7 +117,8 @@ class MessageMenu extends Component<MessageMenuProps> {
     },
   ];
 
-  durationOfAnimation: number = 10;
+  //#region  Animation constants 
+  durationOfAnimation: number = 15;
   easing: EasingFunction = Easing.linear;
   firstContainerOpacity = firstContainerTranslate.interpolate({
     inputRange: [0, 1],
@@ -177,76 +178,67 @@ class MessageMenu extends Component<MessageMenuProps> {
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
+  //#endregion
 
-  animateOfFirstContainer = Animated.timing(firstContainerTranslate, {
-    toValue: this.state.state, // Верхня позиція (видимий) або поза екраном (не видимий)
-    duration: this.durationOfAnimation, // Тривалість анімації
-    easing: this.easing,
-    useNativeDriver: false,
-  });
-  animateOfSecondContainer = Animated.timing(secondContainerTranslate, {
-    toValue: this.state.state,
-    duration: this.durationOfAnimation,
-    easing: this.easing,
-    useNativeDriver: false,
-  });
-
-  animateOfThirdContainer = Animated.timing(thirdContainerTranslate, {
-    toValue: this.state.state,
-    duration: this.durationOfAnimation,
-    easing: this.easing,
-    useNativeDriver: false,
-  });
-
-  animateOfFourthContainer = Animated.timing(fourthContainerTranslate, {
-    toValue: this.state.state,
-    duration: this.durationOfAnimation,
-    easing: this.easing,
-    useNativeDriver: false,
-  });
-
-  animateOfFifthContainer = Animated.timing(fifthContainerTranslate, {
-    toValue: this.state.state,
-    duration: this.durationOfAnimation,
-    easing: this.easing,
-    useNativeDriver: false,
-  });
+  animateMenu = (close: boolean = false) => {
+    const animateOfFirstContainer = Animated.timing(firstContainerTranslate, {
+      toValue: close ? 0 : 1, // Верхня позиція (видимий) або поза екраном (не видимий)
+      duration: this.durationOfAnimation, // Тривалість анімації
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+    const animateOfSecondContainer = Animated.timing(secondContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
   
-  animateOfSixthContainer = Animated.timing(sixthContainerTranslate, {
-    toValue: this.state.state,
-    duration: this.durationOfAnimation,
-    easing: this.easing,
-    useNativeDriver: false,
-  });
+    const animateOfThirdContainer = Animated.timing(thirdContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+  
+    const animateOfFourthContainer = Animated.timing(fourthContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+  
+    const animateOfFifthContainer = Animated.timing(fifthContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+    
+    const animateOfSixthContainer = Animated.timing(sixthContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
 
-  containerSize = Animated.timing(containerWidth, {
-    toValue: this.state.state,
-    duration: this.durationOfAnimation,
-    useNativeDriver: true,
-  });
+    const containerSize = Animated.timing(containerWidth, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      useNativeDriver: true,
+    });
 
-  componentDidMount(): void {
-      Animated.sequence([
-        this.containerSize,
-        this.animateOfFirstContainer,
-        this.animateOfSecondContainer,
-        this.animateOfThirdContainer,
-        this.animateOfFourthContainer,
-        this.animateOfFifthContainer,
-        this.animateOfSixthContainer,
-      ]).start(() => this.setState({ state: 0 }));
-  }
+    const sequence = [
+      containerSize,
+      animateOfFirstContainer,
+      animateOfSecondContainer,
+      animateOfThirdContainer,
+      animateOfFourthContainer,
+      animateOfFifthContainer,
+      animateOfSixthContainer,
+    ];
 
-  closeMenu = () => {
-    Animated.sequence([
-      this.animateOfSixthContainer,
-      this.animateOfFifthContainer,
-      this.animateOfFourthContainer,
-      this.animateOfThirdContainer,
-      this.animateOfSecondContainer,
-      this.animateOfFirstContainer,
-      this.containerSize,
-    ]).start();
+    Animated.sequence(close ? sequence.reverse() : sequence).start();
   }
 
   helperFunc = (index: number) => {
@@ -326,17 +318,18 @@ class MessageMenu extends Component<MessageMenuProps> {
 
   render(): React.ReactNode {
     if(!this.props.isVisible) {
-      console.log('aboba');
       return null;
     }
     const { onOverlayPress, coord, messages, isUser, userMessageLastWatched, pinnedMessageScreen, users } = this.props;
-
+    
+    this.animateMenu();
+    
     return (
       <TouchableOpacity 
         activeOpacity={1} 
         style={styles.container} 
         onPress={() => {
-          this.closeMenu();
+          this.animateMenu(true);
           setTimeout(() => onOverlayPress(), this.durationOfAnimation*10)
         }}
       >
