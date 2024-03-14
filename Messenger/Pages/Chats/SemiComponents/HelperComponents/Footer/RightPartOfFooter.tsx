@@ -7,6 +7,17 @@ import FooterForwardButton from '../../SVG/FooterForwardButton'
 import { RightPartOfFooterProps } from './Interfaces/IRightPartOfFooter';
 
 class RightPartOfFooter extends Component<RightPartOfFooterProps> {
+
+  shouldComponentUpdate(nextProps: Readonly<RightPartOfFooterProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    if(this.props.selecting !== nextProps.selecting) {
+      return true;
+    } else if(this.props.sendMessage !== nextProps.sendMessage) {
+      return true;
+    }
+
+    return false;
+  }
+
   render(): React.ReactNode {
     const { selecting, sendMessage, sendMessageHandler, pressGalleryButtonHandler } = this.props;
 

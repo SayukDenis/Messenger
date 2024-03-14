@@ -14,22 +14,37 @@ class Header extends Component<DialogueHeaderProps> {
 
   }
 
-  componentDidUpdate(prevProps: Readonly<DialogueHeaderProps>, prevState: Readonly<DialogueHeaderState>, snapshot?: any): void {
-    if(this.props.selecting !== prevProps.selecting && this.props.selecting && this.props.counterOfSelectedMessages !== prevProps.counterOfSelectedMessages && this.props.counterOfSelectedMessages <= 0) this.props.cancelSelection();
+  shouldComponentUpdate(nextProps: Readonly<DialogueHeaderProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    if(this.props.selecting !== nextProps.selecting) {
+      return true;
+    } else if(this.props.counterOfSelectedMessages !== nextProps.counterOfSelectedMessages) {
+      return true;
+    } else if(this.props.currentNumOfPinnedMessage !== nextProps.currentNumOfPinnedMessage) {
+      return true;
+    } else if(this.props.pinnedMessage.messageId !== nextProps.pinnedMessage.messageId) {
+      return true;
+    }
+
+    return false;
   }
 
-  displayName = this.props.propsForPinnedMessageScreen.users[0]?.name;
-  countOfPinnedMessages = this.props.propsForPinnedMessageScreen.listOfPinnedMessages.length;
-  currentNumOfPinnedMessage = this.props.propsForPinnedMessageScreen.listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === this.props.pinnedMessage?.messageId)+1;
+  componentDidUpdate(prevProps: Readonly<DialogueHeaderProps>, prevState: Readonly<DialogueHeaderState>, snapshot?: any): void {
+    if(this.props.selecting !== prevProps.selecting && this.props.selecting && this.props.counterOfSelectedMessages !== prevProps.counterOfSelectedMessages && this.props.counterOfSelectedMessages <= 0) this.props.cancelSelection();
+
+    console.log('Header updated');
+  }
 
   render(): React.ReactNode {
     const { 
       selecting, 
       propsForPinnedMessageScreen, 
       picture, 
+      displayName,
       chatType, 
       activityTime, 
-      counterOfSelectedMessages, 
+      counterOfSelectedMessages,
+      countOfPinnedMessages, 
+      currentNumOfPinnedMessage,
       cancelSelection,
       pinnedMessage,
       dispatch
@@ -46,7 +61,7 @@ class Header extends Component<DialogueHeaderProps> {
             <CenterPartOfHeader 
               picture={picture} 
               dialogue={chatType}
-              displayName={this.displayName} 
+              displayName={displayName} 
               activityTime={activityTime} 
               navigation={propsForPinnedMessageScreen.navigation}
               selecting={selecting} 
@@ -60,8 +75,8 @@ class Header extends Component<DialogueHeaderProps> {
         </HeaderContainer>
         <PinnedMessageView 
           pinnedMessage={pinnedMessage} 
-          current={this.currentNumOfPinnedMessage} 
-          total={this.countOfPinnedMessages} 
+          current={currentNumOfPinnedMessage} 
+          total={countOfPinnedMessages} 
           propsForPinnedMessageScreen={propsForPinnedMessageScreen}
           dispatch={dispatch}
         />

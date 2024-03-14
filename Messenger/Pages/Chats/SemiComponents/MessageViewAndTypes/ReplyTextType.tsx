@@ -11,7 +11,7 @@ import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON } from '../ChatConstants';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
@@ -25,6 +25,8 @@ import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 
 let size: sizeProps[] = [];
+
+let tmpUpdateCounter = 0;
 
 class ReplyTextType extends Component<ReplyTextTypeProps> {
   state: ReplyTextTypeState = {
@@ -46,8 +48,10 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   }
 
   componentDidUpdate(prevProps: ReplyTextTypeProps) {
+    console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
+
     const { animate } = this.state;
-    console.log('animate', animate);
+    //console.log('animate', animate);
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
       this.setState({ animate: false });
@@ -69,28 +73,31 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 
     if(nextProps.idForAnimation === this.props.message.messageId) {
+      console.log('reply #1');
       this.state.animate = true;
       return true;
     } else if(nextProps.selecting != this.props.selecting) {
+      console.log('reply #2');
       this.setState({ selecting: nextProps.selecting });
       if(!nextProps.selecting) this.resetSelected();
       return true;
     } else if(nextState.selected != this.state.selected) {
+      console.log('reply #3');
       this.setState({ selected: nextState.selected })
       return true;
     } else if(this.state.selected !== nextState.selected) {
+      console.log('reply #4');
       return true;
     } else if(this.messageCompareHandler(nextProps.messages)) {
+      console.log('reply #5');
       this.setState({ message: nextMessage })
       return true;
     } else if(this.state.replyMessage && this.state.replyMessage !== nextReplyMessage) {
+      console.log('reply #6');
       this.setState({ replyMessage: nextReplyMessage })
       return true;
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
-      return true;
-    } else if(this.state.widthOfReply !== nextState.widthOfMessage) {
-      return true;
-    } else if(this.state.widthOfReply !== nextState.widthOfReply) {
+      console.log('reply #7');
       return true;
     }
     
@@ -223,7 +230,11 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
     if(this.props.flatList.current) {
       dispatch(setAnimationOfBackgroundForScrolledMessage(message.messageResponseId));
-      flatList.current.scrollToIndex({ index: messages.length - messageID, animated: true, viewPosition: 0.5 });
+      const mes = this.props.messagesWithCoords.find(m => m.id === messageID);
+      flatList.current.scrollToOffset({ 
+        animated: true, 
+        offset: mes!.coords - ((FLATLIST_HEIGHT - mes!.height) / 2)
+      });
     }
   };
   
@@ -385,6 +396,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
 const mapStateToProps = (state: any) => ({
   idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
 export default connect(mapStateToProps)(ReplyTextType);

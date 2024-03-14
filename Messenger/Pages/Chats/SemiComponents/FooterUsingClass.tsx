@@ -26,13 +26,16 @@ class Footer extends Component<DialogueFooterProps> {
 
   shouldComponentUpdate(nextProps: Readonly<DialogueFooterProps>, nextState: Readonly<DialogueFooterState>, nextContext: any): boolean {
     if(this.state.keyboardActive !== nextState.keyboardActive) {
-      console.log(this.state, nextState);
       return true;
     } else if(this.state.text !== nextState.text) {
-      console.log(this.state, nextState);
       return true;
-    } else if(this.props !== nextProps) {
-      console.log('update props');
+    } else if(this.props.isReply !== nextProps.isReply) {
+      return true;
+    } else if(this.props.isEdit !== nextProps.isEdit) {
+      return true;
+    } else if(this.props.selecting !== nextProps.selecting) {
+      return true;
+    } else if(this.props.messageID !== nextProps.messageID) {
       return true;
     }
 
@@ -41,7 +44,7 @@ class Footer extends Component<DialogueFooterProps> {
 
   componentDidUpdate(prevProps: Readonly<DialogueFooterProps>, prevState: Readonly<DialogueFooterState>, snapshot?: any): void {
     const { isEdit, isReply, editMessage } = this.props;
-    if(isEdit === prevProps.isEdit) return;
+    if(isEdit === prevProps.isEdit && isReply === prevProps.isReply) return;
 
     if (isEdit && editMessage) {
       this.textInput.current && this.textInput.current.focus();

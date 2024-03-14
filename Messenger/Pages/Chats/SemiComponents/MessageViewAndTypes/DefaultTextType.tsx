@@ -21,13 +21,9 @@ import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import User from '../../../../dao/Models/User';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import { Dispatch } from 'redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
 import { functionalStyles, styles } from './Styles/DefaultTextType';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
@@ -36,6 +32,8 @@ import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneral
 import { DefaultTextMessageProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
 
 let size: sizeProps[] = [];
+
+let tmpUpdateCounter = 0;
 
 class DefaultTextType extends Component<DefaultTextMessageProps> {
   state: DefaultTextMessageState = {
@@ -197,6 +195,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   }
   
   componentDidUpdate(prevProps: DefaultTextMessageProps) {
+    console.log(`DefaultTextType updated\t#${++tmpUpdateCounter}`);
+
     const { animate } = this.state;
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {

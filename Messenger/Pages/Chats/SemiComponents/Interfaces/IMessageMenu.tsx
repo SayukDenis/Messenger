@@ -20,3 +20,7 @@ export interface MessageMenuProps {
   pinnedMessageScreen: boolean;
   users: User[];
 }
+
+export interface MessageMenuState {
+  state: number;
+}

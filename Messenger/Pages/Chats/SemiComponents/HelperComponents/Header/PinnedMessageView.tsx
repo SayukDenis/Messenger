@@ -10,6 +10,25 @@ import { styles } from './Styles/PinnedMessageView';
 import { PinnedMessageViewProps } from './Interfaces/IPinnedMessageView';
 
 class PinnedMessageView extends Component<PinnedMessageViewProps> {
+
+  shouldComponentUpdate(nextProps: Readonly<PinnedMessageViewProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    console.log('shouldComponentUpdate total:', this.props.total);
+    if(this.props.pinnedMessage.messageId !== nextProps.pinnedMessage.messageId) {
+      return true;
+    } else if(this.props.pinnedMessage.content !== nextProps.pinnedMessage.content) {
+      return true;
+    } else if(this.props.total !== nextProps.total) {
+      return true;
+    } else if(this.props.current !== nextProps.current) {
+      return true;
+    }
+
+    return false;
+  }
+
+  componentDidUpdate(prevProps: Readonly<PinnedMessageViewProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    console.log('PinnedMessageView updated');
+  }
   
   scrollToPinedMessage = () => {
     const { pinnedMessage, dispatch } = this.props;
@@ -19,6 +38,9 @@ class PinnedMessageView extends Component<PinnedMessageViewProps> {
 
   render(): React.ReactNode {
     const { pinnedMessage, total, current, propsForPinnedMessageScreen } = this.props;
+
+    console.log(total);
+    if(total <= 0) return null;
 
     return (
       <View style={styles.mainContainer}>

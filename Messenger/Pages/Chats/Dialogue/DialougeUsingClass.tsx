@@ -16,9 +16,9 @@ import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMe
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { DialogueProps, DialogueState } from './IDialogue';
+import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
 
 let coord: Layout;
-let messageIdForReplyAndEdit: number;
 let deletedMessagesId: number[] = [];
 let author: User;
 let users: User[];
@@ -33,9 +33,6 @@ let messageMenuCallback: (() => void) | undefined;
 class Dialogue extends Component<DialogueProps> {
   constructor(props:any) {
     super(props);
-
-    console.log('#2');
-    console.log(props.route.params.dispatch);
     
     dialogue = props.route.params.chat;
     author = dialogue.users[0];
@@ -55,7 +52,8 @@ class Dialogue extends Component<DialogueProps> {
     copy: false,
     selecting: false, 
     listOfPinnedMessages: [],
-    pinnedMessage: {} as MessageProps
+    pinnedMessage: {} as MessageProps,
+    messageIdForReplyAndEdit: -1
   }
 
   componentDidMount(): void {
@@ -69,11 +67,36 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   shouldComponentUpdate(nextProps: Readonly<DialogueProps>, nextState: Readonly<DialogueState>, nextContext: any): boolean {
-    if(nextState !== this.state) {
-      console.log("Did update");
+    if(this.props !== nextProps) {
+      console.log('Dialogue update props');
       return true;
-    } else if(this.props !== nextProps) {
-      console.log("Did update");
+    }
+
+    console.log('Dialogue update state');
+    
+    const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, copy, selecting, listOfPinnedMessages, pinnedMessage } = this.state;
+
+    if(messageID !== nextState.messageID) {
+      return true;
+    } else if(messageMenuVisible !== nextState.messageMenuVisible) {
+      return true;
+    } else if(checkListOfMessagesDifference(listOfMessages, nextState.listOfMessages)) {
+      return true;
+    } else if(isReply !== nextState.isReply) {
+      return true;
+    } else if(isEdit !== nextState.isEdit) {
+      return true;
+    } else if(editMessage.messageId !== nextState.editMessage.messageId) {
+      return true;
+    } else if(deleting !== nextState.deleting) {
+      return true;
+    } else if(copy !== nextState.copy) {
+      return true;
+    } else if(selecting !== nextState.selecting) {
+      return true;
+    } else if(checkListOfMessagesDifference(listOfPinnedMessages, nextState.listOfPinnedMessages)) {
+      return true;
+    } else if(pinnedMessage.messageId !== nextState.pinnedMessage.messageId) {
       return true;
     }
 
@@ -83,7 +106,8 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   replyHandler = () => {
-    this.setState({ isReply: !this.state.isReply  });
+    if(!this.state.isReply)
+      this.setState({ isReply: !this.state.isReply  });
     this.setReplyMessageHandler();
   };
 
@@ -112,12 +136,10 @@ class Dialogue extends Component<DialogueProps> {
   handleMessagePressOrSwipe = (coordinations:Layout, pressed:boolean, callback: () => void) => {
     coord = coordinations;
     if(pressed) {
-      this.setState({ messageMenuVisible: true, messageID: coordinations.ID });
-      messageIdForReplyAndEdit = coordinations.ID;
+      this.setState({ messageMenuVisible: true, messageID: coordinations.ID, messageIdForReplyAndEdit: coordinations.ID });
       messageMenuCallback = callback;
     } else {
-      this.setState({ messageID: coordinations.ID });
-      messageIdForReplyAndEdit = coordinations.ID;
+      this.setState({ messageID: coordinations.ID, messageIdForReplyAndEdit: coordinations.ID });
       this.replyHandler();
     }
   };
@@ -183,13 +205,14 @@ class Dialogue extends Component<DialogueProps> {
       const pinnedMsgs = listOfPinnedMessages.filter(m => m.messageId !== message.messageId);
 
       if(pinnedMsgs.length>0)
-        this.setState({ pinnedMessages: pinnedMsgs[pinnedMsgs.length-1] });
+        this.setState({ pinnedMessage: pinnedMsgs[pinnedMsgs.length-1] });
       else 
-        this.setState({ pinnedMessages: {} as MessageProps });
+        this.setState({ pinnedMessage: {} as MessageProps });
 
       this.setState({ listOfPinnedMessages: [...pinnedMsgs] });
     } else {
-      this.setState({ listOfPinnedMessages: [...listOfPinnedMessages, message] });
+      console.log('Add pin message');
+      this.setState({ listOfPinnedMessages: [...listOfPinnedMessages, message].sort((m1, m2) => m1.messageId! - m2.messageId!) });
     }
   }
 
@@ -232,10 +255,8 @@ class Dialogue extends Component<DialogueProps> {
   
   render(): React.ReactNode {
     const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && m.content);
-    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, copy, deleting } = this.state;
+    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, copy, deleting, messageIdForReplyAndEdit } = this.state;
     const { navigation } = this.props;
-
-    console.log('#1');
 
     return  (
       <View style={styles.dialogueContainer}>
@@ -259,6 +280,7 @@ class Dialogue extends Component<DialogueProps> {
           <Header 
             chatType={dialogue}
             picture={dialogue.linkToPhoto}
+            displayName={author.name}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage != undefined ? pinnedMessage : {} as MessageProps}
             selecting={selecting}
@@ -276,6 +298,8 @@ class Dialogue extends Component<DialogueProps> {
               onDeletePress: this.onDeletePress,
               users
             }}
+            countOfPinnedMessages={listOfPinnedMessages.length}
+            currentNumOfPinnedMessage={listOfPinnedMessages.findIndex(m => m.messageId === pinnedMessage.messageId) + 1}
             deleteAllButtonHandler={this.deleteAllButtonHandler}
             //dispatch={this.props.route.params.dispatch}
           />
@@ -304,7 +328,7 @@ class Dialogue extends Component<DialogueProps> {
             messageID={messageID} 
             isEdit={isEdit} 
             editMessage={editMessage} 
-            replyMessage={isReply?this.state.listOfMessages.find(m => m.messageId==messageIdForReplyAndEdit)!:{} as MessageProps} 
+            replyMessage={isReply ? listOfMessages.find(m => m.messageId === messageIdForReplyAndEdit)! : {} as MessageProps} 
             onSendMessageOrCancelReplyAndEdit={this.sendMessageOrCancelReplyAndEditHandler} 
             copyMessagePopUp={copy}
             endCopyMessagePopUp={this.setCopyHandler}

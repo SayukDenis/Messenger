@@ -13,7 +13,7 @@ class MessageItem extends Component<MessageItemProps> {
 
     const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users } = this.props;
 
-    if(message.messageType == EMessageType.text && message.messageResponseId && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && m.content) >= 0) {
+    if(message.messageType == EMessageType.text && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && m.content) >= 0) {
       return <ReplyTextTypeUsingClass
         navigation={navigation}
         key={message.messageId} 

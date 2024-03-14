@@ -10,6 +10,21 @@ import { DEFAULT_CHARS_PER_LINE } from './ChatConstants';
 import LineSeparator from './HelperComponents/General/LineSeparator';
 
 class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
+
+  shouldComponentUpdate(nextProps: Readonly<ReplyAndEditMenuProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    if(this.props.isReply !== nextProps.isReply) {
+      return true;
+    } else if(this.props.isEdit !== nextProps.isEdit) {
+      return true;
+    } else if(this.props.replyMessage.messageId !== nextProps.replyMessage.messageId) {
+      return true;
+    } else if(this.props.editMessage.messageId !== nextProps.editMessage.messageId) {
+      return true;
+    }
+    
+    return false;
+  }
+
   render(): React.ReactNode {
     const { isReply, replyMessage, cancelReplyAndEdit, isEdit, editMessage } = this.props;
 

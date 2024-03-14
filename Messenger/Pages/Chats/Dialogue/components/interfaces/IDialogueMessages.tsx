@@ -2,7 +2,7 @@ import User from "../../../../../dao/Models/User";
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
 import { MessageProps } from "../../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
-import { coordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
+import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
 
 
 export interface DialogueMessagesProps {
@@ -25,7 +25,7 @@ export interface DialogueMessagesProps {
   setPinnedMessage: (id: number) => void;
   deletedMessagesId: number[];
   navigation: any;
-  messagesWithCoords: coordinationsOfMessage[];
+  messagesWithCoords: CoordinationsOfMessage[];
 }
 
 export interface MessageViewHandleProps {

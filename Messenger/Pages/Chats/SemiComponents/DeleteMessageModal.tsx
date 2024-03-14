@@ -5,6 +5,15 @@ import { styles } from './Styles/DeleteMessageModal';
 import { connect } from 'react-redux';
 
 class DeleteMessageModal extends Component<DeleteMessageModalProps> {
+
+  shouldComponentUpdate(nextProps: Readonly<DeleteMessageModalProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    if(this.props.deleting !== nextProps.deleting) {
+      return true;
+    }
+
+    return false;
+  }
+
   render(): React.ReactNode {
     const { deleting, setDeletingHandler, onDeletePress, message, author } = this.props;
 
