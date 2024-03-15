@@ -6,7 +6,7 @@ import { FLATLIST_HEIGHT, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PA
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
-import { addCoordinationsOfMessage, setScrollStateForPinnedMessage, setScrollStateTappedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
+import { addCoordinationsOfMessage, handleKeyboardAppearing, setScrollStateForPinnedMessage, setScrollStateTappedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
 import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
@@ -46,6 +46,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   keyboardDidHideListener: EmitterSubscription | null = null;
 
   handleKeyboardDidShow = (event: KeyboardEvent) => {
+    this.props.dispatch!(handleKeyboardAppearing());
     Animated.timing(this.state.flatListHeight, {
       toValue: height*0.94-event.endCoordinates.height,
       duration: 200,
@@ -54,6 +55,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   };
 
   handleKeyboardDidHide = () => {
+    this.props.dispatch!(handleKeyboardAppearing());
     Animated.timing(this.state.flatListHeight, {
       toValue: height*0.94,
       duration: 200,

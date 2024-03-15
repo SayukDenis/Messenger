@@ -157,6 +157,18 @@ const setCoordinationsOfMessageReducer = (state = setCoordinationsOfMessage, act
   }
 }
 
+const handleKeyboardAppearing = {
+  show: false
+}
+const handleKeyboardAppearingReducer = (state = handleKeyboardAppearing, action:any) => {
+  switch(action.type) {
+    case 'HANDLE_KEYBOARD_APPEARING':
+      return { ...state, show: !state.show }
+    default:
+      return state;
+  }
+}
+
 const ChatReducer = combineReducers({
   counterForSelectedMessages: counterOfSelectedMessagesReducer,
   scrollToPinnedMessage: scrollToPinnedMessageReducer,
@@ -164,6 +176,7 @@ const ChatReducer = combineReducers({
   scrollToTappedMessage: scrollStateTappedMessageReducer,
   selectedMessageHandler: selectedMessageHandlerReducer,
   setCoordinationsOfMessage: setCoordinationsOfMessageReducer,
+  handleKeyboardAppearing: handleKeyboardAppearingReducer,
 });
 
 export default ChatReducer;

@@ -106,15 +106,14 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   replyHandler = () => {
-    if(!this.state.isReply)
-      this.setState({ isReply: !this.state.isReply  });
-    this.setReplyMessageHandler();
+    if(!this.state.isReply) {
+      this.setState({ 
+        isReply: !this.state.isReply,
+        editMessage: {} as MessageProps, 
+        isEdit: false
+      });
+    }
   };
-
-  setReplyMessageHandler = () => {
-    if(!this.state.isReply)
-      this.setState({ editMessage: {} as MessageProps });
-  }
 
   sendMessageOrCancelReplyAndEditHandler = () => {
     this.setState({ isEdit: false, isReply: false, editMessage: {} as MessageProps });

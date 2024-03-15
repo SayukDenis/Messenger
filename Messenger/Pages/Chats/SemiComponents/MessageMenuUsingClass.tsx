@@ -334,9 +334,9 @@ class MessageMenu extends Component<MessageMenuProps> {
         }}
       >
         <View style={{ top: coord.componentPageY, height: coord.height }}>
-          {(coord.message?.messageResponseId&&messages.find(m => m.messageId === coord.message?.messageResponseId)?.content)?
+          {(coord.message?.messageResponseId! >= 0 && messages.find(m => m.messageId === coord.message?.messageResponseId)?.content) ?
           <ReplyTextDummyMessage 
-            message={coord.message} 
+            message={coord.message!} 
             messages={messages} 
             isUser={isUser} 
             height={coord.height} 

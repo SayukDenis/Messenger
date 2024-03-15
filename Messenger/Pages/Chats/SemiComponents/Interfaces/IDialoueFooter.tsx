@@ -16,10 +16,10 @@ export interface DialogueFooterProps {
   endCopyMessagePopUp: () => void;
   selecting: boolean;
   deleteSelectedMessages: () => void;
+  keyboardActive: boolean;
 }
 
 export interface DialogueFooterState {
-  keyboardActive: boolean;
   text: string;
 }
 
