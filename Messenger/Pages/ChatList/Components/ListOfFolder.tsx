@@ -12,12 +12,14 @@ interface ListOfFolderProps {
   currentFolder: number;
   navigation: any;
   setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
+  isSelectChatMode: boolean;
 }
 
 const ListOfFolder: React.FC<ListOfFolderProps> = ({
   currentFolder,
   navigation,
   setVisibleModalWindowChatState,
+  isSelectChatMode,
 }) => {
   useEffect(() => {
     if (booleanForLogging) {
@@ -44,6 +46,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
       nesting={0}
       navigation={navigation}
       setVisibleModalWindowChatState={setVisibleModalWindowChatState}
+      isSelectChatMode={isSelectChatMode}
     />
   );
 

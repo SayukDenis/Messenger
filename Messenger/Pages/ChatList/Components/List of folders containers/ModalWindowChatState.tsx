@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BlurAll from "../../../SemiComponents/BlurAll";
-import { Platform, View } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import Animated, {
   Easing,
   runOnJS,
@@ -10,20 +10,34 @@ import Animated, {
 } from "react-native-reanimated";
 import { modalWindowChatStateStyle } from "../../Styles/ModalWindowChatStateStyle";
 import { screenHeight } from "../../Constants/ConstantsForChatlist";
-import ChatWindow from "./Modal window chat containers/ChatWindow";
-import ChatMenuButtonsContainers from "./Modal window chat containers/ChatMenuButtons";
+import ChatWindow from "./ModalWindowChatComponents/ChatWindow";
+import ChatMenuButtonsContainers from "./ModalWindowChatComponents/ChatMenuButtons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface ModalWindowChatStateProps {
   visibleChatModalWindow: boolean;
   setHiddenModalWindowChatState: React.MutableRefObject<() => void>;
+  onSelectPress: React.MutableRefObject<() => void>;
 }
 
 const ModalWindowChatState: React.FC<ModalWindowChatStateProps> = ({
   visibleChatModalWindow,
   setHiddenModalWindowChatState,
+  onSelectPress,
 }) => {
   if (!visibleChatModalWindow) return null;
+
+  const menuButtonsActions: Array<() => void> = [
+    () => {},
+    () => {},
+    () => {},
+    () => {
+      onSelectPress.current();
+      showAnimation();
+    },
+    () => {},
+    () => {},
+  ];
 
   const [animation, setAnimation] = useState(true);
 
@@ -173,7 +187,18 @@ const ModalWindowChatState: React.FC<ModalWindowChatStateProps> = ({
                   {index == 0 ? (
                     <View style={modalWindowChatStateStyle.chatMenuTriangle} />
                   ) : null}
-                  {ChatMenuButtonsContainers[index]}
+                  <TouchableOpacity
+                    style={[
+                      modalWindowChatStateStyle.chatMenuButton,
+                      index == 0
+                        ? modalWindowChatStateStyle.chatMenuFirstButton
+                        : null,
+                    ]}
+                    activeOpacity={0.9}
+                    onPress={menuButtonsActions[index]}
+                  >
+                    {ChatMenuButtonsContainers[index]}
+                  </TouchableOpacity>
                 </Animated.View>
               );
             })}

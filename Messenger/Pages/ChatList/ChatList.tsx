@@ -13,7 +13,6 @@ const ChatList: React.FC<ChatListProps> = ({ navigation }) => {
   return (
     <BackGroundGradientView>
       <Main navigation={navigation} />
-      <Header navigation={navigation} />
     </BackGroundGradientView>
   );
 };

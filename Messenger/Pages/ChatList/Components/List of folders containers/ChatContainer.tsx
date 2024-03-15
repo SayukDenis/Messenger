@@ -36,6 +36,7 @@ interface ChatProps {
   nesting: number;
   navigation: any;
   setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
+  isSelectChatMode: boolean;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -44,6 +45,7 @@ const ChatContainer: React.FC<ChatProps> = ({
   nesting,
   navigation,
   setVisibleModalWindowChatState,
+  isSelectChatMode,
 }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
@@ -253,6 +255,7 @@ const ChatContainer: React.FC<ChatProps> = ({
           onLongPressChat={onLongPressChat}
           onBranchPress={onBranchPress}
           nesting={nesting}
+          isSelectChatMode={isSelectChatMode}
         />
 
         {chat.branches.length > 0 && IsBranchesOpenBoolean ? (
@@ -339,6 +342,7 @@ const ChatContainer: React.FC<ChatProps> = ({
             onLongPressChat={onLongPressChat}
             onBranchPress={onBranchPress}
             nesting={nesting}
+            isSelectChatMode={isSelectChatMode}
           />
           <RightContainersForSwipe
             rightDragXposition={rightDragXposition[0]}

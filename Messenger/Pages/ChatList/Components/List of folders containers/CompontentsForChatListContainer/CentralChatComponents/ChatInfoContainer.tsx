@@ -11,11 +11,15 @@ import LastMessageStatusAndTimeContainer from "./ChatInfoComponets/LastMessageSt
 interface ChatInfoContainerProps {
   chat: Chat;
   onBranchPress: () => void;
+  isSelectChatMode: boolean;
+  isSelectedChat: boolean;
 }
 
 const ChatInfoContainer: React.FC<ChatInfoContainerProps> = ({
   chat,
   onBranchPress,
+  isSelectChatMode,
+  isSelectedChat,
 }) => {
   const lastMessage: Message | undefined = chat?.messages
     ? chat?.messages[chat.messages.length - 1]
@@ -28,12 +32,20 @@ const ChatInfoContainer: React.FC<ChatInfoContainerProps> = ({
 
   return (
     <View style={listOfChatsStyle.chatInfoContainer}>
-      <LastMessageStatusAndTimeContainer chat={chat} time={time} />
-      <BranchesButtonContainer
-        isBranches={chat.branches.length > 0}
-        onBranchPress={onBranchPress}
+      <LastMessageStatusAndTimeContainer
+        chat={chat}
+        time={time}
+        isSelectChatMode={isSelectChatMode}
+        isSelectedChat={isSelectedChat}
       />
+      {chat.branches.length > 0 && (
+        <BranchesButtonContainer
+          onBranchPress={onBranchPress}
+          isSelectChatMode={isSelectChatMode}
+        />
+      )}
     </View>
   );
 };
+
 export default connect(null)(ChatInfoContainer);

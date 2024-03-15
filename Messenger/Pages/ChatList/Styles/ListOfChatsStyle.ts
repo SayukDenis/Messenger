@@ -94,6 +94,7 @@ export const listOfChatsStyle = StyleSheet.create({
   },
 
   lastMessageStatusAndTimeContainer: {
+    alignItems: "center",
     flexDirection: "row",
   },
 
@@ -106,6 +107,19 @@ export const listOfChatsStyle = StyleSheet.create({
     fontSize: screenHeight * 0.015,
     color: "#2B1D1D",
     fontWeight: "500",
+  },
+
+  checkBoxSelectChatContainer: {
+    backgroundColor: "silver",
+    borderRadius: 100,
+    borderWidth: screenHeight * 0.002,
+    borderColor: "white",
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: screenWidth * 0.008,
+    height: screenHeight * 0.023,
+    width: screenHeight * 0.023,
   },
 
   lastMessageStatusContainer: {

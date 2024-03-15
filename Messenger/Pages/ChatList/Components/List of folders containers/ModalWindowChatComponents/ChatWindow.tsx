@@ -10,7 +10,7 @@ import User from "../../../../../dao/Models/User";
 import DialogueMessages from "../../../../Chats/Dialogue/components/DialogueMessages";
 import { modalWindowChatStateStyle } from "../../../Styles/ModalWindowChatStateStyle";
 import BackGroundGradinetView from "../../../../SemiComponents/BackGroundGradientView";
-import getNameOfChat from "../../List of folders containers/Functions/GetNameOfChat";
+import getNameOfChat from "../Functions/GetNameOfChat";
 
 interface ChatWindowProps {}
 

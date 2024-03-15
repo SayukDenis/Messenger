@@ -6,6 +6,20 @@ export const setChatForModalWindowChatState = (chat: any) => ({
   chat,
 });
 
+export const setMapForSelectedChats = (map?: Map<number, boolean>) => ({
+  type: "SET_HASH_TABLE_FOR_SELECTED_CHATS",
+  map,
+});
+
+export const setValueToMapForSelectedChats = (
+  chatId: number | undefined,
+  isSelected: boolean
+) => ({
+  type: "SET_VALUE_TO_MAP_FOR_SELECTED_CHATS",
+  chatId,
+  isSelected,
+});
+
 export const setAnimationStateForFolderChatList = (
   animationForChatListFolder: any
 ) => ({
