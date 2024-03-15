@@ -1,13 +1,13 @@
 import { View, Text, TouchableOpacity, } from 'react-native';
 import React, { Component } from 'react';
-import { ReplyAndEditMenuProps } from './Interfaces/IReplyAndEditMenu';
-import { styles } from './Styles/ReplyAndEditMenu';
+import { ReplyAndEditMenuProps } from '../../Interfaces/IReplyAndEditMenu';
+import { styles } from '../../Styles/ReplyAndEditMenu';
 import { connect } from 'react-redux';
-import ReplyAndEditMenuReplyIcon from './SVG/ReplyAndEditMenuReplyIcon';
-import ReplyAndEditMenuEditIcon from './SVG/ReplyAndEditMenuEditIcon';
-import ReplyAndEditMenuCancelButton from './SVG/ReplyAndEditMenuCancelButton';
-import { DEFAULT_CHARS_PER_LINE } from './ChatConstants';
-import LineSeparator from './HelperComponents/General/LineSeparator';
+import ReplyAndEditMenuReplyIcon from '../../SVG/ReplyAndEditMenuReplyIcon';
+import ReplyAndEditMenuEditIcon from '../../SVG/ReplyAndEditMenuEditIcon';
+import ReplyAndEditMenuCancelButton from '../../SVG/ReplyAndEditMenuCancelButton';
+import { DEFAULT_CHARS_PER_LINE } from '../../ChatConstants';
+import LineSeparator from '../General/LineSeparator';
 
 class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
 
@@ -26,7 +26,10 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
   }
 
   render(): React.ReactNode {
-    const { isReply, replyMessage, cancelReplyAndEdit, isEdit, editMessage } = this.props;
+    const { isReply, replyMessage, cancelReplyAndEdit, isEdit, editMessage, author, users } = this.props;
+
+    const targetId = replyMessage?.author?.userId;
+    const displayName = isReply ? (targetId === author.userId ? 'You' : users.find(u => u.userId === targetId)?.name) : 'Edit';
 
     return (
       (isReply||isEdit)&&
@@ -42,7 +45,7 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
             />
             <View style={styles.dataContainer}>
               <View>
-                <Text style={styles.usernameText}>{isReply?'user name':'Edit' /* Replace with data from DB */}</Text>
+                <Text style={styles.usernameText}>{displayName}</Text>
                 <Text style={styles.messageText}>{
                   isReply?(replyMessage?.content!.length>DEFAULT_CHARS_PER_LINE?replyMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content):
                   (editMessage?.content!.length>DEFAULT_CHARS_PER_LINE?editMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE)+'...':editMessage?.content)

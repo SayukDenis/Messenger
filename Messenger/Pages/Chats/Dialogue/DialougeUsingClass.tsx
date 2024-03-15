@@ -324,6 +324,7 @@ class Dialogue extends Component<DialogueProps> {
             setMessages={this.setMessages} 
             isReply={isReply} 
             author={author}
+            users={users}
             messageID={messageID} 
             isEdit={isEdit} 
             editMessage={editMessage} 

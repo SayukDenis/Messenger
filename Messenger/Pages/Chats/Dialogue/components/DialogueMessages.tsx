@@ -95,10 +95,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     } else if(this.props.deletedMessagesId.length !== nextProps.deletedMessagesId.length) {
       return true;
     } else if(this.props.listOfMessages !== nextProps.listOfMessages) {
-      if(this.state.deletedMessagesCount === nextProps.deletedMessagesId.length) { 
+      if(this.props.listOfMessages.length !== nextProps.listOfMessages.length) {
         this.messageListChangedHandler();
-      } else {
-        this.setState({ deletedMessagesCount: nextProps.deletedMessagesId.length });
       }
       return true;
     } else if(this.props.hasPinnedMessage !== nextProps.hasPinnedMessage) {

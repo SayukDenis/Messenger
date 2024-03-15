@@ -4,7 +4,7 @@ import { DialogueFooterProps, DialogueFooterState } from "./Interfaces/IDialoueF
 import { Animated, TextInput, View } from "react-native";
 import { SOFT_MENU_BAR_HEIGHT, height, width } from "./ChatConstants";
 import { sendMessage } from "./HelperComponents/Footer/sendMessageFunc";
-import ReplyAndEditMenu from "./ReplyAndEditMenu";
+import ReplyAndEditMenu from "./HelperComponents/Footer/ReplyAndEditMenu";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./Styles/Footer";
 import LeftPartOfFooter from "./HelperComponents/Footer/LeftPartOfFooter";
@@ -45,11 +45,14 @@ class Footer extends Component<DialogueFooterProps> {
     const { isEdit, isReply, editMessage, keyboardActive, } = this.props;
     
     // Have a little lagging for some reason
-    if(!keyboardActive) this.textInput.current?.blur();
+    if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) this.textInput.current?.blur();
+
+    console.log('#1', !keyboardActive);
 
     if(isEdit === prevProps.isEdit && isReply === prevProps.isReply) return;
 
     if (isEdit && editMessage.content) {
+      console.log('#2', !keyboardActive);
       this.textInput.current && this.textInput.current.focus();
       this.setState({ text: editMessage.content });
     } else {
@@ -66,13 +69,15 @@ class Footer extends Component<DialogueFooterProps> {
   }
 
   render(): React.ReactNode {
-    const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive } = this.props;
+    const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
     const { text } = this.state;
     const { textInput, setText, sendMessageHandler } = this;
 
     return(
       <Animated.View>
         <ReplyAndEditMenu 
+          author={author}
+          users={users}
           isReply={isReply} 
           replyMessage={replyMessage} 
           cancelReplyAndEdit={onSendMessageOrCancelReplyAndEdit} 
