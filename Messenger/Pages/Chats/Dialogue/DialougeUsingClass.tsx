@@ -19,7 +19,6 @@ import { DialogueProps, DialogueState } from './IDialogue';
 import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
 
 let coord: Layout;
-let deletedMessagesId: number[] = [];
 let author: User;
 let users: User[];
 
@@ -49,7 +48,6 @@ class Dialogue extends Component<DialogueProps> {
     isEdit: false,
     editMessage: {} as MessageProps,
     deleting: false,
-    copy: false,
     selecting: false, 
     listOfPinnedMessages: [],
     pinnedMessage: {} as MessageProps,
@@ -74,7 +72,7 @@ class Dialogue extends Component<DialogueProps> {
 
     console.log('Dialogue update state');
     
-    const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, copy, selecting, listOfPinnedMessages, pinnedMessage } = this.state;
+    const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, selecting, listOfPinnedMessages, pinnedMessage } = this.state;
 
     if(messageID !== nextState.messageID) {
       return true;
@@ -89,8 +87,6 @@ class Dialogue extends Component<DialogueProps> {
     } else if(editMessage.messageId !== nextState.editMessage.messageId) {
       return true;
     } else if(deleting !== nextState.deleting) {
-      return true;
-    } else if(copy !== nextState.copy) {
       return true;
     } else if(selecting !== nextState.selecting) {
       return true;
@@ -163,21 +159,31 @@ class Dialogue extends Component<DialogueProps> {
     this.setState({ deleting: !this.state.deleting })
   }
 
-  // якогось хуя useRef не працює якщо useState з boolean
   onDeletePress = () => {
     const { listOfMessages, listOfPinnedMessages, messageID, deleting } = this.state;
 
-    const message = listOfMessages.find(m => m.messageId === messageID)!;
-    if(listOfPinnedMessages.findIndex(m => m.messageId === message.messageId) >= 0) {
-      this.pinMessageHandler(message);
-    }
-    deletedMessagesId.push(message.messageId!);
-    this.setState({ listOfMessages: [...listOfMessages.filter(m => m.messageId !== messageID)], deleting: !this.state.deleting });
+    // const message = listOfMessages.find(m => m.messageId === messageID)!;
+    // if(listOfPinnedMessages.findIndex(m => m.messageId === message.messageId) >= 0) {
+    //   this.pinMessageHandler(message);
+    // }
+    console.log('messageID', messageID);
+    const newListOfMessages = [...listOfMessages];
+    const idx = newListOfMessages.findIndex(m => m.messageId === messageID);
+    newListOfMessages[idx] = { 
+      messageId: newListOfMessages[idx].messageId,
+      author: undefined!,
+      content: undefined!,
+      sendingTime: undefined!,
+      messageType: undefined!,
+      isEdited: undefined!,
+      isDeleted: undefined!,
+      reactionOnMessage: undefined!,
+    };
+    this.setState({ 
+      listOfMessages: [...newListOfMessages], 
+      deleting: !this.state.deleting 
+    });
     this.props.route.params.dispatch(removeCoordinationsOfMessage(messageID));
-  }
-
-  onPinnedMessageScreenDeletePress = (message: MessageProps) => {
-    this.setState({ listOfMessages: [...this.state.listOfMessages.filter(m => m?.messageId !== this.state.messageID)] })
   }
 
   handleMessageMenuPress = () => {
@@ -187,10 +193,6 @@ class Dialogue extends Component<DialogueProps> {
     }
     this.setState({ messageMenuVisible: false });
   };
-
-  setCopyHandler = () => {
-    this.setState({ copy: !this.state.copy });
-  }
   
   setSelectingHandler = () => {
     this.setState({ selecting: !this.state.selecting });
@@ -254,7 +256,7 @@ class Dialogue extends Component<DialogueProps> {
   
   render(): React.ReactNode {
     const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && m.content);
-    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, copy, deleting, messageIdForReplyAndEdit } = this.state;
+    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, deleting, messageIdForReplyAndEdit } = this.state;
     const { navigation } = this.props;
 
     return  (
@@ -269,8 +271,7 @@ class Dialogue extends Component<DialogueProps> {
             messages={listOfMessages}
             onReplyPress={this.replyHandler} 
             onEditPress={this.pressEditButton} 
-            onDeletePress={this.setDeletingHandler} 
-            onCopyPress={this.setCopyHandler}
+            onDeletePress={this.setDeletingHandler}
             onSelectPress={this.setSelectingHandler}
             onPinPress={this.pinMessageHandler}
             userMessageLastWatched={userMessageLastWatched}
@@ -292,7 +293,6 @@ class Dialogue extends Component<DialogueProps> {
               messageID,
               unpinAllMessagesHandler: this.unpinAllMessagesHandler,
               userMessageLastWatched: userMessageLastWatched!,
-              onCopyPress: this.setCopyHandler,
               onUnpinPress: this.pinMessageHandler,
               onDeletePress: this.onDeletePress,
               users
@@ -317,7 +317,6 @@ class Dialogue extends Component<DialogueProps> {
             hasPinnedMessage={listOfPinnedMessages?.length>0}
             pinnedMessages={listOfPinnedMessages}
             setPinnedMessage={this.setPinnedMessageHandler}
-            deletedMessagesId={deletedMessagesId}
           />
           <Footer 
             messages={listOfMessages} 
@@ -329,9 +328,7 @@ class Dialogue extends Component<DialogueProps> {
             isEdit={isEdit} 
             editMessage={editMessage} 
             replyMessage={isReply ? listOfMessages.find(m => m.messageId === messageIdForReplyAndEdit)! : {} as MessageProps} 
-            onSendMessageOrCancelReplyAndEdit={this.sendMessageOrCancelReplyAndEditHandler} 
-            copyMessagePopUp={copy}
-            endCopyMessagePopUp={this.setCopyHandler}
+            onSendMessageOrCancelReplyAndEdit={this.sendMessageOrCancelReplyAndEditHandler}
             selecting={selecting}
             deleteSelectedMessages={this.deleteSelectedMessages}
           />

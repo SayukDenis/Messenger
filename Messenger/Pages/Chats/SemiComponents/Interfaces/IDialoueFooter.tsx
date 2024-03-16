@@ -13,8 +13,6 @@ export interface DialogueFooterProps {
   isEdit: boolean;
   editMessage: MessageProps; 
   messageID: number;
-  copyMessagePopUp: boolean;
-  endCopyMessagePopUp: () => void;
   selecting: boolean;
   deleteSelectedMessages: () => void;
   keyboardActive: boolean;

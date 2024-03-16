@@ -89,10 +89,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   shouldComponentUpdate(nextProps: Readonly<DialogueMessagesProps>, nextState: Readonly<DialogueMessagesState>, nextContext: any): boolean {
     //if(this.props !== nextProps) return true;
     if(this.props.pinnedMessages !== nextProps.pinnedMessages) {
-      this.pinnedMessageChangeHandler(nextProps.pinnedMessages, nextProps.deletedMessagesId);
+      this.pinnedMessageChangeHandler(nextProps.pinnedMessages);
       if(nextProps.pinnedMessages.length === 0) this.setState({ pinnedMessageId: -1 })
-      return true;
-    } else if(this.props.deletedMessagesId.length !== nextProps.deletedMessagesId.length) {
       return true;
     } else if(this.props.listOfMessages !== nextProps.listOfMessages) {
       if(this.props.listOfMessages.length !== nextProps.listOfMessages.length) {
@@ -127,7 +125,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   //#region HelperFunctions
 
-  pinnedMessageChangeHandler = (pinnedMessages: MessageProps[], deletedMessagesId: number[]) => {
+  pinnedMessageChangeHandler = (pinnedMessages: MessageProps[]) => {
     pinnedMessagesWithCoords = [];
 
     pinnedMessages.map(m => {

@@ -11,7 +11,6 @@ export interface MessageMenuProps {
   messages: MessageProps[];
   onReplyPress?: () => void;
   onEditPress?: () => void;
-  onCopyPress?: () => void;
   onSelectPress?: () => void;
   onPinPress?: (arg0: MessageProps) => void
   isUser: boolean;
