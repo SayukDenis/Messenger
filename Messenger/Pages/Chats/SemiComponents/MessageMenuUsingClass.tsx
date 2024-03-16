@@ -292,7 +292,7 @@ class MessageMenu extends Component<MessageMenuProps> {
       }
     } else {
       return { 
-        top: ((coord && coord.pageY) ? coord.pageY : 0) - MESSAGE_MENU_HEIGHT, 
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4), 
         left: MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
       }
     }

@@ -41,7 +41,7 @@ class DeleteMessageModal extends Component<DeleteMessageModalProps> {
                 <TouchableOpacity 
                   activeOpacity={1} 
                   style={styles.modalLeftButtonContainer} 
-                  onPress={onDeletePress}
+                  onPress={() => onDeletePress()}
                 >
                   <Text style={styles.modalButtonText}>
                     {message.author.userId==author.userId?'For me':'Agree'}
@@ -50,7 +50,7 @@ class DeleteMessageModal extends Component<DeleteMessageModalProps> {
                 <TouchableOpacity 
                   activeOpacity={1} 
                   style={styles.modalRightButtonContainer} 
-                  onPress={message.author.userId==author.userId?onDeletePress:setDeletingHandler}
+                  onPress={() => message.author.userId==author.userId ? onDeletePress() : setDeletingHandler()}
                 >
                   <Text style={styles.modalButtonText}>{message.author.userId==author.userId?'For everyone':'Disagree'}</Text>
                 </TouchableOpacity>

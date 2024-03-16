@@ -18,7 +18,7 @@ export interface NavigationProps {
       userMessageLastWatched: ILastWatchedMessage;
       onCopyPress: () => void;
       onUnpinPress: (message: MessageProps) => void;
-      onDeletePress: (message: MessageProps) => void;
+      onDeletePress: (messageId: number) => void;
     }
   };
 }
