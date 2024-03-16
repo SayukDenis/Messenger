@@ -3,34 +3,61 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import { pickedProfile } from "./DatabaseSimulation/DBVariables";
 
 export default function ChooseAuthor() {
   const navigation = useNavigation();
 
-  const Viktor = () => {
-    navigation.navigate("GroupNavigation" as never);
-  };
-  const Oleksii = () => {
-    navigation.navigate("UserNavigation" as never);
-  };
-
   return (
-    <View>
+    <LinearGradient
+      colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+      style={{ flex: 1 }}
+    >
+      {/* Group */}
       <TouchableOpacity
-        style={{ height: "50%", backgroundColor: "blue" }}
-        onPress={Viktor}
+        style={{
+          height: "33.333%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => {
+          pickedProfile.current = "group";
+          navigation.navigate("GroupNavigation" as never);
+        }}
       >
-        <Text style={{ top: "50%", left: "35%", fontSize: 40, color: "white" }}>
-          Group
-        </Text>
+        <Text style={{ fontSize: 40, color: "white" }}>Group</Text>
       </TouchableOpacity>
 
+      {/* User */}
       <TouchableOpacity
-        style={{ height: "50%", backgroundColor: "yellow" }}
-        onPress={Oleksii}
+        style={{
+          height: "33.333%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => {
+          pickedProfile.current = "user";
+          navigation.navigate("UserNavigation" as never);
+        }}
       >
-        <Text style={{ top: "50%", left: "35%", fontSize: 40 }}>User</Text>
+        <Text style={{ fontSize: 40 }}>User</Text>
       </TouchableOpacity>
-    </View>
+
+      {/* Channel */}
+      <TouchableOpacity
+        style={{
+          height: "33.333%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => {
+          pickedProfile.current = "channel";
+          navigation.navigate("ChannelNavigation" as never);
+        }}
+      >
+        <Text style={{ fontSize: 40 }}>Channel</Text>
+      </TouchableOpacity>
+    </LinearGradient>
   );
 }

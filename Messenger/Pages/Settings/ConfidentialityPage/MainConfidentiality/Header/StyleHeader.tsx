@@ -1,40 +1,40 @@
-import { StyleSheet, Dimensions, StatusBar,Platform  } from "react-native";
+import { StyleSheet,Platform, Dimensions,StatusBar } from "react-native";
 import Constants from 'expo-constants';
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
 
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;525
+const windowWidth = Dimensions.get('window').width;
 
-const StyleHeadr = StyleSheet.create({
-    header :{
+const StyleConfidentHeader = StyleSheet.create({
+
+    container :{
         display: "flex",
         flexDirection: 'row',
-        height: Platform.OS=="android"?windowHeight * 0.08+StatusBar.currentHeight:windowHeight * 0.08+Constants.statusBarHeight,
-        borderBottomLeftRadius:40,
-        borderBottomRightRadius:40,
-        backgroundColor: '#E7E6E4',
-        borderColor : '#A19C91',
-        borderWidth:1
+        width: '100%',
+        height:windowHeight*0.07,
+        paddingLeft:'2%',
+        paddingRight:'2%',
     },
 
-    backButContainer :{
-        display: "flex",
-        flexDirection: 'row',
+    backButt:{
+        alignSelf:'flex-end',
+        paddingBottom:'4%',
+        width:"10%"
+    },
+
+    ConfArticleConteiner:{
+        display:'flex',
+        width:'80%',
+        paddingBottom:'2%',
         alignItems:'center',
-        justifyContent: 'center',
-        width:"20%"
+        justifyContent:'center',
+    },
+    ConfArticleText:{
+        fontSize: 20,
     },
 
-    backbutton:{
-        backgroundColor:'blue',
-    },
-
-    conteinerConfidentialityPage:{
-        display:"flex",
-        width:"56%",
-        alignItems:"center",
-        justifyContent:"center"
-    }
 
 });
 
-export default StyleHeadr;
+export default StyleConfidentHeader;

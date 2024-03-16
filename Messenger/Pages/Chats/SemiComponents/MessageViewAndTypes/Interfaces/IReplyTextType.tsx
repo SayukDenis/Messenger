@@ -1,0 +1,37 @@
+import { Dispatch } from "redux";
+import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
+import { MutableRefObject } from "react";
+import User from "../../../../../dao/Models/User";
+import { Layout } from "../../Interfaces/GeneralInterfaces/ILayout";
+import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
+import { coordProps } from "./IGeneralInterfaces";
+import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
+
+export interface ReplyTextTypeProps {
+  idForAnimation: number;
+  messages: MessageProps[];
+  message: MessageProps;
+  setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
+  id: number;
+  flatList: MutableRefObject<any>;
+  author: User;
+  userName: string;
+  userMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
+  dispatch: Dispatch;
+  pinnedMessageScreen: boolean;
+  listOfPinnedMessages: Array<number>;
+  navigation: any;
+  messagesWithCoords: CoordinationsOfMessage[];
+}
+
+export interface ReplyTextTypeState {
+  sizeOfMessageContainer: [number, number];
+  widthOfMessage: number;
+  widthOfReply: number;
+  selected: boolean;
+  animate: boolean;
+  pressCoordinations: coordProps;
+  replyMessage: string;
+  message: string;
+}

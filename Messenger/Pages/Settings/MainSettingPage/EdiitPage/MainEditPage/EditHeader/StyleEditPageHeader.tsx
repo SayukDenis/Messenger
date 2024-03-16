@@ -1,36 +1,39 @@
-import { StyleSheet, Dimensions, StatusBar,Platform  } from "react-native";
+import { StyleSheet,Platform, Dimensions,StatusBar } from "react-native";
 import Constants from 'expo-constants';
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const StyleEditPageHeader = StyleSheet.create({
-    header :{
+
+    container :{
         display: "flex",
         flexDirection: 'row',
-        justifyContent:'center',
-        height: Platform.OS=="android"?windowHeight * 0.08+StatusBar.currentHeight:windowHeight * 0.08+Constants.statusBarHeight,
-        borderBottomLeftRadius:40,
-        borderBottomRightRadius:40,
-        backgroundColor: '#E7E6E4',
-        alignItems:'center',
-        borderColor : '#A19C91',
-        borderWidth:1,
-        opacity:0,
+        width: '100%',
+        height:windowHeight*0.07,
+        paddingLeft:'2%',
+        paddingRight:'2%',
     },
 
     backButt:{
-        marginLeft:"5%"
+        alignSelf:'flex-end',
+        paddingBottom:'4%',
+        width:"10%"
     },
 
-    conteinterUserName:{
-        width:'70%',
-        alignItems:'center'
+    userNameConteiner:{
+        display:'flex',
+        width:'80%',
+        paddingBottom:'2%',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    userNameText:{
+        fontSize: 20,
     },
 
-    UserName:{
-        marginLeft:'5%'
-    }
 
 });
 

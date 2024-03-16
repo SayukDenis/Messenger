@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 import { connect } from "react-redux";
 import { useContext } from "react";
 import { ThemeContext } from "../../Resources/themes";
+import { height } from "../Chats/SemiComponents/ChatConstants";
 interface BackGroundGradinetViewProps {
   children?: ReactNode;
 }
