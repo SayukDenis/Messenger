@@ -5,31 +5,27 @@ import React, {
   SetStateAction,
   useRef,
 } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-  FlatList,
-} from "react-native";
+import { View, TouchableOpacity, Text, Image, FlatList } from "react-native";
 import {
   screenHeight,
   screenWidth,
 } from "../../../Constants/ConstantsForChatlist";
 import * as MediaLibrary from "expo-media-library";
 import { useDispatch } from "react-redux";
-import { setPhotoForCreateGroupOrChannel } from "../../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+import { setIsVisibleGalleryModalWindow, setPhotoForCreateGroupOrChannel } from "../../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import { Camera, CameraType } from "expo-camera";
 import CameraSVG from "../../../../SemiComponents/CameraSVG";
 
 interface GalleryModalWindowProps {
-  setOnAddPhotoPress: Dispatch<SetStateAction<boolean>>;
+  
   navigation: any;
+  cameFrom:string;
 }
 
 const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
-  setOnAddPhotoPress,
+ 
   navigation,
+  cameFrom
 }) => {
   const [photos, setPhotos] = useState<MediaLibrary.Asset[]>([]);
   const cameraRef = useRef<Camera | null>(null);
@@ -43,6 +39,7 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
     });
     setPhotos(assets);
   };
+  
   const margin = 6;
   const widthOfImage = screenWidth / 5 - margin * 3;
   const borderRadius = 20;
@@ -53,11 +50,11 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
     data.push(null);
   }
   const onGalleryPress = useRef(() => {
-    navigation.navigate("All Photo In Gallery", { setOnAddPhotoPress });
+    navigation.navigate("All Photo In Gallery", {  cameFrom});
   });
-  const onCameraPress=useRef(()=>{
-    navigation.navigate("Camera Component", { setOnAddPhotoPress })
-  })
+  const onCameraPress = useRef(() => {
+    navigation.navigate("Camera Component", { cameFrom });
+  });
   const renderItem = ({ item, index }: { item: any; index: number }) => {
     // console.log(index);
     const margin = 5;
@@ -108,8 +105,9 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
     return (
       <TouchableOpacity
         onPress={() => {
-          dispatch(setPhotoForCreateGroupOrChannel(item.uri));
-          setOnAddPhotoPress(false);
+          //dispatch(setPhotoForCreateGroupOrChannel(item.uri));
+          //setOnAddPhotoPress(false);
+          navigation.navigate("Cropp Image Page",{picture:item,cameFrom})
         }}
       >
         <Image
@@ -210,7 +208,7 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
         }}
         onPress={() => {
           dispatch(setPhotoForCreateGroupOrChannel(""));
-          setOnAddPhotoPress(false);
+          dispatch(setIsVisibleGalleryModalWindow(false))
         }}
       >
         <Text style={{ alignSelf: "center", color: "#CE2500" }}>
@@ -236,7 +234,7 @@ const GalleryModalWindow: React.FC<GalleryModalWindowProps> = ({
           marginTop: 20,
         }}
         onPress={() => {
-          setOnAddPhotoPress(false);
+          dispatch(setIsVisibleGalleryModalWindow(false))
         }}
       >
         <Text

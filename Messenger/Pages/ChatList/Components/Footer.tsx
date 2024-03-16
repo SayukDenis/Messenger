@@ -1,7 +1,6 @@
 import React, { useRef, Ref, useEffect } from "react";
-import {  ScrollView, Dimensions } from "react-native";
-import { connect} from "react-redux";
-;
+import { ScrollView } from "react-native";
+import { connect } from "react-redux";
 import { booleanForLogging } from "../ChatList";
 import ListOfFolderContainersForFooter from "./Footer containers/ListOfFolderContainersForFooter";
 import FooterContainer from "./Footer containers/FooterContainer";
@@ -27,10 +26,10 @@ const Footer: React.FC<FooterProps> = ({
   widths,
   positionsOfFolder,
 }) => {
-  const OnPressRef = useRef((event: any, index:number) => {
+  const OnPressRef = useRef((event: any, index: number) => {
     handleFolderPress.current(index);
   });
-  const LongPressRef = useRef((e: any, index:number) => {
+  const LongPressRef = useRef((e: any, index: number) => {
     handleLongPress.current(e, index);
   });
   useEffect(() => {
@@ -39,17 +38,17 @@ const Footer: React.FC<FooterProps> = ({
     }
   });
   return (
-   <FooterContainer isTouchableForHeader={isTouchableForHeader}>
-       <ListOfFolderContainersForFooter
-          scrollViewRefFooter={scrollViewRefFooter}
-          isVisibleForModalFolder={isVisibleForModalFolder}
-          OnPressRef={OnPressRef}
-          LongPressRef={LongPressRef}
-          positionsOfFolder={positionsOfFolder}
-          widths={widths}
-          handleLayout={handleLayout}
-        />
-   </FooterContainer>
+    <FooterContainer isTouchableForHeader={isTouchableForHeader}>
+      <ListOfFolderContainersForFooter
+        scrollViewRefFooter={scrollViewRefFooter}
+        isVisibleForModalFolder={isVisibleForModalFolder}
+        OnPressRef={OnPressRef}
+        LongPressRef={LongPressRef}
+        positionsOfFolder={positionsOfFolder}
+        widths={widths}
+        handleLayout={handleLayout}
+      />
+    </FooterContainer>
   );
 };
 
