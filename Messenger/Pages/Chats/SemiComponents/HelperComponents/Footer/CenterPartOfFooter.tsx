@@ -25,6 +25,7 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
       <TextInput 
         ref={textInput}
         value={text} 
+        multiline
         onChangeText={setText} 
         placeholderTextColor={'rgb(137, 130, 130)'} 
         style={styles.messageInput} 

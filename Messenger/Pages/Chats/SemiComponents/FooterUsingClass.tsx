@@ -4,7 +4,7 @@ import { DialogueFooterProps, DialogueFooterState } from "./Interfaces/IDialoueF
 import { Animated, TextInput, View } from "react-native";
 import { SOFT_MENU_BAR_HEIGHT, height, width } from "./ChatConstants";
 import { sendMessage } from "./HelperComponents/Footer/sendMessageFunc";
-import ReplyAndEditMenu from "./ReplyAndEditMenu";
+import ReplyAndEditMenu from "./HelperComponents/Footer/ReplyAndEditMenu";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./Styles/Footer";
 import LeftPartOfFooter from "./HelperComponents/Footer/LeftPartOfFooter";
@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 
 class Footer extends Component<DialogueFooterProps> {
   state: DialogueFooterState = {
-    keyboardActive: false,
     text: '',
   }
 
@@ -25,7 +24,7 @@ class Footer extends Component<DialogueFooterProps> {
   textInput: RefObject<TextInput> = React.createRef();
 
   shouldComponentUpdate(nextProps: Readonly<DialogueFooterProps>, nextState: Readonly<DialogueFooterState>, nextContext: any): boolean {
-    if(this.state.keyboardActive !== nextState.keyboardActive) {
+    if(this.props.keyboardActive !== nextProps.keyboardActive) {
       return true;
     } else if(this.state.text !== nextState.text) {
       return true;
@@ -43,15 +42,21 @@ class Footer extends Component<DialogueFooterProps> {
   }
 
   componentDidUpdate(prevProps: Readonly<DialogueFooterProps>, prevState: Readonly<DialogueFooterState>, snapshot?: any): void {
-    const { isEdit, isReply, editMessage } = this.props;
+    const { isEdit, isReply, editMessage, keyboardActive, } = this.props;
+    
+    // Have a little lagging for some reason
+    if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) this.textInput.current?.blur();
+
+    console.log('#1', !keyboardActive);
+
     if(isEdit === prevProps.isEdit && isReply === prevProps.isReply) return;
 
-    if (isEdit && editMessage) {
+    if (isEdit && editMessage.content) {
+      console.log('#2', !keyboardActive);
       this.textInput.current && this.textInput.current.focus();
       this.setState({ text: editMessage.content });
     } else {
-      console.log('aboba', isEdit);
-      this.setState({ text: '' });
+      if(prevProps.isEdit) this.setState({ text: '' });
       if (isReply) this.textInput.current && this.textInput.current.focus();
     }
   }
@@ -64,13 +69,15 @@ class Footer extends Component<DialogueFooterProps> {
   }
 
   render(): React.ReactNode {
-    const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages } = this.props;
-    const { text, keyboardActive } = this.state;
+    const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
+    const { text } = this.state;
     const { textInput, setText, sendMessageHandler } = this;
 
     return(
       <Animated.View>
         <ReplyAndEditMenu 
+          author={author}
+          users={users}
           isReply={isReply} 
           replyMessage={replyMessage} 
           cancelReplyAndEdit={onSendMessageOrCancelReplyAndEdit} 
@@ -114,4 +121,8 @@ class Footer extends Component<DialogueFooterProps> {
   }
 }
 
-export default connect(null)(Footer);
+const mapStateToProps = (state: any) => ({
+  keyboardActive: state.ChatReducer.handleKeyboardAppearing.show
+})
+
+export default connect(mapStateToProps)(Footer);

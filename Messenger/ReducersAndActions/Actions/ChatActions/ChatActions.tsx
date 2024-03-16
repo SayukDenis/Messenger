@@ -68,3 +68,7 @@ export const removeCoordinationsOfSelectedMessages = (listOfId:number[]) => ({
 export const removeCoordinationsOfAllMessages = () => ({
   type: 'REMOVE_COORDINATIONS_OF_ALL_MESSAGES'
 })
+
+export const handleKeyboardAppearing = () => ({
+  type: 'HANDLE_KEYBOARD_APPEARING'
+})

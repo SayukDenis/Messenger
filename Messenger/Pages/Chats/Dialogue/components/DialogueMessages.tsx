@@ -6,7 +6,7 @@ import { FLATLIST_HEIGHT, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PA
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
-import { addCoordinationsOfMessage, setScrollStateForPinnedMessage, setScrollStateTappedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
+import { addCoordinationsOfMessage, handleKeyboardAppearing, setScrollStateForPinnedMessage, setScrollStateTappedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
 import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
@@ -46,6 +46,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   keyboardDidHideListener: EmitterSubscription | null = null;
 
   handleKeyboardDidShow = (event: KeyboardEvent) => {
+    this.props.dispatch!(handleKeyboardAppearing());
     Animated.timing(this.state.flatListHeight, {
       toValue: height*0.94-event.endCoordinates.height,
       duration: 200,
@@ -54,6 +55,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   };
 
   handleKeyboardDidHide = () => {
+    this.props.dispatch!(handleKeyboardAppearing());
     Animated.timing(this.state.flatListHeight, {
       toValue: height*0.94,
       duration: 200,
@@ -87,16 +89,12 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   shouldComponentUpdate(nextProps: Readonly<DialogueMessagesProps>, nextState: Readonly<DialogueMessagesState>, nextContext: any): boolean {
     //if(this.props !== nextProps) return true;
     if(this.props.pinnedMessages !== nextProps.pinnedMessages) {
-      this.pinnedMessageChangeHandler(nextProps.pinnedMessages, nextProps.deletedMessagesId);
+      this.pinnedMessageChangeHandler(nextProps.pinnedMessages);
       if(nextProps.pinnedMessages.length === 0) this.setState({ pinnedMessageId: -1 })
       return true;
-    } else if(this.props.deletedMessagesId.length !== nextProps.deletedMessagesId.length) {
-      return true;
     } else if(this.props.listOfMessages !== nextProps.listOfMessages) {
-      if(this.state.deletedMessagesCount === nextProps.deletedMessagesId.length) { 
+      if(this.props.listOfMessages.length !== nextProps.listOfMessages.length) {
         this.messageListChangedHandler();
-      } else {
-        this.setState({ deletedMessagesCount: nextProps.deletedMessagesId.length });
       }
       return true;
     } else if(this.props.hasPinnedMessage !== nextProps.hasPinnedMessage) {
@@ -127,7 +125,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   //#region HelperFunctions
 
-  pinnedMessageChangeHandler = (pinnedMessages: MessageProps[], deletedMessagesId: number[]) => {
+  pinnedMessageChangeHandler = (pinnedMessages: MessageProps[]) => {
     pinnedMessagesWithCoords = [];
 
     pinnedMessages.map(m => {

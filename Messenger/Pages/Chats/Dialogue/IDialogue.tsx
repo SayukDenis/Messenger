@@ -14,7 +14,6 @@ export interface DialogueState {
   isEdit: boolean;
   editMessage: MessageProps;
   deleting: boolean;
-  copy: boolean;
   selecting: boolean;
   listOfPinnedMessages: MessageProps[];
   pinnedMessage: MessageProps;

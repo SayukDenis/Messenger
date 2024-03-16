@@ -55,8 +55,6 @@ class MessageMenu extends Component<MessageMenuProps> {
       text: 'Copy',
       action: async () => {
         await Clipboard.setStringAsync(this.props.coord.message?.content!);
-        if(typeof this.props.onCopyPress === 'function')
-          this.props.onCopyPress();
       },
       svg: <MessageMenuCopyButton />
     },
@@ -91,8 +89,6 @@ class MessageMenu extends Component<MessageMenuProps> {
       text: 'Copy',
       action: async () => {
         await Clipboard.setStringAsync(this.props.coord.message?.content!);
-        if(typeof this.props.onCopyPress === 'function')
-          this.props.onCopyPress();
       },
       svg: <MessageMenuCopyButton />
     },
@@ -285,13 +281,13 @@ class MessageMenu extends Component<MessageMenuProps> {
   };
 
   handleMenuPosition = () => {
-    const { isUser, coord } = this.props;
+    const { isUser, coord, pinnedMessageScreen } = this.props;
     const MESSAGE_HORIZONTAL_PADDING = 10;
     const NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE = 5;
 
     if(isUser) {
       return { 
-        top: ((coord && coord.pageY) ? coord.pageY : 0) - MESSAGE_MENU_HEIGHT, 
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4), 
         right: MESSAGE_HORIZONTAL_PADDING*2
       }
     } else {
@@ -334,9 +330,9 @@ class MessageMenu extends Component<MessageMenuProps> {
         }}
       >
         <View style={{ top: coord.componentPageY, height: coord.height }}>
-          {(coord.message?.messageResponseId&&messages.find(m => m.messageId === coord.message?.messageResponseId)?.content)?
+          {(coord.message?.messageResponseId! >= 0 && messages.find(m => m.messageId === coord.message?.messageResponseId)?.content) ?
           <ReplyTextDummyMessage 
-            message={coord.message} 
+            message={coord.message!} 
             messages={messages} 
             isUser={isUser} 
             height={coord.height} 

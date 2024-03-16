@@ -3,7 +3,8 @@ import User from "../../../../dao/Models/User";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 
 export interface DialogueFooterProps {
-  author: User | undefined;
+  author: User;
+  users: User[];
   messages: MessageProps[];
   setMessages: (arg0: MessageProps) => void; 
   isReply: boolean; 
@@ -12,14 +13,12 @@ export interface DialogueFooterProps {
   isEdit: boolean;
   editMessage: MessageProps; 
   messageID: number;
-  copyMessagePopUp: boolean;
-  endCopyMessagePopUp: () => void;
   selecting: boolean;
   deleteSelectedMessages: () => void;
+  keyboardActive: boolean;
 }
 
 export interface DialogueFooterState {
-  keyboardActive: boolean;
   text: string;
 }
 

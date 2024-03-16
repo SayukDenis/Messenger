@@ -1,7 +1,7 @@
 import { View, TextInput, Animated, EasingFunction, Easing } from 'react-native';
 import React, { useState, memo, useEffect, useRef } from 'react';
 import styles from './Styles/Footer';
-import ReplyAndEditMenu from './ReplyAndEditMenu';
+import ReplyAndEditMenu from './HelperComponents/Footer/ReplyAndEditMenu';
 import { DialogueFooterProps } from './Interfaces/IDialoueFooter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux';
