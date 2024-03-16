@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { styles } from "../EditGroup/ProfileGroupStyles";
-import { useNavigation } from "@react-navigation/native";
 import Svg, { Path, Rect } from "react-native-svg";
 
 export const SettingsHead = () => {

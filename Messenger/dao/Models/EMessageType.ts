@@ -1,7 +1,7 @@
 export enum EMessageType {
     text = 1,
-    img,
-    video,
-    audio,
-    file
+    img = 2,
+    video = 3,
+    audio = 4,
+    file = 5,
 }

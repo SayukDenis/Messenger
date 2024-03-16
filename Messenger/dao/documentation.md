@@ -1,171 +1,285 @@
-# Documentation for database
+# Work with database
 
-## Models
+Here are described the main methods that you will need when working with the database.
 
-### Example models
+## Get started
 
-User:
+First step: export `dataSource` from `data/local/database.ts`
+
+Second step:
+
+* use `manager` - `EntityManager` used to work with entities.
+Learn more about [Entity Manager and Repository](https://typeorm.io/working-with-entity-manager#).
+* use `getRepository` - Gets `Repository` to perform operations on a specific entity.
+Learn more about [Repositories](https://typeorm.io/working-with-repository#).
+
+```typescript
+//manager -recommended
+const manager: EntityManager = dataSource.manager
+// you can call manager methods, for example find:
+const users = await manager.find(User)
+
+//repository (only for work with User)
+const userRepository = manager.getRepository(User)
+//call methods:
+await userRepository.find() //->return Users 
+```
+
+### DataSource methods
+
+* `isInitialized` - Indicates if DataSource was initialized and initial connection / connection pool with database was established or not.
+
+* `initialize` - Initializes data source and opens connection pool to the database.
+
+```typescript
+const isInitialized: boolean = dataSource.isInitialized
+
+await dataSource.initialize()
+
+if (!dataSource.isInitialized) await dataSource.initialize();
+```
+
+* `destroy` - Destroys the DataSource and closes all database connections.
+    Usually, you call this method when your application is shutting down.
+
+```typescript
+await dataSource.destroy()
+```
+
+* `synchronize` - Synchronizes database schema. When `synchronize: true` is set in data source options it calls this method.
+    Usually, you call this method when your application is starting.
+
+```typescript
+await dataSource.synchronize()
+```
+
+* `dropDatabase` - Drops the database and all its data.
+    Be careful with this method on production since this method will erase all your database tables and their data.
+    Can be used only after connection to the database is established.
+
+```typescript
+await dataSource.dropDatabase()
+```
+
+`dataSource` is such an object:
 
 ```ts
-class User extends Model {
-  userId?: number;
-  name!: string;
-  numberPhone?: string;
-  nickname?: string;
-  description?: string;
-  linkToPhoto?: string;
-  //schema
-  static schema = {
-    name: 'users', // table name
-    properties: {  // each property and its type:
-      userId: 'integer', 
-      name: 'string',
-      numberPhone: 'text?',
-      nickname: 'text?',
-      description: 'text?',
-      linkToPhoto: 'text?',
+export const dataSource = new DataSource({
+  database: 'messenger.db',
+  type: 'expo',
+  driver: require('expo-sqlite'),
+  entities: [User, SelfProfile, Message, Chat, Tab, Folder, Branch,
+    MainChat, Role, Dialogue, Channel, Group],
+  synchronize: true,
+  logging: ["error"],
+});
+```
+
+`synchronize: true` - Indicates if database schema should be auto created on every application launch.Don't use this in production - otherwise you can lose production data.  
+
+## The most important methods
+
+* `transaction` - Provides a transaction where multiple database requests will be executed in a single database transaction.
+    Learn more [Transactions](https://typeorm.io/transactions).
+
+```typescript
+await manager.transaction(async (manager) => {
+    // NOTE: you must perform all database operations using the given manager instance
+    // it's a special instance of EntityManager working with this transaction
+    // and don't forget to await things here
+})
+```
+
+* `createQueryBuilder` - Creates a query builder use to build SQL queries.
+    Learn more about [QueryBuilder](select-query-builder.md).
+
+```typescript
+const users = await manager
+    .createQueryBuilder()
+    .select()
+    .from(User, "user")
+    .where("user.name = :name", { name: "John" })
+    .getMany()
+```
+
+* `save` - Saves a given entity or array of entities.
+    If the entity already exists in the database, then it's updated.
+    If the entity does not exist in the database yet, it's inserted.
+    It saves all given entities in a single transaction (in the case of entity manager is not transactional).
+    Also supports partial updating since all undefined properties are skipped. In order to make a value `NULL`, you must manually set the property to equal `null`.
+
+```typescript
+await manager.save(user)
+await manager.save([category1, category2, category3])
+```
+
+* `remove` - Removes a given entity or array of entities.
+    It removes all given entities in a single transaction (in the case of entity, manager is not transactional).
+
+```typescript
+await manager.remove(user)
+await manager.remove([category1, category2, category3])
+```
+
+* `insert` - Inserts a new entity, or array of entities.
+
+```typescript
+await manager.insert(User, {
+    firstName: "Timber",
+    lastName: "Timber",
+})
+
+await manager.insert(User, [
+    {
+        firstName: "Foo",
+        lastName: "Bar",
     },
-    primaryKey: 'userId', //primary key, field should be in the properties
-  };
-};
+    {
+        firstName: "Rizz",
+        lastName: "Rak",
+    },
+])
 ```
 
-Dialogue:
+* `update` - Partially updates entity by a given update options or entity id.
 
-```ts
-class Dialogue extends MainChat { 
-    constructor(firstUser: User, secondUser: User) {
-        super();
-        this.users.push(firstUser);
-        this.users.push(secondUser);
-    }
-    dialogueId?: number;
-    //schema
-    static schema = { // every property that exists in the parent class should be written here
-        name: 'dialogues',
-        properties: {
-            dialogueId: { type: 'integer' }, //Not null
-            users: { type: 'list', objectType: User }, // list and class
-            messages: { type: 'list', objectType: Message },          
-            pinnedMessage: { type: 'list', objectType: Message },
-            pinnedMessageForAll: { type: 'list', objectType: Message },
-            branches: { type: 'list', objectType: Branch },
-            roles: { type: 'list', objectType: Role },
-            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage }, // interface
-            linkToPhoto: 'text?',
-        },
-        primaryKey: 'dialogueId',
-        embedded: false, // a table should be created
-    }
-}
+```typescript
+await manager.update(User, { age: 18 }, { category: "ADULT" })
+// executes UPDATE user SET category = ADULT WHERE age = 18
+
+await manager.update(User, 1, { firstName: "Rizzrak" })
+// executes UPDATE user SET firstName = Rizzrak WHERE id = 1
 ```
 
-### Basic types in schema
+* `upsert` - Inserts a new entity or array of entities unless they already exist in which case they are updated instead. Supported by AuroraDataApi, Cockroach, Mysql, Postgres, and Sqlite database drivers.
 
-* `integer` - stored as an INTEGER
-* `bigint`  - stored as an INTEGER
-* `real` - stored as an REAL
-* `boolean`  - stored as an BOOLEAN
-* `string` and `text` - stored as a TEXT
-* `date` - stored as a DATETIME (INTEGER)
-* `blob` - stored as a BLOB (image, audio, video and other type of raw binary information)
-* `null` - stored as an NULL
-
-### Example column and data to insert
-
-| id | null_column | integer_column | real_column |  text_column  | blob_column |     datetime_column   | boolean_column |
-|----|-------------|----------------|-------------|---------------|-------------|-----------------------|----------------|
-| 1  | NULL        | 42             | 3.14        | Sample Text   | 0x010101    | 2024-01-01 12:34:56   | TRUE           |
-| 2  | NULL        | 23             | 2.71        | Another Text  | 0x020202    | 2024-01-02 18:45:30   | FALSE          |
-
-### Additional types in schema
-
-* `enum` - stored as an INTEGER
-* `interface` - stored as an TEXT in JSON format
-* `list` - have 3 cases:
-  * if an array of `primitive types` - stored as an TEXT in JSON format
-  * if an array of `interface` - stored as an TEXT in JSON format
-  * if an array of `class` - add field INTEGER type and FOREIGN KEY in the binding model
-* `class` - one-to-one reference,  stored as an INTEGER
-* `other` - Error "dao_generateSql_mapToSQl: Unknown type "
-
-### NULLable type in schema
-
-1. You can append `?` at the end of the type definition as a string to indicate that the field can be `nullable`; otherwise, it is NOT NULL.
-2. If the type is an object, such as `{type: 'number', optional: true}`, it indicates that the field is `optional`. You can omit the specification of optional.
-
-## Field rules
-
-### Field rules in the scheme
-
-1. Fields in the schema should be named like class fields - their names will be analogous in the table.
-2. A scheme can't have functions.
-
-### Foreign key naming rules
-
-* For foreign keys in associated models (one-to-many relationship): `{name of the parent table}_{field name}_fk`
-
-* For foreign keys in this table (one-to-one relationship): `{field name}_fk`
-
-## Example work with Expo SQLite
-
-```ts
-// Model
-class Employee {
-  date_of_birth: Date;
-  employee_id: number;
-  first_name: string;
-  last_name: string;
-  salary: number;
-  is_active: boolean;
-  constructor(employee_id, first_name, last_name, date_of_birth, salary, is_active) {
-    this.employee_id = employee_id;
-    this.first_name = first_name;
-    this.last_name = last_name;
-    this.date_of_birth = new Date(date_of_birth);
-    this.salary = salary;
-    this.is_active = is_active;
-  }
-}
-
-// Adding a record to the table
-const addEmployee = () => {
-  db.transaction(tx => {
-    tx.executeSql(
-      `INSERT INTO employees 
-          (first_name, last_name, date_of_birth, salary, is_active) 
-          VALUES (?, ?, ?, ?, ?);`,
-      ['John', 'Doe', new Date().getTime(), 50000.0, `${false}`],
-      (_, { rows }) => {
-        console.log('Inserted Employee ID: ', rows._array.findIndex(() => true));
-      },
-      (_, error) => {
-        console.error('Error inserting employee:', error);
-        return true;
-      }
-    );
-  });
-};
-
-// Getting data from the table and creating an Employee object
-const readEmployees = () => {
-  db.transaction(tx => {
-    tx.executeSql(
-      `SELECT * FROM employees;`,
-      [],
-      (_, { rows }) => {
-        const employees = rows._array.map(
-          ({ employee_id, first_name, last_name, date_of_birth, salary, is_active }) =>
-            new Employee(employee_id, first_name, last_name, date_of_birth, salary, is_active)
-        );
-        for (let x of employees)
-          console.log('Employees:',x );
-      },
-      (_, error) => {
-        console.error('Error reading employees:', error);
-        return true;
-      }
-    );
-  });
-};
+```typescript
+await manager.upsert(
+    User,
+    [
+        { externalId: "abc123", firstName: "Rizzrak" },
+        { externalId: "bca321", firstName: "Karzzir" },
+    ],
+    ["externalId"],
+)
+/** executes
+ *  INSERT INTO user
+ *  VALUES
+ *      (externalId = abc123, firstName = Rizzrak),
+ *      (externalId = cba321, firstName = Karzzir),
+ *  ON CONFLICT (externalId) DO UPDATE firstName = EXCLUDED.firstName
+ **/
 ```
+
+* `delete` - Deletes entities by entity id, ids or given conditions:
+
+```typescript
+await manager.delete(User, 1)
+await manager.delete(User, [1, 2, 3])
+await manager.delete(User, { firstName: "Timber" })
+```
+
+* `exists` - Check whether any entity exists that matches `FindOptions`.
+
+```typescript
+const exists = await manager.exists(User, {
+    where: {
+        firstName: "Timber",
+    },
+})
+```
+
+* `existsBy` - Checks whether any entity exists that matches `FindOptionsWhere`.
+
+```typescript
+const exists = await manager.existsBy(User, { firstName: "Timber" })
+```
+
+* `count` - Counts entities that match `FindOptions`. Useful for pagination.
+
+```typescript
+const count = await manager.count(User, {
+    where: {
+        firstName: "Timber",
+    },
+})
+```
+
+* `countBy` - Counts entities that match `FindOptionsWhere`. Useful for pagination.
+
+```typescript
+const count = await manager.countBy(User, { firstName: "Timber" })
+```
+
+* `find` - Finds entities that match given `FindOptions`.
+
+```typescript
+const timbers = await manager.find(User, {
+    where: {
+        firstName: "Timber",
+    },
+})
+```
+
+* `findBy` - Finds entities that match given `FindWhereOptions`.
+
+```typescript
+const timbers = await manager.findBy(User, {
+    firstName: "Timber",
+})
+```
+
+* `findOne` - Finds the first entity that matches given `FindOptions`.
+
+```typescript
+const timber = await manager.findOne(User, {
+    where: {
+        firstName: "Timber",
+    },
+})
+```
+
+* `findOneBy` - Finds the first entity that matches given `FindOptionsWhere`.
+
+```typescript
+const timber = await manager.findOneBy(User, { firstName: "Timber" })
+```
+
+* `findOneOrFail` - Finds the first entity that matches some id or find options.
+    Rejects the returned promise if nothing matches.
+
+```typescript
+const timber = await manager.findOneOrFail(User, {
+    where: {
+        firstName: "Timber",
+    },
+})
+```
+
+* `findOneByOrFail` - Finds the first entity that matches given `FindOptions`.
+    Rejects the returned promise if nothing matches.
+
+```typescript
+const timber = await manager.findOneByOrFail(User, { firstName: "Timber" })
+```
+
+You can read about everything else here [TypeORM site](https://typeorm.io/data-source-api)
+
+## Work with Tree
+
+* `getTreeRepository` - Gets `TreeRepository` to perform operations on a specific entity.
+You can also specify a table name and if repository for given table is found it will be returned.
+Learn more about [Repositories](https://typeorm.io/working-with-repository#).
+
+```typescript
+const categoryRepository = manager.getTreeRepository(Category)
+```
+
+About working with tree entities (Branch) you can read here [TypeORM site (tree-entities)](https://typeorm.io/tree-entities#working-with-tree-entities)
+
+## Column types for `sqlite` / `expo`
+
+`int`, `int2`, `int8`, `integer`, `tinyint`, `smallint`, `mediumint`, `bigint`, `decimal`,
+`numeric`, `float`, `double`, `real`, `double precision`, `datetime`, `varying character`,
+`character`, `native character`, `varchar`, `nchar`, `nvarchar2`, `unsigned big int`, `boolean`,
+`blob`, `text`, `clob`, `date`
