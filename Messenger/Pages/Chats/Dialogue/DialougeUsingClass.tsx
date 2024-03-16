@@ -159,16 +159,16 @@ class Dialogue extends Component<DialogueProps> {
     this.setState({ deleting: !this.state.deleting })
   }
 
-  onDeletePress = () => {
-    const { listOfMessages, listOfPinnedMessages, messageID, deleting } = this.state;
+  onDeletePress = (id: number = -1) => {
+    const { listOfMessages, messageID } = this.state;
 
     // const message = listOfMessages.find(m => m.messageId === messageID)!;
     // if(listOfPinnedMessages.findIndex(m => m.messageId === message.messageId) >= 0) {
     //   this.pinMessageHandler(message);
     // }
-    console.log('messageID', messageID);
+    console.log('onDeletePress in Dialogue', messageID, id, (id < 0 ? messageID : id));
     const newListOfMessages = [...listOfMessages];
-    const idx = newListOfMessages.findIndex(m => m.messageId === messageID);
+    const idx = newListOfMessages.findIndex(m => m.messageId === (id < 0 ? messageID : id));
     newListOfMessages[idx] = { 
       messageId: newListOfMessages[idx].messageId,
       author: undefined!,
@@ -181,9 +181,9 @@ class Dialogue extends Component<DialogueProps> {
     };
     this.setState({ 
       listOfMessages: [...newListOfMessages], 
-      deleting: !this.state.deleting 
+      deleting: id < 0 ? !this.state.deleting : false 
     });
-    this.props.route.params.dispatch(removeCoordinationsOfMessage(messageID));
+    this.props.route.params.dispatch(removeCoordinationsOfMessage((id < 0 ? messageID : id)));
   }
 
   handleMessageMenuPress = () => {
@@ -238,18 +238,30 @@ class Dialogue extends Component<DialogueProps> {
   deleteSelectedMessages = () => {
     const { listOfId } = this.props;
     const { dispatch } = this.props.route.params;
-    const { listOfMessages } = this.state;
+    const { listOfMessages, listOfPinnedMessages } = this.state;
+    const newListOfPinnedMessages = [...listOfPinnedMessages];
 
     listOfId.sort((a, b) => b - a);
-    console.log(listOfId);
     let idx = 0;
+    let idxOfPinned = 0;
+    const listOfIdLen = listOfId.length - 1;
     for(let i = 0; i < listOfMessages.length; i++) {
-      if(listOfMessages[i].messageId === listOfId[idx]) {
-        listOfMessages[i] = { messageId: listOfMessages[i].messageId } as MessageProps;
+      if(listOfMessages[i].messageId === listOfId[idx] || newListOfPinnedMessages[idxOfPinned]?.messageId === listOfId[listOfIdLen - idx]) {
+        if(listOfMessages[i].messageId === listOfId[idx]) {
+          listOfMessages[i] = { messageId: listOfMessages[i].messageId } as MessageProps;
+        }
+        if(newListOfPinnedMessages[idxOfPinned]?.messageId === listOfId[listOfIdLen - idx]) {
+          newListOfPinnedMessages[idxOfPinned++] = { messageId: -1 } as MessageProps;
+        }
         idx++;
       }
     }
-    this.setState({ listOfMessages: [...listOfMessages], selecting: false });
+    
+    this.setState({ 
+      listOfMessages: [...listOfMessages], 
+      selecting: false,
+      listOfPinnedMessages: [...newListOfPinnedMessages.filter(m => m.messageId !== -1)]
+    });
     dispatch(removeCoordinationsOfSelectedMessages(listOfId));
     dispatch(resetSelectedMessage());
   }

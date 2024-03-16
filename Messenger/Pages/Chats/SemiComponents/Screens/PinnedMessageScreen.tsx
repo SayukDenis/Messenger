@@ -190,9 +190,11 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   DeleteHandler = () => {
     const { listOfPinnedMessages } = this.state;
 
+    console.log('DeleteHandler in PinnedMessageScreen');
+
     const mes = listOfPinnedMessages.find(m => m.messageId === coord.message?.messageId);
     this.props.route?.params.onUnpinPress(mes!);
-    this.props.route?.params.onDeletePress(mes!);
+    this.props.route?.params.onDeletePress(mes!.messageId!);
     
     const newListOfPinnedMessages = listOfPinnedMessages.filter(m => m.messageId !== coord.message?.messageId);
 
@@ -203,7 +205,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   }
 
   render(): React.ReactNode {
-    const { listOfMessages, author, userMessageLastWatched, onCopyPress } = this.props.route?.params!;
+    const { listOfMessages, author, userMessageLastWatched } = this.props.route?.params!;
     const mes = listOfMessages.find(m => m.messageId==this.state.messageID);
 
     return (

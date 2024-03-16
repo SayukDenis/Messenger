@@ -27,7 +27,7 @@ export interface DialogueHeaderProps {
     unpinAllMessagesHandler: () => void;
     userMessageLastWatched: ILastWatchedMessage;
     onUnpinPress: (message: MessageProps) => void;
-    onDeletePress: (message: MessageProps) => void;
+    onDeletePress: (messageId: number) => void;
     users: User[];
   };
   deleteAllButtonHandler: () => void;
