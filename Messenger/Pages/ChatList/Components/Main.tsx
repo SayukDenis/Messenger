@@ -12,6 +12,7 @@ import {
   setCurrentPositionForChatList,
   setEnumForChatListBlurs,
   setFolderSelectedArray,
+  setMapForSelectedChats,
   setSelectedFolderForChatList,
 } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 import ListOfFolder from "./ListOfFolder";
@@ -24,7 +25,8 @@ import SelfProfile from "../../../dao/Models/SelfProfile";
 import { booleanForLogging } from "../ChatList";
 import BlursForChatList from "./Headers containers/BlursForChatList";
 import { EnumForChatListBlurs } from "./Enums/EnumsForChatListBlurs";
-import ModalWindowChatState from "./List of chats containers/ModalWindowChatState";
+import ModalWindowChatState from "./List of folders containers/ModalWindowChatState";
+import Header from "./Header";
 
 interface MainProps {
   navigation: any;
@@ -85,6 +87,8 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
     scrollToFolder(index);
   });
 
+  const currentFolder = useRef<number>(0);
+
   const handleHorizontalScroll = (event: any) => {
     let newHorizontalPosition = event.nativeEvent.contentOffset.x;
     if (newHorizontalPosition < 0) {
@@ -98,6 +102,9 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
     }
     dispatch(setCurrentPositionForChatList(newHorizontalPosition));
     const newFolder: number = Math.round(newHorizontalPosition / screenWidth);
+    if (newFolder != currentFolder.current) {
+      currentFolder.current = newFolder;
+    }
 
     scrollToPosition(newHorizontalPosition);
     if (newFolder != selectFolder) {
@@ -215,9 +222,25 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
     setVisibleChatModalWindow(false);
   });
 
+  const [isSelectChatMode, setSelectChatModeState] = useState(false);
+
+  const setSelectChatMode = useRef<() => void>(() => {
+    setSelectChatModeState(true);
+    dispatch(setMapForSelectedChats(new Map<number, boolean>()));
+  });
+  const unsetSelectChatMode = useRef<() => void>(() => {
+    setSelectChatModeState(false);
+    dispatch(setMapForSelectedChats(undefined));
+  });
+
   return (
     <>
       <View style={{ flex: 1 }}>
+        <Header
+          navigation={navigation}
+          isSelectChatMode={isSelectChatMode}
+          unsetSelectChatMode={unsetSelectChatMode}
+        />
         <ModalWindowFolderState
           isVisibleForModalFolder={isVisibleForModalFolder}
           animationState={animationState}
@@ -233,6 +256,7 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
         <ModalWindowChatState
           visibleChatModalWindow={visibleChatModalWindow}
           setHiddenModalWindowChatState={setHiddenModalWindowChatState}
+          onSelectPress={setSelectChatMode}
         />
         <BlursForChatList
           handlePress={handlePress}
@@ -242,6 +266,7 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
           data={selfProfile.tabs[currentTab].folders}
           horizontal
           pagingEnabled
+          scrollEnabled={!isSelectChatMode}
           ref={scrollViewRef}
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={() => {
@@ -250,14 +275,25 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
           scrollEventThrottle={1}
           nestedScrollEnabled={true}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <ListOfFolder
-              key={index}
-              currentFolder={index}
-              navigation={navigation}
-              setVisibleModalWindowChatState={setVisibleModalWindowChatState}
-            />
-          )}
+          renderItem={({ item, index }) =>
+            isSelectChatMode && index === currentFolder.current ? (
+              <ListOfFolder
+                key={index}
+                currentFolder={index}
+                navigation={navigation}
+                setVisibleModalWindowChatState={setVisibleModalWindowChatState}
+                isSelectChatMode={true}
+              />
+            ) : (
+              <ListOfFolder
+                key={index}
+                currentFolder={index}
+                navigation={navigation}
+                setVisibleModalWindowChatState={setVisibleModalWindowChatState}
+                isSelectChatMode={false}
+              />
+            )
+          }
           onScroll={handleHorizontalScroll}
           windowSize={10}
           initialNumToRender={1}
@@ -271,6 +307,7 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
           handleLongPress={handleLongPress}
           positionsOfFolder={positionsOfFolder}
           widths={widths}
+          isSelectChatMode={isSelectChatMode}
         />
 
         {isTouchableForHeader ? (

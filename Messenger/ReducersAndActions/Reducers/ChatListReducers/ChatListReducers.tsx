@@ -187,6 +187,26 @@ const isVisibleGalleryModalWindowReducer = (
   }
 };
 
+const mapForSelectedChatsReducer = (
+  state = { map: new Map() },
+  action: any
+) => {
+  switch (action.type) {
+    case "SET_HASH_TABLE_FOR_SELECTED_CHATS":
+      return {
+        ...state,
+        map: action.map,
+      };
+    case "SET_VALUE_TO_MAP_FOR_SELECTED_CHATS":
+      return {
+        ...state,
+        map: new Map([...state.map, [action.chatId, action.isSelected]]),
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducerChatList = combineReducers({
   animationForChatListFolder: animationForChatListFolderReducer,
   selectedFolder: selectedFolderReducer,
@@ -202,6 +222,7 @@ const rootReducerChatList = combineReducers({
   setPhotoForCreateGroupOrChannel: setPhotoForCreateGroupOrChannelReducer,
   isVisibleGalleryModalWindow: isVisibleGalleryModalWindowReducer,
   chatForModalWindowChatState: chatForModalWindowChatStateReducer,
+  mapForSelectedChats: mapForSelectedChatsReducer,
 });
 
 export default rootReducerChatList;
