@@ -3,13 +3,13 @@ import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMes
 import { MessageProps } from "../../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
+import { Animated } from "react-native";
+import { Dispatch } from "redux";
 
 
 export interface DialogueMessagesProps {
   scrollToPinnedMessage: boolean;
   idOfPinnedMessage: number;
-  scrollToTappedMessage: boolean;
-  idOfTappedMessage: number;
   setMessageMenuVisible:(coordinations: Layout, pressed: boolean, callback: () => void)=>void; 
   messageID:number;
   listOfMessages:MessageProps[];
@@ -29,4 +29,23 @@ export interface DialogueMessagesProps {
 
 export interface MessageViewHandleProps {
   message: MessageProps; 
+}
+
+export interface DialogueMessagesReduxProps {
+  dispatch?: Dispatch<any>;
+}
+
+export interface messageCoordsProps {
+  message: number;
+  coord: number;
+  height: number;
+}
+
+export interface DialogueMessagesState {
+  coordsY: [number[]]
+  keyboardHeight: Animated.Value;
+  flatListHeight: Animated.Value;
+  pinnedMessageId: number;
+  deletedMessagesCount: number;
+  callMessageMenu: boolean;
 }

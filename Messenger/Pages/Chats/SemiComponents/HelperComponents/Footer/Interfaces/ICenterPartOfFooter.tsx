@@ -6,4 +6,5 @@ export interface CenterPartOfFooterProps {
   setText: (text: string) => void;
   sendMessageHandler: () => void;
   selecting: boolean;
+  height: number;
 }

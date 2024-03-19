@@ -238,26 +238,29 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     }
   };
   
+  pressInTime: number = 0;
   onPressIn = (event:any) => {
+    this.pressInTime = (new Date()).getTime();
     const { locationX, locationY } = event.nativeEvent;
     this.setState({ pressCoordinations: { locationX_In: locationX, locationY_In: locationY } });
   }
 
   onPressOut = async (event:any) => {
+    const pressOutTime = (new Date()).getTime();
     const { locationX, locationY } = event.nativeEvent;
     const { locationX_In, locationY_In } = this.state.pressCoordinations;
 
     const { selecting, dispatch, id } = this.props;
     const { selected } = this.state;
     
-    if (selecting && Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
+    if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
       this.setState({ selected: !selected });
       dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
       return;
     }
 
-    if (Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
+    if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });

@@ -15,6 +15,10 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
     const { messages, message, isUser, height, userMessageLastWatched, pinned, userName } = this.props;
     const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
 
+    let text = '';
+    replyMessage?.content.split('\n').forEach(m => text += `${m.trim()} `);
+    text.trimEnd();
+
     return (
       <View style={styles.replyContainer} >
         <View style={styles.innerReplyContainer} >
@@ -26,7 +30,7 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
               <View style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content?.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content?.length>=DEFAULT_CHARS_PER_LINE?text.slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </View>

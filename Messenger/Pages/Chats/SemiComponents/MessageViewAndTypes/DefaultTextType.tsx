@@ -6,6 +6,7 @@ import {
   ScrollView,
   Animated,
   Easing,
+  GestureResponderEvent,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -214,6 +215,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     // }
   }
 
+  pressInTime: number = 0;
   render() {
     const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
@@ -252,24 +254,35 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
           style={styles.mainContainer}
           activeOpacity={1}
           onPressIn={(event) => {
+            this.pressInTime = (new Date()).getTime();
+            //console.log('pressInTime: ', this.pressInTime);
+
             const { locationX, locationY } = event.nativeEvent;
             this.pressCoordinations = { locationX_In: locationX, locationY_In: locationY };
           }}
-          onPressOut={async (event) => {
-            console.log('DefaultTextType:', this.props.id, this.props.message.messageId);
+          onPressOut={(event: GestureResponderEvent) => {
+            const pressOutTime = (new Date()).getTime();
+            //console.log('pressOutTime:', pressOutTime);
+            //console.log('Differecne in time:', pressOutTime - this.pressInTime);
+
+            //console.log('DefaultTextType:', this.props.id, this.props.message.messageId);
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
             const { dispatch, setMessageMenuVisible, id } = this.props;
 
-            if (selecting && Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
+            //console.log('\npressIn  coords:', locationX_In, locationY_In, '\npressOut coords:', locationX, locationY);
+
+            if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
               dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
               dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
               this.setState({ selected: !selected });
               return;
             }
 
-            if (Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
-              await this.handlePress(event).then((layout) => {
+
+
+            if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
+              this.handlePress(event).then((layout) => {
                 setMessageMenuVisible(layout, true);
               });
             }

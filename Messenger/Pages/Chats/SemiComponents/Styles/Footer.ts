@@ -1,21 +1,26 @@
 import { StyleSheet } from "react-native";
-import { height, screenWidth } from "../ChatConstants";
+import { height, screenWidth, width } from "../ChatConstants";
 
 const styles = StyleSheet.create({
+  wrapperAnimatedContainer: { 
+    zIndex: 10, 
+    position: 'absolute', 
+    width: width, 
+    maxHeight: height * 0.16,  
+  },
   mainContainer: {
-    position: "absolute",
     left: 0,
     right: 0,
     zIndex: 5,
     elevation: 0.001,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: height * 0.08,
     justifyContent: "flex-end",
     overflow: 'hidden',
+    maxHeight: height * 0.16
   },
   gradientContainer: {
-    height: height * 0.08,
+    maxHeight: height * 0.16,
     backgroundColor:"white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -35,12 +40,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-end',
     height: height*0.06,
+    maxHeight: height * 0.14,
   },
   footer: {
-    paddingVertical: 5,
+    paddingVertical: 0,
     display: 'flex',
     flexDirection: 'row',
-    height: height*0.06,
+    maxHeight: height * 0.14,
     alignSelf: 'stretch',
     borderStyle: 'solid',
     borderTopLeftRadius: 10,
@@ -48,8 +54,13 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
   },
+  footerWhileSelecting: { 
+    justifyContent: 'space-between', 
+    paddingHorizontal: width * 0.075, 
+    alignItems: 'flex-start' 
+  }
 });
 
 export default styles;
