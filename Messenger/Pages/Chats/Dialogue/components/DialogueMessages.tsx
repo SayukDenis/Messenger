@@ -1,36 +1,17 @@
-import React, { Component, Dispatch } from "react";
-import { DialogueMessagesProps } from "./interfaces/IDialogueMessages";
+import React, { Component } from "react";
+import { DialogueMessagesProps, DialogueMessagesReduxProps, DialogueMessagesState, messageCoordsProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent, Platform } from "react-native";
 import { connect } from "react-redux";
 import { FLATLIST_HEIGHT, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
-import { addCoordinationsOfMessage, handleKeyboardAppearing, setScrollStateForPinnedMessage, setScrollStateTappedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
+import { addCoordinationsOfMessage, handleKeyboardAppearing, setScrollStateForPinnedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
 import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
 
-interface DialogueMessagesReduxProps {
-  dispatch?: Dispatch<any>;
-}
-
-export interface messageCoordsProps {
-  message: number;
-  coord: number;
-  height: number;
-}
-
-interface DialogueMessagesState {
-  coordsY: [number[]]
-  keyboardHeight: Animated.Value;
-  flatListHeight: Animated.Value;
-  pinnedMessageId: number;
-  deletedMessagesCount: number;
-  callMessageMenu: boolean;
-}
-
-  let pinnedMessagesWithCoords:messageCoordsProps[] = [];
+let pinnedMessagesWithCoords:messageCoordsProps[] = [];
 
 class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessagesReduxProps> {
   state:DialogueMessagesState = {
@@ -112,12 +93,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       return true;
     } else if(this.props.isReply !== nextProps.isReply) {
       return true;
-    } else if(this.props.scrollToTappedMessage !== nextProps.scrollToTappedMessage) {
-      this.scrollToTappedMessage(nextProps.scrollToTappedMessage, nextProps.idOfTappedMessage)
-      return true;
-    } else if(this.props.idOfTappedMessage !== nextProps.idOfTappedMessage) {
-      this.scrollToTappedMessage(nextProps.scrollToTappedMessage, nextProps.idOfTappedMessage)
-      return true;
     }
 
     return false;
@@ -155,21 +130,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
       if(this.props.dispatch) {
         this.props.dispatch(setScrollStateForPinnedMessage(false, -1));
-      }
-    }
-  }
-
-  scrollToTappedMessage = (scrollToTappedMessage: boolean, idOfTappedMessage: number) => {
-    if(scrollToTappedMessage && this.flatListRef.current) {
-      const tappedMessage = this.props.messagesWithCoords.find(m => m.id === idOfTappedMessage);
-
-      console.log('!!!!!\n\n\n\n\n\nscrollToTappedMessage\n\n\n\n\n\n!!!!!');
-
-      if(tappedMessage !== undefined)
-        this.flatListRef.current.scrollToOffset({ animated: true, offset: tappedMessage.coords });
-
-      if(this.props.dispatch) {
-        this.props.dispatch(setScrollStateTappedMessage(false, 0));
       }
     }
   }
@@ -267,7 +227,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
       await new Promise(resolve => setTimeout(resolve, 200));
       
-      console.log('MessageMenu does not fit and FlatList cannot be scrolled');
+      //console.log('MessageMenu does not fit and FlatList cannot be scrolled');
       coord.componentPageY = coord.componentPageY - (MESSAGE_MENU_HEIGHT - (HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height!)) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT); 
       coord.pageY = HEIGHT_OF_FLATLIST + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(pressed && HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
@@ -277,7 +237,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-      console.log('MessageMenu does not fit and FlatList can be scrolled', Platform.OS, mesCoords?.coords!, mesCoords?.height!);
+      //console.log('MessageMenu does not fit and FlatList can be scrolled', Platform.OS, mesCoords?.coords!, mesCoords?.height!);
       coord.componentPageY = HEIGHT_OF_FLATLIST - mesCoords?.height! - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
       coord.pageY = HEIGHT_OF_FLATLIST - MESSAGE_PADDING_VERTICAL + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(pressed && coord.componentPageY < HEIGHT_OF_HEADER) {
@@ -287,11 +247,11 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-      console.log('Message is above or behind the header');
+      //console.log('Message is above or behind the header');
       coord.componentPageY = HEIGHT_OF_HEADER;
       coord.pageY = HEIGHT_OF_HEADER + MESSAGE_MENU_HEIGHT + mesCoords?.height!;
     } else if(pressed) {
-      console.log('MessageMenu fits and FlatList does not need to be scrolled');
+      //console.log('MessageMenu fits and FlatList does not need to be scrolled');
       coord.pageY = coord.componentPageY + mesCoords?.height! + MESSAGE_MENU_HEIGHT;
     }
 
@@ -338,7 +298,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
           inverted
           overScrollMode={'never'}
           //windowSize={15}
-          maxToRenderPerBatch={10}
+          maxToRenderPerBatch={5}
           initialNumToRender={20}
           removeClippedSubviews
           //updateCellsBatchingPeriod={100}
@@ -355,8 +315,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 const mapStateToProps = (state:any) => ({
   scrollToPinnedMessage: state.ChatReducer.scrollToPinnedMessage.scroll,
   idOfPinnedMessage: state.ChatReducer.scrollToPinnedMessage.id,
-  scrollToTappedMessage: state.ChatReducer.scrollToTappedMessage.scroll,
-  idOfTappedMessage: state.ChatReducer.scrollToTappedMessage.id,
   messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 

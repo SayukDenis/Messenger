@@ -71,12 +71,12 @@ class Footer extends Component<DialogueFooterProps> {
     // Have a little lagging for some reason
     if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) this.textInput.current?.blur();
 
-    console.log('#1', !keyboardActive);
+    console.log('Footer #1', !keyboardActive);
 
     if(isEdit === prevProps.isEdit && isReply === prevProps.isReply) return;
 
     if (isEdit && editMessage.content) {
-      console.log('#2', !keyboardActive);
+      console.log('Footer #2', !keyboardActive);
       this.textInput.current && this.textInput.current.focus();
       this.setState({ text: editMessage.content });
     } else {

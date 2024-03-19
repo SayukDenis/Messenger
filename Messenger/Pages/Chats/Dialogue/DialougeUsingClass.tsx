@@ -66,11 +66,11 @@ class Dialogue extends Component<DialogueProps> {
 
   shouldComponentUpdate(nextProps: Readonly<DialogueProps>, nextState: Readonly<DialogueState>, nextContext: any): boolean {
     if(this.props !== nextProps) {
-      console.log('Dialogue update props');
+      //console.log('Dialogue update props');
       return true;
     }
 
-    console.log('Dialogue update state');
+    //console.log('Dialogue update state');
     
     const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, selecting, listOfPinnedMessages, pinnedMessage } = this.state;
 
@@ -96,7 +96,7 @@ class Dialogue extends Component<DialogueProps> {
       return true;
     }
 
-    console.log("Didn't update");
+    //console.log("Didn't update");
 
     return false;
   }
