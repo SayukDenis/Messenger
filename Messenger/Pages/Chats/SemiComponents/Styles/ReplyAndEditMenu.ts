@@ -1,13 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { SOFT_MENU_BAR_HEIGHT } from '../ChatConstants';
 
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     height:0,
-    bottom: screenHeight*0.08 + SOFT_MENU_BAR_HEIGHT*0.85,
+    bottom: screenHeight*0.055,
   },
   innerContainer: {
     height:height*0.052, 

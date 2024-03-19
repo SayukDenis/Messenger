@@ -1,3 +1,4 @@
+import { Animated } from "react-native";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import User from "../../../../dao/Models/User";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
@@ -20,6 +21,8 @@ export interface DialogueFooterProps {
 
 export interface DialogueFooterState {
   text: string;
+  bottomOffset: Animated.Value;
+  dynamicFooterHeight: number;
 }
 
 export interface sendMessageProps {

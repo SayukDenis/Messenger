@@ -31,6 +31,10 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
     const targetId = replyMessage?.author?.userId;
     const displayName = isReply ? (targetId === author.userId ? 'You' : users.find(u => u.userId === targetId)?.name) : 'Edit';
 
+    let text = '';
+    replyMessage?.content?.split('\n').forEach(m => text += `${m.trim()} `);
+    text.trimEnd();
+
     return (
       (isReply||isEdit)&&
       <View style={styles.container}>
@@ -47,8 +51,8 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
               <View>
                 <Text style={styles.usernameText}>{displayName}</Text>
                 <Text style={styles.messageText}>{
-                  isReply?(replyMessage?.content!.length>DEFAULT_CHARS_PER_LINE?replyMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content):
-                  (editMessage?.content!.length>DEFAULT_CHARS_PER_LINE?editMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE)+'...':editMessage?.content)
+                  isReply?(replyMessage?.content!.length>DEFAULT_CHARS_PER_LINE?text.slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content):
+                  (editMessage?.content!.length>DEFAULT_CHARS_PER_LINE?text.slice(0,DEFAULT_CHARS_PER_LINE)+'...':editMessage?.content)
                 }</Text>
               </View>
               <TouchableOpacity 

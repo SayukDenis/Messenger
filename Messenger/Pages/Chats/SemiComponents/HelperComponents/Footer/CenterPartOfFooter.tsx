@@ -19,7 +19,7 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
   }
 
   render(): React.ReactNode {
-    const { selecting, textInput, text, setText, sendMessageHandler } = this.props;
+    const { selecting, textInput, text, height, setText, sendMessageHandler } = this.props;
 
     return (!selecting?
       <TextInput 
@@ -28,9 +28,10 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
         multiline
         onChangeText={setText} 
         placeholderTextColor={'rgb(137, 130, 130)'} 
-        style={styles.messageInput} 
+        style={[styles.messageInput, { height: height }]}
         placeholder='Льоша блядюга)' 
         onSubmitEditing={sendMessageHandler} 
+        scrollEnabled
       /> :
       <TouchableOpacity
         activeOpacity={1}

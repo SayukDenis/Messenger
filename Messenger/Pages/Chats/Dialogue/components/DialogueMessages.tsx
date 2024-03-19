@@ -333,7 +333,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
           onScroll={this.checkForPinMessage}
           ref={this.flatListRef}
           showsVerticalScrollIndicator={false}
-          style={[styles.dialogueChat, { zIndex: 3 }]}
+          style={[styles.dialogueChat, /*{ zIndex: 3 }*/]}
           data={this.props.listOfMessages}
           inverted
           overScrollMode={'never'}
