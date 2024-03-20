@@ -5,8 +5,8 @@ import { screenHeight, screenWidth } from "../../../ChatList/Constants/Constants
 function FooterMicrophoneButton() {
   return (
     <Svg
-      width={screenHeight*0.027} 
-      height={screenHeight*0.027}
+      width={screenHeight*0.022} 
+      height={screenHeight*0.022}
       viewBox="0 0 15 20"
       fill="none"
     >

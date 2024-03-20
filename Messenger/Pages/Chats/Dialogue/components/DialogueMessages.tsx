@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { DialogueMessagesProps, DialogueMessagesReduxProps, DialogueMessagesState, messageCoordsProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent, Platform } from "react-native";
 import { connect } from "react-redux";
-import { FLATLIST_HEIGHT, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height } from "../../SemiComponents/ChatConstants";
+import { FLATLIST_HEIGHT, KEYBOARD_HEIGHT, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height, setKeyboardHeight } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
@@ -27,6 +27,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   keyboardDidHideListener: EmitterSubscription | null = null;
 
   handleKeyboardDidShow = (event: KeyboardEvent) => {
+    if(KEYBOARD_HEIGHT === 0) setKeyboardHeight(event.endCoordinates.height);
     this.props.dispatch!(handleKeyboardAppearing());
     Animated.timing(this.state.flatListHeight, {
       toValue: height*0.94-event.endCoordinates.height,
@@ -176,11 +177,11 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       listOfMessages={listOfMessages}
       setMessageMenuVisible={this.messageMenuHandler}
       flatListRef={this.flatListRef as any}
-      coordsY={this.state.coordsY}
+      // coordsY={this.state.coordsY}
       author={author}
       users={users}
       messageID={messageID}
-      setCoordsY={this.setCoordsYHandler}
+      // setCoordsY={this.setCoordsYHandler}
       userMessageLastWatched={userMessageLastWatched}
       selecting={selecting}
       pinnedMessageHandler={this.setPinnedMessageHandler}

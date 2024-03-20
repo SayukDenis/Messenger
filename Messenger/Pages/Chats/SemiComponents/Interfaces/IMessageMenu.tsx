@@ -21,5 +21,5 @@ export interface MessageMenuProps {
 }
 
 export interface MessageMenuState {
-  state: number;
+  
 }

@@ -5,8 +5,8 @@ import { screenHeight, screenWidth } from "../../../ChatList/Constants/Constants
 function FooterGallaryButton() {
   return (
     <Svg
-      width={screenHeight * 0.032} 
-      height={screenHeight * 0.032}
+      width={screenHeight * 0.026} 
+      height={screenHeight * 0.026}
       viewBox="0 0 12.5 12.5"
       fill="none"
     >

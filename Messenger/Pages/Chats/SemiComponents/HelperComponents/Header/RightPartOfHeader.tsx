@@ -15,16 +15,17 @@ class RightPartOfHeader extends Component<RightPartOfHeaderProps> {
 
   render(): React.ReactNode {
     const { selecting, cancelSelection } = this.props;
-      return ( selecting ?
+      return (
         <TouchableOpacity
           activeOpacity={1}
-          onPress={cancelSelection}
-          style={{ padding: 10 }}
+          onPress={() => selecting ? cancelSelection() : {}}
+          style={{ padding: 5 }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10}}
         >
-          <Text>Cancel</Text>
-        </TouchableOpacity> :
-        <HeaderBranchButton />
+          { selecting ?
+          <Text>Cancel</Text> :
+          <HeaderBranchButton /> }
+        </TouchableOpacity>
       );
   }
 }
