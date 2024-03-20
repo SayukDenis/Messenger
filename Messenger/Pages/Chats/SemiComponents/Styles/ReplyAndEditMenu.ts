@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { getCustomFontSize } from '../ChatConstants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,10 +29,13 @@ export const styles = StyleSheet.create({
     alignItems:'center'
   },
   usernameText: {
-    color:'#4684FB'
+    color:'#4684FB',
+    fontSize: getCustomFontSize(12)
   },
   messageText: {
-    color:'rgb(121, 121, 121)'
+    color:'rgb(121, 121, 121)',
+    fontSize: getCustomFontSize(14),
+    maxWidth: width * 0.7
   },
   closeButton: {
     backgroundColor:'red', 

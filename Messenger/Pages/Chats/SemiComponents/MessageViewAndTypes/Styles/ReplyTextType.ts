@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, ViewStyle } from "react-native";
 import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL } from "../../ChatConstants";
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, getCustomFontSize } from "../../ChatConstants";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginLeft: 3,
     marginRight: 10,
-    fontSize: 8,
+    fontSize: getCustomFontSize(9),
   },
   messageViewStatus: { 
     position: 'absolute', 

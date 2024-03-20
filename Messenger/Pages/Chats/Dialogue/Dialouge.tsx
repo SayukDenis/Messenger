@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { Component } from 'react';
-import Footer from '../SemiComponents/FooterUsingClass';
-import MessageMenu from '../SemiComponents/MessageMenuUsingClass';
+import Footer from '../SemiComponents/Footer';
+import MessageMenu from '../SemiComponents/MessageMenu';
 import styles from './DialogueStyle';
 import React from 'react';
 import DeleteMessageModal from '../SemiComponents/DeleteMessageModal';
@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import User from '../../../dao/Models/User';
 import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 import DialogueMessages from './components/DialogueMessages';
-import Header from '../SemiComponents/HeaderUsingClass';
+import Header from '../SemiComponents/Header';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';

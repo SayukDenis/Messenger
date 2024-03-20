@@ -22,7 +22,7 @@ import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { functionalStyles, styles } from './Styles/DefaultTextType';
@@ -303,7 +303,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                 style={functionalStyles.messageContainer(isUser, message.content.length)}
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
-                <Text style={{ fontSize: DEFAULT_FONT_SIZE }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text

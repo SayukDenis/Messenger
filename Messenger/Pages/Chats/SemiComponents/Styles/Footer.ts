@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
-import { height, screenWidth, width } from "../ChatConstants";
+import { FOOTER_INNER_CONTAINER_GAP, MAX_FOOTER_HEIGHT, height, screenWidth, width } from "../ChatConstants";
 
 const styles = StyleSheet.create({
   wrapperAnimatedContainer: { 
     zIndex: 10, 
     position: 'absolute', 
     width: width, 
-    maxHeight: height * 0.16,  
+    maxHeight: MAX_FOOTER_HEIGHT,  
   },
   mainContainer: {
     left: 0,
@@ -17,10 +17,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     justifyContent: "flex-end",
     overflow: 'hidden',
-    maxHeight: height * 0.16
+    maxHeight: MAX_FOOTER_HEIGHT
   },
   gradientContainer: {
-    maxHeight: height * 0.16,
+    maxHeight: MAX_FOOTER_HEIGHT,
     backgroundColor:"white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-end',
     height: height*0.06,
-    maxHeight: height * 0.14,
+    maxHeight: MAX_FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP,
   },
   footer: {
     paddingVertical: 0,
     display: 'flex',
     flexDirection: 'row',
-    maxHeight: height * 0.14,
+    maxHeight: MAX_FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP,
     alignSelf: 'stretch',
     borderStyle: 'solid',
     borderTopLeftRadius: 10,

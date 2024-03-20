@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { getCustomFontSize } from "../ChatConstants";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -29,7 +30,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalMessageText: {
-
+    fontSize: getCustomFontSize(14),
+    maxWidth: '90%'
   },
   modalButtonsContainer: {
     display: 'flex',
@@ -45,6 +47,7 @@ export const styles = StyleSheet.create({
   },
   modalButtonText: {
     color: 'red',
+    fontSize: getCustomFontSize(14)
   },
   modalRightButtonContainer: {
     width:width*0.3, 
