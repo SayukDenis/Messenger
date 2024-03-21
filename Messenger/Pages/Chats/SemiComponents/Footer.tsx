@@ -1,6 +1,6 @@
 import React from "react";
 import { Component, RefObject } from "react";
-import { DialogueFooterProps, DialogueFooterState } from "./Interfaces/IDialoueFooter";
+import { DialogueFooterProps, DialogueFooterState, EChangeFooterHeight } from "./Interfaces/IDialoueFooter";
 import { Animated, TextInput, View } from "react-native";
 import { DEFAULT_FONT_SIZE, FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, KEYBOARD_HEIGHT, SOFT_MENU_BAR_HEIGHT } from "./ChatConstants";
 import { sendMessage } from "./HelperComponents/Footer/sendMessageFunc";
@@ -12,21 +12,26 @@ import CenterPartOfFooter from "./HelperComponents/Footer/CenterPartOfFooter";
 import RightPartOfFooter from "./HelperComponents/Footer/RightPartOfFooter";
 import { connect } from "react-redux";
 
-let rowsNum = 0;
-
 class Footer extends Component<DialogueFooterProps> {
   state: DialogueFooterState = {
     text: '',
     bottomOffset: new Animated.Value(SOFT_MENU_BAR_HEIGHT),
-    dynamicFooterHeight: FOOTER_HEIGHT
+    dynamicFooterHeight: FOOTER_HEIGHT,
   }
 
   setText = (newText: string) => {
-    rowsNum = newText.split('\n').length - 1;
-    this.setState({ 
-      text: newText, 
-      dynamicFooterHeight: FOOTER_HEIGHT + rowsNum * DEFAULT_FONT_SIZE,
-    });
+    this.setState({ text: newText });
+  }
+
+  setDynamicFooterHeight = (action: number) => {
+    switch(action) {
+      case EChangeFooterHeight.add:
+        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight + DEFAULT_FONT_SIZE });
+      case EChangeFooterHeight.subtract:
+        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight - DEFAULT_FONT_SIZE });
+      case EChangeFooterHeight.reset:
+        return this.setState({ dynamicFooterHeight: FOOTER_HEIGHT });
+    }
   }
 
   textInput: RefObject<TextInput> = React.createRef();
@@ -95,7 +100,7 @@ class Footer extends Component<DialogueFooterProps> {
   render(): React.ReactNode {
     const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
     const { text, dynamicFooterHeight } = this.state;
-    const { textInput, setText, sendMessageHandler } = this;
+    const { textInput, setText, sendMessageHandler, setDynamicFooterHeight } = this;
 
     return(
       <Animated.View 
@@ -129,6 +134,7 @@ class Footer extends Component<DialogueFooterProps> {
                   textInput={textInput}
                   text={text}
                   setText={setText}
+                  setDynamicFooterHeight={setDynamicFooterHeight}
                   sendMessageHandler={sendMessageHandler}
                   selecting={selecting}
                   height={dynamicFooterHeight - FOOTER_INNER_TEXTINPUT_GAP}

@@ -3,15 +3,30 @@ import React, { Component } from 'react';
 import { styles } from './Styles/CenterPartOfFooter';
 import FooterExportButton from '../../SVG/FooterExportButton';
 import { CenterPartOfFooterProps } from './Interfaces/ICenterPartOfFooter';
+import { FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT } from '../../ChatConstants';
+
+interface CenterPartOfFooterState {
+  prevTextInputHeight: number;
+}
 
 class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
 
-  shouldComponentUpdate(nextProps: Readonly<CenterPartOfFooterProps>, nextState: Readonly<{}>, nextContext: any): boolean {
-    if(this.props.selecting !== nextProps.selecting) {
+  state: CenterPartOfFooterState = {
+    prevTextInputHeight: 0,
+  }
+
+  shouldComponentUpdate(nextProps: Readonly<CenterPartOfFooterProps>, nextState: Readonly<CenterPartOfFooterState>, nextContext: any): boolean {
+    const { selecting, text, height, textInput } = this.props;
+    
+    if(this.state.prevTextInputHeight !== nextState.prevTextInputHeight) {
       return true;
-    } else if(this.props.text !== nextProps.text) {
+    } else if(selecting !== nextProps.selecting) {
       return true;
-    } else if(this.props.textInput.current !== nextProps.textInput.current) {
+    } else if(text !== nextProps.text) {
+      return true;
+    } else if(textInput.current !== nextProps.textInput.current) {
+      return true;
+    } else if(height !== nextProps.height) {
       return true;
     }
 
@@ -19,7 +34,7 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
   }
 
   render(): React.ReactNode {
-    const { selecting, textInput, text, height, setText, sendMessageHandler } = this.props;
+    const { selecting, textInput, text, height, sendMessageHandler, setDynamicFooterHeight, setText } = this.props;
 
     return (!selecting?
       <TextInput 
@@ -32,6 +47,27 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
         placeholder='Льоша блядюга)' 
         onSubmitEditing={sendMessageHandler} 
         scrollEnabled
+        onContentSizeChange={(event) => {
+          const { contentSize } = event.nativeEvent;
+          const { width: textInputWidth, height: textInputHeight } = contentSize;
+
+          if(!this.state.prevTextInputHeight) {
+            this.setState({ prevTextInputHeight: textInputHeight });
+            return;
+          } else if(this.state.prevTextInputHeight && text.trim() === '') {
+            this.setState({ prevTextInputHeight: 0 });
+            setDynamicFooterHeight(3);
+            return;
+          }
+
+          if(this.state.prevTextInputHeight < textInputHeight && height < MAX_FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP) {
+            setDynamicFooterHeight(1);
+            this.setState({ prevTextInputHeight: textInputHeight });
+          } else if(this.state.prevTextInputHeight > textInputHeight) {
+            setDynamicFooterHeight(2);
+            this.setState({ prevTextInputHeight: textInputHeight });
+          }
+        }}
       /> :
       <TouchableOpacity
         activeOpacity={1}

@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   swipeableContainer: {
     width: width, 
     alignSelf:'stretch', 
-    overflow:'hidden'
+    overflow:'hidden',
   },
   animatedBackground: {
     position: 'absolute',
@@ -20,21 +20,24 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     width: width - 5,
+    height: '100%'
   },
   innerReplyContainer: {
     alignSelf: 'stretch',
-    marginHorizontal:10,
+    marginHorizontal: 10,
+    paddingBottom: 5,
   },
   replyUserNameFont: {
     alignSelf: 'flex-start',
     color:'rgb(29,78,216)',
-    fontSize:DEFAULT_FONT_SIZE, 
+    fontSize: getCustomFontSize(12), 
   },
   replyMessageContainer: {
     display:'flex', 
     flexDirection:'row', 
-    maxHeight:'100%',
+    height: 14 + 2 * height * 0.006,
     alignSelf:'flex-end',
+    alignItems: 'center',
   },
   messageTypeTextUser: {
     //backgroundColor: 'rgb(102, 191, 255)',
@@ -56,13 +59,12 @@ export const styles = StyleSheet.create({
     zIndex: -1,
   },
   replyMessagePos: {
-    marginBottom:-10, 
     zIndex:-1, 
     paddingHorizontal:10
   },
   replyMessageFont: {
     fontStyle:'italic', 
-    fontSize:DEFAULT_FONT_SIZE
+    fontSize: getCustomFontSize(12)
   },
   messageTypeTextNotUser: {
     //backgroundColor: 'rgb(231, 230, 228)',
@@ -123,7 +125,7 @@ export const functionalStyles = {
   messageContainer: (isUser:boolean, mesLength:number) => {
     return [
       isUser ? styles.messageTypeTextUser : styles.messageTypeTextNotUser, 
-      { marginTop:Math.ceil(DEFAULT_FONT_SIZE)+1 }, 
+      { marginTop: height * 0.005 }, 
       mesLength > DEFAULT_CHARS_PER_LINE && styles.longMessage, 
       { overflow: 'hidden' }
     ] as ViewStyle;

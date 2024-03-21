@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import ReplyAndEditMenuReplyIcon from '../../SVG/ReplyAndEditMenuReplyIcon';
 import ReplyAndEditMenuEditIcon from '../../SVG/ReplyAndEditMenuEditIcon';
 import ReplyAndEditMenuCancelButton from '../../SVG/ReplyAndEditMenuCancelButton';
-import { DEFAULT_CHARS_PER_LINE } from '../../ChatConstants';
 import LineSeparator from '../General/LineSeparator';
 
 class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
@@ -54,10 +53,7 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
                   style={styles.messageText}
                   numberOfLines={1}
                 >
-                  {
-                  isReply?(replyMessage?.content!.length>DEFAULT_CHARS_PER_LINE?text.slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content):
-                    (editMessage?.content!.length>DEFAULT_CHARS_PER_LINE?text.slice(0,DEFAULT_CHARS_PER_LINE)+'...':editMessage?.content)
-                  }
+                  { isReply?(text):(editMessage?.content) }
                 </Text>
               </View>
               <TouchableOpacity 

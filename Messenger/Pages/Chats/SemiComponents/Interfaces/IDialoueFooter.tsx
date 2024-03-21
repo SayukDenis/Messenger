@@ -36,3 +36,9 @@ export interface sendMessageProps {
   messageID: number;
   author: User|undefined;
 }
+
+export enum EChangeFooterHeight {
+  add = 1,
+  subtract,
+  reset
+}
