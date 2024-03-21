@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     overflow:'visible'
   },
   messageBlockContainer: {
-    paddingVertical: MESSAGE_PADDING_VERTICAL,
+    paddingBottom: MESSAGE_PADDING_VERTICAL,
     flex: 1,
     alignSelf: 'stretch',
     alignItems: 'stretch',

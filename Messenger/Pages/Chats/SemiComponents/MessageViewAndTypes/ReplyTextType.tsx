@@ -301,7 +301,6 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
         showsHorizontalScrollIndicator={false}
         style={[
           styles.swipeableContainer, 
-          { paddingBottom: 5 }, 
           selecting && selected && { backgroundColor: 'rgba(32, 83, 44, 0.2)' },
         ]}
         onScrollEndDrag={this.onScrollEndDrag}
@@ -316,13 +315,11 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             onPressIn={this.onPressIn}
             onPressOut={this.onPressOut}
           >
-            <Text style={[styles.replyUserNameFont, this.props.message.author.userId==this.props.author.userId && { alignSelf: 'flex-end' }]}>
-              {isUser ? 'You' : this.props.userName}
-            </Text>
             <ReplyMessage 
               message={message}
               replyMessage={messages.find(m => m.messageId === message.messageResponseId)!}
               author={author}
+              userName={this.props.userName}
               selecting={selecting}
               selected={selected}
               pinnedMessageScreen={this.props.pinnedMessageScreen}

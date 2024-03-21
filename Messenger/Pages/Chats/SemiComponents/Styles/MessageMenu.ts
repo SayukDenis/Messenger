@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
-import { MESSAGE_MENU_HEIGHT } from "../ChatConstants";
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT } from "../ChatConstants";
 
 const { width, height } = Dimensions.get('screen');
 
@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
   buttonsContainer: {
     position:'absolute',
     height: MESSAGE_MENU_HEIGHT,
+    backgroundColor: 'red'
   },
   button: {
     backgroundColor:'rgb(231,230,228)',
@@ -30,6 +31,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     bottom: screenHeight * 0.006,
+    maxHeight: MESSAGE_BUTTON_HEIGHT
   }
 });
 

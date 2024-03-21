@@ -15,7 +15,7 @@ import MessageMenuEditButton from "./SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "./SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_BUTTON_SCALE, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_HORIZONTAL, MESSAGE_TRIANGLE_SIZE, NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize } from "./ChatConstants";
+import { GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_HORIZONTAL, MESSAGE_TRIANGLE_SIZE, NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize } from "./ChatConstants";
 
 const containerWidth = new Animated.Value(0); 
 const firstContainerTranslate = new Animated.Value(0); 
@@ -279,12 +279,12 @@ class MessageMenu extends Component<MessageMenuProps> {
 
     if(isUser) {
       return { 
-        top: ((coord && coord.pageY) ? coord.pageY : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 * MESSAGE_BUTTON_SCALE), 
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR), 
         right: MESSAGE_PADDING_HORIZONTAL*2
       }
     } else {
       return { 
-        top: ((coord && coord.pageY) ? coord.pageY : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 * MESSAGE_BUTTON_SCALE), 
+        top: ((coord && coord.pageY) ? coord.pageY - MESSAGE_BUTTON_HEIGHT : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR), 
         left: MESSAGE_PADDING_HORIZONTAL*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
       }
     }
@@ -341,7 +341,7 @@ class MessageMenu extends Component<MessageMenuProps> {
           />}
         </View>
         <View 
-          style={[styles.buttonsContainer, this.handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT * 4 * MESSAGE_BUTTON_SCALE + MESSAGE_TRIANGLE_SIZE }]}
+          style={[styles.buttonsContainer, !isUser&&{ height: MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT }, this.handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR }]}
         >
           {(pinnedMessageScreen?this.pinnedMessageScreenButtons:this.buttons).map((button, index) => {
             return button.text=='Edit'&&!isUser? null: 

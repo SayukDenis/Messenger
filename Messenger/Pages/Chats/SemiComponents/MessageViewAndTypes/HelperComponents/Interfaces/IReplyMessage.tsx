@@ -5,6 +5,7 @@ export interface ReplyMessageProps {
   message: MessageProps;
   replyMessage: MessageProps;
   author: User;
+  userName: string;
   selecting: boolean;
   selected: boolean;
   handleLinkTo: (messageID: number | any) => void;

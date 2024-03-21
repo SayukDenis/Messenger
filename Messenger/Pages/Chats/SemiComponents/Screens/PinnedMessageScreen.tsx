@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import HeaderBackButton from '../SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_BUTTON_SCALE, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, getCustomFontSize, height, width } from '../ChatConstants';
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, getCustomFontSize, height, width } from '../ChatConstants';
 import MessageItem from '../MessageItem';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import MessageMenu from '../MessageMenu';
@@ -73,7 +73,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   handleMessagePress = async (coordinations:Layout) => {
 
     const HEIGHT_OF_HEADER = heightOfHeader;
-    const MESSAGE_MENU_HEIGHT = (MESSAGE_BUTTON_HEIGHT * 4 * MESSAGE_BUTTON_SCALE) + MESSAGE_TRIANGLE_SIZE;
+    const MESSAGE_MENU_HEIGHT = (MESSAGE_BUTTON_HEIGHT * 4) + MESSAGE_TRIANGLE_SIZE;
 
     const mesCoords = coordsY.find(m => m.id === (coordinations.ID || coordinations.message?.messageId!));
     
