@@ -55,9 +55,9 @@ export default class Message extends Model {
     @ManyToOne(() => Chat, (chat) => chat.messages, { onDelete: 'CASCADE' })
     chat!: Chat
 
-    @ManyToOne(() => Chat, (chat) => chat.pinnedMessage, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Chat, (chat) => chat.pinnedMessage, { onDelete: 'CASCADE', nullable: true })
     chatPinned!: Chat
 
-    @ManyToOne(() => Chat, (chat) => chat.pinnedMessageForAll, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Chat, (chat) => chat.pinnedMessageForAll, { onDelete: 'CASCADE', nullable: true })
     chatPinnedForAll!: Chat
 }
