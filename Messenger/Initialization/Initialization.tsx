@@ -8,12 +8,11 @@ import Folder from "../dao/Models/Folder";
 import User from "../dao/Models/User";
 import Branch from "../dao/Models/Chats/Branch";
 import MainChat from "../dao/Models/Chats/MainChat";
-import { getRandomElementsFromArray, getRandomNumber, shuffleArray } from "./functions";
+import { getRandomElementsFromArray, getRandomNumber, shuffleArray, deleteDb } from "./functions";
 import { dataSource } from "../dao/local/database";
 import { EntityManager, Not } from "typeorm";
 import Chat from "../dao/Models/Chats/Chat";
 import { EMessageType } from "../dao/Models/EMessageType";
-import { Run } from "../dao/test/manualTest/_orchestrator";
 
 const messageDialog: string[] = [
   "Привіт",
@@ -73,7 +72,7 @@ export async function initialization() {
   const numberOfGroupToCreate = 10;
   const numberOfChannelToCreate = 10;
 
-  await Run();
+  await deleteDb();
 
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
@@ -110,9 +109,9 @@ export async function initialization() {
   await manager.save(tabs);
   console.log("succsess add folder in tabs")
 
-  const dialogues = await manager.find(Dialogue);
-  const groups = await manager.find(Group);
-  const channels = await manager.find(Channel);
+  let dialogues = await manager.find(Dialogue);
+  let groups = await manager.find(Group);
+  let channels = await manager.find(Channel);
 
   // save chats in folders
   for (let folder of folders) {
@@ -128,13 +127,36 @@ export async function initialization() {
   await initializationBranch(manager, 5, chats)
   console.log("succsess initializationBranch")
 
+
+  dialogues = await manager.find(Dialogue);
+  groups = await manager.find(Group);
+  channels = await manager.find(Channel);
+
   // add message in dialogues
-  initializationMessage(manager, dialogues, messageDialog);
+  await initializationMessage(manager, dialogues, messageDialog);
   // add massage in groups
-  initializationMessage(manager, groups, messageGroupsAndChannels);
+  await initializationMessage(manager, groups, messageGroupsAndChannels);
   // add massage in channels
-  initializationMessage(manager, channels, messageGroupsAndChannels);
-  console.log("succsess add all massage")
+  await initializationMessage(manager, channels, messageGroupsAndChannels);
+  console.log("succsess add all massage");
+
+  await printInitialization();
+}
+
+export async function printInitialization() {
+  const manager = dataSource.manager;
+  console.log("Print initialization:")
+  //console.log(`Count of User: ${(await manager.findAndCount(User))[1]}`);
+  //console.log(`Count of Tab: ${(await manager.findAndCount(Tab))[1]}`);
+  //console.log(`Count of Folder: ${(await manager.findAndCount(Folder))[1]}`);
+  //console.log(`Count of Chat: ${(await manager.findAndCount(Chat))[1]}`);
+  //console.log(`Count of MainChat: ${(await manager.findAndCount(MainChat))[1]}`);
+  //console.log(`Count of Dialogue: ${(await manager.findAndCount(Dialogue))[1]}`);
+  //console.log(`Count of Group: ${(await manager.findAndCount(Group))[1]}`);
+  //console.log(`Count of Channel: ${(await manager.findAndCount(Channel))[1]}`);
+  //console.log(`Count of Branch: ${(await manager.findAndCount(Branch))[1]}`);
+  console.log(`Count of Message: ${(await manager.findAndCount(Message))[1]}`);
+  
 }
 
 async function initializationSelfProfile(manager: EntityManager) {
@@ -281,10 +303,10 @@ async function initializationChannel(manager: EntityManager, count: number) {
   await manager.save(folder);
 }
 
-async function initializationBranch(manager: EntityManager, count: number, chats: MainChat[]) {
+async function initializationBranch(manager: EntityManager, maxCount: number, chats: MainChat[]) {
   for (let chat of chats) {
     if (Math.random() < 0.40) {
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < getRandomNumber(maxCount,1); i++) {
         const branch = new Branch(`Name branch${i}`);
 
         if (chat.branches == undefined)
@@ -299,13 +321,12 @@ async function initializationBranch(manager: EntityManager, count: number, chats
 async function initializationMessage(manager: EntityManager, chats: MainChat[], messages: string[]) {
   for (const chat of chats) {
     for (const branch of chat.branches) {
-      addMessages(branch, 100, chat.users, messages);
-
+      addMessages(branch, getRandomNumber(100), chat.users, messages);
       branch.pinnedMessage.push(...getRandomElementsFromArray<Message>(branch.messages));
       branch.pinnedMessageForAll.push(...getRandomElementsFromArray<Message>(branch.messages));
     }
+    await manager.save(chat);
   }
-  await manager.save(chats);
 }
 
 function addMessages(chat: Chat, count: number, users: User[], texts: string[]) {

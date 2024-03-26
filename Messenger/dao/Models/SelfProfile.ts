@@ -23,7 +23,7 @@ export default class SelfProfile extends User {
     timeLastEntry?: Date;
 
     @OneToMany(() => Tab, (tab) => tab.selfProfile, {
-        eager: true,
+        eager: false, // change from true
         cascade: true
     })
     tabs: Array<Tab>;
