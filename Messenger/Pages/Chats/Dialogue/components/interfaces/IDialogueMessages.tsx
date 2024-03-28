@@ -5,7 +5,7 @@ import { Layout } from "../../../SemiComponents/Interfaces/GeneralInterfaces/ILa
 import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
 import { Animated } from "react-native";
 import { Dispatch } from "redux";
-
+import EventEmitter from 'events';
 
 export interface DialogueMessagesProps {
   scrollToPinnedMessage: boolean;
@@ -25,6 +25,7 @@ export interface DialogueMessagesProps {
   setPinnedMessage: (id: number) => void;
   navigation: any;
   messagesWithCoords: CoordinationsOfMessage[];
+  emitter: EventEmitter
 }
 
 export interface MessageViewHandleProps {
@@ -45,6 +46,7 @@ export interface DialogueMessagesState {
   coordsY: [number[]]
   keyboardHeight: Animated.Value;
   flatListHeight: Animated.Value;
+  footerGap: Animated.Value;
   pinnedMessageId: number;
   deletedMessagesCount: number;
   callMessageMenu: boolean;

@@ -234,14 +234,14 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 10 }}>
                 <TouchableOpacity
-                  style={{ width: width * 0.15 }}
+                  style={{ width: width * 0.2 }}
                   onPress={() => this.props.route?.params.navigation?.goBack()}
                 >
                   <HeaderBackButton />
                 </TouchableOpacity>
                 <Text style={{ fontSize: getCustomFontSize(18) }} >Pinned messages</Text>
                 <TouchableOpacity
-                  style={{ width: width * 0.15 }}
+                  style={{ width: width * 0.2 }}
                   onPress={this.unpinAllHandler}
                 >
                   <Text style={{ fontSize: getCustomFontSize(16), color: '#734CA5' }} >Unpin all</Text>

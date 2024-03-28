@@ -17,6 +17,7 @@ import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { DialogueProps, DialogueState } from './IDialogue';
 import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
+import EventEmitter from 'events';
 
 let coord: Layout;
 let author: User;
@@ -30,8 +31,11 @@ let dialogue:DialogueModel.default;
 let messageMenuCallback: (() => void) | undefined;
 
 class Dialogue extends Component<DialogueProps> {
+  private _emitter: EventEmitter;
   constructor(props:any) {
     super(props);
+
+    this._emitter = new EventEmitter();
     
     dialogue = props.route.params.chat;
     author = dialogue.users[0];
@@ -329,6 +333,7 @@ class Dialogue extends Component<DialogueProps> {
             hasPinnedMessage={listOfPinnedMessages?.length>0}
             pinnedMessages={listOfPinnedMessages}
             setPinnedMessage={this.setPinnedMessageHandler}
+            emitter={this._emitter}
           />
           <Footer 
             messages={listOfMessages} 
@@ -343,6 +348,7 @@ class Dialogue extends Component<DialogueProps> {
             onSendMessageOrCancelReplyAndEdit={this.sendMessageOrCancelReplyAndEditHandler}
             selecting={selecting}
             deleteSelectedMessages={this.deleteSelectedMessages}
+            emitter={this._emitter}
           />
           <DeleteMessageModal 
             deleting={deleting} 

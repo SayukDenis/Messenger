@@ -284,7 +284,7 @@ class MessageMenu extends Component<MessageMenuProps> {
       }
     } else {
       return { 
-        top: ((coord && coord.pageY) ? coord.pageY - MESSAGE_BUTTON_HEIGHT : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR), 
+        top: ((coord && coord.pageY) ? coord.pageY - (!pinnedMessageScreen ? MESSAGE_BUTTON_HEIGHT : 0) : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR), 
         left: MESSAGE_PADDING_HORIZONTAL*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
       }
     }

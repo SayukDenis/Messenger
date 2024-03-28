@@ -24,14 +24,11 @@ class Footer extends Component<DialogueFooterProps> {
   }
 
   setDynamicFooterHeight = (action: number) => {
-    switch(action) {
-      case EChangeFooterHeight.add:
-        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight + DEFAULT_FONT_SIZE });
-      case EChangeFooterHeight.subtract:
-        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight - DEFAULT_FONT_SIZE });
-      case EChangeFooterHeight.reset:
-        return this.setState({ dynamicFooterHeight: FOOTER_HEIGHT });
-    }
+    console.log('action', action);
+    this.setState({ 
+      dynamicFooterHeight: FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP + action,
+    });
+    this.props.emitter.emit('changeDynamicFooterHeight', { height: action - FOOTER_INNER_TEXTINPUT_GAP });
   }
 
   textInput: RefObject<TextInput> = React.createRef();
@@ -101,6 +98,8 @@ class Footer extends Component<DialogueFooterProps> {
     const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
     const { text, dynamicFooterHeight } = this.state;
     const { textInput, setText, sendMessageHandler, setDynamicFooterHeight } = this;
+
+    console.log('Footer dynamicFooterHeight', dynamicFooterHeight)
 
     return(
       <Animated.View 

@@ -2,6 +2,8 @@ import { Animated } from "react-native";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import User from "../../../../dao/Models/User";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
+import { Dispatch } from "redux";
+import EventEmitter from 'events';
 
 export interface DialogueFooterProps {
   author: User;
@@ -17,6 +19,8 @@ export interface DialogueFooterProps {
   selecting: boolean;
   deleteSelectedMessages: () => void;
   keyboardActive: boolean;
+  dispatch: Dispatch;
+  emitter: EventEmitter;
 }
 
 export interface DialogueFooterState {

@@ -3,16 +3,23 @@ import React, { Component } from 'react'
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import ReplyIcon from '../../SVG/ReplyIcon';
 import { ScrollButtonProps } from './Interfaces/IScrollButton';
+import { screenHeight } from '../../ChatConstants';
 
 const GAP = 10;
 
 class ScrollButton extends Component<ScrollButtonProps> {
   render(): React.ReactNode {
-    const { navigation, dispatch, messageId, isUser, additionalGap = 0 } = this.props;
+    const { navigation, dispatch, messageId, verticalOffset, isUser, horizontalOffset } = this.props;
+
+    const ICON_SIZE = screenHeight*0.032
 
     return (
       <TouchableOpacity 
-        style={{ alignSelf: 'center', marginRight: isUser?(GAP+additionalGap):0, marginLeft: !isUser?(GAP+additionalGap):0 }}
+        style={[
+          { alignSelf: 'center', position: 'absolute' }, 
+          isUser?{left: -(GAP+horizontalOffset+ICON_SIZE)}:{right: (horizontalOffset - GAP)},
+          { bottom: isUser ? (verticalOffset - ICON_SIZE) / 2 : verticalOffset / 2 }
+        ]}
         activeOpacity={1}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         onPress={() => {
@@ -21,7 +28,7 @@ class ScrollButton extends Component<ScrollButtonProps> {
           dispatch(setAnimationOfBackgroundForScrolledMessage(messageId));
         }}
       >
-        <ReplyIcon />
+        <ReplyIcon size={ICON_SIZE} />
       </TouchableOpacity>
     )
   }

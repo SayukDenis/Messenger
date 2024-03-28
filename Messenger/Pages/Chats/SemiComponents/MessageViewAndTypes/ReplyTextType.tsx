@@ -99,6 +99,12 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
       console.log('reply #7');
       return true;
+    } else if(this.state.widthOfMessage !== nextState.widthOfMessage) {
+      return true;
+    } else if(this.state.widthOfReply !== nextState.widthOfReply) {
+      return true;
+    } else if(this.state.sizeOfMessageContainer[1] !== nextState.sizeOfMessageContainer[1] || this.state.sizeOfMessageContainer[0] !== nextState.sizeOfMessageContainer[0]) {
+      return true;
     }
     
     return false;
@@ -155,6 +161,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     } else {
       size = [...size, { ID: this.props.id, layout: { width, height } }];
     }
+    console.log('widthOfMessage', this.props.message.messageId, width);
     this.setState({ widthOfMessage: width });
   };
 
@@ -273,18 +280,22 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     }
   }
 
-  getSelectOffsetHorizontal = () => {
+  getSelectOffsetHorizontal = (scroll: boolean = false) => {
     const { widthOfMessage, widthOfReply } = this.state;
-    return -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
+    console.log('\n_____________________\n', widthOfMessage, widthOfReply, '\n_____________________');
+    return scroll ? (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0) : -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
-  getSelectOffsetVertical = () => {
-    return (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
+  getSelectOffsetVertical = (scroll: boolean = false) => {
+    console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
+    return scroll ? this.state.sizeOfMessageContainer[1] : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
   }
 
   render() {
-    const { message, author, selecting, messages, pinnedMessageScreen } = this.props;
-    const { selected } = this.state;
+    const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched } = this.props;
+    const { selected, widthOfMessage, widthOfReply } = this.state;
+
+    console.log(message.messageId, widthOfMessage, widthOfReply);
 
     const isUser = message.author.userId == author.userId;
 
@@ -309,7 +320,12 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
         <View style={styles.replyContainer} >
           <TouchableOpacity 
             ref={(ref) => (this.componentRef = ref)}
-            onLayout={(event) => this.setState({ sizeOfMessageContainer: [event.nativeEvent.layout.width, event.nativeEvent.layout.height] })}
+            onLayout={(event) => {
+              const { width, height } = event.nativeEvent.layout;
+              if(this.props.pinnedMessageScreen) console.log('\n===========================\n', this.props.id, width, height, '\n===========================');
+              if(width && height)
+                this.setState({ sizeOfMessageContainer: [width, height] });
+            }}
             style={styles.innerReplyContainer}
             activeOpacity={1} 
             onPressIn={this.onPressIn}
@@ -319,12 +335,17 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               message={message}
               replyMessage={messages.find(m => m.messageId === message.messageResponseId)!}
               author={author}
-              userName={this.props.userName}
+              userName={userName}
               selecting={selecting}
               selected={selected}
-              pinnedMessageScreen={this.props.pinnedMessageScreen}
-              handleLinkTo={this.props.pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
-              onLayout={(event:any) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
+              pinnedMessageScreen={pinnedMessageScreen}
+              handleLinkTo={pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
+              onLayout={(event:any) => {
+                const width = event.nativeEvent.layout.width;
+                console.log('widthOfReply', this.props.message.messageId, width);
+                if(width)
+                  this.setState({ widthOfReply: width });
+              }}
             />
             <TouchableOpacity 
               activeOpacity={1} 
@@ -332,13 +353,14 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               onPressOut={this.onPressOut}
               style={{ alignSelf: isUser?'flex-end':'flex-start', flexDirection: 'row' }}
             >
-              { this.props.pinnedMessageScreen && isUser &&
+              { pinnedMessageScreen && isUser &&
                 <ScrollButton 
-                  navigation={this.props.navigation}
-                  dispatch={this.props.dispatch}
-                  messageId={this.props.message.messageId!}
+                  navigation={navigation}
+                  dispatch={dispatch}
+                  messageId={message.messageId!}
                   isUser={isUser}
-                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
+                  horizontalOffset={this.getSelectOffsetHorizontal(true)}
+                  verticalOffset={this.getSelectOffsetVertical(true)}
                 />
               }
               <View 
@@ -348,9 +370,9 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                 <View 
                   style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
                 /> 
-                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
                     style={
                       message.content.length > DEFAULT_CHARS_PER_LINE
@@ -364,13 +386,14 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   </Text>
                 </View>
               </View>
-              { this.props.pinnedMessageScreen && !isUser &&
+              { pinnedMessageScreen && !isUser &&
                 <ScrollButton 
-                  navigation={this.props.navigation}
-                  dispatch={this.props.dispatch}
-                  messageId={this.props.message.messageId!}
+                  navigation={navigation}
+                  dispatch={dispatch}
+                  messageId={message.messageId!}
                   isUser={isUser}
-                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
+                  horizontalOffset={this.getSelectOffsetHorizontal()}
+                  verticalOffset={this.getSelectOffsetVertical()}
                 />
               }
               {selecting && <SelectButton 
@@ -383,7 +406,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
           </TouchableOpacity>
           { isUser && 
             <View style={styles.messageViewStatus}>
-              { this.props.message.messageId! <= this.props.userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+              { message.messageId! <= userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
             </View> }
         </View>
         <View style={styles.messageSwipeToReply}>

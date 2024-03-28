@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { styles } from './Styles/CenterPartOfFooter';
 import FooterExportButton from '../../SVG/FooterExportButton';
 import { CenterPartOfFooterProps } from './Interfaces/ICenterPartOfFooter';
-import { FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT } from '../../ChatConstants';
+import { FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT } from '../../ChatConstants';
 
 interface CenterPartOfFooterState {
   prevTextInputHeight: number;
@@ -50,23 +50,10 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
         onContentSizeChange={(event) => {
           const { contentSize } = event.nativeEvent;
           const { width: textInputWidth, height: textInputHeight } = contentSize;
+          if(text === '') return setDynamicFooterHeight(FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP);
 
-          if(!this.state.prevTextInputHeight) {
-            this.setState({ prevTextInputHeight: textInputHeight });
-            return;
-          } else if(this.state.prevTextInputHeight && text.trim() === '') {
-            this.setState({ prevTextInputHeight: 0 });
-            setDynamicFooterHeight(3);
-            return;
-          }
-
-          if(this.state.prevTextInputHeight < textInputHeight && height < MAX_FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP) {
-            setDynamicFooterHeight(1);
-            this.setState({ prevTextInputHeight: textInputHeight });
-          } else if(this.state.prevTextInputHeight > textInputHeight) {
-            setDynamicFooterHeight(2);
-            this.setState({ prevTextInputHeight: textInputHeight });
-          }
+          setDynamicFooterHeight(Math.max(FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP, textInputHeight));
+          this.setState({ prevTextInputHeight: textInputHeight });
         }}
       /> :
       <TouchableOpacity

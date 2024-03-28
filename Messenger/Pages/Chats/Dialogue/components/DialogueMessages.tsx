@@ -18,6 +18,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     coordsY: [[]],
     keyboardHeight: new Animated.Value(0),
     flatListHeight: new Animated.Value(height*0.94),
+    footerGap: new Animated.Value(height * 0.02+SOFT_MENU_BAR_HEIGHT+(this.props.isReply||this.props.isEdit?height*0.07-SOFT_MENU_BAR_HEIGHT/4:0)),
     pinnedMessageId: -1,
     deletedMessagesCount: 0,
     callMessageMenu: false,
@@ -45,8 +46,29 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     }).start();
   };
 
+  dynamicFooterHeightHandler = (data: any) => {
+    console.log('changeDynamicFooterHeight event', data.height);
+    const toValue = Math.min((height * 0.02+SOFT_MENU_BAR_HEIGHT+(this.props.isReply||this.props.isEdit?height*0.07-SOFT_MENU_BAR_HEIGHT/4:0)) + data.height, height * 0.16 + (this.props.isReply||this.props.isEdit?height*0.07-SOFT_MENU_BAR_HEIGHT/4:0))
+    Animated.timing(this.state.footerGap, {
+      toValue: toValue,
+      duration: 50,
+      useNativeDriver: false
+    }).start();
+  }
+
+  replyOrEditHeightHandler = () => {
+    console.log('replyOrEditHeightHandler', (this.state.footerGap as any)._value, (height*0.07-SOFT_MENU_BAR_HEIGHT/4));
+    Animated.timing(this.state.footerGap, {
+      toValue: (this.state.footerGap as any)._value + (height*0.07-SOFT_MENU_BAR_HEIGHT/4) * (this.props.isReply||this.props.isEdit?1:-1),
+      duration: 50,
+      useNativeDriver: false
+    }).start();
+  };
+
   componentDidMount() {
     pinnedMessagesWithCoords = [];
+
+    this.props.emitter.addListener('changeDynamicFooterHeight', this.dynamicFooterHeightHandler); 
 
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -61,38 +83,44 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   componentDidUpdate(prevProps: Readonly<DialogueMessagesProps & DialogueMessagesReduxProps>, prevState: Readonly<{}>, snapshot?: any): void {
     console.log('DialogueMessages was updated');
+    this.replyOrEditHeightHandler();
   }
 
   componentWillUnmount() {
     this.keyboardDidShowListener!.remove();
     this.keyboardDidHideListener!.remove();
+    this.props.emitter.removeListener('changeDynamicFooterHeight', this.dynamicFooterHeightHandler);
   }
 
   shouldComponentUpdate(nextProps: Readonly<DialogueMessagesProps>, nextState: Readonly<DialogueMessagesState>, nextContext: any): boolean {
+    
+    
+    const { listOfMessages, hasPinnedMessage, scrollToPinnedMessage, selecting, idOfPinnedMessage, pinnedMessages, isEdit, isReply } = this.props;
+    const { pinnedMessageId } = this.state;
     //if(this.props !== nextProps) return true;
-    if(this.props.pinnedMessages !== nextProps.pinnedMessages) {
+    if(pinnedMessages !== nextProps.pinnedMessages) {
       this.pinnedMessageChangeHandler(nextProps.pinnedMessages);
       if(nextProps.pinnedMessages.length === 0) this.setState({ pinnedMessageId: -1 })
       return true;
-    } else if(this.props.listOfMessages !== nextProps.listOfMessages) {
-      if(this.props.listOfMessages.length !== nextProps.listOfMessages.length) {
+    } else if(listOfMessages !== nextProps.listOfMessages) {
+      if(listOfMessages.length !== nextProps.listOfMessages.length) {
         this.messageListChangedHandler();
       }
       return true;
-    } else if(this.props.hasPinnedMessage !== nextProps.hasPinnedMessage) {
+    } else if(hasPinnedMessage !== nextProps.hasPinnedMessage) {
       return true;
-    } else if(this.props.scrollToPinnedMessage !== nextProps.scrollToPinnedMessage) {
+    } else if(scrollToPinnedMessage !== nextProps.scrollToPinnedMessage) {
       this.scrollToPinMessage(nextProps.scrollToPinnedMessage, nextProps.idOfPinnedMessage);
       return true;
-    } else if(this.props.selecting !== nextProps.selecting) {
+    } else if(selecting !== nextProps.selecting) {
       return true;
-    } else if(this.props.idOfPinnedMessage !== nextProps.idOfPinnedMessage) {
+    } else if(idOfPinnedMessage !== nextProps.idOfPinnedMessage) {
       return true;
-    } else if(this.state.pinnedMessageId !== nextState.pinnedMessageId) {
+    } else if(pinnedMessageId !== nextState.pinnedMessageId) {
       return true;
-    } else if(this.props.isEdit !== nextProps.isEdit) {
+    } else if(isEdit !== nextProps.isEdit) {
       return true;
-    } else if(this.props.isReply !== nextProps.isReply) {
+    } else if(isReply !== nextProps.isReply) {
       return true;
     }
 
@@ -271,7 +299,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     }
 
     const ListHeaderComponent = () => (
-      <View style={{ height: (height * 0.02+SOFT_MENU_BAR_HEIGHT+(this.props.isReply||this.props.isEdit?height*0.07-SOFT_MENU_BAR_HEIGHT/4:0)) }} />
+      <Animated.View style={{ height: this.state.footerGap }} />
     );
   
     const ListFooterComponent = () => (
