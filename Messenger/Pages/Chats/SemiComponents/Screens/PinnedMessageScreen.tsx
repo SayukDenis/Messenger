@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import HeaderBackButton from '../SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, height, width } from '../ChatConstants';
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, getCustomFontSize, height, width } from '../ChatConstants';
 import MessageItem from '../MessageItem';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import MessageMenu from '../MessageMenu';
@@ -65,15 +65,15 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     return item.messageId?.toString();
   }
 
-  setCoordsYHandler = (newCoordsY:coordY[]) => {
-    coordsY = [...newCoordsY];
-  }
+  // setCoordsYHandler = (newCoordsY:coordY[]) => {
+  //   coordsY = [...newCoordsY];
+  // }
 
   flatListRef = React.createRef<any>();
   handleMessagePress = async (coordinations:Layout) => {
 
     const HEIGHT_OF_HEADER = heightOfHeader;
-    const MESSAGE_MENU_HEIGHT = MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE;
+    const MESSAGE_MENU_HEIGHT = (MESSAGE_BUTTON_HEIGHT * 4) + MESSAGE_TRIANGLE_SIZE;
 
     const mesCoords = coordsY.find(m => m.id === (coordinations.ID || coordinations.message?.messageId!));
     
@@ -137,7 +137,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       coordsY={coordsY}
       author={this.props.route?.params.author!}
       messageID={this.props.route?.params.messageID!}
-      setCoordsY={this.setCoordsYHandler}
+      // setCoordsY={this.setCoordsYHandler}
       selecting={this.state.selecting}
       pinnedMessageScreen
       listOfPinnedMessages={this.props.route?.params.listOfPinnedMessages.map((m) => {
@@ -190,9 +190,11 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   DeleteHandler = () => {
     const { listOfPinnedMessages } = this.state;
 
+    console.log('DeleteHandler in PinnedMessageScreen');
+
     const mes = listOfPinnedMessages.find(m => m.messageId === coord.message?.messageId);
     this.props.route?.params.onUnpinPress(mes!);
-    this.props.route?.params.onDeletePress(mes!);
+    this.props.route?.params.onDeletePress(mes!.messageId!);
     
     const newListOfPinnedMessages = listOfPinnedMessages.filter(m => m.messageId !== coord.message?.messageId);
 
@@ -203,7 +205,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   }
 
   render(): React.ReactNode {
-    const { listOfMessages, author, userMessageLastWatched, onCopyPress } = this.props.route?.params!;
+    const { listOfMessages, author, userMessageLastWatched } = this.props.route?.params!;
     const mes = listOfMessages.find(m => m.messageId==this.state.messageID);
 
     return (
@@ -218,7 +220,6 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
             messages={listOfMessages}
             pinnedMessageScreen
             userMessageLastWatched={userMessageLastWatched}
-            onCopyPress={onCopyPress}
             onPinPress={this.onUnpinPressHandler}
             onDeletePress={this.onDeletePressHandler}
           />
@@ -238,12 +239,12 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
                 >
                   <HeaderBackButton />
                 </TouchableOpacity>
-                <Text style={{ fontSize: 18 }} >Pinned messages</Text>
+                <Text style={{ fontSize: getCustomFontSize(18) }} >Pinned messages</Text>
                 <TouchableOpacity
                   style={{ width: width * 0.15 }}
                   onPress={this.unpinAllHandler}
                 >
-                  <Text style={{ fontSize: 16, color: '#734CA5' }} >Unpin all</Text>
+                  <Text style={{ fontSize: getCustomFontSize(16), color: '#734CA5' }} >Unpin all</Text>
                 </TouchableOpacity>
               </View>
             </View>

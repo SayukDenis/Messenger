@@ -49,19 +49,15 @@ class MessageItem extends Component<MessageItemProps> {
   };
 
   render(): React.ReactNode {
-    const { item, coordsY, setCoordsY, pinnedMessageHandler, pinnedMessageScreen } = this.props;
+    const { item, coordsY, pinnedMessageHandler, pinnedMessageScreen } = this.props;
 
     return (
       <View
         key={item.messageId}
         onLayout={(event) => {
           const { y, height } = event.nativeEvent.layout;
-          const newCoordsY = [ ...coordsY ];
           if(pinnedMessageScreen) {
-            coordsY.push({ id: item.messageId!, y, height } as any);
-          } else {
-            newCoordsY[item.messageId!] = [y, height];
-            setCoordsY(newCoordsY);
+            coordsY?.push({ id: item.messageId!, y, height } as any);
           }
           if(typeof pinnedMessageHandler === 'function')
             pinnedMessageHandler(item.messageId!, height);

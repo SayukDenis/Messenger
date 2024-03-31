@@ -1,5 +1,5 @@
 import { StyleSheet, ViewStyle } from "react-native";
-import { screenHeight } from "../../../../../ChatList/Constants/ConstantsForChatlist";
+import { height } from "../../../ChatConstants";
 
 export const styles = StyleSheet.create({
 
@@ -12,8 +12,8 @@ export const functionalStyles = {
       alignItems: 'center', 
       justifyContent: 'center', 
       borderRadius: 5, 
-      width: screenHeight * 0.045, 
-      height: screenHeight * 0.045 
+      width: height * 0.04, 
+      height: height * 0.04 
     } as ViewStyle;
   }
 }

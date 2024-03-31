@@ -15,9 +15,8 @@ export interface PinnedMessageViewProps {
     messageID: number;
     unpinAllMessagesHandler: () => void;
     userMessageLastWatched: ILastWatchedMessage;
-    onCopyPress: () => void;
     onUnpinPress: (message: MessageProps) => void;
-    onDeletePress: (message: MessageProps) => void;
+    onDeletePress: (messageId: number) => void;
     users: User[];
   };
   dispatch: Dispatch;

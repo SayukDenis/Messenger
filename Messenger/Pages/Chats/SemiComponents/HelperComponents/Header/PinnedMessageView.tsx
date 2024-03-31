@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DEFAULT_CHARS_PER_LINE, FONT_SCALE } from '../../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, getCustomFontSize } from '../../ChatConstants';
 import DialogueMessagesPinnedMessageIcon from '../../SVG/DialogueMessagesPinnedMessageIcon';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
@@ -56,13 +56,23 @@ class PinnedMessageView extends Component<PinnedMessageViewProps> {
             onPress={this.scrollToPinedMessage}
             style={styles.container}
           >
-            <Text>Pinned message: {pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE*0.55/FONT_SCALE).trim()+'...':pinnedMessage?.content}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: getCustomFontSize(14) }}>Pinned message: </Text>
+              <Text 
+                onLayout={(event) => console.log(event.nativeEvent.layout)} 
+                style={{ fontSize: getCustomFontSize(14), width: 155 }}
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                {`${pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.trim()+'...':pinnedMessage?.content}`}
+              </Text>
+            </View>
             <View style={{ flexDirection: 'row' }}>
               { total>1&&
                 <View style={styles.trackCurrentAndTotal}>
-                  <Text>{current}</Text>
+                  <Text style={{ fontSize: getCustomFontSize(14) }}>{current}</Text>
                   <LineSeparator width={1.4} height={'100%'} color='black' marginHorizontal={5} />
-                  <Text>{total}</Text>
+                  <Text style={{ fontSize: getCustomFontSize(14) }}>{total}</Text>
                 </View>
               }
               <TouchableOpacity

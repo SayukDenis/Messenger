@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { getCustomFontSize } from "../ChatConstants";
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -44,12 +45,12 @@ const styles = StyleSheet.create({
   },
   
   chatUserInfoUserName: {
-    fontSize: 14,
+    fontSize: getCustomFontSize(16),
     color: 'black',
   },
   
   chatUserInfoUserWasOnline: {
-    fontSize: 10,
+    fontSize: getCustomFontSize(12),
     color: 'gray',
   }
 });

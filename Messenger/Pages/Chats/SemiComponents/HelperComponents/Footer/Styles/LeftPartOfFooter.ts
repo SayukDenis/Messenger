@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { screenHeight } from "../../../../../ChatList/Constants/ConstantsForChatlist";
+import { height } from "../../../ChatConstants";
 
 export const styles = StyleSheet.create({
   container: { 
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center', 
     borderRadius: 9999, 
-    width: screenHeight * 0.05, 
-    height: screenHeight * 0.05 
+    width: height * 0.042, 
+    height: height * 0.042 
   }
 });

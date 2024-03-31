@@ -42,19 +42,6 @@ const activateAnimationOfBackgroundForScrolledMessageReducer = (state = animatio
   }
 }
 
-const scrollStateTappedMessageInitialState = {
-  scroll: false,
-  id: -1
-}
-const scrollStateTappedMessageReducer = (state = scrollStateTappedMessageInitialState, action:any) => {
-  switch(action.type) {
-    case 'SCROLL_TO_TAPPED_MESSAGE':
-      return { ...state, scroll: action.scroll, id: action.id };
-    default:
-      return state;
-  }
-}
-
 const selectedMessageHandlerInitialState = {
   listOfId: []
 }
@@ -157,13 +144,25 @@ const setCoordinationsOfMessageReducer = (state = setCoordinationsOfMessage, act
   }
 }
 
+const handleKeyboardAppearing = {
+  show: false
+}
+const handleKeyboardAppearingReducer = (state = handleKeyboardAppearing, action:any) => {
+  switch(action.type) {
+    case 'HANDLE_KEYBOARD_APPEARING':
+      return { ...state, show: !state.show }
+    default:
+      return state;
+  }
+}
+
 const ChatReducer = combineReducers({
   counterForSelectedMessages: counterOfSelectedMessagesReducer,
   scrollToPinnedMessage: scrollToPinnedMessageReducer,
   activateAnimationOfBackgroundForScrolledMessage: activateAnimationOfBackgroundForScrolledMessageReducer,
-  scrollToTappedMessage: scrollStateTappedMessageReducer,
   selectedMessageHandler: selectedMessageHandlerReducer,
   setCoordinationsOfMessage: setCoordinationsOfMessageReducer,
+  handleKeyboardAppearing: handleKeyboardAppearingReducer,
 });
 
 export default ChatReducer;

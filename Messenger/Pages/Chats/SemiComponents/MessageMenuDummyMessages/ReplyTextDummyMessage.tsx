@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { wrapText } from '../MessageViewAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { ReplyTextType } from './Interfaces/IReplyText';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, width } from '../ChatConstants';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import PinButton from '../SVG/PinButton';
@@ -14,6 +14,10 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
   render(): React.ReactNode {
     const { messages, message, isUser, height, userMessageLastWatched, pinned, userName } = this.props;
     const replyMessage = messages.find(m => m.messageId==message.messageResponseId);
+
+    let text = '';
+    replyMessage?.content.split('\n').forEach(m => text += `${m.trim()} `);
+    text.trimEnd();
 
     return (
       <View style={styles.replyContainer} >
@@ -26,7 +30,7 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
               <View style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, styles.replyMessagePos, { overflow: 'hidden' }]}>
                 <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
                 <Text style={styles.replyMessageFont}>
-                  {replyMessage!=undefined&&replyMessage?.content?.length>=DEFAULT_CHARS_PER_LINE?replyMessage?.content.replace('\n', '').slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
+                  {replyMessage!=undefined&&replyMessage?.content?.length>=DEFAULT_CHARS_PER_LINE?text.slice(0,DEFAULT_CHARS_PER_LINE)+'...':replyMessage?.content}
                 </Text>
               </View>
             </View>
@@ -37,7 +41,7 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
               style={[functionalStyles.messageContainer(isUser, message.content.length), { height: height }]}
             >
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
-              <Text style={{ fontSize: DEFAULT_FONT_SIZE }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+              <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
               <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                 {pinned&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                 <Text

@@ -1,8 +1,6 @@
-import { StyleSheet, Dimensions, ViewStyle } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, MESSAGE_SWIPE_TO_REPLY_WIDTH } from "../../ChatConstants";
-
-const { width, height } = Dimensions.get('screen');
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, getCustomFontSize, width } from "../../ChatConstants";
 
 export const styles = StyleSheet.create({
   swipeableContainer: {
@@ -16,7 +14,7 @@ export const styles = StyleSheet.create({
     overflow:'visible'
   },
   messageBlockContainer: {
-    paddingVertical: MESSAGE_PADDING_VERTICAL,
+    paddingBottom: MESSAGE_PADDING_VERTICAL,
     flex: 1,
     alignSelf: 'stretch',
     alignItems: 'stretch',
@@ -71,7 +69,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginLeft: 3,
     marginRight: 10,
-    fontSize: 8,
+    fontSize: getCustomFontSize(9),
   },
   messageViewStatus: { 
     position: 'absolute', 
