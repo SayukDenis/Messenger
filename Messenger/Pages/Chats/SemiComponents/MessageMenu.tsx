@@ -1,7 +1,7 @@
-import { memo, useEffect, useState } from "react";
+import { Component } from "react";
 import { TouchableOpacity, View, Text, Animated, EasingFunction, Easing } from "react-native";
 import React from 'react';
-import { MessageMenuProps } from "./Interfaces/IMessageMenu";
+import { MessageMenuProps, MessageMenuState } from "./Interfaces/IMessageMenu";
 import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
@@ -15,10 +15,7 @@ import MessageMenuEditButton from "./SVG/MessageMenuEditButton";
 import MessageMenuReplyButton from "./SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE } from "./ChatConstants";
-
-
-let size:{ width:number, height:number } = { width: 0, height: 0 };
+import { GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_HORIZONTAL, MESSAGE_TRIANGLE_SIZE, NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize } from "./ChatConstants";
 
 const containerWidth = new Animated.Value(0); 
 const firstContainerTranslate = new Animated.Value(0); 
@@ -28,35 +25,38 @@ const fourthContainerTranslate = new Animated.Value(0);
 const fifthContainerTranslate = new Animated.Value(0);
 const sixthContainerTranslate = new Animated.Value(0);
 
-const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPress, onEditPress, onCopyPress, onSelectPress, onPinPress, isUser, onDeletePress, userMessageLastWatched, pinnedMessageScreen, users }:MessageMenuProps) => {
-  if(!isVisible) 
-      return null;
-    
-  const buttons = [
+class MessageMenu extends Component<MessageMenuProps> {
+  shouldComponentUpdate(nextProps: Readonly<MessageMenuProps>, nextState: Readonly<MessageMenuState>, nextContext: any): boolean {
+    if(this.props.isVisible !== nextProps.isVisible) {
+      return true;
+    }
+
+    return false;
+  }
+
+  buttons = [
     {
       text: 'Reply',
-      action: onReplyPress,
+      action: this.props.onReplyPress,
       svg: <MessageMenuReplyButton />
     },
     {
       text: 'Edit',
-      action: onEditPress,
+      action: this.props.onEditPress,
       svg: <MessageMenuEditButton />
     },
     {
       text: 'Copy',
       action: async () => {
-        await Clipboard.setStringAsync(coord.message?.content!);
-        if(typeof onCopyPress === 'function')
-          onCopyPress();
+        await Clipboard.setStringAsync(this.props.coord.message?.content!);
       },
       svg: <MessageMenuCopyButton />
     },
     {
-      text: coord.pinned?'Unpin':'Pin',
+      text: this.props.coord?.pinned?'Unpin':'Pin',
       action: () => {
-        if(typeof onPinPress === 'function')
-          onPinPress(coord.message!);
+        if(typeof this.props.onPinPress === 'function')
+          this.props.onPinPress(this.props.coord.message!);
       },
       svg: <PinButton />
     },
@@ -68,31 +68,29 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     {
       text: 'Delete',
       color: 'red',
-      action: onDeletePress,
+      action: this.props.onDeletePress,
       svg: <DeleteButton />
     },
     {
       text: 'Select',
-      action: onSelectPress,
+      action: this.props.onSelectPress,
       svg: <MessageMenuSelectButton />
     },
   ];
 
-  const pinnedMessageScreenButtons = [
+  pinnedMessageScreenButtons = [
     {
       text: 'Copy',
       action: async () => {
-        await Clipboard.setStringAsync(coord.message?.content!);
-        if(typeof onCopyPress === 'function')
-          onCopyPress();
+        await Clipboard.setStringAsync(this.props.coord.message?.content!);
       },
       svg: <MessageMenuCopyButton />
     },
     {
       text: 'Unpin',
       action: () => {
-        if(typeof onPinPress === 'function')
-          onPinPress(coord.message!);
+        if(typeof this.props.onPinPress === 'function')
+          this.props.onPinPress(this.props.coord.message!);
       },
       svg: <PinButton />
     },
@@ -104,121 +102,123 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
     {
       text: 'Delete',
       color: 'red',
-      action: onDeletePress,
+      action: this.props.onDeletePress,
       svg: <DeleteButton />
     },
-  ]
+  ];
 
-  const durationOfAnimation: number = 10;
-  const [state, setState] = useState(1);
-  const easing: EasingFunction = Easing.linear;
-  const firstContainerOpacity = firstContainerTranslate.interpolate({
+  //#region  Animation constants 
+  durationOfAnimation: number = 15;
+  easing: EasingFunction = Easing.linear;
+  firstContainerOpacity = firstContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
-  const firstContainerPositionY = firstContainerTranslate.interpolate({
+  firstContainerPositionY = firstContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
-  const secondContainerOpacity = secondContainerTranslate.interpolate({
+  secondContainerOpacity = secondContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  const secondContainerPositionY = secondContainerTranslate.interpolate({
+  secondContainerPositionY = secondContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
   // Аналогічно для інших контейнерів
-  const thirdContainerOpacity = thirdContainerTranslate.interpolate({
+  thirdContainerOpacity = thirdContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  const thirdContainerPositionY = thirdContainerTranslate.interpolate({
+  thirdContainerPositionY = thirdContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
-  const fourthContainerOpacity = fourthContainerTranslate.interpolate({
+  fourthContainerOpacity = fourthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  const fourthContainerPositionY = fourthContainerTranslate.interpolate({
+  fourthContainerPositionY = fourthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
-  const fifthContainerOpacity = fifthContainerTranslate.interpolate({
+  fifthContainerOpacity = fifthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  const fifthContainerPositionY = fifthContainerTranslate.interpolate({
+  fifthContainerPositionY = fifthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
-  const sixthContainerOpacity = sixthContainerTranslate.interpolate({
+  sixthContainerOpacity = sixthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  const sixthContainerPositionY = sixthContainerTranslate.interpolate({
+  sixthContainerPositionY = sixthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
+  //#endregion
 
-  const animateOfFirstContainer = Animated.timing(firstContainerTranslate, {
-    toValue: state, // Верхня позиція (видимий) або поза екраном (не видимий)
-    duration: durationOfAnimation, // Тривалість анімації
-    easing,
-    useNativeDriver: false,
-  });
-  const animateOfSecondContainer = Animated.timing(secondContainerTranslate, {
-    toValue: state,
-    duration: durationOfAnimation,
-    easing,
-    useNativeDriver: false,
-  });
-
-  const animateOfThirdContainer = Animated.timing(thirdContainerTranslate, {
-    toValue: state,
-    duration: durationOfAnimation,
-    easing,
-    useNativeDriver: false,
-  });
-
-  const animateOfFourthContainer = Animated.timing(fourthContainerTranslate, {
-    toValue: state,
-    duration: durationOfAnimation,
-    easing,
-    useNativeDriver: false,
-  });
-
-  const animateOfFifthContainer = Animated.timing(fifthContainerTranslate, {
-    toValue: state,
-    duration: durationOfAnimation,
-    easing,
-    useNativeDriver: false,
-  });
+  animateMenu = (close: boolean = false) => {
+    const animateOfFirstContainer = Animated.timing(firstContainerTranslate, {
+      toValue: close ? 0 : 1, // Верхня позиція (видимий) або поза екраном (не видимий)
+      duration: this.durationOfAnimation, // Тривалість анімації
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+    const animateOfSecondContainer = Animated.timing(secondContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
   
-  const animateOfSixthContainer = Animated.timing(sixthContainerTranslate, {
-    toValue: state,
-    duration: durationOfAnimation,
-    easing,
-    useNativeDriver: false,
-  });
+    const animateOfThirdContainer = Animated.timing(thirdContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+  
+    const animateOfFourthContainer = Animated.timing(fourthContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+  
+    const animateOfFifthContainer = Animated.timing(fifthContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
+    
+    const animateOfSixthContainer = Animated.timing(sixthContainerTranslate, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      easing: this.easing,
+      useNativeDriver: false,
+    });
 
-  const containerSize = Animated.timing(containerWidth, {
-    toValue: state, // Кінцева ширина
-    duration: durationOfAnimation, // Тривалість анімації (в мілісекундах)
-    useNativeDriver: true, // Вимагається для анімації стилів
-  });
-  useEffect(() => {
-    Animated.sequence([
+    const containerSize = Animated.timing(containerWidth, {
+      toValue: close ? 0 : 1,
+      duration: this.durationOfAnimation,
+      useNativeDriver: true,
+    });
+
+    const sequence = [
       containerSize,
       animateOfFirstContainer,
       animateOfSecondContainer,
@@ -226,88 +226,72 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
       animateOfFourthContainer,
       animateOfFifthContainer,
       animateOfSixthContainer,
-    ]).start(() => setState(0));
-  }, []);
+    ];
 
-  const closeMenu = () => {
-    Animated.sequence([
-      animateOfSixthContainer,
-      animateOfFifthContainer,
-      animateOfFourthContainer,
-      animateOfThirdContainer,
-      animateOfSecondContainer,
-      animateOfFirstContainer,
-      containerSize,
-    ]).start();
+    Animated.sequence(close ? sequence.reverse() : sequence).start();
   }
 
-  const helperFunc = (index: number) => {
+  helperFunc = (index: number) => {
     switch(index) {
       case 0: {
         return {
-          transform: [{ translateY: sixthContainerPositionY }],
-          opacity: sixthContainerOpacity,
+          transform: [{ translateY: this.sixthContainerPositionY }],
+          opacity: this.sixthContainerOpacity,
         }
       }
       case 1: {
         return {
-          transform: [{ translateY: fifthContainerPositionY }],
-          opacity: fifthContainerOpacity,
+          transform: [{ translateY: this.fifthContainerPositionY }],
+          opacity: this.fifthContainerOpacity,
         }
       }
       case 2: {
         return {
-          transform: [{ translateY: fourthContainerPositionY }],
-          opacity: fourthContainerOpacity,
+          transform: [{ translateY: this.fourthContainerPositionY }],
+          opacity: this.fourthContainerOpacity,
         }
       }
       case 3: {
         return {
-          transform: [{ translateY: thirdContainerPositionY }],
-          opacity: thirdContainerOpacity,
+          transform: [{ translateY: this.thirdContainerPositionY }],
+          opacity: this.thirdContainerOpacity,
         }
       }
       case 4: {
         return {
-          transform: [{ translateY: secondContainerPositionY }],
-          opacity: secondContainerOpacity,
+          transform: [{ translateY: this.secondContainerPositionY }],
+          opacity: this.secondContainerOpacity,
         }
       }
       case 5: 
       return {
-        transform: [{ translateY: firstContainerPositionY }],
-        opacity: firstContainerOpacity,
+        transform: [{ translateY: this.firstContainerPositionY }],
+        opacity: this.firstContainerOpacity,
       }
       default: {
         return { transform: [{ scale: containerWidth }] }
       }
     }
-  }
-
-  const onLayout = (event:any) => {
-    const { width, height } = event.nativeEvent.layout;
-    size = { width, height }
-
   };
-  
-  const handleMenuPosition = () => {
-    const MESSAGE_HORIZONTAL_PADDING = 10;
-    const NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE = 5;
+
+  handleMenuPosition = () => {
+    const { isUser, coord, pinnedMessageScreen } = this.props;
+
     if(isUser) {
       return { 
-        top:(coord?coord.pageY:0)-size.height, 
-        right: MESSAGE_HORIZONTAL_PADDING*2
+        top: ((coord && coord.pageY) ? coord.pageY : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR), 
+        right: MESSAGE_PADDING_HORIZONTAL*2
       }
     } else {
       return { 
-        top:(coord?coord.pageY:0)-size.height, 
-        left:MESSAGE_HORIZONTAL_PADDING*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
+        top: ((coord && coord.pageY) ? coord.pageY - MESSAGE_BUTTON_HEIGHT : 0) - (!pinnedMessageScreen ? MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT : MESSAGE_TRIANGLE_SIZE + MESSAGE_BUTTON_HEIGHT * 4 + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR), 
+        left: MESSAGE_PADDING_HORIZONTAL*2-NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE
       }
     }
-  }
-  
-  const handleTrianglePosition = () => {
-    if(isUser) {
+  };
+
+  handleTrianglePosition = () => {
+    if(this.props.isUser) {
       return [
         footerstyles.triangle,
         footerstyles.positionOfModalWindowRightTop,
@@ -318,62 +302,66 @@ const MessageMenu = memo(({isVisible, onOverlayPress, coord, messages, onReplyPr
         footerstyles.positionOfModalWindowLeftTop,
       ]
     }
-  }
+  };
 
-  return (
-    <TouchableOpacity 
-      activeOpacity={1} 
-      style={styles.container} 
-      onPress={() => {
-        closeMenu();
-        setTimeout(() => onOverlayPress(), durationOfAnimation*10)
-      }}
-    >
-      <View style={{ top: coord.componentPageY, height: coord.height }}>
-        {(coord.message?.messageResponseId&&messages.find(m => m.messageId === coord.message?.messageResponseId)?.content)?
-        <ReplyTextDummyMessage 
-          message={coord.message} 
-          messages={messages} 
-          isUser={isUser} 
-          height={coord.height} 
-          userMessageLastWatched={userMessageLastWatched} 
-          pinned={coord.pinned} 
-          userName={users[0]?.name}
-        />:
-        <DefaultTextDummyMessage 
-          message={coord.message}
-          isUser={isUser} 
-          height={coord.height} 
-          userMessageLastWatched={userMessageLastWatched} 
-          pinned={coord.pinned}
-        />}
-      </View>
-      <View 
-        onLayout={onLayout}
-        style={[styles.buttonsContainer, handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT*4+MESSAGE_TRIANGLE_SIZE }]}
+  render(): React.ReactNode {
+    if(!this.props.isVisible) {
+      return null;
+    }
+    const { onOverlayPress, coord, messages, isUser, userMessageLastWatched, pinnedMessageScreen, users } = this.props;
+    
+    this.animateMenu();
+    
+    return (
+      <TouchableOpacity 
+        activeOpacity={1} 
+        style={styles.container} 
+        onPress={() => {
+          this.animateMenu(true);
+          setTimeout(() => onOverlayPress(), this.durationOfAnimation*10)
+        }}
       >
-        {(pinnedMessageScreen?pinnedMessageScreenButtons:buttons).map((button, index) => {
-          return button.text=='Edit'&&!isUser? null: 
-          <Animated.View key={button.text} style={helperFunc(index)}>
-            {(button.text==='Reply'||(button.text==='Copy'&&pinnedMessageScreen)) && <View style={handleTrianglePosition()} />}
-            <TouchableOpacity 
-              key={index} 
-              onPress={() => {button.action!(); onOverlayPress()}} 
-              activeOpacity={1} 
-              style={styles.button}
-            >
-              {button.svg}
-              <Text style={{color:button.color, marginLeft: 5}}>{button.text}</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        })}
-      </View>
-    </TouchableOpacity>
-  );
-})
+        <View style={{ top: coord.componentPageY, height: coord.height }}>
+          {(coord.message?.messageResponseId! >= 0 && messages.find(m => m.messageId === coord.message?.messageResponseId)?.content) ?
+          <ReplyTextDummyMessage 
+            message={coord.message!} 
+            messages={messages} 
+            isUser={isUser} 
+            height={coord.height} 
+            userMessageLastWatched={userMessageLastWatched} 
+            pinned={coord.pinned} 
+            userName={users[0]?.name}
+          />:
+          <DefaultTextDummyMessage 
+            message={coord.message}
+            isUser={isUser} 
+            height={coord.height} 
+            userMessageLastWatched={userMessageLastWatched} 
+            pinned={coord.pinned}
+          />}
+        </View>
+        <View 
+          style={[styles.buttonsContainer, !isUser&&{ height: MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT }, this.handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR }]}
+        >
+          {(pinnedMessageScreen?this.pinnedMessageScreenButtons:this.buttons).map((button, index) => {
+            return button.text=='Edit'&&!isUser? null: 
+            <Animated.View key={button.text} style={this.helperFunc(index)}>
+              {(button.text==='Reply'||(button.text==='Copy'&&pinnedMessageScreen)) && <View style={this.handleTrianglePosition()} />}
+              <TouchableOpacity 
+                key={index} 
+                onPress={() => {button.action!(); onOverlayPress()}} 
+                activeOpacity={1} 
+                style={styles.button}
+              >
+                {button.svg}
+                <Text style={{color:button.color, marginLeft: 5, fontSize: getCustomFontSize(14)}}>{button.text}</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          })}
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
 
-const mapStateToProps = (state:any) => ({
-  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords
-});
-
-export default connect(mapStateToProps)(MessageMenu);
+export default connect(null)(MessageMenu);

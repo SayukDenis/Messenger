@@ -1,13 +1,13 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { SOFT_MENU_BAR_HEIGHT } from '../ChatConstants';
+import { getCustomFontSize } from '../ChatConstants';
 
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     height:0,
-    bottom: screenHeight*0.08 + SOFT_MENU_BAR_HEIGHT*0.85,
+    bottom: screenHeight*0.055,
   },
   innerContainer: {
     height:height*0.052, 
@@ -29,10 +29,13 @@ export const styles = StyleSheet.create({
     alignItems:'center'
   },
   usernameText: {
-    color:'#4684FB'
+    color:'#4684FB',
+    fontSize: getCustomFontSize(12)
   },
   messageText: {
-    color:'rgb(121, 121, 121)'
+    color:'rgb(121, 121, 121)',
+    fontSize: getCustomFontSize(14),
+    maxWidth: width * 0.7
   },
   closeButton: {
     backgroundColor:'red', 

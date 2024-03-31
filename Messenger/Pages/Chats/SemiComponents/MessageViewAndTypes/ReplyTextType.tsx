@@ -11,7 +11,7 @@ import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, width } from '../ChatConstants';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
@@ -238,26 +238,29 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     }
   };
   
+  pressInTime: number = 0;
   onPressIn = (event:any) => {
+    this.pressInTime = (new Date()).getTime();
     const { locationX, locationY } = event.nativeEvent;
     this.setState({ pressCoordinations: { locationX_In: locationX, locationY_In: locationY } });
   }
 
   onPressOut = async (event:any) => {
+    const pressOutTime = (new Date()).getTime();
     const { locationX, locationY } = event.nativeEvent;
     const { locationX_In, locationY_In } = this.state.pressCoordinations;
 
     const { selecting, dispatch, id } = this.props;
     const { selected } = this.state;
     
-    if (selecting && Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
+    if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
       this.setState({ selected: !selected });
       dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
       return;
     }
 
-    if (Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
+    if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });
@@ -298,7 +301,6 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
         showsHorizontalScrollIndicator={false}
         style={[
           styles.swipeableContainer, 
-          { paddingBottom: 5 }, 
           selecting && selected && { backgroundColor: 'rgba(32, 83, 44, 0.2)' },
         ]}
         onScrollEndDrag={this.onScrollEndDrag}
@@ -313,13 +315,11 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             onPressIn={this.onPressIn}
             onPressOut={this.onPressOut}
           >
-            <Text style={[styles.replyUserNameFont, this.props.message.author.userId==this.props.author.userId && { alignSelf: 'flex-end' }]}>
-              {isUser ? 'You' : this.props.userName}
-            </Text>
             <ReplyMessage 
               message={message}
               replyMessage={messages.find(m => m.messageId === message.messageResponseId)!}
               author={author}
+              userName={this.props.userName}
               selecting={selecting}
               selected={selected}
               pinnedMessageScreen={this.props.pinnedMessageScreen}
@@ -348,7 +348,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                 <View 
                   style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
                 /> 
-                <Text style={{ fontSize: DEFAULT_FONT_SIZE }}>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text

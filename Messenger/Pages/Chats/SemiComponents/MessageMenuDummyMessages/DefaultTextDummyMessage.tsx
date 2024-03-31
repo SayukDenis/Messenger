@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { wrapText } from '../MessageViewAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { DefaultTextMessageProps } from './Interfaces/IDefaultText';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, width } from '../ChatConstants';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import PinButton from '../SVG/PinButton';
@@ -22,7 +22,7 @@ class DefaultTextDummyMessage extends Component<DefaultTextMessageProps> {
               style={[isUser?styles.messageTypeTextUser:styles.messageTypeTextNotUser, message.content.length>DEFAULT_CHARS_PER_LINE&&styles.longMessage, { overflow: 'hidden', height: height }]}
             >
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
-              <Text style={{ fontSize: DEFAULT_FONT_SIZE }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+              <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
               <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                 {pinned&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                 <Text
