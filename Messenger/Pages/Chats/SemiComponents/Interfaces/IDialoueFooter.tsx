@@ -1,9 +1,11 @@
+import { Animated } from "react-native";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import User from "../../../../dao/Models/User";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 
 export interface DialogueFooterProps {
-  author: User | undefined;
+  author: User;
+  users: User[];
   messages: MessageProps[];
   setMessages: (arg0: MessageProps) => void; 
   isReply: boolean; 
@@ -12,8 +14,15 @@ export interface DialogueFooterProps {
   isEdit: boolean;
   editMessage: MessageProps; 
   messageID: number;
-  copyMessagePopUp: boolean;
-  endCopyMessagePopUp: () => void;
+  selecting: boolean;
+  deleteSelectedMessages: () => void;
+  keyboardActive: boolean;
+}
+
+export interface DialogueFooterState {
+  text: string;
+  bottomOffset: Animated.Value;
+  dynamicFooterHeight: number;
 }
 
 export interface sendMessageProps {
@@ -26,4 +35,10 @@ export interface sendMessageProps {
   editMessage: MessageProps; 
   messageID: number;
   author: User|undefined;
+}
+
+export enum EChangeFooterHeight {
+  add = 1,
+  subtract,
+  reset
 }

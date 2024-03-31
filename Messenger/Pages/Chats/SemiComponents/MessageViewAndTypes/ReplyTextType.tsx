@@ -7,23 +7,26 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import { decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, resetNumberOfSelectedMessages, setAnimationOfBackgroundForScrolledMessage, setScrollStateTappedMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, width } from '../ChatConstants';
+import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { ReplyTextTypeProps, ReplyTextTypeState, componentPageProps, coordProps } from './Interfaces/IReplyTextType';
+import { ReplyTextTypeProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
 import { functionalStyles, styles } from './Styles/ReplyTextType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
+import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 
-let size:any[] = [];
+let size: sizeProps[] = [];
+
+let tmpUpdateCounter = 0;
 
 class ReplyTextType extends Component<ReplyTextTypeProps> {
   state: ReplyTextTypeState = {
@@ -39,14 +42,16 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   componentDidMount() { 
     this.setState({ 
-      replyMessage: this.props.messages.find(m => m.messageId==this.props.message.messageResponseId)?.content,
+      replyMessage: this.props.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content,
       message: this.props.message.content,
     });
   }
 
   componentDidUpdate(prevProps: ReplyTextTypeProps) {
+    console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
+
     const { animate } = this.state;
-    console.log('animate', animate);
+    //console.log('animate', animate);
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
       this.setState({ animate: false });
@@ -68,24 +73,31 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 
     if(nextProps.idForAnimation === this.props.message.messageId) {
+      console.log('reply #1');
       this.state.animate = true;
       return true;
     } else if(nextProps.selecting != this.props.selecting) {
+      console.log('reply #2');
       this.setState({ selecting: nextProps.selecting });
       if(!nextProps.selecting) this.resetSelected();
       return true;
     } else if(nextState.selected != this.state.selected) {
+      console.log('reply #3');
       this.setState({ selected: nextState.selected })
       return true;
     } else if(this.state.selected !== nextState.selected) {
+      console.log('reply #4');
       return true;
     } else if(this.messageCompareHandler(nextProps.messages)) {
+      console.log('reply #5');
       this.setState({ message: nextMessage })
       return true;
     } else if(this.state.replyMessage && this.state.replyMessage !== nextReplyMessage) {
+      console.log('reply #6');
       this.setState({ replyMessage: nextReplyMessage })
       return true;
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
+      console.log('reply #7');
       return true;
     }
     
@@ -119,18 +131,30 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   });
 
   resetSelected = () => {
-    this.props.dispatch(resetNumberOfSelectedMessages());
+    const { dispatch } = this.props;
+    dispatch(resetNumberOfSelectedMessages());
+    dispatch(resetSelectedMessage());
     this.setState({ selected: false });
   };
 
   setSelectedCallback = () => {
+    const { dispatch, id } = this.props;
     this.setState({ selected: true });
-    this.props.dispatch(incrementNumberOfSelectedMessages());
+    dispatch(incrementNumberOfSelectedMessages());
+    dispatch(addSelectedMessage(id));
   }
 
   onLayout = (event: any) => {
     const { width, height } = event.nativeEvent.layout;
-    size = [...size, { ID: this.props.id, layout: { width, height } }];
+    const idx = size.findIndex(m => m.ID === this.props.id);
+    if(idx >= 0) {
+      if(size[idx].layout.height !== height || size[idx].layout.width !== width) {
+        size[idx].layout.height = height;
+        size[idx].layout.width = width;
+      }
+    } else {
+      size = [...size, { ID: this.props.id, layout: { width, height } }];
+    }
     this.setState({ widthOfMessage: width });
   };
 
@@ -172,8 +196,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       componentPageY: componentPage.Y,
       pageX: pageX,
       pageY: pageY,
-      width: component.layout.width,
-      height: component.layout.height,
+      width: component!.layout.width,
+      height: component!.layout.height,
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
       pinned: this.props.listOfPinnedMessages.findIndex(m => m === this.props.message.messageId) >= 0,
@@ -195,39 +219,54 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   };
 
   handleLinkTo = (messageID:any) => {
-    const { selecting } = this.props;
+    const { selecting, dispatch, flatList, messages, message, id } = this.props;
     const { selected } = this.state;
     if (selecting) {
       this.setState({ selected: !selected });
-      this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
       return;
     }
 
     if(this.props.flatList.current) {
-      this.props.dispatch(setAnimationOfBackgroundForScrolledMessage(this.props.message.messageResponseId));
-      this.props.flatList.current.scrollToIndex({ index: this.props.messages.length - messageID, animated: true, viewPosition: 0.5 });
+      dispatch(setAnimationOfBackgroundForScrolledMessage(message.messageResponseId));
+      const mes = this.props.messagesWithCoords.find(m => m.id === messageID);
+      flatList.current.scrollToOffset({ 
+        animated: true, 
+        offset: mes!.coords - ((FLATLIST_HEIGHT - mes!.height) / 2)
+      });
     }
   };
   
+  pressInTime: number = 0;
   onPressIn = (event:any) => {
+    this.pressInTime = (new Date()).getTime();
     const { locationX, locationY } = event.nativeEvent;
     this.setState({ pressCoordinations: { locationX_In: locationX, locationY_In: locationY } });
   }
 
   onPressOut = async (event:any) => {
+    const pressOutTime = (new Date()).getTime();
     const { locationX, locationY } = event.nativeEvent;
     const { locationX_In, locationY_In } = this.state.pressCoordinations;
 
-    const { selecting } = this.props;
+    const { selecting, dispatch, id } = this.props;
     const { selected } = this.state;
     
-    if (selecting && Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
+    if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
       this.setState({ selected: !selected });
-      this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+      dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
       return;
     }
 
-    if (Math.abs(locationX-locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY-locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
+    if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
+      await this.handlePress(event).then((layout) => {
+        this.props.setMessageMenuVisible(layout, true);
+      });
+    }
+
+    if(this.props.pinnedMessageScreen) {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });
@@ -236,7 +275,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
   getSelectOffsetHorizontal = () => {
     const { widthOfMessage, widthOfReply } = this.state;
-    return widthOfMessage > widthOfReply ? this.state.sizeOfMessageContainer[0] - (SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL) - widthOfMessage : this.state.sizeOfMessageContainer[0] - (SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL) - widthOfReply;
+    return -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
   getSelectOffsetVertical = () => {
@@ -244,10 +283,10 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
   }
 
   render() {
-    const { message, author, selecting, pinnedMessageScreen } = this.props;
+    const { message, author, selecting, messages, pinnedMessageScreen } = this.props;
     const { selected } = this.state;
 
-    const isUser = this.props.message.author.userId == this.props.author.userId;
+    const isUser = message.author.userId == author.userId;
 
     return (
       <ScrollView 
@@ -262,7 +301,6 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
         showsHorizontalScrollIndicator={false}
         style={[
           styles.swipeableContainer, 
-          { paddingBottom: 5 }, 
           selecting && selected && { backgroundColor: 'rgba(32, 83, 44, 0.2)' },
         ]}
         onScrollEndDrag={this.onScrollEndDrag}
@@ -277,16 +315,16 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
             onPressIn={this.onPressIn}
             onPressOut={this.onPressOut}
           >
-            <Text style={[styles.replyUserNameFont, this.props.message.author.userId==this.props.author.userId && { alignSelf: 'flex-end' }]}>
-              {isUser ? 'You' : this.props.userName}
-            </Text>
             <ReplyMessage 
-              message={this.props.message}
-              replyMessage={this.props.messages.find(m => m.messageId === message.messageResponseId)!}
-              author={this.props.author}
+              message={message}
+              replyMessage={messages.find(m => m.messageId === message.messageResponseId)!}
+              author={author}
+              userName={this.props.userName}
               selecting={selecting}
               selected={selected}
-              handleLinkTo={this.handleLinkTo}
+              pinnedMessageScreen={this.props.pinnedMessageScreen}
+              handleLinkTo={this.props.pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
+              onLayout={(event:any) => this.setState({ widthOfReply: event.nativeEvent.layout.width })}
             />
             <TouchableOpacity 
               activeOpacity={1} 
@@ -300,6 +338,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
                 />
               }
               <View 
@@ -309,7 +348,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                 <View 
                   style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
                 /> 
-                <Text style={{ fontSize: DEFAULT_FONT_SIZE }}>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(this.props.message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
@@ -331,6 +370,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  additionalGap={this.state.widthOfReply > this.state.widthOfMessage ? this.state.widthOfReply - this.state.widthOfMessage : 0}
                 />
               }
               {selecting && <SelectButton 
@@ -356,6 +396,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
 
 const mapStateToProps = (state: any) => ({
   idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
 export default connect(mapStateToProps)(ReplyTextType);

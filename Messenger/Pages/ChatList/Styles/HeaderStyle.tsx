@@ -1,34 +1,31 @@
-import { StyleSheet,Platform, Dimensions,StatusBar } from "react-native";
-import Constants from 'expo-constants';
+import { StyleSheet, Platform, Dimensions, StatusBar } from "react-native";
+import Constants from "expo-constants";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const headerstyles = StyleSheet.create({
-
   container: {
-    height: Platform.OS=="android"?screenHeight * 0.08+(StatusBar.currentHeight==undefined?0:StatusBar.currentHeight):screenHeight * 0.08+Constants.statusBarHeight,
-   // backgroundColor: "#E7E6E4",
-   backgroundColor:"white",
+    height:
+      Platform.OS == "android"
+        ? screenHeight * 0.09 +
+          (StatusBar.currentHeight == undefined ? 0 : StatusBar.currentHeight)
+        : screenHeight * 0.08 + Constants.statusBarHeight,
+    backgroundColor: "white",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     zIndex: 5,
-    justifyContent:"flex-end",
-    //overflow:'hidden'
-  
+    justifyContent: "flex-end",
   },
 
   header: {
     display: "flex",
     flexDirection: "row",
-    
     marginHorizontal: screenWidth * 0.02,
-    overflow:"hidden",
-    //justifyContent:"space-between",
-   // backgroundColor:"black"
+    overflow: "hidden",
   },
 
   magnifyingglass: {
     height: screenHeight * 0.08 * 0.45,
     aspectRatio: 1,
-   
+
     flexDirection: "column",
     alignSelf: "center",
     //alignSelf:"center",
@@ -48,7 +45,7 @@ export const headerstyles = StyleSheet.create({
     borderRadius: 1000,
     borderWidth: 1,
     borderColor: "#2B1D1D",
-    marginLeft:12,
+    marginLeft: 12,
   },
   modeactivity: {
     height: screenHeight * 0.015,
@@ -59,12 +56,11 @@ export const headerstyles = StyleSheet.create({
     left: screenHeight * 0.02,
   },
   middleheader: {
-   
     //justifyContent: "center",
     flexDirection: "row",
   },
   ViewOfModeOfEmployment: {
-    marginRight:screenWidth * 0.031+10,
+    marginRight: screenWidth * 0.031 + 10,
     flexDirection: "row",
     alignSelf: "center",
     position: "relative",
@@ -79,7 +75,6 @@ export const headerstyles = StyleSheet.create({
   },
 
   arrowModeOfEmployment: {
-    
     width: screenWidth * 0.031,
     height: screenHeight * 0.03,
     aspectRatio: 1,
@@ -90,10 +85,9 @@ export const headerstyles = StyleSheet.create({
   },
 
   hamburgerview: {
-    alignSelf:"center",
-    height:screenHeight*0.028,
+    alignSelf: "center",
+    height: screenHeight * 0.028,
     flexDirection: "column",
     justifyContent: "space-between",
   },
-
 });

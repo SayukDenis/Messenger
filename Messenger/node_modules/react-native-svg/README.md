@@ -22,17 +22,17 @@
 
 ## Installation
 
-### With expo-cli
+### With expo
 
 > ✅ The [Expo client app](https://expo.io/tools) comes with the native code installed!
 
 Install the JavaScript with:
 
 ```bash
-expo install react-native-svg
+npx expo install react-native-svg
 ```
 
-📚 See the [**Expo docs**](https://docs.expo.io/versions/latest/sdk/svg/) for more info or jump ahead to [Usage](#Usage).
+📚 See the [**Expo docs**](https://docs.expo.io/versions/latest/sdk/svg/) for more info or jump ahead to [Usage](#usage).
 
 ### With react-native-cli
 
@@ -84,6 +84,7 @@ expo install react-native-svg
 | ---------------- | ------------ |
 | >=13.0.0         | 0.69.0+      |
 | >=13.6.0         | 0.70.0+      |
+| >=13.10.0        | 0.72.0+      |
 
 ## Troubleshooting
 

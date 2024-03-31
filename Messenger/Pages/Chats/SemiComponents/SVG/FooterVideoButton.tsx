@@ -1,12 +1,12 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
-import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { height } from "../ChatConstants";
 
 function FooterVideoButton() {
   return (
     <Svg
-      width={screenHeight*0.03}
-      height={screenHeight*0.03}
+      width={height * 0.025}
+      height={height * 0.025}
       viewBox="-1.5 0 15 9"
       fill="none"
     >

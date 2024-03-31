@@ -1,10 +1,13 @@
 // DialogueNavigation.js
 import { Stack } from "../../../../Navigation/Navigation";
 import React from "react";
-import Dialogue from "../Dialogue";
+import Dialogue from "../Dialouge";
 import PinnedMessageScreen from "../../SemiComponents/Screens/PinnedMessageScreen";
+import { useDispatch } from "react-redux";
 
 const DialogueNavigation = ({route}:any) => {
+
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -17,12 +20,12 @@ const DialogueNavigation = ({route}:any) => {
         <Stack.Screen
           name="Dialogue"
           component={Dialogue}
-          initialParams={route.params}
+          initialParams={{...route.params, dispatch}}
         />
         <Stack.Screen 
           name='PinnedMessages'
           component={PinnedMessageScreen}
-          initialParams={route.params}
+          initialParams={{...route.params, dispatch}}
         />
       </Stack.Navigator>
     </>

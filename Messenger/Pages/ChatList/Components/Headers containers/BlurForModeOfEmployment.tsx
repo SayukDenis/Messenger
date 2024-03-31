@@ -16,17 +16,16 @@ import ModalWindowOfPressOnModeOfEmployment from "./ModalWindowOfPressOnModeOfEm
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 interface BlurForModeOfEmploymentProps {
-  children:ReactNode;
+  children: ReactNode;
 }
-const BlurForModeOfEmployment: React.FC<BlurForModeOfEmploymentProps> = ({children}) => {
-
+const BlurForModeOfEmployment: React.FC<BlurForModeOfEmploymentProps> = ({
+  children,
+}) => {
   const propsOfModeOfEmployment: any = useSelector((state: any) => {
     const props =
       state.chatListReducer.layoutOfModeOfEmployment.layoutOfModeOfEmployment;
     return props;
   });
-
- 
 
   return (
     <TouchableOpacity
@@ -34,8 +33,11 @@ const BlurForModeOfEmployment: React.FC<BlurForModeOfEmploymentProps> = ({childr
       style={{
         top:
           Platform.OS == "android"
-            ? screenHeight * 0.08 + (StatusBar.currentHeight===undefined?0:StatusBar?.currentHeight)
-            : screenHeight * 0.08 + Constants.statusBarHeight
+            ? screenHeight * 0.0875 +
+              (StatusBar.currentHeight === undefined
+                ? 0
+                : StatusBar?.currentHeight)
+            : screenHeight * 0.08 + Constants.statusBarHeight,
       }}
     >
       <View

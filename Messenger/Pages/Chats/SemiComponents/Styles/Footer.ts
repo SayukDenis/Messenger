@@ -1,21 +1,26 @@
 import { StyleSheet } from "react-native";
-import { height, screenWidth } from "../ChatConstants";
+import { FOOTER_INNER_CONTAINER_GAP, MAX_FOOTER_HEIGHT, height, screenWidth, width } from "../ChatConstants";
 
 const styles = StyleSheet.create({
+  wrapperAnimatedContainer: { 
+    zIndex: 10, 
+    position: 'absolute', 
+    width: width, 
+    maxHeight: MAX_FOOTER_HEIGHT,  
+  },
   mainContainer: {
-    position: "absolute",
     left: 0,
     right: 0,
     zIndex: 5,
     elevation: 0.001,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: height * 0.08,
     justifyContent: "flex-end",
     overflow: 'hidden',
+    maxHeight: MAX_FOOTER_HEIGHT
   },
   gradientContainer: {
-    height: height * 0.08,
+    maxHeight: MAX_FOOTER_HEIGHT,
     backgroundColor:"white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -35,12 +40,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-end',
     height: height*0.06,
+    maxHeight: MAX_FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP,
   },
   footer: {
-    paddingVertical: 5,
+    paddingVertical: 0,
     display: 'flex',
     flexDirection: 'row',
-    height: height*0.06,
+    maxHeight: MAX_FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP,
     alignSelf: 'stretch',
     borderStyle: 'solid',
     borderTopLeftRadius: 10,
@@ -48,18 +54,13 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  
-  messageInput: {
-    borderWidth: 0,
-    borderRadius: 9999,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    color: 'rgb(137, 130, 130)',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    width: '60%',
-  },
+  footerWhileSelecting: { 
+    justifyContent: 'space-between', 
+    paddingHorizontal: width * 0.075, 
+    alignItems: 'flex-start' 
+  }
 });
 
 export default styles;

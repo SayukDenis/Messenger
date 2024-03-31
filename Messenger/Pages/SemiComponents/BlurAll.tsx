@@ -30,7 +30,6 @@ const BlurAll: React.FC<BlurAllProps> = ({
       onLongPress={handlePress}
       activeOpacity={1}
     >
-      <StatusBar hidden />
       {Platform.OS === "android" ? (
         <View
           style={{
@@ -40,22 +39,24 @@ const BlurAll: React.FC<BlurAllProps> = ({
             right: 0,
             bottom: 0,
             backgroundColor: "black",
-            opacity: 0.3,
+            opacity: 0.7,
           }}
         />
       ) : (
-        <BlurView
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          }}
-          intensity={10}
-        />
+        <>
+          <StatusBar hidden />
+          <BlurView
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+            intensity={10}
+          />
+        </>
       )}
-      <StatusBar hidden />
       {children}
     </TouchableOpacity>
   );

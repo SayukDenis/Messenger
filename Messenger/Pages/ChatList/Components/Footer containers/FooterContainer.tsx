@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Platform } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Platform, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   screenHeight,
   screenWidth,
 } from "../../Constants/ConstantsForChatlist";
 import { footerstyles } from "../../Styles/FooterStyle";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface FooterContainerProps {
   isTouchableForHeader: boolean;
@@ -22,12 +22,11 @@ const FooterContainer: React.FC<FooterContainerProps> = ({
       style={[
         footerstyles.container,
         {
-          zIndex: isTouchableForHeader ? 3 : 5,
           height:
-            Platform.OS == "ios" && useSafeAreaInsets().bottom != 0
-              ? screenHeight * 0.05 + useSafeAreaInsets().bottom
-              : screenHeight * 0.06,
-          overflow: "hidden",
+            footerstyles.container.height +
+            (Platform.OS === "ios" ? useSafeAreaInsets().bottom : 0),
+          paddingBottom: Platform.OS === "ios" ? useSafeAreaInsets().bottom : 0,
+          zIndex: isTouchableForHeader ? 3 : 5,
         },
       ]}
     >
@@ -46,14 +45,7 @@ const FooterContainer: React.FC<FooterContainerProps> = ({
           width: screenWidth,
         }}
       />
-      <View
-        style={{
-          marginBottom: Platform.OS == "ios" ? useSafeAreaInsets().bottom : 0,
-          flex: 1,
-        }}
-      >
-        {children}
-      </View>
+      <View>{children}</View>
     </View>
   );
 };

@@ -6,9 +6,6 @@ import {
   screenWidth,
 } from "../../Constants/ConstantsForChatlist";
 import DefaultContainerInHeader from "../../../SemiComponents/DefaultContainerInHeader";
-import { useDispatch } from "react-redux";
-import { addUserForCreateGroupOrChannel, setPhotoForCreateGroupOrChannel } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
-
 interface HeaderForCreateGroupPageProps {
   navigation: any;
 }
@@ -16,10 +13,7 @@ interface HeaderForCreateGroupPageProps {
 const HeaderForCreateGroupPage: React.FC<HeaderForCreateGroupPageProps> = ({
   navigation,
 }) => {
-  const dispatch = useDispatch();
   const pressOnBackButton = useRef(() => {
-    dispatch(addUserForCreateGroupOrChannel([]));
-    dispatch(setPhotoForCreateGroupOrChannel(""));
     navigation.goBack();
   });
 

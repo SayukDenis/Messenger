@@ -1,65 +1,88 @@
 import { View } from 'react-native';
-import React from 'react';
+import React, { Component } from 'react';
 import HeaderContainer from '../../SemiComponents/HeaderContainer';
 import { connect } from 'react-redux';
-import { DialogueHeaderProps } from './Interfaces/IDialogueHeader';
+import { DialogueHeaderProps, DialogueHeaderState } from './Interfaces/IDialogueHeader';
 import RightPartOfHeader from './HelperComponents/Header/RightPartOfHeader';
 import LeftPartOfHeader from './HelperComponents/Header/LeftPartOfHeader';
 import CenterPartOfHeader from './HelperComponents/Header/CenterPartOfHeader';
 import PinnedMessageView from './HelperComponents/Header/PinnedMessageView';
 import styles from './Styles/Header';
 
-const DialogueHeader = ({ counterOfSelectedMessages, navigation, picture, users, author, activityTime, pinnedMessage, selecting, cancelSelection, listOfPinnedMessages, listOfMessages, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, chatType }:DialogueHeaderProps) => {
-  if(selecting && counterOfSelectedMessages <= 0) cancelSelection();
+class Header extends Component<DialogueHeaderProps> {
+  shouldComponentUpdate(nextProps: Readonly<DialogueHeaderProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    if(this.props.selecting !== nextProps.selecting) {
+      return true;
+    } else if(this.props.counterOfSelectedMessages !== nextProps.counterOfSelectedMessages) {
+      return true;
+    } else if(this.props.currentNumOfPinnedMessage !== nextProps.currentNumOfPinnedMessage) {
+      return true;
+    } else if(this.props.pinnedMessage.messageId !== nextProps.pinnedMessage.messageId) {
+      return true;
+    }
 
-  const displayName = users[0]?.name;
-  const countOfPinnedMessages = listOfPinnedMessages.length;
-  const currentNumOfPinnedMessage = listOfPinnedMessages.sort((m1, m2) => m1.messageId! - m2.messageId!).findIndex(m => m.messageId === pinnedMessage?.messageId)+1;
+    return false;
+  }
 
-  return(
-    <View style={{ zIndex: 10 }}>
-      <HeaderContainer>
-        <View style={styles.header}>
-          <LeftPartOfHeader 
-            counterOfSelectedMessages={counterOfSelectedMessages} 
-            selecting={selecting} 
-            navigation={navigation} 
-          />
-          <CenterPartOfHeader 
-            picture={picture} 
-            dialogue={chatType}
-            displayName={displayName} 
-            activityTime={activityTime} 
-            navigation={navigation}
-          />
-          <RightPartOfHeader 
-            selecting={selecting} 
-            cancelSelection={cancelSelection} 
-          />
-        </View>
-      </HeaderContainer>
-      <PinnedMessageView 
-        pinnedMessage={pinnedMessage} 
-        current={currentNumOfPinnedMessage} 
-        total={countOfPinnedMessages} 
-        navigation={navigation} 
-        listOfPinnedMessages={listOfPinnedMessages}
-        listOfMessages={listOfMessages}
-        author={author}
-        messageID={messageID}
-        unpinAllMessagesHandler={unpinAllMessagesHandler}
-        userMessageLastWatched={userMessageLastWatched}
-        onCopyPress={onCopyPress}
-        onUnpinPress={onUnpinPress}
-        onDeletePress={onDeletePress}
-        users={users}
-      />
-    </View>
-  );
+  componentDidUpdate(prevProps: Readonly<DialogueHeaderProps>, prevState: Readonly<DialogueHeaderState>, snapshot?: any): void {
+    if(this.props.selecting !== prevProps.selecting && this.props.selecting && this.props.counterOfSelectedMessages !== prevProps.counterOfSelectedMessages && this.props.counterOfSelectedMessages <= 0) this.props.cancelSelection();
+
+    //console.log('Header updated');
+  }
+
+  render(): React.ReactNode {
+    const { 
+      selecting, 
+      propsForPinnedMessageScreen, 
+      picture, 
+      displayName,
+      chatType, 
+      activityTime, 
+      counterOfSelectedMessages,
+      countOfPinnedMessages, 
+      currentNumOfPinnedMessage,
+      cancelSelection,
+      pinnedMessage,
+      dispatch
+    } = this.props;
+
+    return(
+      <View style={{ zIndex: 10 }}>
+        <HeaderContainer>
+          <View style={styles.header}>
+            <LeftPartOfHeader 
+              selecting={selecting} 
+              navigation={propsForPinnedMessageScreen.navigation} 
+            />
+            <CenterPartOfHeader 
+              picture={picture} 
+              dialogue={chatType}
+              displayName={displayName} 
+              activityTime={activityTime} 
+              navigation={propsForPinnedMessageScreen.navigation}
+              selecting={selecting} 
+              counterOfSelectedMessages={counterOfSelectedMessages} 
+            />
+            <RightPartOfHeader 
+              selecting={selecting} 
+              cancelSelection={cancelSelection} 
+            />
+          </View>
+        </HeaderContainer>
+        <PinnedMessageView 
+          pinnedMessage={pinnedMessage} 
+          current={currentNumOfPinnedMessage} 
+          total={countOfPinnedMessages} 
+          propsForPinnedMessageScreen={propsForPinnedMessageScreen}
+          dispatch={dispatch}
+        />
+      </View>
+    );
+  }
 }
 
 const mapStateToProps = (state:any) => ({
   counterOfSelectedMessages: state.ChatReducer.counterForSelectedMessages.counterOfSelectedMessages,
 });
 
-export default connect(mapStateToProps)(DialogueHeader);
+export default connect(mapStateToProps)(Header);

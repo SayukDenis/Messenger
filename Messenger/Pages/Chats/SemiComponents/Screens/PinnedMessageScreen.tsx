@@ -1,56 +1,18 @@
 import { View, Text, TouchableOpacity, FlatList, Animated } from 'react-native';
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import HeaderBackButton from '../SVG/HeaderBackButton';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_PADDING_VERTICAL, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, height, width } from '../ChatConstants';
+import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, getCustomFontSize, height, width } from '../ChatConstants';
 import MessageItem from '../MessageItem';
-import User from '../../../../dao/Models/User';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import MessageMenu from '../MessageMenu';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import DeleteMessageModal from '../DeleteMessageModal';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
-
-interface NavigationProps {
-  route?: {
-    params: {
-      navigation: any;
-      listOfPinnedMessages: MessageProps[];
-      listOfMessages: MessageProps[];
-      setMessageMenuVisible: {(arg0: Layout, arg1: boolean):void};
-      author: User;
-      users: User[];
-      messageID: number;
-      unpinAllMessagesHandler: () => void;
-      userMessageLastWatched: ILastWatchedMessage;
-      onCopyPress: () => void;
-      onUnpinPress: (message: MessageProps) => void;
-      onDeletePress: (message: MessageProps) => void;
-    }
-  };
-}
-
-interface PinnedMessageScreenProps extends NavigationProps {
-  
-}
-
-interface PinnedMessageScreenState {
-  selecting: boolean;
-  deleteModalVisisble: boolean;
-  messageMenuVisible: boolean;
-  messageID: number;
-  listOfPinnedMessages: MessageProps[];
-  offsetForMessageMenu: Animated.Value;
-}
+import { PinnedMessageScreenProps, PinnedMessageScreenState, coordY } from '../Interfaces/IPinnedMessageScreen';
 
 let coord: Layout;
-export interface coordY {
-  id: number;
-  y: number;
-  height: number;
-}
 let coordsY: coordY[] = [];
 
 class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
@@ -66,7 +28,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   componentDidMount(): void {
     this.setState({ 
       messageID: this.props.route?.params.messageID, 
-      listOfPinnedMessages: this.props.route?.params.listOfPinnedMessages.reverse()
+      listOfPinnedMessages: [...this.props.route?.params.listOfPinnedMessages!].sort((m1, m2) => m2.messageId! - m1.messageId!)
     })
   }
 
@@ -75,12 +37,12 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       return true
     }
 
-
-
     return false;
   }
   shouldComponentUpdate(nextProps: Readonly<PinnedMessageScreenProps>, nextState: Readonly<PinnedMessageScreenState>, nextContext: any): boolean {
     if(!this.checkListOfMessagesEquality(this.state.listOfPinnedMessages, nextState.listOfPinnedMessages)) {
+      return true;
+    } else if(this.state.selecting !== nextState.selecting) {
       return true;
     } else if(this.state.messageMenuVisible !== nextState.messageMenuVisible) {
       return true;
@@ -103,17 +65,15 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     return item.messageId?.toString();
   }
 
-  setCoordsYHandler = (newCoordsY:coordY[]) => {
-    coordsY = [...newCoordsY];
-  }
+  // setCoordsYHandler = (newCoordsY:coordY[]) => {
+  //   coordsY = [...newCoordsY];
+  // }
 
   flatListRef = React.createRef<any>();
   handleMessagePress = async (coordinations:Layout) => {
 
     const HEIGHT_OF_HEADER = heightOfHeader;
-    const HEIGHT_OF_FLATLIST = height * 0.94;
-    const HEIGHT_OF_HEADER_OFFSET = height * 0.02+SOFT_MENU_BAR_HEIGHT;
-    const MESSAGE_MENU_HEIGHT = MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE;
+    const MESSAGE_MENU_HEIGHT = (MESSAGE_BUTTON_HEIGHT * 4) + MESSAGE_TRIANGLE_SIZE;
 
     const mesCoords = coordsY.find(m => m.id === (coordinations.ID || coordinations.message?.messageId!));
     
@@ -134,16 +94,17 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
 
       coordinations.componentPageY += (toValue > 0 ? 0 : toValue ); 
       coordinations.pageY = height - SOFT_MENU_BAR_HEIGHT; 
-    } else if(height - SOFT_MENU_BAR_HEIGHT - coordinations.componentPageY - coordinations. height < MESSAGE_MENU_HEIGHT) {
+    } else if((height - SOFT_MENU_BAR_HEIGHT) - coordinations.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT) {
+      const scrollOffset = MESSAGE_MENU_HEIGHT - ((height - SOFT_MENU_BAR_HEIGHT) - coordinations.componentPageY - mesCoords?.height!);
       this.flatListRef.current.scrollToOffset({ 
-        offset: coordinations.componentPageY - mesCoords?.height! - MESSAGE_MENU_HEIGHT,
+        offset: this.flatListRef.current._listRef._scrollMetrics.offset - scrollOffset, 
         animated: true,
       });
 
       await new Promise(resolve => setTimeout(resolve, 200));
-      
-      coord.componentPageY = height - mesCoords?.height! - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL - MESSAGE_MENU_HEIGHT;
-      coord.pageY = height - SOFT_MENU_BAR_HEIGHT - MESSAGE_PADDING_VERTICAL;
+
+      coordinations.componentPageY = (height - SOFT_MENU_BAR_HEIGHT) - MESSAGE_MENU_HEIGHT - mesCoords?.height!; 
+      coordinations.pageY = (height - SOFT_MENU_BAR_HEIGHT);
     } else if(coordinations.componentPageY < HEIGHT_OF_HEADER) {
       this.flatListRef.current.scrollToOffset({ 
         offset: this.flatListRef.current._listRef._scrollMetrics.offset + (HEIGHT_OF_HEADER - coordinations.componentPageY), 
@@ -176,7 +137,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       coordsY={coordsY}
       author={this.props.route?.params.author!}
       messageID={this.props.route?.params.messageID!}
-      setCoordsY={this.setCoordsYHandler}
+      // setCoordsY={this.setCoordsYHandler}
       selecting={this.state.selecting}
       pinnedMessageScreen
       listOfPinnedMessages={this.props.route?.params.listOfPinnedMessages.map((m) => {
@@ -229,9 +190,11 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   DeleteHandler = () => {
     const { listOfPinnedMessages } = this.state;
 
+    console.log('DeleteHandler in PinnedMessageScreen');
+
     const mes = listOfPinnedMessages.find(m => m.messageId === coord.message?.messageId);
     this.props.route?.params.onUnpinPress(mes!);
-    this.props.route?.params.onDeletePress(mes!);
+    this.props.route?.params.onDeletePress(mes!.messageId!);
     
     const newListOfPinnedMessages = listOfPinnedMessages.filter(m => m.messageId !== coord.message?.messageId);
 
@@ -242,7 +205,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   }
 
   render(): React.ReactNode {
-    const { listOfMessages, author, userMessageLastWatched, onCopyPress } = this.props.route?.params!;
+    const { listOfMessages, author, userMessageLastWatched } = this.props.route?.params!;
     const mes = listOfMessages.find(m => m.messageId==this.state.messageID);
 
     return (
@@ -257,7 +220,6 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
             messages={listOfMessages}
             pinnedMessageScreen
             userMessageLastWatched={userMessageLastWatched}
-            onCopyPress={onCopyPress}
             onPinPress={this.onUnpinPressHandler}
             onDeletePress={this.onDeletePressHandler}
           />
@@ -277,12 +239,12 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
                 >
                   <HeaderBackButton />
                 </TouchableOpacity>
-                <Text style={{ fontSize: 18 }} >Pinned messages</Text>
+                <Text style={{ fontSize: getCustomFontSize(18) }} >Pinned messages</Text>
                 <TouchableOpacity
                   style={{ width: width * 0.15 }}
                   onPress={this.unpinAllHandler}
                 >
-                  <Text style={{ fontSize: 16, color: '#734CA5' }} >Unpin all</Text>
+                  <Text style={{ fontSize: getCustomFontSize(16), color: '#734CA5' }} >Unpin all</Text>
                 </TouchableOpacity>
               </View>
             </View>

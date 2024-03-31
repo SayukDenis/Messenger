@@ -1,47 +1,49 @@
 import { View, Text } from 'react-native';
-import React from 'react';
-import { screenHeight, screenWidth } from '../../../../ChatList/Constants/ConstantsForChatlist';
+import React, { Component } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DEFAULT_CHARS_PER_LINE, FONT_SCALE } from '../../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, getCustomFontSize } from '../../ChatConstants';
 import DialogueMessagesPinnedMessageIcon from '../../SVG/DialogueMessagesPinnedMessageIcon';
-import { MessageProps } from '../../Interfaces/GeneralInterfaces/IMessage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import User from '../../../../../dao/Models/User';
-import ILastWatchedMessage from '../../../../../dao/Models/Chats/ILastWatchedMessage';
 import LineSeparator from '../General/LineSeparator';
 import { styles } from './Styles/PinnedMessageView';
+import { PinnedMessageViewProps } from './Interfaces/IPinnedMessageView';
 
-interface PinnedMessageViewProps { 
-  pinnedMessage: MessageProps;
-  current: number;
-  total: number;
-  navigation: any;
-  listOfPinnedMessages: MessageProps[];
-  listOfMessages: MessageProps[];
-  author: User;
-  messageID: number;
-  unpinAllMessagesHandler: () => void;
-  userMessageLastWatched: ILastWatchedMessage;
-  onCopyPress: () => void;
-  onUnpinPress: (message: MessageProps) => void;
-  onDeletePress: (message: MessageProps) => void;
-  users: User[];
-}
+class PinnedMessageView extends Component<PinnedMessageViewProps> {
 
-const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPinnedMessages, listOfMessages, author, messageID, unpinAllMessagesHandler, userMessageLastWatched, onCopyPress, onUnpinPress, onDeletePress, users }:PinnedMessageViewProps ) => {
-  if(!pinnedMessage?.messageId) return null;
+  shouldComponentUpdate(nextProps: Readonly<PinnedMessageViewProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+    console.log('shouldComponentUpdate total:', this.props.total);
+    if(this.props.pinnedMessage.messageId !== nextProps.pinnedMessage.messageId) {
+      return true;
+    } else if(this.props.pinnedMessage.content !== nextProps.pinnedMessage.content) {
+      return true;
+    } else if(this.props.total !== nextProps.total) {
+      return true;
+    } else if(this.props.current !== nextProps.current) {
+      return true;
+    }
 
-  const dispatch = useDispatch();
+    return false;
+  }
 
-  const scrollToPinedMessage = () => {
+  componentDidUpdate(prevProps: Readonly<PinnedMessageViewProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    console.log('PinnedMessageView updated');
+  }
+  
+  scrollToPinedMessage = () => {
+    const { pinnedMessage, dispatch } = this.props;
     dispatch(setScrollStateForPinnedMessage(true, pinnedMessage?.messageId!));
     dispatch(setAnimationOfBackgroundForScrolledMessage(pinnedMessage?.messageId!));
   }
 
-  return (
-    <View style={styles.mainContainer}>
+  render(): React.ReactNode {
+    const { pinnedMessage, total, current, propsForPinnedMessageScreen } = this.props;
+
+    console.log(total);
+    if(total <= 0) return null;
+
+    return (
+      <View style={styles.mainContainer}>
         <LinearGradient
             colors={["#cf9b95", "#c98bb8", "#c37adb"]}
             locations={[0.25, 0.5, 0.75]}
@@ -51,40 +53,39 @@ const PinnedMessageView = ({ pinnedMessage, current, total, navigation, listOfPi
           />
           <TouchableOpacity 
             activeOpacity={1}
-            onPress={scrollToPinedMessage}
+            onPress={this.scrollToPinedMessage}
             style={styles.container}
           >
-            <Text>Pinned message: {pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.slice(0,DEFAULT_CHARS_PER_LINE*0.55/FONT_SCALE).trim()+'...':pinnedMessage?.content}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: getCustomFontSize(14) }}>Pinned message: </Text>
+              <Text 
+                onLayout={(event) => console.log(event.nativeEvent.layout)} 
+                style={{ fontSize: getCustomFontSize(14), width: 155 }}
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                {`${pinnedMessage?.content?.length>DEFAULT_CHARS_PER_LINE?pinnedMessage?.content.trim()+'...':pinnedMessage?.content}`}
+              </Text>
+            </View>
             <View style={{ flexDirection: 'row' }}>
               { total>1&&
                 <View style={styles.trackCurrentAndTotal}>
-                  <Text>{current}</Text>
+                  <Text style={{ fontSize: getCustomFontSize(14) }}>{current}</Text>
                   <LineSeparator width={1.4} height={'100%'} color='black' marginHorizontal={5} />
-                  <Text>{total}</Text>
+                  <Text style={{ fontSize: getCustomFontSize(14) }}>{total}</Text>
                 </View>
               }
               <TouchableOpacity
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                onPress={() => navigation.navigate('PinnedMessages', {  
-                  navigation, 
-                  listOfPinnedMessages, 
-                  listOfMessages, 
-                  author, 
-                  messageID,
-                  unpinAllMessagesHandler,
-                  userMessageLastWatched,
-                  onCopyPress,
-                  onUnpinPress,
-                  onDeletePress,
-                  users
-                })}
+                onPress={() => propsForPinnedMessageScreen.navigation.navigate('PinnedMessages', propsForPinnedMessageScreen)}
               >
                 <DialogueMessagesPinnedMessageIcon />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
       </View>
-  )
+    );
+  }
 }
 
 export default PinnedMessageView;

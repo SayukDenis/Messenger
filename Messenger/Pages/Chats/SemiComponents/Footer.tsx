@@ -1,149 +1,161 @@
-import { View, TextInput, Animated, Keyboard, KeyboardEvent,  EasingFunction, Easing } from 'react-native';
-import React, { useState, memo, useEffect, useRef } from 'react';
-import styles from './Styles/Footer';
-import ReplyAndEditMenu from './ReplyAndEditMenu';
-import { DialogueFooterProps } from './Interfaces/IDialoueFooter';
-import { LinearGradient } from 'expo-linear-gradient';
-import { connect } from 'react-redux';
-import CopyMessagePopUp from './HelperComponents/Footer/CopyMessagePopUp';
-import { sendMessage } from './HelperComponents/Footer/sendMessageFunc';
-import LeftPartOfFooter from './HelperComponents/Footer/LeftPartOfFooter';
-import RightPartOfFooter from './HelperComponents/Footer/RightPartOfFooter';
-import { SOFT_MENU_BAR_HEIGHT, height } from './ChatConstants';
+import React from "react";
+import { Component, RefObject } from "react";
+import { DialogueFooterProps, DialogueFooterState, EChangeFooterHeight } from "./Interfaces/IDialoueFooter";
+import { Animated, TextInput, View } from "react-native";
+import { DEFAULT_FONT_SIZE, FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, KEYBOARD_HEIGHT, SOFT_MENU_BAR_HEIGHT } from "./ChatConstants";
+import { sendMessage } from "./HelperComponents/Footer/sendMessageFunc";
+import ReplyAndEditMenu from "./HelperComponents/Footer/ReplyAndEditMenu";
+import { LinearGradient } from "expo-linear-gradient";
+import styles from "./Styles/Footer";
+import LeftPartOfFooter from "./HelperComponents/Footer/LeftPartOfFooter";
+import CenterPartOfFooter from "./HelperComponents/Footer/CenterPartOfFooter";
+import RightPartOfFooter from "./HelperComponents/Footer/RightPartOfFooter";
+import { connect } from "react-redux";
 
-const Footer = memo(({messages, setMessages, isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, copyMessagePopUp, isEdit, editMessage, messageID, author, endCopyMessagePopUp}:DialogueFooterProps) => {
+class Footer extends Component<DialogueFooterProps> {
+  state: DialogueFooterState = {
+    text: '',
+    bottomOffset: new Animated.Value(SOFT_MENU_BAR_HEIGHT),
+    dynamicFooterHeight: FOOTER_HEIGHT,
+  }
 
-  const [keyboardHeight, setKeyboardHeight] = useState(new Animated.Value(0));
-  const [keyboardActive, setKeyboardActive] = useState(false);
-  const [copyPopUpTranslate, setCopyPopUpTranslate] = useState(new Animated.Value(0));
+  setText = (newText: string) => {
+    this.setState({ text: newText });
+  }
 
-
-  const [text, setText] = useState('');
-
-  useEffect(() => {
-    if(isEdit) {
-      textInput.current?.focus();
-      setText(editMessage?.content)
-    } else {
-      setText('');
-      if(isReply) textInput.current?.focus();
+  setDynamicFooterHeight = (action: number) => {
+    switch(action) {
+      case EChangeFooterHeight.add:
+        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight + DEFAULT_FONT_SIZE });
+      case EChangeFooterHeight.subtract:
+        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight - DEFAULT_FONT_SIZE });
+      case EChangeFooterHeight.reset:
+        return this.setState({ dynamicFooterHeight: FOOTER_HEIGHT });
     }
-  }, [editMessage, isEdit, isReply]);
-
-  // In the future make animation using 'react-native-keyboard-controller' library
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      (event: KeyboardEvent) => {
-        Animated.timing(keyboardHeight, {
-          toValue: -event.endCoordinates.height,
-          duration: 200,
-          useNativeDriver: false,
-        }).start();
-        setKeyboardActive(true);
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        Animated.timing(keyboardHeight, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: false,
-        }).start();
-        setKeyboardActive(false);
-        if(textInput.current) {
-          textInput.current.blur();
-        }
-      }
-    );
-
-    // Clean up the event listeners when the component is unmounted
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, [keyboardHeight]);
-
-  const durationOfAnimation: number = 200;
-  const easing: EasingFunction = Easing.linear;
-  const copyPopUpPositionY = copyPopUpTranslate.interpolate({
-    inputRange: [0, 1],
-    outputRange: [height * 0.07, 0],
-  });
-  const animateOfCopyPopUp = Animated.timing(copyPopUpTranslate, {
-    toValue: 1, 
-    duration: durationOfAnimation, 
-    easing,
-    useNativeDriver: false,
-  });
-
-  const animate = () => {
-    Animated.sequence([
-      animateOfCopyPopUp,
-      Animated.delay(durationOfAnimation * 5),
-    ]).start(() => {
-      endCopyMessagePopUp();
-    });
   }
 
-  useEffect(() => {
-    if(copyMessagePopUp) {
-      animate();
+  textInput: RefObject<TextInput> = React.createRef();
+
+  shouldComponentUpdate(nextProps: Readonly<DialogueFooterProps>, nextState: Readonly<DialogueFooterState>, nextContext: any): boolean {
+    if(this.props.keyboardActive !== nextProps.keyboardActive) {
+      return true;
+    } else if(this.state.dynamicFooterHeight !== nextState.dynamicFooterHeight) {
+      return true;
+    } else if(this.state.text !== nextState.text) {
+      return true;
+    } else if(this.props.isReply !== nextProps.isReply) {
+      return true;
+    } else if(this.props.isEdit !== nextProps.isEdit) {
+      return true;
+    } else if(this.props.selecting !== nextProps.selecting) {
+      return true;
+    } else if(this.props.messageID !== nextProps.messageID) {
+      return true;
+    }
+
+    return false;
+  }
+
+  componentDidUpdate(prevProps: Readonly<DialogueFooterProps>, prevState: Readonly<DialogueFooterState>, snapshot?: any): void {
+    const { isEdit, isReply, editMessage, keyboardActive, } = this.props;
+
+    if(keyboardActive && keyboardActive !== prevProps.keyboardActive) {
+      Animated.timing(this.state.bottomOffset, {
+        toValue: SOFT_MENU_BAR_HEIGHT + KEYBOARD_HEIGHT,
+        duration: 200,
+        useNativeDriver: false
+      }).start();
+    } else if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) {
+      Animated.timing(this.state.bottomOffset, {
+        toValue: SOFT_MENU_BAR_HEIGHT,
+        duration: 200,
+        useNativeDriver: false
+      }).start();
+    }
+    
+    // Have a little lagging for some reason
+    if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) this.textInput.current?.blur();
+
+    //console.log('Footer #1', !keyboardActive);
+
+    if(isEdit === prevProps.isEdit && isReply === prevProps.isReply) return;
+
+    if (isEdit && editMessage.content) {
+      //console.log('Footer #2', !keyboardActive);
+      this.textInput.current && this.textInput.current.focus();
+      this.setState({ text: editMessage.content });
     } else {
-      setCopyPopUpTranslate(new Animated.Value(0));
-    } 
-  }, [copyMessagePopUp])
-
-  const sendMessageHandler = () => {
-    sendMessage({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author});
+      if(prevProps.isEdit) this.setState({ text: '' });
+      if (isReply) this.textInput.current && this.textInput.current.focus();
+    }
   }
 
-  const textInput = useRef<TextInput>(null);
+  sendMessageHandler = () => {
+    const { messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author} = this.props;
+    const { text } = this.state;
+    const { setText } = this;
+    sendMessage({ text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author });
+  }
 
-  return(
-    <Animated.View style={{ transform: [{ translateY: keyboardHeight }] }}>
-      <CopyMessagePopUp show={copyMessagePopUp} copyPopUpPositionY={copyPopUpPositionY} />
-      <ReplyAndEditMenu 
-        isReply={isReply} 
-        replyMessage={replyMessage} 
-        cancelReplyAndEdit={onSendMessageOrCancelReplyAndEdit} 
-        isEdit={isEdit} 
-        editMessage={editMessage}
-      />
-      <View style={[styles.mainContainer, { bottom: -height*0.06+SOFT_MENU_BAR_HEIGHT, }]} >
-        <View style={styles.gradientContainer}>
-          <LinearGradient
-            colors={["#cf9b95", "#c98bb8", "#c37adb"]}
-            locations={[0.25, 0.5, 0.75]}
-            start={{ x: 1, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.gradient}
-          />
-          <View style={styles.footerContainer}>
-            <View style={styles.footer}>
-              <LeftPartOfFooter />
-              <TextInput 
-                ref={textInput}
-                value={text} 
-                onChangeText={setText} 
-                placeholderTextColor={'rgb(137, 130, 130)'} 
-                style={styles.messageInput} 
-                placeholder='Льоша блядюга)' 
-                onSubmitEditing={sendMessageHandler} 
-              />
-              <RightPartOfFooter 
-                sendMessage={keyboardActive} 
-                sendMessageHandler={sendMessageHandler} 
-                pressGalleryButtonHandler={()=>{}} 
-              />
+  render(): React.ReactNode {
+    const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
+    const { text, dynamicFooterHeight } = this.state;
+    const { textInput, setText, sendMessageHandler, setDynamicFooterHeight } = this;
+
+    return(
+      <Animated.View 
+        style={[styles.wrapperAnimatedContainer, { height: dynamicFooterHeight, bottom: this.state.bottomOffset }]}
+      >
+        <ReplyAndEditMenu 
+          author={author}
+          users={users}
+          isReply={isReply} 
+          replyMessage={replyMessage} 
+          cancelReplyAndEdit={onSendMessageOrCancelReplyAndEdit} 
+          isEdit={isEdit} 
+          editMessage={editMessage}
+        />
+        <View style={[styles.mainContainer, { height: dynamicFooterHeight }]} >
+          <View style={[styles.gradientContainer, { height: dynamicFooterHeight }]}>
+            <LinearGradient
+              colors={["#cf9b95", "#c98bb8", "#c37adb"]}
+              locations={[0.25, 0.5, 0.75]}
+              start={{ x: 1, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={styles.gradient}
+            />
+            <View style={[styles.footerContainer, { height: dynamicFooterHeight - FOOTER_INNER_CONTAINER_GAP }]}>
+              <View style={[styles.footer, { height: dynamicFooterHeight - FOOTER_INNER_CONTAINER_GAP }, selecting&&styles.footerWhileSelecting]}>
+                <LeftPartOfFooter 
+                  selecting={selecting}
+                  deleteSelectedMessagesHandler={deleteSelectedMessages}
+                />
+                <CenterPartOfFooter 
+                  textInput={textInput}
+                  text={text}
+                  setText={setText}
+                  setDynamicFooterHeight={setDynamicFooterHeight}
+                  sendMessageHandler={sendMessageHandler}
+                  selecting={selecting}
+                  height={dynamicFooterHeight - FOOTER_INNER_TEXTINPUT_GAP}
+                />
+                <RightPartOfFooter 
+                  sendMessage={keyboardActive} 
+                  sendMessageHandler={sendMessageHandler} 
+                  pressGalleryButtonHandler={()=>{}} 
+                  selecting={selecting}
+                />
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </Animated.View>
-  );
+      </Animated.View>
+    );
+  }
+}
+
+const mapStateToProps = (state: any) => ({
+  keyboardActive: state.ChatReducer.handleKeyboardAppearing.show
 })
 
-export default connect(null)(Footer);
+export default connect(mapStateToProps)(Footer);

@@ -4,14 +4,13 @@ import { Layout } from "./GeneralInterfaces/ILayout";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 
 
-export interface messageMenuProps {
+export interface MessageMenuProps {
   isVisible: boolean;
   onOverlayPress: () => void;
   coord: Layout;
   messages: MessageProps[];
   onReplyPress?: () => void;
   onEditPress?: () => void;
-  onCopyPress?: () => void;
   onSelectPress?: () => void;
   onPinPress?: (arg0: MessageProps) => void
   isUser: boolean;
@@ -19,4 +18,8 @@ export interface messageMenuProps {
   userMessageLastWatched: ILastWatchedMessage | undefined;
   pinnedMessageScreen: boolean;
   users: User[];
+}
+
+export interface MessageMenuState {
+  
 }

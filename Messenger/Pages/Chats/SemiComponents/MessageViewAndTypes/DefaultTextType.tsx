@@ -8,67 +8,33 @@ import {
   Easing,
   GestureResponderEvent,
 } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import {
+  addSelectedMessage,
   decrementNumberOfSelectedMessages,
   incrementNumberOfSelectedMessages,
+  removeSelectedMessage,
   resetNumberOfSelectedMessages,
+  resetSelectedMessage,
   setAnimationOfBackgroundForScrolledMessage,
-  setScrollStateTappedMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import ReplyIcon from '../SVG/ReplyIcon';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import { heightOfHeader, screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
-import User from '../../../../dao/Models/User';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, DISTANCE_BETWEEN_PRESS_IN_AND_OUT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import { Dispatch } from 'redux';
+import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
 import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
 import { functionalStyles, styles } from './Styles/DefaultTextType';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
+import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
+import { DefaultTextMessageProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
 
-interface DefaultTextMessageNavigationProps {
-  dispatch: Dispatch;
-  navigation: any;
-}
+let size: sizeProps[] = [];
 
-interface DefaultTextMessageProps extends DefaultTextMessageNavigationProps {
-  idForAnimation: number;
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
-  id: number;
-  flatList: React.MutableRefObject<any>;
-  author: User;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-  pinnedMessageScreen: boolean;
-  messages: MessageProps[];
-  listOfPinnedMessages: Array<number>
-}
-
-interface DefaultTextMessageState {
-  animate: boolean;
-  heightOfMessage: number;
-  selected: boolean;
-  message: string;
-}
-
-interface componentPageProps {
-  X: number;
-  Y: number;
-}
-
-interface coordProps {
-  locationX_In: number;
-  locationY_In: number;
-}
-
-let size: any[] = [];
+let tmpUpdateCounter = 0;
 
 class DefaultTextType extends Component<DefaultTextMessageProps> {
   state: DefaultTextMessageState = {
@@ -79,20 +45,30 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   };
 
   resetSelected = () => {
-    this.props.dispatch(resetNumberOfSelectedMessages());
+    const { dispatch } = this.props;
+    dispatch(resetNumberOfSelectedMessages());
+    dispatch(resetSelectedMessage());
     this.setState({ selected: false });
   };
 
   setSelectedCallback = () => {
-    const { dispatch } = this.props;
+    const { dispatch, id } = this.props;
     this.setState({ selected: true });
-    console.log('this state selected', this.state.selected);
     dispatch(incrementNumberOfSelectedMessages());
+    dispatch(addSelectedMessage(id));
   };
 
   onLayout = (event: any) => {
     const { width, height } = event.nativeEvent.layout;
-    size = [...size, { ID: this.props.id, layout: { width, height } }];
+    const idx = size.findIndex(m => m.ID === this.props.id);
+    if(idx >= 0) {
+      if(size[idx].layout.height !== height || size[idx].layout.width !== width) {
+        size[idx].layout.height = height;
+        size[idx].layout.width = width;
+      }
+    } else {
+      size = [...size, { ID: this.props.id, layout: { width, height } }];
+    }
   };
 
   measureHandler = async () => {
@@ -144,8 +120,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
       componentPageY: componentPage.Y,
       pageX: pageX,
       pageY: pageY,
-      width: component.layout.width,
-      height: component.layout.height,
+      width: component!.layout.width,
+      height: component!.layout.height,
       message: this.props.message,
       selectionCallback: this.setSelectedCallback,
       pinned: this.props.listOfPinnedMessages.findIndex(m => m === this.props.message.messageId) >= 0,
@@ -220,6 +196,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
   }
   
   componentDidUpdate(prevProps: DefaultTextMessageProps) {
+    console.log(`DefaultTextType updated\t#${++tmpUpdateCounter}`);
+
     const { animate } = this.state;
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
@@ -237,6 +215,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     // }
   }
 
+  pressInTime: number = 0;
   render() {
     const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
@@ -250,7 +229,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
         horizontal={true}
         alwaysBounceHorizontal={false}
         pagingEnabled
-        scrollEnabled={!pinnedMessageScreen}
+        scrollEnabled={!pinnedMessageScreen&&!selecting}
         //contentOffset={pinnedMessageScreen?{ x: 5, y: 0 }:{ x: 0, y: 0 }}
         bounces={false}
         overScrollMode={'never'}
@@ -275,22 +254,36 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
           style={styles.mainContainer}
           activeOpacity={1}
           onPressIn={(event) => {
+            this.pressInTime = (new Date()).getTime();
+            //console.log('pressInTime: ', this.pressInTime);
+
             const { locationX, locationY } = event.nativeEvent;
             this.pressCoordinations = { locationX_In: locationX, locationY_In: locationY };
           }}
-          onPressOut={async (event) => {
+          onPressOut={(event: GestureResponderEvent) => {
+            const pressOutTime = (new Date()).getTime();
+            //console.log('pressOutTime:', pressOutTime);
+            //console.log('Differecne in time:', pressOutTime - this.pressInTime);
+
+            //console.log('DefaultTextType:', this.props.id, this.props.message.messageId);
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
+            const { dispatch, setMessageMenuVisible, id } = this.props;
 
-            if (selecting && Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
-              this.props.dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+            //console.log('\npressIn  coords:', locationX_In, locationY_In, '\npressOut coords:', locationX, locationY);
+
+            if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
+              dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
+              dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
               this.setState({ selected: !selected });
               return;
             }
 
-            if (Math.abs(locationX - locationX_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT && Math.abs(locationY - locationY_In) < DISTANCE_BETWEEN_PRESS_IN_AND_OUT) {
-              await this.handlePress(event).then((layout) => {
-                this.props.setMessageMenuVisible(layout, true);
+
+
+            if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
+              this.handlePress(event).then((layout) => {
+                setMessageMenuVisible(layout, true);
               });
             }
           }}
@@ -310,7 +303,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                 style={functionalStyles.messageContainer(isUser, message.content.length)}
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
-                <Text style={{ fontSize: DEFAULT_FONT_SIZE }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
