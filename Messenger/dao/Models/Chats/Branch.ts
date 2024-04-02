@@ -1,9 +1,10 @@
 import Chat from './Chat';
-import { Column, Entity, ManyToOne, Tree, TreeChildren, TreeParent } from 'typeorm';
+import { ChildEntity, Column, Entity, ManyToOne, OneToMany, Tree, TreeChildren, TreeParent } from 'typeorm';
 import MainChat from './MainChat';
+import Message from '../Message';
+import ILastWatchedMessage from './ILastWatchedMessage';
 
 @Entity()
-@Tree("closure-table")
 export default class Branch extends Chat {
     constructor(title: string) {
         super();
@@ -24,4 +25,25 @@ export default class Branch extends Chat {
 
     @ManyToOne(() => MainChat, (chat) => chat.branches, { onDelete: 'CASCADE' })
     mainChat!: MainChat
+
+    @OneToMany(() => Message, (message) => message.chat, {
+        eager: true,
+        cascade: true
+    })
+    messages: Array<Message>;
+
+    @OneToMany(() => Message, (message) => message.chatPinned, {
+        eager: true,
+        cascade: true
+    })
+    pinnedMessage: Array<Message>;
+
+    @OneToMany(() => Message, (message) => message.chatPinnedForAll, {
+        eager: true,
+        cascade: true,
+    })
+    pinnedMessageForAll: Array<Message>;
+
+    @Column({ type: 'simple-json', nullable: true })
+    lastWatchedMessage: Array<ILastWatchedMessage>;
 };

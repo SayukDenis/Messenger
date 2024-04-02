@@ -5,35 +5,45 @@ package expo.modules.font
 import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
+
+import expo.modules.core.ExportedModule
+import expo.modules.core.ModuleRegistry
+import expo.modules.core.ModuleRegistryDelegate
+import expo.modules.core.interfaces.ExpoMethod
+import expo.modules.core.Promise
+
 import expo.modules.interfaces.font.FontManagerInterface
-import expo.modules.kotlin.exception.CodedException
-import expo.modules.kotlin.exception.Exceptions
-import expo.modules.kotlin.modules.Module
-import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.interfaces.constants.ConstantsInterface
+
 import java.io.File
+import java.lang.Exception
 
 private const val ASSET_SCHEME = "asset://"
+private const val EXPORTED_NAME = "ExpoFontLoader"
 
-private class FontManagerInterfaceNotFoundException :
-  CodedException("FontManagerInterface not found")
+class FontLoaderModule(context: Context) : ExportedModule(context) {
+  private val moduleRegistryDelegate: ModuleRegistryDelegate = ModuleRegistryDelegate()
 
-private class FileNotFoundException(uri: String) :
-  CodedException("File '$uri' doesn't exist")
+  private inline fun <reified T> moduleRegistry() = moduleRegistryDelegate.getFromModuleRegistry<T>()
 
-open class FontLoaderModule : Module() {
-  private val context: Context
-    get() = appContext.reactContext ?: throw Exceptions.ReactContextLost()
+  override fun onCreate(moduleRegistry: ModuleRegistry) {
+    moduleRegistryDelegate.onCreate(moduleRegistry)
+  }
 
-  @Suppress("MemberVisibilityCanBePrivate")
-  open val prefix = ""
+  override fun getName(): String {
+    return EXPORTED_NAME
+  }
 
-  override fun definition() = ModuleDefinition {
-    Name("ExpoFontLoader")
-
-    Constants("customNativeFonts" to queryCustomNativeFonts())
-
-    AsyncFunction("loadAsync") { fontFamilyName: String, localUri: String ->
-      val context = appContext.reactContext ?: throw Exceptions.ReactContextLost()
+  @ExpoMethod
+  fun loadAsync(fontFamilyName: String, localUri: String, promise: Promise) {
+    try {
+      // TODO: remove Expo references
+      // https://github.com/expo/expo/pull/4652#discussion_r296630843
+      val prefix = if (isScoped) {
+        "ExpoFont-"
+      } else {
+        ""
+      }
 
       // TODO(nikki): make sure path is in experience's scope
       val typeface: Typeface = if (localUri.startsWith(ASSET_SCHEME)) {
@@ -42,33 +52,27 @@ open class FontLoaderModule : Module() {
           localUri.substring(ASSET_SCHEME.length + 1)
         )
       } else {
-        val file = Uri.parse(localUri).path?.let { File(it) }
-          ?: throw FileNotFoundException(localUri)
-
-        Typeface.createFromFile(file)
+        Typeface.createFromFile(File(Uri.parse(localUri).path))
       }
 
-      val fontManager = appContext.legacyModule<FontManagerInterface>()
-        ?: throw FontManagerInterfaceNotFoundException()
+      val fontManager: FontManagerInterface? by moduleRegistry()
+      if (fontManager == null) {
+        promise.reject("E_NO_FONT_MANAGER", "There is no FontManager in module registry. Are you sure all the dependencies of expo-font are installed and linked?")
+        return
+      }
 
-      fontManager.setTypeface(prefix + fontFamilyName, Typeface.NORMAL, typeface)
+      fontManager!!.setTypeface(prefix + fontFamilyName, Typeface.NORMAL, typeface)
+      promise.resolve(null)
+    } catch (e: Exception) {
+      promise.reject("E_UNEXPECTED", "Font.loadAsync unexpected exception: " + e.message, e)
     }
   }
 
-  /**
-   * Queries custom native font names from the assets.
-   * Alignment with React Native's implementation at:
-   * https://github.com/facebook/react-native/blob/363ee484b/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/common/assets/ReactFontManager.java#L146-L161
-   */
-  private fun queryCustomNativeFonts(): List<String> {
-    val assetManager = context.assets
-    val fontFileRegex = Regex("^(.+?)(_bold|_italic|_bold_italic)?\\.(ttf|otf)$")
-
-    return assetManager.list("fonts/")
-      ?.mapNotNull { fileName ->
-        fontFileRegex.find(fileName)?.groupValues?.get(1)
-      }
-      ?.filter { it.isNotBlank() }
-      .orEmpty()
-  }
+  // If there's no constants module, or app ownership isn't "expo", we're not in Expo Client.
+  private val isScoped: Boolean
+    get() {
+      val constantsModule: ConstantsInterface? by moduleRegistry()
+      // If there's no constants module, or app ownership isn't "expo", we're not in Expo Client.
+      return constantsModule != null && "expo" == constantsModule!!.appOwnership
+    }
 }
