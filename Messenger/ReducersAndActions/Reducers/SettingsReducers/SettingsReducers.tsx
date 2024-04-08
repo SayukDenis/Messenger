@@ -28,24 +28,74 @@ const SetVisibleTextInput ={
 
 const inisialStateExeptionForNotificationPrivateChats ={
   listOfExptionsForPrivateChats:[],
-  contacts :  [
-    "Андрій", "Богдан", "Василь", "Григорій", "Дмитро",
-    "Євген", "Зеновій", "Ігор", "Кирило", "Леонід",
-    "Максим", "Назар", "Олександр", "Петро", "Роман",
-    "Сергій", "Тарас", "Устим", "Федір", "Христина"],
+  contacts : [
+    { name: "Andrew", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Bogdan", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Vasyl", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Gregory", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Dmytro", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Eugene", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Zenoviy", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Igor", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Kyrylo", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Leonid", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Maxim", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Nazar", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Alexander", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Petro", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Roman", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Sergiy", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Taras", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Ustym", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Fedor", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: "Christina", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
+],
   listOfExptionsForGroups:[],
-  groups : [
-    'The Beatles','Queen','Led Zeppelin','Pink Floyd','The Rolling Stones','U2','Nirvana','Metallica','AC/DC',
-    'Radiohead','The Eagles','Fleetwood Mac','Guns N\' Roses','The Who','Coldplay','Pearl Jam','Red Hot Chili Peppers',
-    'Linkin Park','The Doors','Oasis',
-  ],
+   groups : [
+    { name: 'The Beatles', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Queen', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Led Zeppelin', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Pink Floyd', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'The Rolling Stones', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'U2', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Nirvana', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Metallica', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'AC/DC', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Radiohead', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'The Eagles', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Fleetwood Mac', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Guns N\' Roses', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'The Who', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Coldplay', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Pearl Jam', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Red Hot Chili Peppers', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Linkin Park', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'The Doors', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Oasis', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
+],
   listOfExptionsForChannels:[],
-   channelNames : [
-    'Discovery Channel','National Geographic','CNN','BBC News','ESPN',
-    'HBO','MTV','Cartoon Network','History Channel','Disney Channel',
-    'Food Network','Netflix','VH1','Animal Planet','TLC','CNBC','Comedy Central',
-    'Travel Channel','Science Channel','HGTV',
-  ] 
+  channelNames : [
+    { name: 'Discovery Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'National Geographic', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'CNN', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'BBC News', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'ESPN', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'HBO', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'MTV', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Cartoon Network', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'History Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Disney Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Food Network', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Netflix', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'VH1', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Animal Planet', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'TLC', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'CNBC', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Comedy Central', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Travel Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'Science Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+    { name: 'HGTV', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
+]
 }
 
 
@@ -165,23 +215,41 @@ const SetVisibleTextInputForComp= (state = SetVisibleTextInput, action:any) => {
 const AddExeptionsNotification = (state = inisialStateExeptionForNotificationPrivateChats, action:any) => {
   switch (action.type) {
     case  'ADD_NEW_EXPTIONS_FOR_PRIVATECHATS_NOTIFI':
+      console.log(JSON.stringify(action.payload.linkOfPhoto) +" "+ 123);
       return {
         ...state,
-        listOfExptionsForPrivateChats: [...state.listOfExptionsForPrivateChats, action.payload],
+        listOfExptionsForPrivateChats: [...state.listOfExptionsForPrivateChats, {name: action.payload.name , linkOfPhoto : action.payload.linkOfPhoto}],
       };
     case  'REMOVE_ALL_EXEPTIONS_FOR_PRIVATESCATS_NOTIFI':
       return {
           ...state,
           listOfExptionsForPrivateChats: [],
-          contacts :  [
-            "Андрій", "Богдан", "Василь", "Григорій", "Дмитро",
-            "Євген", "Зеновій", "Ігор", "Кирило", "Леонід",
-            "Максим", "Назар", "Олександр", "Петро", "Роман",
-            "Сергій", "Тарас", "Устим", "Федір", "Христина"],
+          contacts : [
+            { name: "Andrew", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Bogdan", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Vasyl", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Gregory", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Dmytro", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Eugene", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Zenoviy", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Igor", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Kyrylo", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Leonid", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Maxim", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Nazar", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Alexander", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Petro", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Roman", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Sergiy", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Taras", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Ustym", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Fedor", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: "Christina", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
+        ],
       };
     case  'REMOVE_USER_AFTER_ADD':
       const userToRemove = action.payload;
-      const updatedList = state.contacts.filter(userprofile => userprofile !== userToRemove);
+      const updatedList = state.contacts.filter(userprofile => userprofile.name !== userToRemove);
       return {
           ...state,
           contacts: updatedList,
@@ -189,21 +257,38 @@ const AddExeptionsNotification = (state = inisialStateExeptionForNotificationPri
     case  'ADD_NEW_EXPTIONS_FOR_GROUPCHATS_NOTIFI':
       return {
         ...state,
-        listOfExptionsForGroups: [...state.listOfExptionsForGroups, action.payload],
+        listOfExptionsForGroups: [...state.listOfExptionsForGroups, {name: action.payload.name , linkOfPhoto : action.payload.linkOfPhoto}],
       };
     case  'REMOVE_ALL_EXEPTIONS_FOR_GROUPCHAT_NOTIFI':
       return {
           ...state,
           listOfExptionsForGroups: [],
-          groups : [
-            'The Beatles','Queen','Led Zeppelin','Pink Floyd','The Rolling Stones','U2','Nirvana','Metallica','AC/DC',
-            'Radiohead','The Eagles','Fleetwood Mac','Guns N\' Roses','The Who','Coldplay','Pearl Jam','Red Hot Chili Peppers',
-            'Linkin Park','The Doors','Oasis',
-          ] 
+           groups :[
+            { name: 'The Beatles', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Queen', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Led Zeppelin', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Pink Floyd', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'The Rolling Stones', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'U2', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Nirvana', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Metallica', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'AC/DC', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Radiohead', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'The Eagles', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Fleetwood Mac', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Guns N\' Roses', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'The Who', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Coldplay', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Pearl Jam', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Red Hot Chili Peppers', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Linkin Park', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'The Doors', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Oasis', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
+        ]
       };
     case  'REMOVE_GROUP_AFTER_ADD':
       const groupToRemove = action.payload;
-      const updatedGroupList = state.groups.filter(groupProfile => groupProfile !== groupToRemove);
+      const updatedGroupList = state.groups.filter(groupProfile => groupProfile.name !== groupToRemove);
       return {
           ...state,
           groups: updatedGroupList,
@@ -211,22 +296,38 @@ const AddExeptionsNotification = (state = inisialStateExeptionForNotificationPri
     case  'ADD_NEW_EXPTIONS_FOR_CHANNELS_NOTIFI':
         return {
           ...state,
-          listOfExptionsForChannels: [...state.listOfExptionsForChannels, action.payload],
+          listOfExptionsForChannels: [...state.listOfExptionsForChannels, {name: action.payload.name,linkOfPhoto:action.payload.linkOfPhoto}],
         };
     case  'REMOVE_ALL_EXEPTIONS_FOR_CHANNEL_NOTIFI':
       return {
           ...state,
           listOfExptionsForChannels: [],
           channelNames : [
-            'Discovery Channel','National Geographic','CNN','BBC News','ESPN',
-            'HBO','MTV','Cartoon Network','History Channel','Disney Channel',
-            'Food Network','Netflix','VH1','Animal Planet','TLC','CNBC','Comedy Central',
-            'Travel Channel','Science Channel','HGTV',
-          ] 
+            { name: 'Discovery Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'National Geographic', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'CNN', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'BBC News', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'ESPN', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'HBO', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'MTV', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Cartoon Network', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'History Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Disney Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Food Network', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Netflix', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'VH1', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Animal Planet', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'TLC', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'CNBC', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Comedy Central', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Travel Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'Science Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
+            { name: 'HGTV', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
+        ]
       };
       case  'REMOVE_CHANNEL_AFTER_ADD':
         const channelToRemove = action.payload;
-        const updatedChannelList = state.groups.filter(channelProfile => channelProfile !== channelToRemove);
+        const updatedChannelList = state.groups.filter(channelProfile => channelProfile.name !== channelToRemove);
         return {
             ...state,
             channelNames: updatedChannelList,

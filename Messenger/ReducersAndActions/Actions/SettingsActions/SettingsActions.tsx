@@ -22,9 +22,9 @@ export const SetFalseStateForIsVisible = (startState:boolean) => ({
     payload:startState
 });
 
-export const AddNotifiExeptionsForPrivateChats =(userName:any)=>({
+export const AddNotifiExeptionsForPrivateChats =(userProfile:string , linkPhoto: string)=>({
     type:"ADD_NEW_EXPTIONS_FOR_PRIVATECHATS_NOTIFI",
-    payload: userName,
+    payload: {name : userProfile, linkOfPhoto:linkPhoto},
 })
 export const RemoveAllNotificationForPrivatesChats =()=>({
     type:"REMOVE_ALL_EXEPTIONS_FOR_PRIVATESCATS_NOTIFI",
@@ -35,9 +35,9 @@ export const RemoveUserAfterAdd =(userToRemove:string)=>({
     payload: userToRemove,
 })
 
-export const AddNotifiExeptionsForGroupsChats = (groupName:string)=>({
+export const AddNotifiExeptionsForGroupsChats = (groupName:string,linkPhoto: string)=>({
     type:"ADD_NEW_EXPTIONS_FOR_GROUPCHATS_NOTIFI",
-    payload:groupName,
+    payload:{name:groupName, linkOfPhoto:linkPhoto},
 })
 
 export const RemoveAllNotificationForGroupsChats = ()=>({
@@ -49,9 +49,9 @@ export const RemoveGroupAfterAdd =(groupToRemove:string)=>({
     payload: groupToRemove,
 })
 
-export const AddNotifiExeptionsForChannels =(channelName:string)=>({
+export const AddNotifiExeptionsForChannels =(channelName:string,linkPhoto: string)=>({
     type:"ADD_NEW_EXPTIONS_FOR_CHANNELS_NOTIFI",
-    payload:channelName,
+    payload:{name:channelName,linkOfPhoto:linkPhoto},
 })
 
 export const RemoveAllNotificationForChannels = ()=>({

@@ -12,11 +12,16 @@ import { RemoveGroupAfterAdd } from "../../../../../ReducersAndActions/Actions/S
 import { AddNotifiExeptionsForChannels } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 import { RemoveChannelAfterAdd } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 
+interface ListNotificationEXeptions{ 
+    name: string,
+    link: string
+}
+
 const AddExeptionsCenter: React.FC<any> = ({ navigation , route })=>{
 
     const NameOFPage =route.params.NameOfPage;
     console.log(NameOFPage)
-    let ListToaddToExeptions : string[];
+    let ListToaddToExeptions : ListNotificationEXeptions[];
     if(NameOFPage == "Privates Chats"){
         ListToaddToExeptions=useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.contacts)
     }else if(NameOFPage == "Group chats"){
@@ -29,17 +34,17 @@ const AddExeptionsCenter: React.FC<any> = ({ navigation , route })=>{
         dispatch(SetFalseStateForIsVisible(false));
     },[])
     
-    const AddExptionsFunc = (userName:string)=>{
+    const AddExptionsFunc = (userName:string , linkOnPhoto: string)=>{
         if(NameOFPage == "Privates Chats"){
-            dispatch(AddNotifiExeptionsForPrivateChats(userName));
+            dispatch(AddNotifiExeptionsForPrivateChats(userName,linkOnPhoto));
             dispatch(RemoveUserAfterAdd(userName))
             navigation.goBack();
         }else if(NameOFPage == "Group chats"){
-            dispatch(AddNotifiExeptionsForGroupsChats(userName));
+            dispatch(AddNotifiExeptionsForGroupsChats(userName,linkOnPhoto));
             dispatch(RemoveGroupAfterAdd(userName))
             navigation.goBack();
         }else{
-            dispatch(AddNotifiExeptionsForChannels(userName));
+            dispatch(AddNotifiExeptionsForChannels(userName,linkOnPhoto));
             dispatch(RemoveChannelAfterAdd(userName)) 
             navigation.goBack();
         }
@@ -53,11 +58,11 @@ const AddExeptionsCenter: React.FC<any> = ({ navigation , route })=>{
                     <TextInput style = {StyleAddExeptionsCenter.StyleInputText} placeholder="Search in chat" placeholderTextColor="#888282"/>
                 </View>
             )}
-            {ListToaddToExeptions.map((name, index) => (
-                <TouchableOpacity onPress={()=>AddExptionsFunc(name)} style = {StyleAddExeptionsCenter.buttonContainer}>
+            {ListToaddToExeptions.map((el, index) => (
+                <TouchableOpacity onPress={()=>AddExptionsFunc(el.name, el.link)} style = {StyleAddExeptionsCenter.buttonContainer}>
                     <View style = {StyleAddExeptionsCenter.usersInfocontainer}>
-                        <Image style={StyleAddExeptionsCenter.usersAvatarStyle}  source={{uri:'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1'}}></Image>
-                        <Text style = {StyleAddExeptionsCenter.usersNameTextStyle} key = {index} >{name}</Text>
+                        <Image style={StyleAddExeptionsCenter.usersAvatarStyle}  source={{uri:el.link}}></Image>
+                        <Text style = {StyleAddExeptionsCenter.usersNameTextStyle} key = {index} >{el.name}</Text>
                     </View>
                     <BackGroundColorForComponents width={screenWidth} height={screenHeight*0.06}/>
                 </TouchableOpacity>

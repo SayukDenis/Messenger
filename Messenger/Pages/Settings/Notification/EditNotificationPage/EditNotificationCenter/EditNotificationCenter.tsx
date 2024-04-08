@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { View, TouchableOpacity, Text, Modal } from "react-native";
+import { View, TouchableOpacity, Text, Modal, Image } from "react-native";
 import StyleEditNotificationCenter from "./StyleEditNotificationCenter";
 import SwitchButtonContainer from "../../MainNotifivationPage/NotificationCenter/SwitchButtonContainer/SwitchButtonContainer";
 import AddExeptions from "../../../ChatFolderPage/AddFolderPage/AddFolderCenter/ComponentsForAddFolderCenter/AddExeptions";
@@ -12,6 +12,11 @@ import DeleteButtonSvg from "./DeleteButtonSVG/DeleteButtinSVG";
 import { RemoveAllNotificationForGroupsChats } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 import { RemoveAllNotificationForChannels } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 import  StyleLogOutModalWindow from "..//..//..//MainSettingPage//settingsPage//Center//LogoutModalWindow//LogoutModalWindowStyle."
+
+interface UserProfileProps {
+    name: string,
+    linkOfPhoto:string
+}
 
 const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
 
@@ -44,13 +49,14 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
        }
     }
     
-    let listOfExeptionsForPrivatesChats : string[] ;
+    let listOfExeptionsForPrivatesChats : UserProfileProps[] ;
     if(NameOfPage == "Privates Chats" ){
         listOfExeptionsForPrivatesChats =useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForPrivateChats)
-    }else if (NameOfPage == "Group chats"  ){
+    }else if (NameOfPage == "Group chats"){
         listOfExeptionsForPrivatesChats=useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForGroups)
     }else {
         listOfExeptionsForPrivatesChats=useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForChannels)
+        console.log(JSON.stringify(listOfExeptionsForPrivatesChats))
     }
     return(
         <View>
@@ -64,7 +70,7 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
                 ))}
             </View>
             <View style = {StyleEditNotificationCenter.ExeptionsTextContainer}>
-                    <Text style = {StyleEditNotificationCenter.ExeptionsStyleText}>Exceptions</Text>
+                <Text style = {StyleEditNotificationCenter.ExeptionsStyleText}>Exceptions</Text>
             </View>
             {listOfExeptionsForPrivatesChats.length > 0 && (
                 <TouchableOpacity onPress={() => navigation.navigate("AddExeptionsNotifiPage", { NameOfPage: NameOfPage })}  style = {StyleEditNotificationCenter.addNotifivationButton} >
@@ -76,9 +82,12 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
                 </TouchableOpacity>
             )}
             {listOfExeptionsForPrivatesChats.length > 0 ? (
-                listOfExeptionsForPrivatesChats.map((item: string, index) => (
+                listOfExeptionsForPrivatesChats.map((item: any, index) => (
                     <View style = {StyleEditNotificationCenter.userExeptionsButtons} key={index}>
-                        <Text>{item}</Text>
+                        <View style = {{flexDirection:'row', alignItems:'center'}}>
+                             <Image style ={{width:screenHeight*0.042, height:screenHeight*0.042, borderRadius:1000000}}   source={{uri:item.linkOfPhoto}}></Image>
+                            <Text style = {{marginLeft:"2%"}}>{item.name}</Text>
+                        </View>
                         <BackGroundColorForComponents width={screenWidth*0.94} height={screenHeight*0.07}></BackGroundColorForComponents>
                     </View>
                 ))
@@ -90,7 +99,7 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
             {listOfExeptionsForPrivatesChats.length > 0 && (
                 <View>
                     <TouchableOpacity 
-                    onPress={toggleModal }
+                    onPress={toggleModal}
                     style={StyleEditNotificationCenter.DeleteAllexeptionButton}>
                         <View style ={{height:'100%',flexDirection:'row',alignItems:'center',paddingLeft:'3%'}}>
                             <DeleteButtonSvg/>
