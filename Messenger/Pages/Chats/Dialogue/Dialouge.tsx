@@ -18,6 +18,7 @@ import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeC
 import { DialogueProps, DialogueState } from './IDialogue';
 import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
 import EventEmitter from 'events';
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
 let coord: Layout;
 let author: User;
@@ -58,7 +59,21 @@ class Dialogue extends Component<DialogueProps> {
     messageIdForReplyAndEdit: -1
   }
 
-  componentDidMount(): void {
+  _hubConnection = new HubConnectionBuilder()
+                  .withUrl("http://192.168.0.108:5151/message")
+                  .build();
+
+  async componentDidMount(): Promise<void> {
+    if (this._hubConnection && (this._hubConnection as any).connection && (this._hubConnection as any).connection.baseUrl) {
+      console.log("Connected URL:", (this._hubConnection as any).connection.baseUrl);
+    } else {
+      console.log("HubConnection is not initialized or does not have a base URL.");
+    }
+
+    await this._hubConnection.start()
+            .then(() => console.log('Connected to SignalR'))
+            .catch(error => console.error('Error while connecting to SignalR', error)); 
+
     this.setState({ 
       listOfMessages: dialogue.messages.reverse(),
       author: dialogue.users[0],
@@ -152,6 +167,14 @@ class Dialogue extends Component<DialogueProps> {
   setMessages = (mes:MessageProps) => {
     if(mes.messageId) {
       console.log('send message');
+      try {
+        this._hubConnection.invoke("SendMessage", mes.content)
+                .then(response => console.log('SignalR response -', response))
+                .catch(e => console.error(e));
+      } catch (e) {
+        console.log(e);
+      }
+
       this.setState({ listOfMessages: [mes, ...this.state.listOfMessages] });
     } else{
       const m = this.state.listOfMessages.find(m => m.messageId === this.state.messageID);
