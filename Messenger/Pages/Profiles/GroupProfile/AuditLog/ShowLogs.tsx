@@ -11,7 +11,7 @@ import {
 import { styles } from "../EditGroup/ProfileGroupStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuditLogHead } from "./AuditLogHead";
-import { AuditLog } from "../../SemiComponents/DBUser";
+import { AuditLog } from "../../SemiComponents/DatabaseSimulation/DBUser";
 
 interface ShowLogsProps {}
 

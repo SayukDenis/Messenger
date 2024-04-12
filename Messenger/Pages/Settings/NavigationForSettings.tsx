@@ -13,7 +13,10 @@ import AddFolderPage from "./ChatFolderPage/AddFolderPage/AddFolderPage";
 import Notification from "./Notification/MainNotifivationPage/Notification";
 import LanguagePage from "./LanguagePage/LanguagePage";
 import Look from "../Look/Look";
+import EditNotificationPage from "./Notification/EditNotificationPage/EditNotificationPage";
 import { Stack } from "../../Navigation/Navigation";
+import AddExeptionsNotifiPage from "./Notification/AddExeptionsNotifPage/AddExeptionsNotifiPage";
+import AddNewChatToFolder from "./ChatFolderPage/AddNewChatToFolder.tsx/AddNewChatToFolder";
 
  export const NavigationForSettings = () => {
   return (
@@ -27,7 +30,7 @@ import { Stack } from "../../Navigation/Navigation";
         <Stack.Screen name="Settings" component={Settingspage} />
         <Stack.Screen name="Saved message" component={SavedmessagePage} />
         <Stack.Screen name="Edit page" component={EditPageNavigator} />
-        <Stack.Screen name="Notification" component={Notification} />
+        <Stack.Screen name="Notification" component={EditNotificationPageNavigator} />
         <Stack.Screen name="Question page" component={QuestionPage} />
         <Stack.Screen name="Language" component={LanguagePage} />
         <Stack.Screen name="Look" component={Look} />
@@ -81,8 +84,24 @@ export const ChatFolderPageNAvigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Chatfolders" component={ChatFolderPage} />
       <Stack.Screen name="AddFolderPage" component={AddFolderPage} />
+      <Stack.Screen name="Chatfolders" component={ChatFolderPage} />
+      <Stack.Screen name="AddNewChatToFolder" component={AddNewChatToFolder} />
+    </Stack.Navigator>
+  );
+};
+
+export const EditNotificationPageNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="NotificationPage"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="NotificationPage" component={Notification} />
+      <Stack.Screen name="EditNotification" component={EditNotificationPage} />
+      <Stack.Screen name="AddExeptionsNotifiPage" component={AddExeptionsNotifiPage} />
     </Stack.Navigator>
   );
 };

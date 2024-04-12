@@ -9,6 +9,9 @@
     "strict": true,
     "module": "esnext",
     "jsx": "react",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
   },
   "paths": {
     "expo": [

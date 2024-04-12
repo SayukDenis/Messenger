@@ -1,39 +1,37 @@
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
 import Message from '../Message';
 import Model from '../Model';
-import Branch from './Branch';
+import SelfProfile from '../SelfProfile';
 import ILastWatchedMessage from './ILastWatchedMessage';
 
+@Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export default class Chat extends Model {
-    constructor(linkToPhoto?: string, messages?: Array<Message>, branches?: Array<Branch>,
-        pinnedMessage?: Array<Message>, pinnedMessageForAll?: Array<Message>,
-        lastWatchedMessage?: Array<ILastWatchedMessage>) {
-        super();
 
-        this.linkToPhoto = linkToPhoto ;
-        this.messages = messages ?? new Array;
-        this.branches = branches ?? new Array;
-        this.pinnedMessage = pinnedMessage ?? new Array;
-        this.pinnedMessageForAll = pinnedMessageForAll ?? new Array;
-        this.lastWatchedMessage = lastWatchedMessage ?? new Array;
-    }
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column('text', { nullable: true })
     linkToPhoto?: string;
+
+    @OneToMany(() => Message, (message) => message.chat, {
+        eager: true,
+        cascade: true
+    })
     messages: Array<Message>;
-    branches: Array<Branch>;
+
+    @OneToMany(() => Message, (message) => message.chatPinned, {
+        eager: true,
+        cascade: true
+    })
     pinnedMessage: Array<Message>;
+
+    @OneToMany(() => Message, (message) => message.chatPinnedForAll, {
+        eager: true,
+        cascade: true,
+    })
     pinnedMessageForAll: Array<Message>;
-    //last watched message of each User
+
+    @Column({ type: 'simple-json', nullable: true })
     lastWatchedMessage: Array<ILastWatchedMessage>;
-    //schema
-    static schema = {
-        name: 'chats',
-        properties: {
-            linkToPhoto: 'text?',
-            messages: { type: 'list', objectType: Message },
-            branches: { type: 'list', objectType: Branch },
-            pinnedMessage: { type: 'list', objectType: Message },
-            pinnedMessageForAll: { type: 'list', objectType: Message },
-            lastWatchedMessage: { type: 'list', objectType: {} as ILastWatchedMessage },
-        },
-        embedded: true,
-    }
 };

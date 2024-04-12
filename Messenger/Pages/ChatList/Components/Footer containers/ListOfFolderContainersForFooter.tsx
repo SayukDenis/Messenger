@@ -1,6 +1,5 @@
-// ListOfFolderContainersForFooter.tsx
 import React, { Ref } from "react";
-import {  ScrollView} from "react-native";
+import { ScrollView } from "react-native";
 import FolderIndicator from "./FolderIndicator";
 import { connect } from "react-redux";
 import ListOfFoldersButtons from "./ListOfFoldersButtons";

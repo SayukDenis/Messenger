@@ -1,7 +1,7 @@
 // Oleksii Kovalenko telegram - @traewe
 
 import { combineReducers } from "redux";
-import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DBUser";
+import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DatabaseSimulation/DBUser";
 
 const selectedPhotosAndVideosReducer = (state = [], action) => {
   switch (action.type) {
@@ -30,9 +30,9 @@ const isElseFeaturesVisibleReducer = (state = false, action) => {
   }
 };
 
-const isDeleteAlbumPressedReducer = (state = false, action) => {
+const removalApprovalTextReducer = (state = "", action) => {
   switch (action.type) {
-    case "SET_IS_DELETE_ALBUM_PRESSED":
+    case "SET_REMOVAL_APPROVAL_TEXT":
       return action.payload;
     default:
       return state;
@@ -66,34 +66,14 @@ const isPhotoSelectionVisibleReducer = (state = false, action) => {
   }
 };
 
-const isDeleteAllPhotosPressedReducer = (state = false, action) => {
-  switch (action.type) {
-    case "SET_IS_DELETE_ALL_PHOTOS_PRESSED":
-      return action.payload;
-    default:
-      return state;
-  }
-};
-
-const isDeleteSelectedPhotosPressedReducer = (state = false, action) => {
-  switch (action.type) {
-    case "SET_IS_DELETE_SELECTED_PHOTOS_PRESSED":
-      return action.payload;
-    default:
-      return state;
-  }
-};
-
 const AlbumReducer = combineReducers({
   selectedPhotosAndVideos: selectedPhotosAndVideosReducer,
   pressedMultimediaButton: pressedMultimediaButtonReducer,
   isElseFeaturesVisible: isElseFeaturesVisibleReducer,
-  isDeleteAlbumPressed: isDeleteAlbumPressedReducer,
   isAddNewPhotoPressed: isAddNewPhotoPressedReducer,
   pressedPhoto: pressedPhotoReducer,
   isPhotoSelectionVisible: isPhotoSelectionVisibleReducer,
-  isDeleteAllPhotosPressed: isDeleteAllPhotosPressedReducer,
-  isDeleteSelectedPhotosPressed: isDeleteSelectedPhotosPressedReducer,
+  removalApprovalText: removalApprovalTextReducer,
 });
 
 export default AlbumReducer;

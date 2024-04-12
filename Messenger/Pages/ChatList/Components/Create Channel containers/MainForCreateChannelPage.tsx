@@ -10,9 +10,11 @@ import AddPhotoForCreate from "../CreateChannelAndGroupOrWriteMessage/Semi Compo
 import TextAndInputForCreate from "../CreateChannelAndGroupOrWriteMessage/Semi Components For creates/TextAndInputForCreate";
 import AddUsersListForCreate from "../CreateChannelAndGroupOrWriteMessage/Semi Components For creates/AddUsersListForCreate";
 import User from "../../../../dao/Models/User";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BlurAll from "../../../SemiComponents/BlurAll";
 import GalleryModalWindow from "../CreateChannelAndGroupOrWriteMessage/GalleryModalWindow/GalleryModalWindow";
+import GalleryModalWindowForUsage from "../CreateChannelAndGroupOrWriteMessage/GalleryModalWindow/Gallery/GalleryModalWindowForUsage";
+import { setIsVisibleGalleryModalWindow } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
 
 interface MainForCreateChannelPageProps {
   navigation: any;
@@ -21,35 +23,19 @@ interface MainForCreateChannelPageProps {
 const MainForCreateChannelPage: React.FC<MainForCreateChannelPageProps> = ({
   navigation,
 }) => {
-  const [startTime, setStartTime] = useState(0);
-  const [endTime, setEndTime] = useState(0);
   const marginTop = 15;
   const marginLeft = screenWidth * 0.03;
   const marginBottom = 10;
   const [inputTextForName, setInputTextForName] = useState<string>("");
   const [inputTextForBio, setInputTextForBio] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [onAddPhotoPress, setOnAddPhotoPress] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const selectedUsers: User[] = useSelector((state: any) => {
     return state.chatListReducer.createGroupOrChannel.selectedUsers;
   });
-  
- 
-  const handlePress = () => {
-    setStartTime(Date.now());
-  };
 
-  function handlePressOut() {
-    setEndTime(Date.now());
-    const duration = startTime - endTime;
-    if (duration < 16) {
-      setOnAddPhotoPress(false);
-      return;
-    }
-    setStartTime(Date.now());
-  }
   const pressOnAddPhoto = () => {
-    setOnAddPhotoPress(true);
+    dispatch(setIsVisibleGalleryModalWindow(true));
   };
   return (
     <>
@@ -91,11 +77,10 @@ const MainForCreateChannelPage: React.FC<MainForCreateChannelPageProps> = ({
           addNameOfUser={"User"}
         />
       </ScrollView>
-      {onAddPhotoPress ? (
-        <BlurAll handlePress={handlePress} handlePressOut={handlePressOut}>
-          <GalleryModalWindow setOnAddPhotoPress={setOnAddPhotoPress} navigation={navigation} />
-        </BlurAll>
-      ) : null}
+      <GalleryModalWindowForUsage
+        navigation={navigation}
+        cameFrom={"Create Channel Page"}
+      />
     </>
   );
 };

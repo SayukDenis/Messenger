@@ -14,7 +14,7 @@
     },
     "assetBundlePatterns": [
       "**/*",
-      ["dao/**/*"]
+      "dao/**/*"
     ],
     "ios": {
       "supportsTablet": true
@@ -23,9 +23,6 @@
       "adaptiveIcon": {
                 "backgroundColor": "#ffffff"
       }
-    },
-    "web": {
-      
     }
   }
 }

@@ -17,7 +17,10 @@ const AllPhotoInGallery: React.FC<AllPhotoInGalleryProps> = ({
   return (
     <BackGroundGradientView>
       <HeaderForGallery navigation={navigation} />
-      <MainForGallery navigation={navigation} setOnAddPhotoPress={route.params.setOnAddPhotoPress}/>
+      <MainForGallery
+        navigation={navigation}
+        route={route}
+      />
     </BackGroundGradientView>
   );
 };

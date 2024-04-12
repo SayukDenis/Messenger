@@ -5,6 +5,7 @@ import {
   LayoutChangeEvent,
   GestureResponderEvent,
   TouchableOpacity,
+  View,
 } from "react-native";
 import {
   setBooleanForTouchOnHamburgerInHeaderChatList,
@@ -13,7 +14,6 @@ import {
   setFolderSelectedArray,
   setSelectedFolderForChatList,
 } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
-
 import ListOfFolder from "./ListOfFolder";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { setAnimationStateForFolderChatList } from "../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
@@ -24,13 +24,15 @@ import SelfProfile from "../../../dao/Models/SelfProfile";
 import { booleanForLogging } from "../ChatList";
 import BlursForChatList from "./Headers containers/BlursForChatList";
 import { EnumForChatListBlurs } from "./Enums/EnumsForChatListBlurs";
+import ModalWindowChatState from "./List of chats containers/ModalWindowChatState";
+
 interface MainProps {
-  navigation:any
+  navigation: any;
 }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const Main: React.FC<MainProps> = ({navigation}) => {
+const Main: React.FC<MainProps> = ({ navigation }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
     const self: SelfProfile = state.selfProfileUser;
     return self;
@@ -147,7 +149,6 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     const updatedWidths = [...widths.current];
     updatedWidths[index] = width;
     widths.current = updatedWidths;
-
   });
   useEffect(() => {
     if (booleanForLogging) {
@@ -160,24 +161,31 @@ const Main: React.FC<MainProps> = ({navigation}) => {
     const target = e.nativeEvent;
     setPositionX(target.pageX);
     setPositionXInContainer(target.locationX);
-    if (target.pageX - target.locationX + widths.current[index] > screenWidth * 0.98) {
+    if (
+      target.pageX - target.locationX + widths.current[index] >
+      screenWidth * 0.98
+    ) {
       scrollViewRefFooter.current?.scrollTo({
-        x: positionsOfFolder.current[index] - screenWidth * 0.92 + widths.current[index],
+        x:
+          positionsOfFolder.current[index] -
+          screenWidth * 0.92 +
+          widths.current[index],
         animated: false,
       });
-      setPositionX(screenWidth * 0.964 - widths.current[index]);
+      setPositionX(screenWidth * 0.98 - widths.current[index]);
       setPositionXInContainer(0);
     } else if (target.pageX - target.locationX < screenWidth * 0.04) {
       scrollViewRefFooter.current?.scrollTo({
         x: positionsOfFolder.current[index],
         animated: false,
       });
-      setPositionX(screenWidth * 0.044);
+      setPositionX(screenWidth * 0.06);
       setPositionXInContainer(0);
     }
     setisVisibleForModalFolder(true);
     dispatch(setAnimationStateForFolderChatList(true));
   });
+
   const handlePress = () => {
     setStartTime(Date.now());
   };
@@ -196,75 +204,93 @@ const Main: React.FC<MainProps> = ({navigation}) => {
   const setAnimation = () => {
     dispatch(setAnimationStateForFolderChatList(false));
   };
+
+  const [visibleChatModalWindow, setVisibleChatModalWindow] = useState(false);
+
+  const setVisibleModalWindowChatState = useRef(() => {
+    setVisibleChatModalWindow(true);
+  });
+
+  const setHiddenModalWindowChatState = useRef(() => {
+    setVisibleChatModalWindow(false);
+  });
+
   return (
     <>
-      <ModalWindowFolderState
-        isVisibleForModalFolder={isVisibleForModalFolder}
-        animationState={animationState}
-        selectedLongPressFolder={selectedLongPressFolder}
-        selectedFolder={selectFolder}
-        positionX={positionX}
-        positionXInContainer={positionXInContainer}
-        widths={widths}
-        setAnimation={setAnimation}
-        handlePress={handlePress}
-        handlePressOut={handlePressOut}
-      />
-      <BlursForChatList
-        handlePress={handlePress}
-        handlePressOut={handlePressOut}
-      />
-      <FlatList
-        data={selfProfile.tabs[currentTab].folders}
-        /*onContentSizeChange={(width,height)=>{
-          console.log(width+":"+height)
-        }}
-        */
-        horizontal
-        pagingEnabled
-        ref={scrollViewRef}
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={() => {
-          setEndDragOfChatList(true);
-        }}
-        scrollEventThrottle={1}
-        nestedScrollEnabled={true}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <ListOfFolder key={index} currentFolder={index} navigation={navigation} />
-        )}
-        onScroll={handleHorizontalScroll}
-        windowSize={10}
-        initialNumToRender={1}
-      />
-      <Footer
-        isTouchableForHeader={isTouchableForHeader}
-        scrollViewRefFooter={scrollViewRefFooter}
-        handleLayout={handleLayout}
-        isVisibleForModalFolder={isVisibleForModalFolder}
-        handleFolderPress={handleFolderPress}
-        handleLongPress={handleLongPress}
-        positionsOfFolder={positionsOfFolder}
-        widths={widths}
-      />
-
-      {isTouchableForHeader ? (
-        <TouchableOpacity
-          onPress={() =>
-            dispatch(
-              setBooleanForTouchOnHamburgerInHeaderChatList(
-                !isTouchableForHeader
-              )
-            )
-          }
-          style={{
-            height: screenHeight,
-            width: screenWidth,
-            position: "absolute",
-            zIndex: 4,
-          }}
+      <View style={{ flex: 1 }}>
+        <ModalWindowFolderState
+          isVisibleForModalFolder={isVisibleForModalFolder}
+          animationState={animationState}
+          selectedLongPressFolder={selectedLongPressFolder}
+          selectedFolder={selectFolder}
+          positionX={positionX}
+          positionXInContainer={positionXInContainer}
+          widths={widths}
+          setAnimation={setAnimation}
+          handlePress={handlePress}
+          handlePressOut={handlePressOut}
         />
-      ) : null}
+        <ModalWindowChatState
+          visibleChatModalWindow={visibleChatModalWindow}
+          setHiddenModalWindowChatState={setHiddenModalWindowChatState}
+        />
+        <BlursForChatList
+          handlePress={handlePress}
+          handlePressOut={handlePressOut}
+        />
+        <FlatList
+          data={selfProfile.tabs[currentTab].folders}
+          horizontal
+          pagingEnabled
+          ref={scrollViewRef}
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={() => {
+            setEndDragOfChatList(true);
+          }}
+          scrollEventThrottle={1}
+          nestedScrollEnabled={true}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <ListOfFolder
+              key={index}
+              currentFolder={index}
+              navigation={navigation}
+              setVisibleModalWindowChatState={setVisibleModalWindowChatState}
+            />
+          )}
+          onScroll={handleHorizontalScroll}
+          windowSize={10}
+          initialNumToRender={1}
+        />
+        <Footer
+          isTouchableForHeader={isTouchableForHeader}
+          scrollViewRefFooter={scrollViewRefFooter}
+          handleLayout={handleLayout}
+          isVisibleForModalFolder={isVisibleForModalFolder}
+          handleFolderPress={handleFolderPress}
+          handleLongPress={handleLongPress}
+          positionsOfFolder={positionsOfFolder}
+          widths={widths}
+        />
+
+        {isTouchableForHeader ? (
+          <TouchableOpacity
+            onPress={() =>
+              dispatch(
+                setBooleanForTouchOnHamburgerInHeaderChatList(
+                  !isTouchableForHeader
+                )
+              )
+            }
+            style={{
+              height: screenHeight,
+              width: screenWidth,
+              position: "absolute",
+              zIndex: 4,
+            }}
+          />
+        ) : null}
+      </View>
     </>
   );
 };

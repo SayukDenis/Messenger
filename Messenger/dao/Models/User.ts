@@ -1,32 +1,28 @@
 import Model from './Model';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-
+@Entity()
 export default class User extends Model {
-  constructor(name: string, numberPhone?: string, nickname?: string, description?: string, linkToPhoto?: string) {
+  constructor(name: string, nickname: string) {
     super();
     this.name = name;
-    this.numberPhone = numberPhone;
     this.nickname = nickname;
-    this.description = description;
-    this.linkToPhoto = linkToPhoto;
   }
-  userId?: number;
+  @PrimaryGeneratedColumn()
+  userId!: number;
+
+  @Column('text')
   name!: string;
+
+  @Column('text', { nullable: true })
   numberPhone?: string;
-  nickname?: string;
+
+  @Column('text', { unique: true })
+  nickname: string;
+
+  @Column('text', { nullable: true })
   description?: string;
+
+  @Column('text', { nullable: true })
   linkToPhoto?: string;
-  //schema
-  static schema = {
-    name: 'users',
-    properties: {
-      userId: 'integer',
-      name: 'string',
-      numberPhone: 'text?',
-      nickname: 'text?',
-      description: 'text?',
-      linkToPhoto: 'text?',
-    },
-    primaryKey: 'userId',
-  };
-};
+} 

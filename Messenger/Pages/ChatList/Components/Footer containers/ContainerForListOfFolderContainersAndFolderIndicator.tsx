@@ -21,7 +21,6 @@ const ContainerForListOfFolderContainersAndFolderIndicator: React.FC<
       showsHorizontalScrollIndicator={false}
       horizontal
       ref={scrollViewRef}
-      style={footerstyles.scrollView}
     >
       <View
         style={{

@@ -28,8 +28,6 @@ const CentralChatContainer: React.FC<CentralChatContainerProps> = ({
   onBranchPress,
   nesting,
 }) => {
-
-
   return (
     <TouchableOpacity
       onPress={handlePress.current}

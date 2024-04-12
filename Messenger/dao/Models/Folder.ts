@@ -1,23 +1,23 @@
 import Model from './Model';
 import Chat from './Chats/Chat';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export default class Folder extends Model {
-    constructor(folderName: string, chats?: Array<Chat>) {
+    constructor(folderName: string) {
         super();
         this.folderName = folderName;
-        this.chats = chats ?? new Array;
     }
+    @PrimaryGeneratedColumn()
     folderId?: number;
+
+    @Column('text')
     folderName!: string;
-    chats: Array<Chat> = new Array;
-    //schema
-    static schema = {
-        name: 'folders',
-        properties: {
-            folderId: 'integer',
-            folderName: 'text',
-            chats: { type: 'list', objectType: Chat }
-        },
-        primaryKey: 'folderId',
-    }
+
+    @ManyToMany(() => Chat, undefined, {
+        eager: true,
+        cascade: true
+    })
+    @JoinTable()
+    chats: Array<Chat>;
 }

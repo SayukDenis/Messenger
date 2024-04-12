@@ -22,6 +22,10 @@ import Folder from "../../../../dao/Models/Folder";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
 import { useSelector } from "react-redux";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  screenWidth,
+  screenHeight,
+} from "../../Constants/ConstantsForChatlist";
 
 interface FolderModalWindowProps {
   folder: Folder;
@@ -31,7 +35,6 @@ interface FolderModalWindowProps {
   exit: boolean;
   booleanRefForEndAnimation: () => void;
 }
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
   folder,
   positionX,
@@ -67,15 +70,17 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
     }
     return false;*/
   };
-  const containerWidth = new Animated.Value(0); 
-  const firstContainerTranslate = new Animated.Value(0); 
+  const containerWidth = new Animated.Value(0);
+  const firstContainerTranslate = new Animated.Value(0);
   const secondContainerTranslate = new Animated.Value(0);
   const thirdContainerTranslate = new Animated.Value(0);
   const fourthContainerTranslate = new Animated.Value(0);
   const fifthContainerTranslate = new Animated.Value(0);
+
   const durationOfAnimation: number = 20;
   const [state, setState] = useState(1);
   const easing: EasingFunction = Easing.linear;
+
   const firstContainerOpacity = firstContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
@@ -192,9 +197,12 @@ const FolderModalWindow: React.FC<FolderModalWindowProps> = ({
       style={[
         footerstyles.modalWindowContainerStyle,
         getStylePosition(positionX - positionXInContainer + widthOfFolder / 2),
-        {bottom:Platform.OS == "ios"&& useSafeAreaInsets().bottom!=0
-        ? screenHeight * 0.045 + useSafeAreaInsets().bottom
-        : screenHeight * 0.055,}
+        {
+          bottom:
+            Platform.OS == "ios" && useSafeAreaInsets().bottom != 0
+              ? screenHeight * 0.045 + useSafeAreaInsets().bottom
+              : screenHeight * 0.055,
+        },
       ]}
     >
       <Animated.View

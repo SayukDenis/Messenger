@@ -1,6 +1,6 @@
 // Oleksii Kovalenko telegram - @traewe
 
-import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DBUser";
+import { PhotoOrVideo } from "../../../../Pages/Profiles/SemiComponents/DatabaseSimulation/DBUser";
 
 export const setSelectedPhotosAndVideos = (value: Array<PhotoOrVideo>) => ({
   type: "SET_SELECTED_PHOTOS_AND_VIDEOS",
@@ -12,13 +12,13 @@ export const setPressedMultimediaButton = (value: string) => ({
   payload: value,
 });
 
-export const setIsElseFeaturesVisible = (value: boolean) => ({
-  type: "SET_IS_ELSE_FEATURES_VISIBLE",
+export const setRemovalApprovalText = (value: string) => ({
+  type: "SET_REMOVAL_APPROVAL_TEXT",
   payload: value,
 });
 
-export const setIsDeleteAlbumPressed = (value: boolean) => ({
-  type: "SET_IS_DELETE_ALBUM_PRESSED",
+export const setIsElseFeaturesVisible = (value: boolean) => ({
+  type: "SET_IS_ELSE_FEATURES_VISIBLE",
   payload: value,
 });
 
@@ -34,15 +34,5 @@ export const setPressedPhoto = (photo: PhotoOrVideo) => ({
 
 export const setIsPhotoSelectionVisible = (value: boolean) => ({
   type: "SET_IS_PHOTO_SELECTION_VISIBLE",
-  payload: value,
-});
-
-export const setIsDeleteAllPhotosPressed = (value: boolean) => ({
-  type: "SET_IS_DELETE_ALL_PHOTOS_PRESSED",
-  payload: value,
-});
-
-export const setIsDeleteSelectedPhotosPressed = (value: boolean) => ({
-  type: "SET_IS_DELETE_SELECTED_PHOTOS_PRESSED",
   payload: value,
 });

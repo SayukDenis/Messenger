@@ -11,7 +11,7 @@ const Notification: React.FC<any> = ({ navigation })=>{
     return <BackGroundGradientView>
         <HeaderContainer><NotificationHeader navigation = {navigation}></NotificationHeader></HeaderContainer>
         <View style = {{marginTop:heightOfHeader}}></View>
-        <NotificationCenter></NotificationCenter>
+        <NotificationCenter navigation = {navigation}></NotificationCenter>
     </BackGroundGradientView>
 }
 
