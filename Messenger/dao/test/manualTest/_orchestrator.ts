@@ -12,26 +12,25 @@ import { branchTreeOperations } from './branchTreeOperations';
 import { roleOperations } from './roleOperations';
 import { mainChatOperations } from './mainChatOperations';
 import { dialogueOperations } from './dialogueOperations';
-import { channel } from 'diagnostics_channel';
 import { channelOperations } from './channelOperations';
 import { groupOperations } from './groupOperations';
 
 
 export async function Run() {
     await deleteDb();
-    //await usersOperations();
-    //await messagesOperations();
-    //await chatOperations();
-    //await selfProfileOperations();
-    //await tabOperations();
-    //await folderOperations();
-    //await branchOperations()
-    //await branchTreeOperations();
-    //await roleOperations();
-    //await mainChatOperations();
-    //await dialogueOperations();
-    //await channelOperations();
-    //await groupOperations();
+    await usersOperations();
+    await messagesOperations();
+    await chatOperations();
+    await selfProfileOperations();
+    await tabOperations();
+    await folderOperations();
+    await branchOperations()
+    await branchTreeOperations();
+    await roleOperations();
+    await mainChatOperations();
+    await dialogueOperations();
+    await channelOperations();
+    await groupOperations();
 }
 
 async function deleteDb() {

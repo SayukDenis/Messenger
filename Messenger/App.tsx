@@ -6,21 +6,16 @@ import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import StartPage from "./Pages/Profiles/SemiComponents/Navigation";
 import { initialization } from "./Initialization/Initialization";
-import { dataSource } from "./dao/local/database";
-import Message from "./dao/Models/Message";
-
-const manager = dataSource.manager;
+import { Run } from "./dao/test/manualTest/_orchestrator";
 
 export default function App() {
   StatusBar.setBarStyle("dark-content");
   useEffect(() => {
     const fetchData = async () => {
       await initialization();
-      if (!dataSource.isInitialized) await dataSource.initialize();
     };
     fetchData();
   }, []);
-
   return (
     <SafeAreaProvider>
       <StatusBar translucent backgroundColor="transparent" />

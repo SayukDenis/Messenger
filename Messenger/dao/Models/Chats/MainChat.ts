@@ -1,11 +1,12 @@
 import Role from './Role';
 import User from '../User';
 import Chat from './Chat';
-import { ChildEntity, Column, JoinColumn, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { ChildEntity, Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, TableInheritance } from 'typeorm';
 import IMessageLog from './IMessageLog';
 import Branch from './Branch';
 
-@ChildEntity()
+@Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export default class MainChat extends Chat {
 
     @ManyToMany(() => User, {
