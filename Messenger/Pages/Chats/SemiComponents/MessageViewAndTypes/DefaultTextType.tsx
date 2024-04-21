@@ -296,6 +296,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
+                  horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
                 />
               }
               <View
@@ -325,6 +327,8 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
+                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
+                  horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
                 />
               }
               {selecting && (
@@ -338,7 +342,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
             </View>
             {isUser && (
               <View style={styles.messageViewStatus}>
-                {message.messageId! <= (userMessageLastWatched?.value?.messageId || 0) ? (
+                {message.messageId! <= (userMessageLastWatched?.messageId || 0) ? (
                   <MessageItemStatusMessageReviewed />
                 ) : (
                   <MessageItemStatusMessageNotReviewed />

@@ -41,8 +41,8 @@ class Dialogue extends Component<DialogueProps> {
     dialogue = props.route.params.chat;
     author = dialogue.users[0];
     users = dialogue.users.filter(u => u.userId !== 0);
-    authorMessageLastWatched = dialogue.lastWatchedMessage[0];
-    userMessageLastWatched = dialogue.lastWatchedMessage[1];
+    authorMessageLastWatched = dialogue.branches[0].lastWatchedMessage[0];
+    userMessageLastWatched = dialogue.branches[0].lastWatchedMessage[1];
   }
   
   state: DialogueState = {
@@ -75,11 +75,11 @@ class Dialogue extends Component<DialogueProps> {
             .catch(error => console.error('Error while connecting to SignalR', error)); 
 
     this.setState({ 
-      listOfMessages: dialogue.messages.reverse(),
+      listOfMessages: dialogue.branches[0].messages.reverse(),
       author: dialogue.users[0],
       users: dialogue.users.filter(u => u.userId !== 0),
-      authorMessageLastWatched: dialogue.lastWatchedMessage[0],
-      userMessageLastWatched: dialogue.lastWatchedMessage[1],
+      authorMessageLastWatched: dialogue.branches[0].lastWatchedMessage[0],
+      userMessageLastWatched: dialogue.branches[0].lastWatchedMessage[1],
     });
   }
 

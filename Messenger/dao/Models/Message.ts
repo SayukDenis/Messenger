@@ -4,6 +4,7 @@ import IUserReaction from './IUserReaction ';
 import Model from './Model';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Chat from './Chats/Chat';
+import Branch from './Chats/Branch';
 
 @Entity()
 export default class Message extends Model {
@@ -52,12 +53,12 @@ export default class Message extends Model {
     @Column({ type: 'simple-json', nullable: true })
     reactionOnMessage: Array<IUserReaction>;
 
-    @ManyToOne(() => Chat, (chat) => chat.messages, { onDelete: 'CASCADE' })
-    chat!: Chat
+    @ManyToOne(() => Branch, (branch) => branch.messages, { onDelete: 'CASCADE' })
+    chat!: Branch
 
-    @ManyToOne(() => Chat, (chat) => chat.pinnedMessage, { onDelete: 'CASCADE', nullable: true })
-    chatPinned!: Chat
+    @ManyToOne(() => Branch, (branch) => branch.pinnedMessage, { onDelete: 'CASCADE', nullable: true })
+    chatPinned: Branch
 
-    @ManyToOne(() => Chat, (chat) => chat.pinnedMessageForAll, { onDelete: 'CASCADE', nullable: true })
-    chatPinnedForAll!: Chat
+    @ManyToOne(() => Branch, (branch) => branch.pinnedMessageForAll, { onDelete: 'CASCADE', nullable: true })
+    chatPinnedForAll: Branch
 }

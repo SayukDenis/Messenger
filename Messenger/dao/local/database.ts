@@ -17,8 +17,9 @@ export const dataSource = new DataSource({
   database: 'messenger.db',
   type: 'expo',
   driver: require('expo-sqlite'),
-  entities: [User, SelfProfile, Message, Chat, Tab, Folder, Branch,
+  entities: [User, SelfProfile, Message, Tab, Folder, Chat, Branch,
     MainChat, Role, Dialogue, Channel, Group],
   synchronize: true,
+  dropSchema: true,
   logging: ["error"],
 });

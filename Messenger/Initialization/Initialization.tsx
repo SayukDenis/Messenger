@@ -13,6 +13,7 @@ import { dataSource } from "../dao/local/database";
 import { EntityManager, Not } from "typeorm";
 import Chat from "../dao/Models/Chats/Chat";
 import { EMessageType } from "../dao/Models/EMessageType";
+import { cwd } from "process";
 
 const messageDialog: string[] = [
   "Привіт",
@@ -77,6 +78,7 @@ export async function initialization() {
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
   }
+
   const manager = dataSource.manager;
 
   await initializationSelfProfile(manager);
@@ -123,22 +125,24 @@ export async function initialization() {
   console.log("succsess save chats in folders")
 
   // initialization branch
-  const chats = await manager.find(MainChat);
-  await initializationBranch(manager, 5, chats)
+  let mainChats = await manager.find(MainChat);
+  await initializationBranch(manager, 5, mainChats)
   console.log("succsess initializationBranch")
-
-
+  
   dialogues = await manager.find(Dialogue);
   groups = await manager.find(Group);
   channels = await manager.find(Channel);
 
   // add message in dialogues
   await initializationMessage(manager, dialogues, messageDialog);
+  console.log("succsess initialization massages in Dialogues");
   // add massage in groups
   await initializationMessage(manager, groups, messageGroupsAndChannels);
+  console.log("succsess initialization massages in Groups");
   // add massage in channels
   await initializationMessage(manager, channels, messageGroupsAndChannels);
-  console.log("succsess add all massage");
+  console.log("succsess initialization massages in Channels");
+  console.log("succsess initialization all massage");
 
   await printInitialization();
 }
@@ -156,7 +160,7 @@ export async function printInitialization() {
   //console.log(`Count of Channel: ${(await manager.findAndCount(Channel))[1]}`);
   //console.log(`Count of Branch: ${(await manager.findAndCount(Branch))[1]}`);
   console.log(`Count of Message: ${(await manager.findAndCount(Message))[1]}`);
-  
+
 }
 
 async function initializationSelfProfile(manager: EntityManager) {
@@ -238,13 +242,13 @@ async function initializationDialogue(manager: EntityManager, count: number) {
 
   for (let i = 0, j = 0; i < count; i++, j++) {
     const user = shuffledUsers[j];
-    const dialogue = new Dialogue();
+    let dialogue = new Dialogue();
 
     dialogue.linkToPhoto = user.linkToPhoto;
     dialogue.users = [selfProfile, user];
-    //dialogue.branches = [new Branch(`Main branch in dialog with ${user.userId}`)];
     dialogue.auditLog = [{ message: "New dialog has created", sendTime: new Date() }]
-
+    dialogue = await manager.save(dialogue);
+    dialogue.branches = [new Branch(`Main branch in dialog with ${user.userId}`)];
     dialogues.push(dialogue);
   }
 
@@ -262,12 +266,13 @@ async function initializationGroup(manager: EntityManager, count: number) {
     throw Error("There is no  selfProfile and/or users");
 
   for (let i = 0; i < count; i++) {
-    const group = new Group(`Group${i}`);
+    let group = new Group(`Group${i}`);
     group.linkToPhoto = images[getRandomNumber(images.length)];
     group.users = [selfProfile];
+    group.auditLog = [{ message: "New group has created", sendTime: new Date() }]
     group.users.push(...getRandomElementsFromArray<User>(users));
-    //group.branches = [new Branch(`Main  branch in group${i}`)];
-
+    group = await manager.save(group);
+    group.branches = [new Branch(`Main  branch in group${i}`)];
     groups.push(group);
   }
 
@@ -285,7 +290,7 @@ async function initializationChannel(manager: EntityManager, count: number) {
     throw Error("There is no  selfProfile and/or users");
 
   for (let i = 0; i < count; i++) {
-    const channel = new Channel(`Channel${i}`);
+    let channel = new Channel(`Channel${i}`);
 
     if (Math.random() < 0.4) {
       channel.title = `Admin Channel${i}`;
@@ -293,9 +298,10 @@ async function initializationChannel(manager: EntityManager, count: number) {
     }
     channel.linkToPhoto = images[getRandomNumber(images.length)];
     channel.users = [selfProfile];
+    channel.auditLog = [{ message: "New channel has created", sendTime: new Date() }]
     channel.users.push(...getRandomElementsFromArray<User>(users));
-    //channel.branches = [new Branch(`Main branch in channel${i}`)];
-
+    channel = await manager.save(channel);
+    channel.branches = [new Branch(`Main branch in channel${i}`)];
     channels.push(channel);
   }
 
@@ -306,16 +312,13 @@ async function initializationChannel(manager: EntityManager, count: number) {
 async function initializationBranch(manager: EntityManager, maxCount: number, chats: MainChat[]) {
   for (let chat of chats) {
     if (Math.random() < 0.40) {
-      for (let i = 0; i < getRandomNumber(maxCount,1); i++) {
-        const branch = new Branch(`Name branch${i}`);
-
-        if (chat.branches == undefined)
-          chat.branches = [];
-        chat.branches.push(branch);
+      for (let i = 0; i < getRandomNumber(maxCount, 1); i++) {
+        const branch = new Branch(`Name branch${i} in ${chat.id}`);
+        branch.mainChat = chat;
+        await manager.save(branch);
       }
     }
   }
-  await manager.save(chats);
 }
 
 async function initializationMessage(manager: EntityManager, chats: MainChat[], messages: string[]) {
@@ -329,8 +332,8 @@ async function initializationMessage(manager: EntityManager, chats: MainChat[], 
   }
 }
 
-function addMessages(chat: Chat, count: number, users: User[], texts: string[]) {
-  if (chat.messages == undefined) chat.messages = [];
+function addMessages(branch: Branch, count: number, users: User[], texts: string[]) {
+  if (branch.messages == undefined) branch.messages = [];
 
   if (users.length === 0) throw new Error("must be more than 1 users");
 
@@ -339,7 +342,6 @@ function addMessages(chat: Chat, count: number, users: User[], texts: string[]) 
     // Additional properties can be set if needed
     //if (Math.random() < 0.15) message.messageResponseId = idMessageToCreate - 2; // Set response ID to the previous message ID
     if (Math.random() < 0.35) message.isEdited = true; // Set isEdited 
-
-    chat.messages.push(message);
+    branch.messages.push(message);
   }
 }

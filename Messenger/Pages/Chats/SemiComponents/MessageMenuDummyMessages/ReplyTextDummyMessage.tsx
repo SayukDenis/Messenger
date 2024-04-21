@@ -61,7 +61,7 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
         </View>
         { isUser && 
           <View style={styles.messageViewStatus}>
-            { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+            { message.messageId!<=userMessageLastWatched?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
           </View> }
       </View>
     );

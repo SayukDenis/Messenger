@@ -406,7 +406,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
           </TouchableOpacity>
           { isUser && 
             <View style={styles.messageViewStatus}>
-              { message.messageId! <= userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+              { message.messageId! <= userMessageLastWatched?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
             </View> }
         </View>
         <View style={styles.messageSwipeToReply}>

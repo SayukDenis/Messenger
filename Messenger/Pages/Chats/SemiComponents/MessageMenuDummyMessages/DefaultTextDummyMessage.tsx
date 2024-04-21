@@ -41,7 +41,7 @@ class DefaultTextDummyMessage extends Component<DefaultTextMessageProps> {
           </View>
           { isUser && 
           <View style={styles.messageViewStatus}>
-            { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+            { message.messageId!<=userMessageLastWatched?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
           </View> }
         </View>
       </View>
