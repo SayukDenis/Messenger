@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import BackGroundColorForComponents from "../../../../SemiComponents/BackGroundColorForComponents";
 import { screenHeight,screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
 import AddMemberSVG from "../../../../SemiComponents/AddMemberSVG";
-import { RemoveAllNotificationForPrivatesChats } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
+import { DeleteNotificationExceptionForChat, RemoveAllNotificationForPrivatesChats } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 import DeleteButtonSvg from "./DeleteButtonSVG/DeleteButtinSVG";
 import { RemoveAllNotificationForGroupsChats } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 import { RemoveAllNotificationForChannels } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 import  StyleLogOutModalWindow from "..//..//..//MainSettingPage//settingsPage//Center//LogoutModalWindow//LogoutModalWindowStyle."
+import SettingModalWindow from "../../../SettingsSemiComponents/SettingModalWindow/SettingModalWindow";
 
 interface UserProfileProps {
     name: string,
@@ -51,13 +52,16 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
     
     let listOfExeptionsForPrivatesChats : UserProfileProps[] ;
     if(NameOfPage == "Privates Chats" ){
-        listOfExeptionsForPrivatesChats =useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForPrivateChats)
+        listOfExeptionsForPrivatesChats =useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForPrivateChats);
+        listOfExeptionsForPrivatesChats=[];
     }else if (NameOfPage == "Group chats"){
-        listOfExeptionsForPrivatesChats=useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForGroups)
+        listOfExeptionsForPrivatesChats=useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForGroups);
+        listOfExeptionsForPrivatesChats=[];
     }else {
-        listOfExeptionsForPrivatesChats=useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForChannels)
-        console.log(JSON.stringify(listOfExeptionsForPrivatesChats))
+        listOfExeptionsForPrivatesChats=useSelector((state : any)=>  state.SettingsPagesReducers.AddNotifiExeptions.listOfExptionsForChannels);
+        listOfExeptionsForPrivatesChats=[];
     }
+
     return(
         <View>
             <View style = {{marginTop:"5%"}}>
@@ -83,13 +87,14 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
             )}
             {listOfExeptionsForPrivatesChats.length > 0 ? (
                 listOfExeptionsForPrivatesChats.map((item: any, index) => (
-                    <View style = {StyleEditNotificationCenter.userExeptionsButtons} key={index}>
+                    //тут треба буде зробити виделення через айді
+                    <TouchableOpacity onPress={()=>navigation.navigate("EditNotificationProfilePage",{ ProfileName: item.name })} style = {StyleEditNotificationCenter.userExeptionsButtons} key={index}>
                         <View style = {{flexDirection:'row', alignItems:'center'}}>
                              <Image style ={{width:screenHeight*0.042, height:screenHeight*0.042, borderRadius:1000000}}   source={{uri:item.linkOfPhoto}}></Image>
                             <Text style = {{marginLeft:"2%"}}>{item.name}</Text>
                         </View>
                         <BackGroundColorForComponents width={screenWidth*0.94} height={screenHeight*0.07}></BackGroundColorForComponents>
-                    </View>
+                    </TouchableOpacity>
                 ))
             ) : (
                     <TouchableOpacity onPress={() => navigation.navigate("AddExeptionsNotifiPage", { NameOfPage: NameOfPage })} style={{ marginTop: "5%" }}>
@@ -107,27 +112,7 @@ const EditNotificationCenter : React.FC<any> = ({ navigation , route })=>{
                         </View>
                         <BackGroundColorForComponents width={screenWidth*0.94} height={screenHeight*0.05}/>
                     </TouchableOpacity>
-                    <Modal 
-                        animationType="none"
-                        transparent={true}
-                        visible={isModalVisible}
-                        onRequestClose={toggleModal}> 
-                        <View style = {StyleLogOutModalWindow.LogoutModalContainer}>
-                            <View style = {StyleLogOutModalWindow.LogoutModalWindow}>
-                                <View style = {StyleLogOutModalWindow.containerLogoutText}>
-                                    <Text style = {StyleLogOutModalWindow.TextStyle}>Do you really want to delete?</Text>
-                                </View>
-                                <View style = {StyleLogOutModalWindow.containerOfButtons}>
-                                    <TouchableOpacity style = {StyleLogOutModalWindow.AgreeButtonStyle} onPress={DelateAllBut}>
-                                        <Text style = {StyleLogOutModalWindow.TextStyle}>Agree</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style = {StyleLogOutModalWindow.DisagreeButtonStyle} onPress={toggleModal}>
-                                        <Text style ={StyleLogOutModalWindow.DisadgreeTextStyle}>Disagree</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>                                
-                    </Modal>
+                    <SettingModalWindow isModalVisible={isModalVisible}  toggleModal={toggleModal} AgreeButtonfunc={DelateAllBut} DisgreeButtonfunc={toggleModal}/>
                 </View>
             )}    
             

@@ -7,7 +7,8 @@ import ButtonForSettings from "../../../../SemiComponents/ButtonForSettings";
 import ButtonForAllChat from "./ComponentForAllChat/AllChatButton";
 import RecommendFolderButt from "./ComponentForAllChat/RecommendFolderButt";
 import { addNewFolder, removeRecomendedFolder } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
-
+import ChatFolderButtComp from "./ComponentForAllChat/CharFollderChatsComp";
+import { RemoveFolderFromList } from "../../../../../ReducersAndActions/Actions/SettingsActions/SettingsActions";
 interface Folder{
   nameOfFolder: string;
   chats: string[];
@@ -22,18 +23,25 @@ const mapStateToProps = (state :any) => {
 
 
 const ChatFolderCenter : React.FC<any> = ({ navigation })=>{
-
+    const dispatch = useDispatch();
     let arrayOfFolderNames :Folder[] = useSelector((state :any) => state.SettingsPagesReducers.AddNewFolder.listOfNewFolder);
+    //
+    if (arrayOfFolderNames.length ==1  && arrayOfFolderNames[0].nameOfFolder == null) {
+        dispatch(RemoveFolderFromList(arrayOfFolderNames[0].nameOfFolder));
+    }
+    //костиль який треба прибрати
     console.log( useSelector((state :any) => state.SettingsPagesReducers.AddNewFolder.listOfNewFolder));
     let recomendedFolders : string[] = useSelector ((state:any)=> state.SettingsPagesReducers.AddRecomendedFoldert.recomdendedFolders);
+    
+    useEffect(()=>{
+      recomendedFolders =recomendedFolders.sort();
+    },[recomendedFolders]);
+
     let counerOfGroups : number = useSelector ((state:any)=> state.SettingsPagesReducers.AddRecomendedFoldert.numberOfRecommendedFolders)
-    const dispatch = useDispatch();
     const addItem = (nameFolder: string) => {
-      console.log("function work")
       if (nameFolder.trim() !== "") {
         dispatch(removeRecomendedFolder(nameFolder));
         dispatch(addNewFolder(nameFolder));
-        console.log("dispatch " + nameFolder);
       }
     };
       return <View>
@@ -50,16 +58,16 @@ const ChatFolderCenter : React.FC<any> = ({ navigation })=>{
                   </TouchableOpacity>
                   {arrayOfFolderNames.map((item, index) => (
                     <TouchableOpacity  onPress={() => navigation.navigate("AddNewChatToFolder", { nameOfFolder: item.nameOfFolder })} style={{marginTop:"0.5%"}} key={index}  >
-                      <ButtonForSettings text={item.nameOfFolder}></ButtonForSettings>
-                      </TouchableOpacity>
+                      <ChatFolderButtComp text={item.nameOfFolder}></ChatFolderButtComp>
+                    </TouchableOpacity>
                   ))}
                   {counerOfGroups > 0 && (
                       <Text style={StyleChatFolderCenter.articleFolderTextStyle}>Recomended folders</Text>
                   )}
                 {recomendedFolders.map((item, index) => (
-               <TouchableOpacity style={{marginTop:"0.5%"}} key={index} onPress={() => addItem(item)}>
-                  <RecommendFolderButt text={item}></RecommendFolderButt>
-               </TouchableOpacity>
+                  <TouchableOpacity style={{marginTop:"0.5%"}} key={index} onPress={() => addItem(item)}>
+                      <RecommendFolderButt text={item}></RecommendFolderButt>
+                  </TouchableOpacity>
               ))}
     </View>
 }

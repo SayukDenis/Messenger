@@ -89,3 +89,18 @@ export const RemoveBlockedUserIdToList = (userId : number) => ({
     type : 'DELETE_BLOCKUSER_ID',
     payload : userId,
 })
+
+export const RemoveFolderFromList = (folderName: string) => ({
+    type:'REMOVE_FOLDER_FROM_CHAT_FOLDER',
+    payload: folderName,  
+})
+
+export const AddRecomendedFolderBackToList =(recommendedFolderName: string) =>({
+    type : 'ADD_RECOMMENDED_FOLDER_BACK_TO_LIST',
+    payload : recommendedFolderName,
+})
+
+export const DeleteNotificationExceptionForChat =(chatToRemove:string)=>({
+    type:'DELETE_NOTIFIVATION_EXCEPTION_FOR_CHATS',
+    payload:chatToRemove,
+})

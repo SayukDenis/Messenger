@@ -17,6 +17,7 @@ import EditNotificationPage from "./Notification/EditNotificationPage/EditNotifi
 import { Stack } from "../../Navigation/Navigation";
 import AddExeptionsNotifiPage from "./Notification/AddExeptionsNotifPage/AddExeptionsNotifiPage";
 import AddNewChatToFolder from "./ChatFolderPage/AddNewChatToFolder.tsx/AddNewChatToFolder";
+import EditNotificationProfilePage from "./Notification/EditNotificationProfilePage.tsx/EditNotificationProfilePage";
 
  export const NavigationForSettings = () => {
   return (
@@ -27,14 +28,14 @@ import AddNewChatToFolder from "./ChatFolderPage/AddNewChatToFolder.tsx/AddNewCh
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Settings" component={Settingspage} />
+        <Stack.Screen name="Settings" component={Settingspage}/>
         <Stack.Screen name="Saved message" component={SavedmessagePage} />
         <Stack.Screen name="Edit page" component={EditPageNavigator} />
-        <Stack.Screen name="Notification" component={EditNotificationPageNavigator} />
+        <Stack.Screen name="Notification" component={EditNotificationPageNavigator}/>
         <Stack.Screen name="Question page" component={QuestionPage} />
         <Stack.Screen name="Language" component={LanguagePage} />
         <Stack.Screen name="Look" component={Look} />
-        <Stack.Screen name="Chat folders" component={ChatFolderPageNAvigator} />
+        <Stack.Screen name="Chat folders" component={ChatFolderPageNAvigator}/>
         <Stack.Screen
           name="Confidentiality"
           component={ConfidentialityPageNavigator}
@@ -103,6 +104,7 @@ export const EditNotificationPageNavigator = () => {
       <Stack.Screen name="NotificationPage" component={Notification} />
       <Stack.Screen name="EditNotification" component={EditNotificationPage} />
       <Stack.Screen name="AddExeptionsNotifiPage" component={AddExeptionsNotifiPage} />
+      <Stack.Screen name="EditNotificationProfilePage" component={EditNotificationProfilePage} />
     </Stack.Navigator>
   );
 };

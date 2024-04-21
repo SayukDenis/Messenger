@@ -1,8 +1,7 @@
-import { State } from 'react-native-gesture-handler';
 import { combineReducers } from 'redux'; 
 
 const inisialStateNewfolder ={
-    listOfNewFolder:[],
+    listOfNewFolder : [{nameOfFolder:null, listOFchats:[],listOFexeptionsChats:[]}],
 }
 const inisialStaterecomendedfolder ={
   recomdendedFolders:["Channels", "Groups", "News", "Personal chats"],
@@ -27,7 +26,7 @@ const SetVisibleTextInput ={
 }
 
 const inisialStateExeptionForNotificationPrivateChats ={
-  listOfExptionsForPrivateChats:[],
+  listOfExptionsForPrivateChats:[{name:null,link:null}],
   contacts : [
     { name: "Andrew", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
     { name: "Bogdan", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
@@ -50,7 +49,7 @@ const inisialStateExeptionForNotificationPrivateChats ={
     { name: "Fedor", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
     { name: "Christina", link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
 ],
-  listOfExptionsForGroups:[],
+  listOfExptionsForGroups:[{name:null,link:null}],
    groups : [
     { name: 'The Beatles', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
     { name: 'Queen', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
@@ -73,7 +72,7 @@ const inisialStateExeptionForNotificationPrivateChats ={
     { name: 'The Doors', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
     { name: 'Oasis', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' }
 ],
-  listOfExptionsForChannels:[],
+  listOfExptionsForChannels:[{name:null,link:null}],
   channelNames : [
     { name: 'Discovery Channel', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
     { name: 'National Geographic', link: 'https://th.bing.com/th/id/OIP.DSR3ZH586dophg9riX4thQHaE7?pid=ImgDet&rs=1' },
@@ -157,11 +156,18 @@ const NewFolderName= (state = TextInput, action:any) => {
 const AddNewFoldertReducer = (state = inisialStateNewfolder, action:any) => {
     switch (action.type) {
       case  'ADD_NEW_FOLDER':
-        console.log(JSON.stringify(action)+ " nameFolder")
-        console.log(state)
         return {
           ...state,
           listOfNewFolder: [...state.listOfNewFolder, {nameOfFolder:action.addNewFolder, listOFchats:[],listOFexeptionsChats:[]}],
+        };
+      case  'REMOVE_FOLDER_FROM_CHAT_FOLDER':
+        let folderToRemove = action.payload;
+        console.log(folderToRemove);
+        const updatedList = state.listOfNewFolder.filter(folder => folder.nameOfFolder !== folderToRemove);
+        console.log(JSON.stringify(state.listOfNewFolder)) + "   1";
+        return{
+          ...state,
+          listOfNewFolder:updatedList,
         };
       default:
         return state;
@@ -170,8 +176,6 @@ const AddNewFoldertReducer = (state = inisialStateNewfolder, action:any) => {
 const AddRecomendedFoldertReducer = (state = inisialStaterecomendedfolder, action:any) => {
   switch (action.type) {
     case 'REMOVE_RECOMENDED_FOLDER':
-      console.log("remove")
-      console.log(JSON.stringify(action) + JSON.stringify(action.payload) + "   12")
       const folderToRemove = action.payload;
       const updatedFolders = state.recomdendedFolders.filter(folder => folder !== folderToRemove);
       console.log(updatedFolders)
@@ -180,6 +184,12 @@ const AddRecomendedFoldertReducer = (state = inisialStaterecomendedfolder, actio
         recomdendedFolders: updatedFolders,
         numberOfRecommendedFolders: state.numberOfRecommendedFolders - 1
       };
+    case  'ADD_RECOMMENDED_FOLDER_BACK_TO_LIST':
+      return {
+        ...state,
+        recomdendedFolders: [...state.recomdendedFolders,action.payload],
+        numberOfRecommendedFolders: state.numberOfRecommendedFolders + 1,
+      };  
     default:
       return state;
   }
@@ -212,6 +222,7 @@ const SetVisibleTextInputForComp= (state = SetVisibleTextInput, action:any) => {
       return state;
   }
 };
+
 const AddExeptionsNotification = (state = inisialStateExeptionForNotificationPrivateChats, action:any) => {
   switch (action.type) {
     case  'ADD_NEW_EXPTIONS_FOR_PRIVATECHATS_NOTIFI':
@@ -253,7 +264,7 @@ const AddExeptionsNotification = (state = inisialStateExeptionForNotificationPri
       return {
           ...state,
           contacts: updatedList,
-      };
+      };  
     case  'ADD_NEW_EXPTIONS_FOR_GROUPCHATS_NOTIFI':
       return {
         ...state,
@@ -331,7 +342,39 @@ const AddExeptionsNotification = (state = inisialStateExeptionForNotificationPri
         return {
             ...state,
             channelNames: updatedChannelList,
-        };       
+        };
+      case  'DELETE_NOTIFIVATION_EXCEPTION_FOR_CHATS':
+        let updatetesListToaddChat = [];
+        let updatetesListToaddGroup = [];
+        let updatetesListToaddChannel = [];
+        const chatToRemove = action.payload;
+        const updatedExeptionsListforChat = state.listOfExptionsForPrivateChats.filter(chat => chat.name !== chatToRemove);
+        if(updatedExeptionsListforChat.length!==state.listOfExptionsForPrivateChats.length){
+          updatetesListToaddChat=[...state.contacts,action.payload].sort();
+        }else{
+          updatetesListToaddChat=[...state.contacts];
+        }
+        const updatedExeptionsListforGroup = state.listOfExptionsForGroups.filter(chat => chat.name !== chatToRemove);
+        if(updatedExeptionsListforChat.length!==state.listOfExptionsForGroups.length){
+          updatetesListToaddGroup=[...state.groups,action.payload].sort();
+        }else{
+          updatetesListToaddGroup=[...state.groups]
+        }
+        const updatedExeptionsListForChannel = state.listOfExptionsForChannels.filter(chat => chat.name !== chatToRemove);
+        if(updatedExeptionsListforChat.length!==state.listOfExptionsForChannels.length){
+          updatetesListToaddChannel=[...state.channelNames,action.payload].sort();
+        }else{
+          updatetesListToaddChannel=[...state.channelNames]
+        }
+        return {
+              ...state,
+              contacts:updatetesListToaddChat,
+              groups:updatetesListToaddGroup,
+              channelNames:updatetesListToaddChannel,
+              listOfExptionsForPrivateChats: updatedExeptionsListforChat,
+              listOfExptionsForGroups:updatedExeptionsListforGroup,
+              listOfExptionsForChannels:updatedExeptionsListForChannel,
+        };             
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState , useEffect} from "react";
 import { View, Text, TextInput,TouchableOpacity, Button } from "react-native";
 import { useDispatch } from "react-redux";
 import StyleAddFolderCenter from "./StyleAddFolderCenter";
@@ -16,6 +16,10 @@ const AddFolderCenter  = ()=>{
         dispatch(setInputText(text));
        }
     };
+
+    useEffect(()=>{
+        saveText();
+    },[inputText])
 
     return(
         <View>
