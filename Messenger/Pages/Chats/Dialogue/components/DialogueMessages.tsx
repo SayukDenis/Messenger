@@ -18,7 +18,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     coordsY: [[]],
     keyboardHeight: new Animated.Value(0),
     flatListHeight: new Animated.Value(height*0.94),
-    footerGap: new Animated.Value(height * 0.02+SOFT_MENU_BAR_HEIGHT+(this.props.isReply||this.props.isEdit?height*0.07-SOFT_MENU_BAR_HEIGHT/4:0)),
+    footerGap: new Animated.Value(height * 0.02+SOFT_MENU_BAR_HEIGHT),
     pinnedMessageId: -1,
     deletedMessagesCount: 0,
     callMessageMenu: false,
@@ -56,10 +56,13 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     }).start();
   }
 
-  replyOrEditHeightHandler = () => {
+  replyOrEditHeightHandler = (prevIsEdit: boolean, prevIsReply: boolean) => {
     console.log('replyOrEditHeightHandler', (this.state.footerGap as any)._value, (height*0.07-SOFT_MENU_BAR_HEIGHT/4));
+    const { isEdit, isReply } = this.props;
+    const changeValue = (((isReply || isEdit) && (prevIsEdit || prevIsReply)) || (!(isReply || isEdit) && !(prevIsEdit || prevIsReply))) ? 0 : 
+                ((isReply || isEdit) && !(prevIsEdit || prevIsReply)) ? 1 : -1
     Animated.timing(this.state.footerGap, {
-      toValue: (this.state.footerGap as any)._value + (height*0.07-SOFT_MENU_BAR_HEIGHT/4) * (this.props.isReply||this.props.isEdit?1:0),
+      toValue: (this.state.footerGap as any)._value + (height*0.07-SOFT_MENU_BAR_HEIGHT/4) * changeValue,
       duration: 50,
       useNativeDriver: false
     }).start();
@@ -83,7 +86,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   componentDidUpdate(prevProps: Readonly<DialogueMessagesProps & DialogueMessagesReduxProps>, prevState: Readonly<{}>, snapshot?: any): void {
     console.log('DialogueMessages was updated');
-    this.replyOrEditHeightHandler();
+    this.replyOrEditHeightHandler(prevProps.isEdit, prevProps.isReply);
   }
 
   componentWillUnmount() {
@@ -182,7 +185,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     const { messagesWithCoords, dispatch } = this.props;
     const mesId = messagesWithCoords?.findIndex(m => m.id === message);
     if(mesId >= 0 && Math.floor(messagesWithCoords[mesId].height) !== Math.floor(coord)) {
-      dispatch!(updateCoordinationsOfMessage(message, coord))
+      dispatch!(updateCoordinationsOfMessage(mesId, coord))
       return;
     } else if(mesId >= 0)
       return;

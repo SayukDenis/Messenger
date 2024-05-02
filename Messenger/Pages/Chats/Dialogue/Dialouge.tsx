@@ -157,8 +157,8 @@ class Dialogue extends Component<DialogueProps> {
         this.setState({ listOfMessages: [...list.slice(0, id), m, ...list.slice(id + 1)] });
       }
     });
-    connection.registerPinMessage((message: any, unpin: boolean) => {
-      const m = this.state.listOfMessages.find(m => m.messageId === message.messageId);
+    connection.registerPinMessage((messageId: number, unpin: boolean) => {
+      const m = this.state.listOfMessages.find(m => m.messageId === messageId);
       this.pinMessageHandler(m!);
     });
     connection.registerDeleteMessage((messageId: number) => {
@@ -404,7 +404,7 @@ class Dialogue extends Component<DialogueProps> {
             onEditPress={this.pressEditButton} 
             onDeletePress={this.setDeletingHandler}
             onSelectPress={this.setSelectingHandler}
-            onPinPress={() => connection.pinMessage(mes, this.getChatId(), listOfPinnedMessages.findIndex(m => m.messageId === mes?.messageId) >= 0)} // this.pinMessageHandler
+            onPinPress={() => connection.pinMessage(mes?.messageId, this.getChatId(), listOfPinnedMessages.findIndex(m => m.messageId === mes?.messageId) >= 0)} // this.pinMessageHandler
             userMessageLastWatched={this.state.userMessageLastWatched!}
             pinnedMessageScreen={false}
           />

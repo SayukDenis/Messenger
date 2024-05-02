@@ -125,7 +125,7 @@ export class ChatHubService {
     this.hubConnection?.on("MessageSent", this.messageSentHandler!);
   }
 
-  public async registerPinMessage(handler: (message: any, unpin: boolean) => void) {
+  public async registerPinMessage(handler: (messageId: number, unpin: boolean) => void) {
     this.pinMessageHandler = handler;
     this.hubConnection?.on('PinMessage', this.pinMessageHandler);
   }

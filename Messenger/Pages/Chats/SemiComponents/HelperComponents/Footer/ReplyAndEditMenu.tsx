@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, } from 'react-native';
+import { View, Text, TouchableOpacity, Image, } from 'react-native';
 import React, { Component } from 'react';
 import { ReplyAndEditMenuProps } from '../../Interfaces/IReplyAndEditMenu';
 import { styles } from '../../Styles/ReplyAndEditMenu';
@@ -46,6 +46,9 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
               height={'140%'}
               marginHorizontal={10}
             />
+            { isReply && replyMessage.messageType === 2 && 
+              <Image source={{ uri: 'data:image/png;base64,' + replyMessage.fileContent }} style={{ width: 30, height: 30, marginRight: 5, borderRadius: 2 }} />
+            }
             <View style={styles.dataContainer}>
               <View>
                 <Text style={styles.usernameText}>{displayName}</Text>
