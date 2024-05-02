@@ -105,6 +105,8 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
       return true;
     } else if(this.state.sizeOfMessageContainer[1] !== nextState.sizeOfMessageContainer[1] || this.state.sizeOfMessageContainer[0] !== nextState.sizeOfMessageContainer[0]) {
       return true;
+    } else if(this.props.userMessageLastWatched !== nextProps.userMessageLastWatched) {
+      return true;
     }
     
     return false;

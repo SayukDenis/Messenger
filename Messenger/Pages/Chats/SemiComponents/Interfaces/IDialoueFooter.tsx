@@ -4,6 +4,8 @@ import User from "../../../../dao/Models/User";
 import { MessageProps } from "./GeneralInterfaces/IMessage";
 import { Dispatch } from "redux";
 import EventEmitter from 'events';
+import { HubConnection } from "@microsoft/signalr";
+import { ChatHubService } from "../../Dialogue/services/ChatHubService";
 
 export interface DialogueFooterProps {
   author: User;
@@ -21,6 +23,9 @@ export interface DialogueFooterProps {
   keyboardActive: boolean;
   dispatch: Dispatch;
   emitter: EventEmitter;
+  getChatHubService: () => ChatHubService | null;
+  getAuthor: () => any;
+  getChatId: () => number;
 }
 
 export interface DialogueFooterState {
@@ -39,6 +44,9 @@ export interface sendMessageProps {
   editMessage: MessageProps; 
   messageID: number;
   author: User|undefined;
+  getChatHubService: () => ChatHubService | null;
+  getAuthor: () => any;
+  getChatId: () => number;
 }
 
 export enum EChangeFooterHeight {

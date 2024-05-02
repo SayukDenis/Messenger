@@ -11,6 +11,11 @@ import LeftPartOfFooter from "./HelperComponents/Footer/LeftPartOfFooter";
 import CenterPartOfFooter from "./HelperComponents/Footer/CenterPartOfFooter";
 import RightPartOfFooter from "./HelperComponents/Footer/RightPartOfFooter";
 import { connect } from "react-redux";
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import { ChatHubService } from "../Dialogue/services/ChatHubService";
+import MessageFile from "../../../dao/Models/MessageFile";
 
 class Footer extends Component<DialogueFooterProps> {
   state: DialogueFooterState = {
@@ -88,18 +93,94 @@ class Footer extends Component<DialogueFooterProps> {
   }
 
   sendMessageHandler = () => {
-    const { messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author} = this.props;
+    const { messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId} = this.props;
     const { text } = this.state;
     const { setText } = this;
-    sendMessage({ text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author });
+    sendMessage({ text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId });
+
+    this.setState({ dynamicFooterHeight: FOOTER_HEIGHT });
   }
+
+
+  pickImage = async () => {
+    // Getting base64 string for an image/video
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      base64: true // Request base64 representation of the image
+    });
+
+    console.log(result.assets![0].fileName);
+
+    const uri = result.assets![0].uri;
+
+    // Get the file info
+    const fileInfo = await FileSystem.getInfoAsync(uri);
+
+    // Extract the filename
+    const filename = fileInfo.uri.split('/').pop();
+
+    const requestBody = {
+      base64String: (result as any).base64
+    };
+    
+    await fetch('http://192.168.0.108:5151/api/Chat/dialogue/file', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    const msg = {
+      Content: "image",
+      // FileContent: [] as number[],
+      FileName: 'IMG-' + filename,
+      Author: this.props.author,
+      ChatId: this.props.getChatId(),
+      MessageId: 0,
+      chatPinned: 0,
+      chatPinnedForAll: 0,
+      SendingTime: new Date(),
+      NumberInChat: 0,
+      ReactionOnMessage: [],
+      Type: 2,
+      Properties: 0,
+      MessageResponseId: null,
+      IsEdited: false,
+    };
+
+    ChatHubService.getInstance().sendMessageFile(msg);
+
+
+
+    // Processing and saving image/video to a gallery
+    // if (!result.canceled) {
+    //   const base64String = (result as any).base64;
+
+    //   // Create file path
+    //   const filePath = `${FileSystem.documentDirectory}image.jpg`;
+
+    //   try {
+    //     // Write base64 string to file
+    //     await FileSystem.writeAsStringAsync(filePath, base64String, {
+    //       encoding: FileSystem.EncodingType.Base64,
+    //     });
+
+    //     // Save file to gallery
+    //     await MediaLibrary.saveToLibraryAsync(filePath);
+    //   } catch (error) {
+    //     console.error('Error saving image:', error);
+    //   }
+    // }
+  };
 
   render(): React.ReactNode {
     const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
     const { text, dynamicFooterHeight } = this.state;
     const { textInput, setText, sendMessageHandler, setDynamicFooterHeight } = this;
 
-    console.log('Footer dynamicFooterHeight', dynamicFooterHeight)
+    // console.log('Footer dynamicFooterHeight', dynamicFooterHeight)
 
     return(
       <Animated.View 
@@ -141,7 +222,7 @@ class Footer extends Component<DialogueFooterProps> {
                 <RightPartOfFooter 
                   sendMessage={keyboardActive} 
                   sendMessageHandler={sendMessageHandler} 
-                  pressGalleryButtonHandler={()=>{}} 
+                  pressGalleryButtonHandler={this.pickImage} 
                   selecting={selecting}
                 />
               </View>

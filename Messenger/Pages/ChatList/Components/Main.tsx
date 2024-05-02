@@ -6,6 +6,7 @@ import {
   GestureResponderEvent,
   TouchableOpacity,
   View,
+  Text,
 } from "react-native";
 import {
   setBooleanForTouchOnHamburgerInHeaderChatList,
@@ -34,13 +35,20 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const Main: React.FC<MainProps> = ({ navigation }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
-    const self: SelfProfile = state.selfProfileUser;
+    const self: SelfProfile = state.selfProfileUser.selfProfile;
     return self;
   });
   const currentTab = useSelector((state: any) => {
     let Tab = state.chatListReducer.currentTab.currentTab;
     return Tab;
   });
+
+  const tabs = selfProfile?.tabs;
+  const selectedTab = tabs && tabs[currentTab];
+
+  if (!selectedTab) {
+    return <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}><Text>Loading...</Text></View>; 
+  }
 
   const [selectedLongPressFolder, setSelectedLongPressFolder] =
     useState<number>(0);
@@ -126,29 +134,32 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
     //scrollToIconOnTouch(folderId)
   };
   const scrollToPosition = (currentPosition: number) => {
-    scrollViewRefFooter.current?.scrollTo({
-      x:
-        -(screenWidth * 0.92) / 2 +
-        widths.current[Math.round(currentPosition / screenWidth)] / 2 +
-        ((((currentPosition -
-          screenWidth * Math.round(currentPosition / screenWidth)) %
-          screenWidth) /
-          screenWidth) *
-          widths.current[Math.round(currentPosition / screenWidth)] +
-          positionsOfFolder.current[Math.round(currentPosition / screenWidth)]),
-      animated: false,
-    });
+    if(widths && positionsOfFolder)
+      scrollViewRefFooter.current?.scrollTo({
+        x:
+          -(screenWidth * 0.92) / 2 +
+          widths.current[Math.round(currentPosition / screenWidth)] / 2 +
+          ((((currentPosition -
+            screenWidth * Math.round(currentPosition / screenWidth)) %
+            screenWidth) /
+            screenWidth) *
+            widths.current[Math.round(currentPosition / screenWidth)] +
+            positionsOfFolder.current[Math.round(currentPosition / screenWidth)]),
+        animated: false,
+      });
   };
 
   const handleLayout = useRef((event: LayoutChangeEvent, index: number) => {
-    const { width } = event.nativeEvent.layout;
-    const position = event.nativeEvent.layout.x;
-    const updatePosition = [...positionsOfFolder.current];
-    updatePosition[index] = position;
-    positionsOfFolder.current = updatePosition;
-    const updatedWidths = [...widths.current];
-    updatedWidths[index] = width;
-    widths.current = updatedWidths;
+    if(positionsOfFolder && widths) {
+      const { width } = event.nativeEvent.layout;
+      const position = event.nativeEvent.layout.x;
+      const updatePosition = [...positionsOfFolder.current];
+      updatePosition[index] = position;
+      positionsOfFolder.current = updatePosition;
+      const updatedWidths = [...widths.current];
+      updatedWidths[index] = width;
+      widths.current = updatedWidths;
+    }
   });
   useEffect(() => {
     if (booleanForLogging) {
@@ -157,6 +168,7 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
   }, [booleanForLogging]);
 
   const handleLongPress = useRef((e: GestureResponderEvent, index: number) => {
+    if(!positionsOfFolder || !widths) return;
     setSelectedLongPressFolder(index);
     const target = e.nativeEvent;
     setPositionX(target.pageX);
@@ -292,7 +304,7 @@ const Main: React.FC<MainProps> = ({ navigation }) => {
         ) : null}
       </View>
     </>
-  );
+  )
 };
 
-export default connect(null)(Main);
+export default Main;

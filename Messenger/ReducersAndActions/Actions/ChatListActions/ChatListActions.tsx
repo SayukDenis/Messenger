@@ -28,10 +28,13 @@ export const setBooleanForTouchOnHamburgerInHeaderChatList = (
   isTouchable,
 });
 
-export const setFolderSelectedArray = (folderSelectedArray: any) => ({
-  type: "SET_FOLDER_SELECTED_ARRAY",
-  folderSelectedArray,
-});
+export const setFolderSelectedArray = (folderSelectedArray: any) => {
+  console.log('setFolderSelectedArray', folderSelectedArray);
+  return {
+    type: "SET_FOLDER_SELECTED_ARRAY",
+    folderSelectedArray,
+  }
+};
 export const setEnumForChatListBlurs = (
   enumForChatListBlurs: EnumForChatListBlurs
 ) => ({

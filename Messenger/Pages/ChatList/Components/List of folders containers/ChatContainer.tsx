@@ -16,6 +16,7 @@ import {
   NativeScrollEvent,
   ScrollView,
   Platform,
+  Text,
 } from "react-native";
 import { listOfChatsStyle } from "../../Styles/ListOfChatsStyle";
 import RightContainersForSwipe from "./RightContainersForSwipe";
@@ -32,9 +33,10 @@ import getNameOfChat from "./Functions/GetNameOfChat";
 import Channel from "../../../../dao/Models/Chats/Channel";
 import Group from "../../../../dao/Models/Chats/Group";
 import { setChatForModalWindowChatState } from "../../../../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+import MainChat from "../../../../dao/Models/Chats/MainChat";
 
 interface ChatProps {
-  chat: Chat;
+  chat: Dialogue | Group | Channel;
   nesting: number;
   navigation: any;
   setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
@@ -47,8 +49,11 @@ const ChatContainer: React.FC<ChatProps> = ({
   navigation,
   setVisibleModalWindowChatState,
 }) => {
+  if(!chat || !chat.branches) {
+    return <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}><Text>Denis pidor</Text></View>
+  }
   const selfProfile: SelfProfile = useSelector((state: any) => {
-    const self: SelfProfile = state.selfProfileUser;
+    const self: SelfProfile = state.selfProfileUser.selfProfile;
     return self;
   });
   const dispatch = useDispatch();
@@ -63,13 +68,13 @@ const ChatContainer: React.FC<ChatProps> = ({
   const [positionXForSwipeable, setPositionXForSwipeable] =
     useState<number>(screenWidth);
   useEffect(() => {});
-  function obhod(chat: Chat) {
-    for (let index = 0; index < chat.branches.length; index++) {
-      console.log(chat.branches[index].title);
-      obhod(chat.branches[index]);
-    }
-    return;
-  }
+  // function obhod(chat: MainChat) {
+  //   for (let index = 0; index < chat.branches.length; index++) {
+  //     console.log(chat.branches[index].title);
+  //     obhod(chat.branches[index]);
+  //   }
+  //   return;
+  // }
 
   const onBranchPress: () => void = () => {
     if (!IsBranchesOpenBoolean) {
@@ -92,9 +97,10 @@ const ChatContainer: React.FC<ChatProps> = ({
   >(null);
 
   const scrollViewRef: Ref<ScrollView> = useRef<ScrollView>(null);
-  const CountOfUnreadMessage = useMemo(() => {
-    return CountOfUnreadMessages(selfProfile, chat);
-  }, [chat.lastWatchedMessage]);
+  const CountOfUnreadMessage = CountOfUnreadMessages(selfProfile, chat);
+  // const CountOfUnreadMessage = useMemo(() => {
+  //   return CountOfUnreadMessages(selfProfile, chat);
+  // }, [chat?.branches[0]?.lastWatchedMessage]); // Treba bude Zminyty bo tut Zalupa
   const haveUnreadMessagesBool =
     CountOfUnreadMessage != null && CountOfUnreadMessage > 0;
   // console.log(getNameOfChat(chat,selfProfile)+":"+haveUnreadMessagesBool)

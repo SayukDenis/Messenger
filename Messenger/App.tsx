@@ -4,20 +4,23 @@ import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import store from "./ReducersAndActions/ConfigureStore/ConfigureStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import Navigation from "./Navigation/Navigation";
-import 'react-native-url-polyfill/auto';
-import StartPage from "./Pages/Profiles/SemiComponents/Navigation";
 import { initialization } from "./Initialization/Initialization";
-import { Run } from "./dao/test/manualTest/_orchestrator";
+import { dataSource } from "./dao/local/database";
+import 'react-native-url-polyfill/auto';
+import Navigation from "./Navigation/Navigation";
+
+const manager = dataSource.manager;
 
 export default function App() {
   StatusBar.setBarStyle("dark-content");
-  useEffect(() => {
-    const fetchData = async () => {
-      await initialization();
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await initialization();
+  //     if (!dataSource.isInitialized) await dataSource.initialize();
+  //   };
+  //   fetchData();
+  // }, []);
+
   return (
     <SafeAreaProvider>
       <StatusBar translucent backgroundColor="transparent" />

@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import FolderContainer from "./FolderContainer";
 import { useSelector } from "react-redux";
 import SelfProfile from "../../../../dao/Models/SelfProfile";
@@ -19,7 +19,7 @@ const ListOfFoldersButtons: React.FC<ListOfFoldersButtonsProps> = ({
   handleLayout,
 }) => {
   const selfProfile: SelfProfile = useSelector((state: any) => {
-    const self: SelfProfile = state.selfProfileUser;
+    const self: SelfProfile = state.selfProfileUser.selfProfile;
     return self;
   });
 
@@ -27,6 +27,13 @@ const ListOfFoldersButtons: React.FC<ListOfFoldersButtonsProps> = ({
     let Tab = state.chatListReducer.currentTab.currentTab;
     return Tab;
   });
+
+  const tabs = selfProfile?.tabs;
+  const selectedTab = tabs && tabs[currentTab];
+
+  if (!selectedTab || !selfProfile?.tabs[currentTab]) {
+    return <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}><Text>Loading...</Text></View>; 
+  }
 
   return (
     <View style={footerstyles.listOfFoldersButtons}>

@@ -25,7 +25,7 @@ isSelected
   const colorOfText: string=isSelected?"#FFFFFF":"#2B1D1D"
   const opacityOfBackgroundContainer: number=0.35
   const selfProfile: SelfProfile = useSelector((state: any) => {
-    const self: SelfProfile = state.selfProfileUser;
+    const self: SelfProfile = state.selfProfileUser.selfProfile;
     return self;
   });
 

@@ -6,6 +6,8 @@ export interface MessageProps {
     messageId?: number;
     author: User;
     content: string;
+    fileContent?: string;
+    fileName?: string;
     sendingTime: Date
     messageType: EMessageType;
     messageResponseId?: number;

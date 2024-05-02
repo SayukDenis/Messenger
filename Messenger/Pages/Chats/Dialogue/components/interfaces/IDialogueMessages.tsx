@@ -6,6 +6,8 @@ import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reduce
 import { Animated } from "react-native";
 import { Dispatch } from "redux";
 import EventEmitter from 'events';
+import { HubConnection } from "@microsoft/signalr";
+import { ChatHubService } from "../../services/ChatHubService";
 
 export interface DialogueMessagesProps {
   scrollToPinnedMessage: boolean;
@@ -25,7 +27,9 @@ export interface DialogueMessagesProps {
   setPinnedMessage: (id: number) => void;
   navigation: any;
   messagesWithCoords: CoordinationsOfMessage[];
-  emitter: EventEmitter
+  emitter: EventEmitter;
+  chatId: number;
+  chatHubService: ChatHubService | null;
 }
 
 export interface MessageViewHandleProps {

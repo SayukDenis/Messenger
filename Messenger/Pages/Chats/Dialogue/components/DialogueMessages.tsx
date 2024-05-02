@@ -59,7 +59,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   replyOrEditHeightHandler = () => {
     console.log('replyOrEditHeightHandler', (this.state.footerGap as any)._value, (height*0.07-SOFT_MENU_BAR_HEIGHT/4));
     Animated.timing(this.state.footerGap, {
-      toValue: (this.state.footerGap as any)._value + (height*0.07-SOFT_MENU_BAR_HEIGHT/4) * (this.props.isReply||this.props.isEdit?1:-1),
+      toValue: (this.state.footerGap as any)._value + (height*0.07-SOFT_MENU_BAR_HEIGHT/4) * (this.props.isReply||this.props.isEdit?1:0),
       duration: 50,
       useNativeDriver: false
     }).start();
@@ -95,7 +95,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   shouldComponentUpdate(nextProps: Readonly<DialogueMessagesProps>, nextState: Readonly<DialogueMessagesState>, nextContext: any): boolean {
     
     
-    const { listOfMessages, hasPinnedMessage, scrollToPinnedMessage, selecting, idOfPinnedMessage, pinnedMessages, isEdit, isReply } = this.props;
+    const { listOfMessages, hasPinnedMessage, scrollToPinnedMessage, selecting, idOfPinnedMessage, pinnedMessages, isEdit, isReply, authorMessageLastWatched } = this.props;
     const { pinnedMessageId } = this.state;
     //if(this.props !== nextProps) return true;
     if(pinnedMessages !== nextProps.pinnedMessages) {
@@ -121,6 +121,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     } else if(isEdit !== nextProps.isEdit) {
       return true;
     } else if(isReply !== nextProps.isReply) {
+      return true;
+    } else if(authorMessageLastWatched?.messageId !== nextProps.authorMessageLastWatched?.messageId) {
       return true;
     }
 
@@ -185,6 +187,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     } else if(mesId >= 0)
       return;
 
+    this.updateLastWatchedMessages(message, coord);
     dispatch!(addCoordinationsOfMessage(message, coord));
   }
 
@@ -233,6 +236,33 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     })
     if(messageId != undefined && messageId >= 0)
       this.setState({ pinnedMessageId: this.props.setPinnedMessage(messageId) });
+
+
+    this.updateLastWatchedMessages();
+  }
+
+  updateLastWatchedMessages = (id?: number, coord?: number) => {
+    const { listOfMessages, authorMessageLastWatched, author, chatId, chatHubService, messagesWithCoords } = this.props;
+    const nearestUnwatchedMessageId = id ? id : listOfMessages.find(m => m.author.userId !== author.userId)?.messageId;
+    const scrollPos = this.flatListRef.current._listRef._scrollMetrics.offset;
+    const newMessage = messagesWithCoords.find(m => m.id === nearestUnwatchedMessageId);
+    // if(didUpdate) {
+    //   console.log('DID UPDATE');
+    //   console.log(newMessage);
+    //   console.log(authorMessageLastWatched);
+    //   console.log(nearestUnwatchedMessageId);
+    //   console.log(messagesWithCoords);
+    // }
+    const newMessagePos = newMessage ? newMessage.coords + newMessage?.height : coord;
+
+    if(nearestUnwatchedMessageId! > authorMessageLastWatched?.messageId! && chatHubService && scrollPos < newMessagePos!) {
+      console.log('invoke updateLastWatchedMessage', nearestUnwatchedMessageId!, authorMessageLastWatched?.messageId!);
+      chatHubService.updateLastWatchedMessage(
+        nearestUnwatchedMessageId!, 
+        chatId, 
+        author.userId
+      );
+    }
   }
 
   messageMenuHandler = async (coord: Layout, pressed: boolean) => {
