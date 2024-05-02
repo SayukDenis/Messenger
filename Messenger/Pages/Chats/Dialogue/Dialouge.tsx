@@ -18,12 +18,9 @@ import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeC
 import { DialogueProps, DialogueState } from './IDialogue';
 import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
 import EventEmitter from 'events';
-import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import { ChatHubService } from './services/ChatHubService';
-import Message from '../../../dao/Models/Message';
-import { EMessageType } from '../../../dao/Models/EMessageType';
-import MessageText from '../../../dao/Models/MessageText';
-import MessageFile from '../../../dao/Models/MessageFile';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import { ChatHubService } from "../Dialogue/services/ChatHubService";
 
 let coord: Layout;
 let author: User;
@@ -124,8 +121,24 @@ class Dialogue extends Component<DialogueProps> {
     connection.registerReceiveMessageText((mes: any) => {
       this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
     });
-    connection.registerReceiveMessageFile((mes: any) => {
+    connection.registerReceiveMessageFile(async (mes: any) => {
       this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
+
+      // Processing and saving image/video to a gallery
+      // Create file path
+      const filePath = `${FileSystem.documentDirectory}image.png`;
+
+      try {
+        // Write base64 string to file
+        await FileSystem.writeAsStringAsync(filePath, mes.fileContent, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        // Save file to gallery
+        await MediaLibrary.saveToLibraryAsync(filePath);
+      } catch (error) {
+        console.error('Error saving image:', error);
+      }
     }); 
     connection.registerReceiveUpdateLastWatchedMessage((messageId: number, chatId: number, userId: number) => {
       if(userId === author.userId) {

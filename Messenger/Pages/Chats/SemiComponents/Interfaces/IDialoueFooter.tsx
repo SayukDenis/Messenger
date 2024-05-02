@@ -32,6 +32,8 @@ export interface DialogueFooterState {
   text: string;
   bottomOffset: Animated.Value;
   dynamicFooterHeight: number;
+  displayImage: string;
+  heightOfImageBackground: Animated.Value;
 }
 
 export interface sendMessageProps {
@@ -47,6 +49,7 @@ export interface sendMessageProps {
   getChatHubService: () => ChatHubService | null;
   getAuthor: () => any;
   getChatId: () => number;
+  sendFile: boolean;
 }
 
 export enum EChangeFooterHeight {

@@ -3,13 +3,13 @@ import User from "../../../../../dao/Models/User";
 import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
 import { sendMessageProps } from "../../Interfaces/IDialoueFooter";
 
-export const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId}:sendMessageProps) => {
+export const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId, sendFile }:sendMessageProps) => {
   setText('');
   text = text.trim();
 
   const messageToEdit = messages.find(m => m.messageId == messageID);
 
-  if(text == '') {
+  if(text == '' && !sendFile) {
     onSendMessageOrCancelReplyAndEdit();
     return;
   }
@@ -47,7 +47,10 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
       IsDeletedForAll: false,
     };
 
-    connection?.sendMessageText(msg);
+    if(sendFile)
+      connection?.sendMessageFile({ ...msg, FileName: 'image', Type: 2 });
+    else
+      connection?.sendMessageText(msg);
   } else if(editMessage?.content&&text!=messageToEdit?.content) {
     connection?.updateMessageText(text, messageToEdit?.messageId!, getChatId());
   } else {
@@ -69,7 +72,10 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
           IsDeletedForAll: false,
         };
 
-    connection?.sendMessageText(msg);
+    if(sendFile)
+      connection?.sendMessageFile({ ...msg, FileName: 'image', Type: 2 });
+    else
+      connection?.sendMessageText(msg);
   }
   onSendMessageOrCancelReplyAndEdit();
 }; 

@@ -11,7 +11,7 @@ import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { Easing } from 'react-native-reanimated';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, screenHeight, width } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } from '../ChatConstants';
 import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
 import PinButton from '../SVG/PinButton';
@@ -289,10 +289,15 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
                 <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                { message.content &&
+                  <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
+                    {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
+                  </Text>
+                }
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
-                    style={styles.messageTimeStamp}
+                    style={[styles.messageTimeStamp, message.content.length > 0 && { bottom: 0, fontWeight: 'normal', color: 'black', backgroundColor: 'transparent' }]}
                   >
                     {message.isEdited ? 'edited ' : ''}
                     {message.sendingTime.getHours().toString().padStart(2, '0')}:

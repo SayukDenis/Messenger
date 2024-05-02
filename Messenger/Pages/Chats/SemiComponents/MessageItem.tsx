@@ -10,7 +10,7 @@ import DefaultFileType from './MessageViewAndTypes/DefaultFileType';
 class MessageItem extends Component<MessageItemProps> {
 
   messageViewHandle = ({message}:MessageViewHandleProps) => {
-    if(!message.content) return null;
+    if(!message.content && message.messageType !== 2) return null;
 
     const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users } = this.props;
 
