@@ -7,20 +7,16 @@ import {
   screenHeight,
   screenWidth,
 } from "../../ChatList/Constants/ConstantsForChatlist";
-
+import CodeVerificationForm from "./CodeVerificationForm";
 import { ScrollView } from "react-native";
 import CodeVerificationContainer from "./CodeVerificationContainer";
 import FormContainer from "../Authorization containers/FormContainer";
 import FinishButtonForCodeVerification from "./FinishButtonForCodeVerification";
-<<<<<<< HEAD
-import CodeVerificationForm from "./CodeVerificationForm";
-=======
 import {
   codeForAuthorizationEndPoint,
   idOfUserForAuthorizationEndPoint,
   listentingServer,
 } from "../../ChatList/Constants/ServerConection";
->>>>>>> a83a44da53669d099a88eb11d87f2aef98aed9e9
 
 interface CodeVerificationPageProps {
   navigation: any;
@@ -42,16 +38,19 @@ const CodeVerificationPage: React.FC<CodeVerificationPageProps> = ({
   const pressOnBackButton = () => {
     navigation.goBack();
   };
-  const pressOnFinishButton = async () => {
-    if (codeForCheck != codeNumber) {
-      setCodeNumber("");
-      return;
-    }
-    const id = await getId();
-    if (id === -1) {
-      navigation.navigate("Add User Information Page", { phoneNumber });
-    }
-  };
+  // const pressOnFinishButton = async () => {
+  //   if (codeForCheck != codeNumber) {
+  //     setCodeNumber("");
+  //     return;
+  //   }
+  //   const id = await getId();
+  //   if (id === -1) {
+  //     navigation.navigate("Add User Information Page", { phoneNumber });
+  //   }
+  // };
+  const pressOnFinishButton = () => {
+    navigation.navigate("Add User Information Page", { phoneNumber });
+  }
   useEffect(() => {
     getCode();
   }, []);
