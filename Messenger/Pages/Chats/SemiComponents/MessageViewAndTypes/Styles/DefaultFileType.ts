@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     marginLeft: screenHeight*0.003, 
     marginRight: -screenHeight*0.001
   },
-  messageTimeStamp: {
+  messageTimeStampNoText: {
     position: 'absolute',
     left: -width*0.08,
     bottom: width*0.01,
@@ -55,6 +55,12 @@ export const styles = StyleSheet.create({
     color: 'white',
     borderRadius: 5,
     fontSize: getCustomFontSize(9),
+  },
+  messageTimeStampText: { 
+    bottom: 0, 
+    fontWeight: 'normal', 
+    color: 'black', 
+    backgroundColor: 'transparent' 
   },
   messageViewStatus: { 
     position: 'absolute', 

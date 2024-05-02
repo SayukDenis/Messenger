@@ -4,8 +4,9 @@ import { EMessageType } from '../../../dao/Models/EMessageType';
 import { MessageViewHandleProps } from '../Dialogue/components/interfaces/IDialogueMessages';
 import { MessageItemProps } from './Interfaces/IMessageItem';
 import DefaultTextType from './MessageViewAndTypes/DefaultTextType';
-import ReplyTextTypeUsingClass from './MessageViewAndTypes/ReplyTextType';
+import ReplyTextType from './MessageViewAndTypes/ReplyTextType';
 import DefaultFileType from './MessageViewAndTypes/DefaultFileType';
+import ReplyFileType from './MessageViewAndTypes/ReplyFileType';
 
 class MessageItem extends Component<MessageItemProps> {
 
@@ -14,8 +15,8 @@ class MessageItem extends Component<MessageItemProps> {
 
     const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users } = this.props;
 
-    if(message.messageType === EMessageType.text && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && m.content) >= 0) {
-      return <ReplyTextTypeUsingClass
+    if(message.messageType === EMessageType.text && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && (m.content || m.fileContent)) >= 0) {
+      return <ReplyTextType
         navigation={navigation}
         key={message.messageId} 
         messages={listOfMessages} 
@@ -30,8 +31,7 @@ class MessageItem extends Component<MessageItemProps> {
         pinnedMessageScreen={pinnedMessageScreen}
         listOfPinnedMessages={listOfPinnedMessages}
       />;
-    }
-    else if(message.messageType === EMessageType.text) {
+    } else if(message.messageType === EMessageType.text) {
       return <DefaultTextType
         navigation={navigation}
         key={message.messageId} 
@@ -41,6 +41,22 @@ class MessageItem extends Component<MessageItemProps> {
         id={message.messageId!} 
         flatList={flatListRef!}
         author={author}
+        userMessageLastWatched={userMessageLastWatched}
+        selecting={selecting}
+        pinnedMessageScreen={pinnedMessageScreen}
+        listOfPinnedMessages={listOfPinnedMessages}
+      />;
+    } else if(message.messageType === EMessageType.img && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && (m.content || m.fileContent)) >= 0) {
+      return <ReplyFileType
+        navigation={navigation}
+        key={message.messageId} 
+        messages={listOfMessages} 
+        message={message} 
+        setMessageMenuVisible={setMessageMenuVisible} 
+        id={message.messageId!} 
+        flatList={flatListRef!}
+        author={author}
+        userName={users?users[0]?.name:''}
         userMessageLastWatched={userMessageLastWatched}
         selecting={selecting}
         pinnedMessageScreen={pinnedMessageScreen}

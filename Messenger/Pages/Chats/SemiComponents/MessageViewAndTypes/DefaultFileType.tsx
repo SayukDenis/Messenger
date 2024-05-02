@@ -297,7 +297,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
-                    style={[styles.messageTimeStamp, message.content.length > 0 && { bottom: 0, fontWeight: 'normal', color: 'black', backgroundColor: 'transparent' }]}
+                    style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
                   >
                     {message.isEdited ? 'edited ' : ''}
                     {message.sendingTime.getHours().toString().padStart(2, '0')}:

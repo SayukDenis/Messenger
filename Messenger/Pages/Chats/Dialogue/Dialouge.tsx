@@ -102,7 +102,7 @@ class Dialogue extends Component<DialogueProps> {
           
           const msgs : any[] = [];
           (result[1] as Array<any>).forEach((m, index) => {
-            console.log(m);
+            console.log(JSON.stringify({ ...m, fileContent: m.fileContent ? m.fileContent.length : '' }, null, '  '));
             msgs.push({ ...m, sendingTime: new Date(m.sendingTime) });
           });
 
