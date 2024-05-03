@@ -5,9 +5,7 @@ import { wrapText } from '../MessageViewAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { DefaultTextMessageProps } from './Interfaces/IDefaultText';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, width } from '../ChatConstants';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import PinButton from '../SVG/PinButton';
+import * as SVG from './../SVG';
 
 class DefaultTextDummyMessage extends Component<DefaultTextMessageProps> {
   render(): React.ReactNode {
@@ -24,7 +22,7 @@ class DefaultTextDummyMessage extends Component<DefaultTextMessageProps> {
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
               <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
               <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                {pinned&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                {pinned&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                 <Text
                   style={
                     message.content.length > DEFAULT_CHARS_PER_LINE
@@ -41,7 +39,10 @@ class DefaultTextDummyMessage extends Component<DefaultTextMessageProps> {
           </View>
           { isUser && 
           <View style={styles.messageViewStatus}>
-            { message.messageId!<=userMessageLastWatched?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+            { message.messageId! <= userMessageLastWatched?.messageId! ? 
+              <SVG.MessageItemStatusMessageReviewed /> : 
+              <SVG.MessageItemStatusMessageNotReviewed /> 
+            }
           </View> }
         </View>
       </View>

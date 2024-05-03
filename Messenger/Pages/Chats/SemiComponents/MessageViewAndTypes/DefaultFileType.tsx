@@ -2,7 +2,6 @@ import { Animated, GestureResponderEvent, Image, ScrollView, Text, TouchableOpac
 import React, { Component } from 'react'
 import ScrollButton from './SemiComponents/ScrollButton';
 import SelectButton from './SemiComponents/SelectButton';
-import ReplyIcon from '../SVG/ReplyIcon';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 import { Dispatch } from 'redux';
 import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
@@ -11,13 +10,11 @@ import User from '../../../../dao/Models/User';
 import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { Easing } from 'react-native-reanimated';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } from '../ChatConstants';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import PinButton from '../SVG/PinButton';
+import { DEFAULT_CHARS_PER_LINE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } from '../ChatConstants';
 import { functionalStyles, styles } from './Styles/DefaultFileType';
 import { wrapText } from './HelperFunctions/wrapText';
 import { connect } from 'react-redux';
+import * as SVG from './../SVG';
 
 let size: sizeProps[] = [];
 
@@ -295,7 +292,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
                   </Text>
                 }
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
                     style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
                   >
@@ -326,17 +323,19 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
             </View>
             {isUser && (
               <View style={styles.messageViewStatus}>
-                {message.messageId! <= (userMessageLastWatched?.messageId || 0) ? (
-                  <MessageItemStatusMessageReviewed />
+                { message.sent ? (message.messageId! <= (userMessageLastWatched?.messageId || 0) ? (
+                  <SVG.MessageItemStatusMessageReviewed />
                 ) : (
-                  <MessageItemStatusMessageNotReviewed />
-                )}
+                  <SVG.MessageItemStatusMessageNotReviewed />
+                )) :
+                  <SVG.MessageItemStatusSending />
+                }
               </View>
             )}
           </View>
         </TouchableOpacity>
         <View style={styles.messageSwipeToReply}>
-          <ReplyIcon />
+          <SVG.ReplyIcon />
         </View>
       </ScrollView>
     )

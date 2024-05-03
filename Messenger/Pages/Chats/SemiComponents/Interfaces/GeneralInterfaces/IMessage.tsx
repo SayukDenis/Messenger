@@ -13,6 +13,6 @@ export interface MessageProps {
     messageResponseId?: number;
     messageForwardId?: number;
     isEdited: boolean;
-    isDeleted: boolean;
+    sent: boolean;
     reactionOnMessage: Array<IUserReaction>;
 }

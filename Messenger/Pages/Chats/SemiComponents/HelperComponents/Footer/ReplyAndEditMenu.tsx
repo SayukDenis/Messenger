@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { ReplyAndEditMenuProps } from '../../Interfaces/IReplyAndEditMenu';
 import { styles } from '../../Styles/ReplyAndEditMenu';
 import { connect } from 'react-redux';
-import ReplyAndEditMenuReplyIcon from '../../SVG/ReplyAndEditMenuReplyIcon';
-import ReplyAndEditMenuEditIcon from '../../SVG/ReplyAndEditMenuEditIcon';
-import ReplyAndEditMenuCancelButton from '../../SVG/ReplyAndEditMenuCancelButton';
+import * as SVG from '../../SVG';
 import LineSeparator from '../General/LineSeparator';
 
 class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
@@ -39,7 +37,7 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
       <View style={styles.container}>
         <View style={{flex:1}}>
           <View style={styles.innerContainer}>
-            {isReply?<ReplyAndEditMenuReplyIcon />:<ReplyAndEditMenuEditIcon />}
+            {isReply ? <SVG.ReplyAndEditMenuReplyIcon /> : <SVG.ReplyAndEditMenuEditIcon />}
             <LineSeparator 
               color='#4684FB' 
               width={1.45}
@@ -63,7 +61,7 @@ class ReplyAndEditMenu extends Component<ReplyAndEditMenuProps> {
                 onPress={cancelReplyAndEdit}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10, }}  
               >
-                <ReplyAndEditMenuCancelButton />
+                <SVG.ReplyAndEditMenuCancelButton />
               </TouchableOpacity>
             </View>
           </View>

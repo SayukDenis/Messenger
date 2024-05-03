@@ -1,10 +1,8 @@
 
 import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
-import FooterVideoButton from '../../SVG/FooterVideoButton';
-import FooterMicrophoneButton from '../../SVG/FooterMicrophoneButton';
 import { styles } from './Styles/LeftPartOfFooter';
-import DeleteButton from '../../SVG/DeleteButton';
+import * as SVG from '../../SVG';
 import { height } from '../../ChatConstants';
 import { LeftPartOfFooterProps, LeftPartOfFooterState } from './Interfaces/ILeftPartOfFooter';
 
@@ -34,13 +32,13 @@ class LeftPartOfFooter extends Component<LeftPartOfFooterProps> {
         style={styles.container}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
       >
-        {video?<FooterVideoButton/>:<FooterMicrophoneButton/>} 
+        {video ? <SVG.FooterVideoButton/> : <SVG.FooterMicrophoneButton/>} 
       </TouchableOpacity> :
       <TouchableOpacity
         activeOpacity={1}
         onPress={deleteSelectedMessagesHandler}
       >
-        <DeleteButton size={height*0.035} />
+        <SVG.DeleteButton size={height*0.035} />
       </TouchableOpacity>
     );
   }

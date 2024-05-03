@@ -46,7 +46,6 @@ export const styles = StyleSheet.create({
     borderRightWidth:0.4,
   },
   modalButtonText: {
-    color: 'red',
     fontSize: getCustomFontSize(14)
   },
   modalRightButtonContainer: {

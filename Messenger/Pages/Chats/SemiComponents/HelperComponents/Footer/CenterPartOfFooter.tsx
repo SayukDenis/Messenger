@@ -1,7 +1,7 @@
 import { TextInput, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import { styles } from './Styles/CenterPartOfFooter';
-import FooterExportButton from '../../SVG/FooterExportButton';
+import * as SVG from '../../SVG';
 import { CenterPartOfFooterProps } from './Interfaces/ICenterPartOfFooter';
 import { FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT } from '../../ChatConstants';
 
@@ -61,7 +61,7 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
         activeOpacity={1}
         onPress={()=>{}}
       >
-        <FooterExportButton />
+        <SVG.FooterExportButton />
       </TouchableOpacity>
     );
   }

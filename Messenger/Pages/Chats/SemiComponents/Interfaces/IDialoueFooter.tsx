@@ -49,7 +49,7 @@ export interface sendMessageProps {
   getChatHubService: () => ChatHubService | null;
   getAuthor: () => any;
   getChatId: () => number;
-  sendFile: boolean;
+  fileContent: string;
 }
 
 export enum EChangeFooterHeight {

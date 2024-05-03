@@ -1,7 +1,7 @@
 import { TouchableOpacity } from 'react-native'
 import React, { Component } from 'react'
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import ReplyIcon from '../../SVG/ReplyIcon';
+import * as SVG from '../../SVG';
 import { ScrollButtonProps } from './Interfaces/IScrollButton';
 import { screenHeight } from '../../ChatConstants';
 
@@ -28,7 +28,7 @@ class ScrollButton extends Component<ScrollButtonProps> {
           dispatch(setAnimationOfBackgroundForScrolledMessage(messageId));
         }}
       >
-        <ReplyIcon size={ICON_SIZE} />
+        <SVG.ReplyIcon size={ICON_SIZE} />
       </TouchableOpacity>
     )
   }

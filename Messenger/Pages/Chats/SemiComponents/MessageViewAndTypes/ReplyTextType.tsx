@@ -8,13 +8,9 @@ import {
   Easing,
 } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import ReplyIcon from '../SVG/ReplyIcon';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, width } from '../ChatConstants';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
-import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { ReplyTextTypeProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
 import { functionalStyles, styles } from './Styles/ReplyTextType';
@@ -23,6 +19,7 @@ import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
+import * as SVG from './../SVG';
 
 let size: sizeProps[] = [];
 
@@ -374,7 +371,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                 /> 
                 <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
                     style={
                       message.content.length > DEFAULT_CHARS_PER_LINE
@@ -406,13 +403,20 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               />}
             </TouchableOpacity>
           </TouchableOpacity>
-          { isUser && 
+          {isUser && (
             <View style={styles.messageViewStatus}>
-              { message.messageId! <= userMessageLastWatched?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
-            </View> }
+              { message.sent ? (message.messageId! <= (userMessageLastWatched?.messageId || 0) ? (
+                <SVG.MessageItemStatusMessageReviewed />
+              ) : (
+                <SVG.MessageItemStatusMessageNotReviewed />
+              )) :
+                <SVG.MessageItemStatusSending />
+              }
+            </View>
+          )}
         </View>
         <View style={styles.messageSwipeToReply}>
-          <ReplyIcon />
+          <SVG.ReplyIcon />
         </View>
       </ScrollView>
     );

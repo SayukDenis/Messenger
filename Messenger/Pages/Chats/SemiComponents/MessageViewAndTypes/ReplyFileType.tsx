@@ -9,13 +9,9 @@ import {
   Image,
 } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import ReplyIcon from '../SVG/ReplyIcon';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width } from '../ChatConstants';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
-import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { functionalStyles, styles } from './Styles/ReplyFileType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
@@ -28,7 +24,7 @@ import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessag
 import { Dispatch } from 'redux';
 import User from '../../../../dao/Models/User';
 import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
-
+import * as SVG from './../SVG';
 
 export interface ReplyFileTypeProps {
   idForAnimation: number;
@@ -413,7 +409,7 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
                   </Text>
                 }
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
                     style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
                   >
@@ -441,13 +437,20 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
               />}
             </TouchableOpacity>
           </TouchableOpacity>
-          { isUser && 
+          {isUser && (
             <View style={styles.messageViewStatus}>
-              { message.messageId! <= userMessageLastWatched?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
-            </View> }
+              { message.sent ? (message.messageId! <= (userMessageLastWatched?.messageId || 0) ? (
+                <SVG.MessageItemStatusMessageReviewed />
+              ) : (
+                <SVG.MessageItemStatusMessageNotReviewed />
+              )) :
+                <SVG.MessageItemStatusSending />
+              }
+            </View>
+          )}
         </View>
         <View style={styles.messageSwipeToReply}>
-          <ReplyIcon />
+          <SVG.ReplyIcon />
         </View>
       </ScrollView>
     );

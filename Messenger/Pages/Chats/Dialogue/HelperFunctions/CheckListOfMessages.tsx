@@ -8,6 +8,8 @@ export const checkListOfMessagesDifference = (prev: MessageProps[], next: Messag
   for(let i = 0; i < prev.length; i++) {
     if(prev[i].content !== next[i].content) {
       return true;
+    } else if(prev[i].sent !== next[i].sent) {
+      return true;
     }
   }
 

@@ -6,16 +6,13 @@ import { footerstyles, styles } from './Styles/MessageMenu';
 import { screenHeight } from "../../ChatList/Constants/ConstantsForChatlist";
 import { connect } from "react-redux";
 import * as Clipboard from 'expo-clipboard';
-import MessageMenuSelectButton from "./SVG/MessageMenuSelectButton";
-import DeleteButton from "./SVG/DeleteButton";
-import MessageMenuForwardButton from "./SVG/MessageMenuForwardButton";
-import PinButton from "./SVG/PinButton";
-import MessageMenuCopyButton from "./SVG/MessageMenuCopyButton";
-import MessageMenuEditButton from "./SVG/MessageMenuEditButton";
-import MessageMenuReplyButton from "./SVG/MessageMenuReplyButton";
 import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_HORIZONTAL, MESSAGE_TRIANGLE_SIZE, NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize } from "./ChatConstants";
+import { GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR, MESSAGE_BUTTON_HEIGHT, 
+  MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_HORIZONTAL, MESSAGE_TRIANGLE_SIZE, 
+  NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize 
+} from "./ChatConstants";
+import * as SVG from './SVG';
 
 const containerWidth = new Animated.Value(0); 
 const firstContainerTranslate = new Animated.Value(0); 
@@ -38,19 +35,19 @@ class MessageMenu extends Component<MessageMenuProps> {
     {
       text: 'Reply',
       action: this.props.onReplyPress,
-      svg: <MessageMenuReplyButton />
+      svg: <SVG.MessageMenuReplyButton />
     },
     {
       text: 'Edit',
       action: this.props.onEditPress,
-      svg: <MessageMenuEditButton />
+      svg: <SVG.MessageMenuEditButton />
     },
     {
       text: 'Copy',
       action: async () => {
         await Clipboard.setStringAsync(this.props.coord.message?.content!);
       },
-      svg: <MessageMenuCopyButton />
+      svg: <SVG.MessageMenuCopyButton />
     },
     {
       text: this.props.coord?.pinned?'Unpin':'Pin',
@@ -58,23 +55,23 @@ class MessageMenu extends Component<MessageMenuProps> {
         if(typeof this.props.onPinPress === 'function')
           this.props.onPinPress(this.props.coord.message!);
       },
-      svg: <PinButton />
+      svg: <SVG.PinButton />
     },
     {
       text: 'Forward',
       action: () => {},
-      svg: <MessageMenuForwardButton />
+      svg: <SVG.MessageMenuForwardButton />
     },
     {
       text: 'Delete',
       color: 'red',
       action: this.props.onDeletePress,
-      svg: <DeleteButton />
+      svg: <SVG.DeleteButton />
     },
     {
       text: 'Select',
       action: this.props.onSelectPress,
-      svg: <MessageMenuSelectButton />
+      svg: <SVG.MessageMenuSelectButton />
     },
   ];
 
@@ -84,7 +81,7 @@ class MessageMenu extends Component<MessageMenuProps> {
       action: async () => {
         await Clipboard.setStringAsync(this.props.coord.message?.content!);
       },
-      svg: <MessageMenuCopyButton />
+      svg: <SVG.MessageMenuCopyButton />
     },
     {
       text: 'Unpin',
@@ -92,18 +89,18 @@ class MessageMenu extends Component<MessageMenuProps> {
         if(typeof this.props.onPinPress === 'function')
           this.props.onPinPress(this.props.coord.message!);
       },
-      svg: <PinButton />
+      svg: <SVG.PinButton />
     },
     {
       text: 'Forward',
       action: () => {},
-      svg: <MessageMenuForwardButton />
+      svg: <SVG.MessageMenuForwardButton />
     },
     {
       text: 'Delete',
       color: 'red',
       action: this.props.onDeletePress,
-      svg: <DeleteButton />
+      svg: <SVG.DeleteButton />
     },
   ];
 

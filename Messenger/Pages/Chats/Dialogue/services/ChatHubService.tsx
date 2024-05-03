@@ -121,8 +121,9 @@ export class ChatHubService {
     this.hubConnection?.on("UpdateLastWatchedMessage", this.lastWatchedMessageUpdateReceivedHandler!);
   }
   
-  public async registerMessageSent() {
-    this.hubConnection?.on("MessageSent", this.messageSentHandler!);
+  public async registerMessageSent(handler: (messageId: number) => void) {
+    this.messageSentHandler = handler;
+    this.hubConnection?.on("MessageSent", this.messageSentHandler);
   }
 
   public async registerPinMessage(handler: (messageId: number, unpin: boolean) => void) {

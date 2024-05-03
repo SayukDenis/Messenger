@@ -3,13 +3,13 @@ import User from "../../../../../dao/Models/User";
 import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
 import { sendMessageProps } from "../../Interfaces/IDialoueFooter";
 
-export const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId, sendFile }:sendMessageProps) => {
+export const sendMessage = ({text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId, fileContent }:sendMessageProps) => {
   setText('');
   text = text.trim();
 
   const messageToEdit = messages.find(m => m.messageId == messageID);
 
-  if(text == '' && !sendFile) {
+  if(!text && !fileContent) {
     onSendMessageOrCancelReplyAndEdit();
     return;
   }
@@ -17,19 +17,24 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
   const connection = getChatHubService();
 
   if(replyMessage?.content) {
-    // setMessages({
-    //   messageId: messages.length,
-    //   author: (author as User), // SelfProgile == User ?
-    //   content: text,
-    //   sendingTime: new Date(),
-    //   messageType: EMessageType.text,
-    //   messageResponseId: replyMessage.messageId,
-    //   isEdited: false,
-    //   isDeleted: false,
-    //   reactionOnMessage: []
-    // });
-
     const msg = {
+      messageId: messages.length,
+      author: (author as User), // SelfProgile == User ?
+      content: text,
+      sendingTime: new Date(),
+      messageType: EMessageType.text,
+      messageResponseId: replyMessage.messageId,
+      isEdited: false,
+      sent: false,
+      reactionOnMessage: []
+    }
+
+    if(fileContent)
+      setMessages({ ...msg, fileContent: fileContent, fileName: 'image.png', messageType: EMessageType.img });
+    else 
+      setMessages(msg);
+
+    const msgServ = {
       Content: text,
       Author: getAuthor(),
       ChatId: getChatId(),
@@ -37,24 +42,38 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
       chatPinned: 0,
       chatPinnedForAll: 0,
       SendingTime: new Date(),
-      NumberInChat: 0,
+      Coordinations: 0,
       ReactionOnMessage: [],
       Type: 1,
-      Properties: 0,
       MessageResponseId: replyMessage.messageId,
       IsEdited: false,
-      IsDeleted: false,
-      IsDeletedForAll: false,
     };
 
-    if(sendFile)
-      connection?.sendMessageFile({ ...msg, FileName: 'image', Type: 2 });
+    if(fileContent)
+      connection?.sendMessageFile({ ...msgServ, FileName: 'image', Type: EMessageType.img });
     else
-      connection?.sendMessageText(msg);
+      connection?.sendMessageText(msgServ);
   } else if(editMessage?.content&&text!=messageToEdit?.content) {
     connection?.updateMessageText(text, messageToEdit?.messageId!, getChatId());
   } else {
     const msg = {
+      messageId: messages.length,
+      author: (author as User), // SelfProgile == User ?
+      content: text,
+      sendingTime: new Date(),
+      messageType: EMessageType.text,
+      messageResponseId: undefined,
+      isEdited: false,
+      sent: false,
+      reactionOnMessage: []
+    }
+
+    if(fileContent)
+      setMessages({ ...msg, fileContent: fileContent, fileName: 'image.png', messageType: EMessageType.img });
+    else 
+      setMessages(msg);
+
+    const msgServ = {
           Content: text,
           Author: getAuthor(),
           ChatId: getChatId(),
@@ -62,20 +81,17 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
           chatPinned: 0,
           chatPinnedForAll: 0,
           SendingTime: new Date(),
-          NumberInChat: 0,
+          Coordinations: 0,
           ReactionOnMessage: [],
           Type: 1,
-          Properties: 0,
           MessageResponseId: null,
           IsEdited: false,
-          IsDeleted: false,
-          IsDeletedForAll: false,
         };
 
-    if(sendFile)
-      connection?.sendMessageFile({ ...msg, FileName: 'image', Type: 2 });
+    if(fileContent)
+      connection?.sendMessageFile({ ...msgServ, FileName: 'image', Type: EMessageType.img });
     else
-      connection?.sendMessageText(msg);
+      connection?.sendMessageText(msgServ);
   }
   onSendMessageOrCancelReplyAndEdit();
 }; 

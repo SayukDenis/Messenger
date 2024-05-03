@@ -106,7 +106,7 @@ class Footer extends Component<DialogueFooterProps> {
     const { messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId} = this.props;
     const { text, displayImage } = this.state;
     const { setText } = this;
-    sendMessage({ text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId, sendFile: displayImage !== '' });
+    sendMessage({ text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId, fileContent: displayImage });
 
     if(displayImage !== '') {
       const requestBody = {

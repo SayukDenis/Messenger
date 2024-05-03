@@ -11,14 +11,7 @@ export const SOFT_MENU_BAR_HEIGHT = softMenuBarHeight > 0 ? softMenuBarHeight : 
 export let FONT_SCALE_COEF = 1;
 export const setCustomFontScaleCoef = (coef: number) => FONT_SCALE_COEF = coef;
 export const FONT_SCALE = PixelRatio.getFontScale();
-// font scale 1: 0.800000011920929
-// font scale 2: 0.8999999761581421
-// font scale 3: 1
-// font scale 4: 1.100000023841858
-// font scale 5: 1.2999999523162842
-// font scale 6: 1.5
-// font scale 7: 1.7000000476837158
-// font scale 8: 2
+
 export const DEFAULT_FONT_SIZE = Math.round(14 / FONT_SCALE);
 export const getCustomFontSize = (size: number) => Math.round(size / FONT_SCALE);
 

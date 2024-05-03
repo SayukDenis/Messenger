@@ -35,15 +35,9 @@ let messageMenuCallback: (() => void) | undefined;
 class Dialogue extends Component<DialogueProps> {
 
   chatId : number = 0;
-  user_1 : any;
-  user_2 : any;
 
   getAuthor = () => {
-    if(Platform.OS === "android") {
-      return this.user_1;
-    } else {
-      return this.user_2;
-    }
+    return author;
   }
   getChatId = () => this.chatId;
 
@@ -84,26 +78,23 @@ class Dialogue extends Component<DialogueProps> {
     //     .then(res => console.log(res))
     //     .catch(error => console.error('error while fetching', error));
 
-    fetch("http://192.168.0.108:5151/api/Chat/dialogue/1", {method: "GET",})
+    await fetch("http://192.168.0.108:5151/api/Chat/dialogue/1", {method: "GET",})
         .then(response => response.json())
         .then(res => [JSON.parse(res[0]), JSON.parse(res[1])])
         .then(result => {
-          console.log('Dialogue Users', result[0]?.users);
-          this.user_1 = result[0]?.users[0];
           author = result[0]?.users[Platform.OS === 'android' ? 0 : 1];
           users = [result[0]?.users[Platform.OS === 'android' ? 1 : 0]];
+          console.log('\n_________________\n', 'Aboba', Platform.OS, author.userId, '\n_________________');
           this.setState({
             authorMessageLastWatched: result[0]?.lastWatchedMessages.find((obj : any) => obj.userId === author.userId),
             userMessageLastWatched: result[0]?.lastWatchedMessages.find((obj : any) => obj.userId === users[0].userId)
           })
-          console.log('ABOBA', this.state.authorMessageLastWatched, this.state.userMessageLastWatched);
-          this.user_2 = result[0]?.users[1];
+
           this.chatId = result[0]?.chatId;
           
           const msgs : any[] = [];
           (result[1] as Array<any>).forEach((m, index) => {
-            console.log(JSON.stringify({ ...m, fileContent: m.fileContent ? m.fileContent.length : '' }, null, '  '));
-            msgs.push({ ...m, sendingTime: new Date(m.sendingTime) });
+            msgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true });
           });
 
           // const img1 = new Message(author, 'image', EMessageType.img);
@@ -114,10 +105,19 @@ class Dialogue extends Component<DialogueProps> {
         .catch(error => console.error('error while fetching', error));
 
 
+    console.log('\n_________________\n', Platform.OS, author.userId, '\n_________________');
     const connection = ChatHubService.getInstance();
     connection.startConnection(author.userId);
 
-    connection.registerMessageSent();
+    connection.registerMessageSent((messageId: number) => {
+      const list = [...this.state.listOfMessages];
+      const m = list.shift();
+      console.log(m);
+      console.log(m?.messageId, messageId);
+      m!.sent = true;
+      m!.messageId = messageId;
+      this.setState({ listOfMessages: [...list, m] });
+    });
     connection.registerReceiveMessageText((mes: any) => {
       this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
     });
@@ -179,14 +179,18 @@ class Dialogue extends Component<DialogueProps> {
     });
 
     //#endregion
+  }
 
-    this.setState({ 
-      // listOfMessages: dialogue.branches[0].messages.reverse(),
-      // author: dialogue.users[0],
-      // users: dialogue.users.filter(u => u.userId !== 0),
-      // authorMessageLastWatched: dialogue.branches[0]?.lastWatchedMessage ? dialogue.branches[0].lastWatchedMessage[0] : undefined,
-      // userMessageLastWatched: dialogue.branches[0]?.lastWatchedMessage ? dialogue.branches[0].lastWatchedMessage[1] : undefined,
-    });
+  componentWillUnmount(): void {
+    const connection = ChatHubService.getInstance();
+    connection.unregisterMessageSent();
+    connection.unregisterDeleteMessage();
+    connection.unregisterReceiveMessageFile();
+    connection.unregisterReceiveMessageText();
+    connection.unregisterReceiveUpdateLastWatchedMessage();
+    connection.unregisterReceiveUpdateMessageText();
+
+    connection.disconnect();
   }
 
   shouldComponentUpdate(nextProps: Readonly<DialogueProps>, nextState: Readonly<DialogueState>, nextContext: any): boolean {
@@ -305,7 +309,7 @@ class Dialogue extends Component<DialogueProps> {
       sendingTime: undefined!,
       messageType: undefined!,
       isEdited: undefined!,
-      isDeleted: undefined!,
+      sent: undefined!,
       reactionOnMessage: undefined!,
     };
 

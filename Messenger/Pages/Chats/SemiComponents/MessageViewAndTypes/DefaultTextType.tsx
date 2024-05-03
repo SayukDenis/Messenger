@@ -18,12 +18,8 @@ import {
   resetSelectedMessage,
   setAnimationOfBackgroundForScrolledMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import ReplyIcon from '../SVG/ReplyIcon';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import PinButton from '../SVG/PinButton';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { functionalStyles, styles } from './Styles/DefaultTextType';
 import ScrollButton from './SemiComponents/ScrollButton';
@@ -31,6 +27,7 @@ import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 import { DefaultTextMessageProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
+import * as SVG from './../SVG';
 
 let size: sizeProps[] = [];
 
@@ -309,7 +306,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
                 <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
                     style={
                       message.content.length > DEFAULT_CHARS_PER_LINE
@@ -344,17 +341,19 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
             </View>
             {isUser && (
               <View style={styles.messageViewStatus}>
-                {message.messageId! <= (userMessageLastWatched?.messageId || 0) ? (
-                  <MessageItemStatusMessageReviewed />
+                { message.sent ? (message.messageId! <= (userMessageLastWatched?.messageId || 0) ? (
+                  <SVG.MessageItemStatusMessageReviewed />
                 ) : (
-                  <MessageItemStatusMessageNotReviewed />
-                )}
+                  <SVG.MessageItemStatusMessageNotReviewed />
+                )) :
+                  <SVG.MessageItemStatusSending />
+                }
               </View>
             )}
           </View>
         </TouchableOpacity>
         <View style={styles.messageSwipeToReply}>
-          <ReplyIcon />
+          <SVG.ReplyIcon />
         </View>
       </ScrollView>
     );

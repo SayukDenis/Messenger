@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, FlatList, Animated } from 'react-native';
 import React, { Component } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
-import HeaderBackButton from '../SVG/HeaderBackButton';
+import * as SVG from './../SVG';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
 import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, getCustomFontSize, height, width } from '../ChatConstants';
 import MessageItem from '../MessageItem';
@@ -237,7 +237,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
                   style={{ width: width * 0.2 }}
                   onPress={() => this.props.route?.params.navigation?.goBack()}
                 >
-                  <HeaderBackButton />
+                  <SVG.HeaderBackButton />
                 </TouchableOpacity>
                 <Text style={{ fontSize: getCustomFontSize(18) }} >Pinned messages</Text>
                 <TouchableOpacity
