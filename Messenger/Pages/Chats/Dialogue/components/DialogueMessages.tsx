@@ -10,6 +10,7 @@ import { addCoordinationsOfMessage, handleKeyboardAppearing, setScrollStateForPi
 import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
+import { checkListOfMessagesDifference } from "../HelperFunctions/CheckListOfMessages";
 
 let pinnedMessagesWithCoords:messageCoordsProps[] = [];
 
@@ -87,6 +88,9 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   componentDidUpdate(prevProps: Readonly<DialogueMessagesProps & DialogueMessagesReduxProps>, prevState: Readonly<{}>, snapshot?: any): void {
     console.log('DialogueMessages was updated');
     this.replyOrEditHeightHandler(prevProps.isEdit, prevProps.isReply);
+
+    if(pinnedMessagesWithCoords.length !== this.props.pinnedMessages.length) 
+      this.pinnedMessageChangeHandler(this.props.pinnedMessages);
   }
 
   componentWillUnmount() {
@@ -97,15 +101,15 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
 
   shouldComponentUpdate(nextProps: Readonly<DialogueMessagesProps>, nextState: Readonly<DialogueMessagesState>, nextContext: any): boolean {
     
+    const { listOfMessages, hasPinnedMessage, scrollToPinnedMessage, selecting, idOfPinnedMessage, pinnedMessages, isEdit, isReply, authorMessageLastWatched, messagesWithCoords } = this.props;
     
-    const { listOfMessages, hasPinnedMessage, scrollToPinnedMessage, selecting, idOfPinnedMessage, pinnedMessages, isEdit, isReply, authorMessageLastWatched } = this.props;
     const { pinnedMessageId } = this.state;
     //if(this.props !== nextProps) return true;
-    if(pinnedMessages !== nextProps.pinnedMessages) {
+    if(checkListOfMessagesDifference(pinnedMessages, nextProps.pinnedMessages)) {
       this.pinnedMessageChangeHandler(nextProps.pinnedMessages);
       if(nextProps.pinnedMessages.length === 0) this.setState({ pinnedMessageId: -1 })
       return true;
-    } else if(listOfMessages !== nextProps.listOfMessages) {
+    } else if(checkListOfMessagesDifference(listOfMessages, nextProps.listOfMessages)) {
       if(listOfMessages.length !== nextProps.listOfMessages.length) {
         this.messageListChangedHandler();
       }
@@ -127,6 +131,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       return true;
     } else if(authorMessageLastWatched?.messageId !== nextProps.authorMessageLastWatched?.messageId) {
       return true;
+    } else if(messagesWithCoords !== nextProps.messagesWithCoords) {
+      return true;
     }
 
     return false;
@@ -135,7 +141,11 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   //#region HelperFunctions
 
   pinnedMessageChangeHandler = (pinnedMessages: MessageProps[]) => {
+    if(this.props.listOfMessages.length === 0 || this.props.messagesWithCoords.length !== this.props.listOfMessages.length) return;
+
     pinnedMessagesWithCoords = [];
+
+    console.log('pinnedMessageChangeHandler', this.props.messagesWithCoords);
 
     pinnedMessages.map(m => {
       const mes = this.props.messagesWithCoords.find(mes => mes.id === m.messageId);
@@ -230,6 +240,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     const yOffset = event.nativeEvent.contentOffset.y;
     let minOffset = 9999;
     let messageId = 0;
+
     pinnedMessagesWithCoords.map((mes) => {
       const offset = Math.abs(mes.coord - yOffset);
       if(offset < minOffset) {
@@ -249,13 +260,6 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     const nearestUnwatchedMessageId = id ? id : listOfMessages.find(m => m.author.userId !== author.userId)?.messageId;
     const scrollPos = this.flatListRef.current._listRef._scrollMetrics.offset;
     const newMessage = messagesWithCoords.find(m => m.id === nearestUnwatchedMessageId);
-    // if(didUpdate) {
-    //   console.log('DID UPDATE');
-    //   console.log(newMessage);
-    //   console.log(authorMessageLastWatched);
-    //   console.log(nearestUnwatchedMessageId);
-    //   console.log(messagesWithCoords);
-    // }
     const newMessagePos = newMessage ? newMessage.coords + newMessage?.height : coord;
 
     if(nearestUnwatchedMessageId! > authorMessageLastWatched?.messageId! && chatHubService && scrollPos < newMessagePos!) {

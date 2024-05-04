@@ -169,9 +169,29 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
     useNativeDriver: true,
   });
 
-  // shouldComponentUpdate(nextProps: Readonly<DefaultFileTypeProps>, nextState: Readonly<DefaultFileTypeState>, nextContext: any): boolean {
-  //   return true;
-  // }
+  shouldComponentUpdate(nextProps: Readonly<DefaultFileTypeProps>, nextState: Readonly<DefaultFileTypeState>, nextContext: any): boolean {
+    if(nextProps.idForAnimation === this.props.message.messageId) {
+      this.state.animate = true;
+      return true;
+    } else if(nextProps.selecting != this.props.selecting) {
+      this.setState({ selecting: nextProps.selecting });
+      if(!nextProps.selecting) this.resetSelected();
+      return true;
+    } else if(nextState.selected != this.state.selected) {
+      this.setState({ selected: nextState.selected })
+      return true;
+    } else if(this.state.selected !== nextState.selected) {
+      return true;
+    } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
+      return true;
+    } else if(this.props.userMessageLastWatched?.messageId !== nextProps.userMessageLastWatched?.messageId) {
+      return true;
+    } else if(this.props.message.sent !== nextProps.message.sent) {
+      return true;
+    }
+    
+    return false;
+  }
   
   componentDidUpdate(prevProps: DefaultFileTypeProps) {
     // console.log(`DefaultFileType updated\t#${++tmpUpdateCounter}`);

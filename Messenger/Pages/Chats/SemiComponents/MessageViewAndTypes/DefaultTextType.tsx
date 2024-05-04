@@ -177,7 +177,9 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
       return true;
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
       return true;
-    } else if(this.props.userMessageLastWatched !== nextProps.userMessageLastWatched) {
+    } else if(this.props.userMessageLastWatched?.messageId !== nextProps.userMessageLastWatched?.messageId) {
+      return true;
+    } else if(this.props.message.sent !== nextProps.message.sent) {
       return true;
     }
 

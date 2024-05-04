@@ -18,7 +18,7 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
 
   if(replyMessage?.content) {
     const msg = {
-      messageId: messages.length,
+      messageId: messages[0].messageId! + 1,
       author: (author as User), // SelfProgile == User ?
       content: text,
       sendingTime: new Date(),
@@ -55,9 +55,11 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
       connection?.sendMessageText(msgServ);
   } else if(editMessage?.content&&text!=messageToEdit?.content) {
     connection?.updateMessageText(text, messageToEdit?.messageId!, getChatId());
+
+    setMessages({} as MessageProps);
   } else {
     const msg = {
-      messageId: messages.length,
+      messageId: messages[0].messageId! + 1,
       author: (author as User), // SelfProgile == User ?
       content: text,
       sendingTime: new Date(),

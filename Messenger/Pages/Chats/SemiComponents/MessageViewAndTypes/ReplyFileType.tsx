@@ -137,7 +137,9 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
       return true;
     } else if(this.state.sizeOfMessageContainer[1] !== nextState.sizeOfMessageContainer[1] || this.state.sizeOfMessageContainer[0] !== nextState.sizeOfMessageContainer[0]) {
       return true;
-    } else if(this.props.userMessageLastWatched !== nextProps.userMessageLastWatched) {
+    } else if(this.props.userMessageLastWatched?.messageId !== nextProps.userMessageLastWatched?.messageId) {
+      return true;
+    } else if(this.props.message.sent !== nextProps.message.sent) {
       return true;
     }
     

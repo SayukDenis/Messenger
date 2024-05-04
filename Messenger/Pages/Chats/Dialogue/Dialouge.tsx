@@ -9,7 +9,6 @@ import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView'
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 import { connect } from 'react-redux';
 import User from '../../../dao/Models/User';
-import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 import DialogueMessages from './components/DialogueMessages';
 import Header from '../SemiComponents/Header';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
@@ -94,29 +93,33 @@ class Dialogue extends Component<DialogueProps> {
           
           const msgs : any[] = [];
           (result[1] as Array<any>).forEach((m, index) => {
-            msgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true });
+            msgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true, messageType: m.type });
           });
+          
+          const pinnedMsgs : any[] = [];
+          (result[0].pinnedMessages as Array<any>).forEach((m, index) => {
+            console.log('pinned message:', { ...m, fileContent: m.fileContent?.length });
+            pinnedMsgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true, messageType: m.type });
+          })
 
-          // const img1 = new Message(author, 'image', EMessageType.img);
-          // const img2 = new Message(users[0], 'image', EMessageType.img);
-
-          this.setState({ listOfMessages: [...msgs.reverse()] });
+          this.setState({ 
+            listOfMessages: [...msgs.reverse()],
+            listOfPinnedMessages: [...pinnedMsgs.sort((m1, m2) => m1.messageId! - m2.messageId!)],
+            pinnedMessage: pinnedMsgs.sort(m => result[0]?.lastWatchedMessages.find((obj : any) => obj.userId === author.userId).messageId - m.messageId!)[0]
+          });
         })
         .catch(error => console.error('error while fetching', error));
 
-
-    console.log('\n_________________\n', Platform.OS, author.userId, '\n_________________');
     const connection = ChatHubService.getInstance();
     connection.startConnection(author.userId);
 
     connection.registerMessageSent((messageId: number) => {
       const list = [...this.state.listOfMessages];
-      const m = list.shift();
+      const m = { ...list.shift(), sent: true };
       console.log(m);
       console.log(m?.messageId, messageId);
-      m!.sent = true;
-      m!.messageId = messageId;
-      this.setState({ listOfMessages: [...list, m] });
+      
+      this.setState({ listOfMessages: [m, ...list] });
     });
     connection.registerReceiveMessageText((mes: any) => {
       this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
@@ -203,6 +206,9 @@ class Dialogue extends Component<DialogueProps> {
     
     const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, selecting, listOfPinnedMessages, pinnedMessage, authorMessageLastWatched, userMessageLastWatched, edit } = this.state;
 
+    // console.log('THIS:\n', listOfMessages);
+    // console.log('NEXT:\n', nextState.listOfMessages);
+
     if(messageID !== nextState.messageID) {
       return true;
     } else if(messageMenuVisible !== nextState.messageMenuVisible) {
@@ -231,7 +237,7 @@ class Dialogue extends Component<DialogueProps> {
       return true;
     }
 
-    //console.log("Didn't update");
+    // console.log("Didn't update");
 
     return false;
   }
@@ -256,11 +262,10 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   setEditMessageHandler = () => {
-    if(!this.state.isEdit) {
+    if(!this.state.isEdit)
       this.setState({ editMessage: this.state.listOfMessages.find(m => m.messageId === this.state.messageID)! });
-    }
     else
-    this.setState({ editMessage: {} as MessageProps });
+      this.setState({ editMessage: {} as MessageProps });
   }
 
   handleMessagePressOrSwipe = (coordinations:Layout, pressed:boolean, callback: () => void) => {
@@ -275,13 +280,16 @@ class Dialogue extends Component<DialogueProps> {
   };
 
   updateMessageContent = (messageId: number|undefined, newContent: string|undefined) => {
-    if(messageId&&newContent) {
-      const id = this.state.listOfMessages.findIndex(m => m.messageId === messageId);  
-      this.state.listOfMessages[id].content = newContent;
-      this.state.listOfMessages[id].isEdited = true;
-      console.log(this.state.listOfMessages[id]);
-    }
-    this.setState({ listOfMessages: [...this.state.listOfMessages] });
+    if(!messageId || !newContent) return;
+
+    const list = [...this.state.listOfMessages];
+    const id = list.findIndex(m => m.messageId === messageId);
+    const m = { ...list[id] };
+    
+    m.content = newContent;
+    m.isEdited = true;
+
+    this.setState({ listOfMessages: [...list.slice(0, id), m, ...list.slice(id + 1)] });
   };
 
   setMessages = (mes:MessageProps) => {
@@ -421,7 +429,10 @@ class Dialogue extends Component<DialogueProps> {
             onEditPress={this.pressEditButton} 
             onDeletePress={this.setDeletingHandler}
             onSelectPress={this.setSelectingHandler}
-            onPinPress={() => connection.pinMessage(mes?.messageId, this.getChatId(), listOfPinnedMessages.findIndex(m => m.messageId === mes?.messageId) >= 0)} // this.pinMessageHandler
+            onPinPress={() => { 
+              connection.pinMessage(mes?.messageId, this.getChatId(), listOfPinnedMessages.findIndex(m => m.messageId === mes?.messageId) >= 0)
+              this.pinMessageHandler(mes!);
+            }} // this.pinMessageHandler
             userMessageLastWatched={this.state.userMessageLastWatched!}
             pinnedMessageScreen={false}
           />
@@ -490,7 +501,10 @@ class Dialogue extends Component<DialogueProps> {
           <DeleteMessageModal 
             deleting={deleting} 
             setDeletingHandler={this.setDeletingHandler} 
-            onDeletePress={() => connection.deleteMessage(mes?.messageId!, this.getChatId())} // this.onDeletePress 
+            onDeletePress={() => {
+              connection.deleteMessage(mes?.messageId!, this.getChatId());
+              this.onDeletePress(mes?.messageId);
+            }} // this.onDeletePress 
             message={mes} 
             author={author as User}
           />
