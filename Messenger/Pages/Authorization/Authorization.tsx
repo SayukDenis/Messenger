@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import BackGroundGradientView from "../SemiComponents/BackGroundGradientView";
-import { TouchableOpacity, View, ScrollView, TextInput } from "react-native";
+import { TouchableOpacity, View, ScrollView, TextInput, Button } from "react-native";
 import CountryFlagEmoji from "./Select country/Country select containers/CountryFlagEmoji";
 import {
   CountryCode,
@@ -17,6 +17,8 @@ import ContinueButton from "./Authorization containers/ContinueButton";
 import FirstPhoneNumbers from "./Authorization containers/FirstPhoneNumbers";
 import NumberPhoneInput from "./Authorization containers/NumberPhoneInput";
 import CountryName from "./Authorization containers/CountryName";
+import {ButtonAction} from "./AuthorizeStrategies";
+import { AuthorizeWithNumberStrategy } from "./AuthorizeStrategies";
 
 export default function Authorization({ navigation }: any) {
   const [selectedCountryNum, setCountry] = useState(0);
@@ -24,6 +26,10 @@ export default function Authorization({ navigation }: any) {
   const sizeOfNumbers: number = 17;
   const [phoneNumber, setPhoneNumber] = useState<string>("961814095");
   const [isEnabled, setIsEnabled] = useState(false);
+  const pressOnCountinueButton = () => {
+    const buttonAction = new ButtonAction(new AuthorizeWithNumberStrategy());
+    buttonAction.Authorize(navigation, { selectedCountry, phoneNumber });
+  };
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState);
   };
@@ -33,9 +39,6 @@ export default function Authorization({ navigation }: any) {
       selectedCountryNum,
       setCountry,
     });
-  };
-  const pressOnCountinueButton = () => {
-    navigation.navigate("Code Verification Page",{phoneNumber:`+${selectedCountry.phone}${phoneNumber}`});
   };
   useEffect(() => {
     const fetchCountryInfo = async () => {
