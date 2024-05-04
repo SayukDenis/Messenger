@@ -1,8 +1,8 @@
 import React from "react";
 import { Component, RefObject } from "react";
 import { DialogueFooterProps, DialogueFooterState, EChangeFooterHeight } from "./Interfaces/IDialoueFooter";
-import { Animated, TextInput, View } from "react-native";
-import { DEFAULT_FONT_SIZE, FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, KEYBOARD_HEIGHT, SOFT_MENU_BAR_HEIGHT } from "./ChatConstants";
+import { Animated, Image, TextInput, View, TouchableOpacity } from "react-native";
+import { FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, KEYBOARD_HEIGHT, SOFT_MENU_BAR_HEIGHT, height, width } from "./ChatConstants";
 import { sendMessage } from "./HelperComponents/Footer/sendMessageFunc";
 import ReplyAndEditMenu from "./HelperComponents/Footer/ReplyAndEditMenu";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,12 +11,15 @@ import LeftPartOfFooter from "./HelperComponents/Footer/LeftPartOfFooter";
 import CenterPartOfFooter from "./HelperComponents/Footer/CenterPartOfFooter";
 import RightPartOfFooter from "./HelperComponents/Footer/RightPartOfFooter";
 import { connect } from "react-redux";
+import * as ImagePicker from 'expo-image-picker';
 
 class Footer extends Component<DialogueFooterProps> {
   state: DialogueFooterState = {
     text: '',
     bottomOffset: new Animated.Value(SOFT_MENU_BAR_HEIGHT),
     dynamicFooterHeight: FOOTER_HEIGHT,
+    displayImage: '',
+    heightOfImageBackground: new Animated.Value(height - KEYBOARD_HEIGHT),
   }
 
   setText = (newText: string) => {
@@ -24,14 +27,11 @@ class Footer extends Component<DialogueFooterProps> {
   }
 
   setDynamicFooterHeight = (action: number) => {
-    switch(action) {
-      case EChangeFooterHeight.add:
-        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight + DEFAULT_FONT_SIZE });
-      case EChangeFooterHeight.subtract:
-        return this.setState({ dynamicFooterHeight: this.state.dynamicFooterHeight - DEFAULT_FONT_SIZE });
-      case EChangeFooterHeight.reset:
-        return this.setState({ dynamicFooterHeight: FOOTER_HEIGHT });
-    }
+    console.log('action', action);
+    this.setState({ 
+      dynamicFooterHeight: FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP + action,
+    });
+    this.props.emitter.emit('changeDynamicFooterHeight', { height: action - FOOTER_INNER_TEXTINPUT_GAP });
   }
 
   textInput: RefObject<TextInput> = React.createRef();
@@ -51,6 +51,8 @@ class Footer extends Component<DialogueFooterProps> {
       return true;
     } else if(this.props.messageID !== nextProps.messageID) {
       return true;
+    } else if(this.state.displayImage !== nextState.displayImage) {
+      return true;
     }
 
     return false;
@@ -65,9 +67,19 @@ class Footer extends Component<DialogueFooterProps> {
         duration: 200,
         useNativeDriver: false
       }).start();
+      Animated.timing(this.state.heightOfImageBackground, {
+        toValue: height - KEYBOARD_HEIGHT,
+        duration: 200,
+        useNativeDriver: false
+      }).start();
     } else if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) {
       Animated.timing(this.state.bottomOffset, {
         toValue: SOFT_MENU_BAR_HEIGHT,
+        duration: 200,
+        useNativeDriver: false
+      }).start();
+      Animated.timing(this.state.heightOfImageBackground, {
+        toValue: height,
         duration: 200,
         useNativeDriver: false
       }).start();
@@ -90,17 +102,51 @@ class Footer extends Component<DialogueFooterProps> {
     }
   }
 
-  sendMessageHandler = () => {
-    const { messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author} = this.props;
-    const { text } = this.state;
+  sendMessageHandler = async () => {
+    const { messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId} = this.props;
+    const { text, displayImage } = this.state;
     const { setText } = this;
-    sendMessage({ text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author });
+    sendMessage({ text, setText, messages, setMessages, replyMessage, onSendMessageOrCancelReplyAndEdit, editMessage, messageID, author, getChatHubService, getAuthor, getChatId, fileContent: displayImage });
+
+    if(displayImage !== '') {
+      const requestBody = {
+        base64String: displayImage
+      };
+  
+      await fetch('http://192.168.0.108:5151/api/Chat/dialogue/file', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      this.setState({ displayImage: '' });
+    }
+
+    this.setState({ dynamicFooterHeight: FOOTER_HEIGHT });
   }
+
+
+  pickImage = async () => {
+    // Getting base64 string for an image/video
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      base64: true // Request base64 representation of the image
+    });
+
+    this.setState({ displayImage: (result as any).base64 });
+
+    this.textInput.current?.focus();
+  };
 
   render(): React.ReactNode {
     const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
     const { text, dynamicFooterHeight } = this.state;
     const { textInput, setText, sendMessageHandler, setDynamicFooterHeight } = this;
+
+    // console.log('Footer dynamicFooterHeight', dynamicFooterHeight)
 
     return(
       <Animated.View 
@@ -115,6 +161,22 @@ class Footer extends Component<DialogueFooterProps> {
           isEdit={isEdit} 
           editMessage={editMessage}
         />
+        { this.state.displayImage && 
+          <Animated.View 
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', width: width, height: this.state.heightOfImageBackground, position: 'absolute', bottom: 0, alignSelf: 'center', }}
+          >
+            <TouchableOpacity 
+              style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
+              activeOpacity={1}
+              onPress={() => this.setState({ displayImage: '' })}
+            >
+              <Image 
+                source={{ uri: 'data:image/png;base64,' + this.state.displayImage }} 
+                style={{ width: 250, height: 250, borderRadius: 9 }} 
+              />
+            </TouchableOpacity>
+          </Animated.View>
+        }
         <View style={[styles.mainContainer, { height: dynamicFooterHeight }]} >
           <View style={[styles.gradientContainer, { height: dynamicFooterHeight }]}>
             <LinearGradient
@@ -142,7 +204,7 @@ class Footer extends Component<DialogueFooterProps> {
                 <RightPartOfFooter 
                   sendMessage={keyboardActive} 
                   sendMessageHandler={sendMessageHandler} 
-                  pressGalleryButtonHandler={()=>{}} 
+                  pressGalleryButtonHandler={this.pickImage} 
                   selecting={selecting}
                 />
               </View>

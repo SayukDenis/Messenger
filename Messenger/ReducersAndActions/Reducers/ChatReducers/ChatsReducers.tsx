@@ -93,7 +93,7 @@ const setCoordinationsOfMessageReducer = (state = setCoordinationsOfMessage, act
 
       return { ...state, messagesWithCoords: [...addToMessagesWithCoords] };
     case 'UPDATE_COORDINATIONS_OF_MESSAGE':
-      const updatedMessagesWithCoords = state.messagesWithCoords;
+      const updatedMessagesWithCoords = [...state.messagesWithCoords];
 
       updatedMessagesWithCoords[action.id].height = action.height;
 

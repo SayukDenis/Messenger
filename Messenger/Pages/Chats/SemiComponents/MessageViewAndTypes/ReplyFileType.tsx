@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, MutableRefObject } from 'react';
 import {
   View,
   Text,
@@ -6,27 +6,62 @@ import {
   ScrollView,
   Animated,
   Easing,
+  Image,
 } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, width } from '../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width } from '../ChatConstants';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { ReplyTextTypeProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
-import { functionalStyles, styles } from './Styles/ReplyTextType';
+import { functionalStyles, styles } from './Styles/ReplyFileType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
+import { CoordinationsOfMessage } from '../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers';
+import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
+import { Dispatch } from 'redux';
+import User from '../../../../dao/Models/User';
+import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
 import * as SVG from './../SVG';
+
+export interface ReplyFileTypeProps {
+  idForAnimation: number;
+  messages: MessageProps[];
+  message: MessageProps;
+  setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
+  id: number;
+  flatList: MutableRefObject<any>;
+  author: User;
+  userName: string;
+  userMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
+  dispatch: Dispatch;
+  pinnedMessageScreen: boolean;
+  listOfPinnedMessages: Array<number>;
+  navigation: any;
+  messagesWithCoords: CoordinationsOfMessage[];
+}
+
+export interface ReplyFileTypeState {
+  sizeOfMessageContainer: [number, number];
+  widthOfMessage: number;
+  widthOfReply: number;
+  selected: boolean;
+  animate: boolean;
+  pressCoordinations: coordProps;
+  replyMessage: string;
+  message: string;
+}
+
 
 let size: sizeProps[] = [];
 
 let tmpUpdateCounter = 0;
 
-class ReplyTextType extends Component<ReplyTextTypeProps> {
-  state: ReplyTextTypeState = {
+class ReplyFileType extends Component<ReplyFileTypeProps> {
+  state: ReplyFileTypeState = {
     sizeOfMessageContainer: [0, 0],
     widthOfMessage: 0,
     widthOfReply: 0,
@@ -44,7 +79,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     });
   }
 
-  componentDidUpdate(prevProps: ReplyTextTypeProps) {
+  componentDidUpdate(prevProps: ReplyFileTypeProps) {
     console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;
@@ -65,7 +100,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     // }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps: Readonly<ReplyFileTypeProps>, nextState: Readonly<ReplyFileTypeState>, nextContext: any): boolean {
     const nextReplyMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content;
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 
@@ -294,8 +329,6 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched } = this.props;
     const { selected, widthOfMessage, widthOfReply } = this.state;
 
-    console.log(message.messageId, widthOfMessage, widthOfReply);
-
     const isUser = message.author.userId == author.userId;
 
     return (
@@ -341,7 +374,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
               handleLinkTo={pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
               onLayout={(event:any) => {
                 const width = event.nativeEvent.layout.width;
-                console.log('widthOfReply', this.props.message.messageId, width);
+                console.log('widthOfReply', message.messageId, width);
                 if(width)
                   this.setState({ widthOfReply: width });
               }}
@@ -369,15 +402,16 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                 <View 
                   style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
                 /> 
-                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                { message.content &&
+                  <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
+                    {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
+                  </Text>
+                }
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
                   {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
-                    style={
-                      message.content.length > DEFAULT_CHARS_PER_LINE
-                        ? [styles.messageTimeStamp, styles.longMessageTimeStamp]
-                        : styles.messageTimeStamp
-                    }
+                    style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
                   >
                     {message.isEdited ? 'edited ' : ''}
                     {message.sendingTime.getHours().toString().padStart(2, '0')}:
@@ -428,4 +462,4 @@ const mapStateToProps = (state: any) => ({
   messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
-export default connect(mapStateToProps)(ReplyTextType);
+export default connect(mapStateToProps)(ReplyFileType);

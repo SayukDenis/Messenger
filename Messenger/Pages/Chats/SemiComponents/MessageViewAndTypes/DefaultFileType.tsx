@@ -1,44 +1,56 @@
-import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Animated,
-  Easing,
-  GestureResponderEvent,
-} from 'react-native';
-import { connect } from 'react-redux';
-import {
-  addSelectedMessage,
-  decrementNumberOfSelectedMessages,
-  incrementNumberOfSelectedMessages,
-  removeSelectedMessage,
-  resetNumberOfSelectedMessages,
-  resetSelectedMessage,
-  setAnimationOfBackgroundForScrolledMessage,
-} from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
-import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
-import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { functionalStyles, styles } from './Styles/DefaultTextType';
+import { Animated, GestureResponderEvent, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import React, { Component } from 'react'
 import ScrollButton from './SemiComponents/ScrollButton';
-import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
-import { DefaultTextMessageProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
+import { Dispatch } from 'redux';
+import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
+import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
+import User from '../../../../dao/Models/User';
+import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
+import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { Easing } from 'react-native-reanimated';
+import { DEFAULT_CHARS_PER_LINE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } from '../ChatConstants';
+import { functionalStyles, styles } from './Styles/DefaultFileType';
+import { wrapText } from './HelperFunctions/wrapText';
+import { connect } from 'react-redux';
 import * as SVG from './../SVG';
 
 let size: sizeProps[] = [];
 
 let tmpUpdateCounter = 0;
 
-class DefaultTextType extends Component<DefaultTextMessageProps> {
-  state: DefaultTextMessageState = {
+interface DefaultFileTypeProps {
+  dispatch: Dispatch;
+  navigation: any;
+
+  idForAnimation: number;
+  message: MessageProps;
+  setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
+  id: number;
+  flatList: React.MutableRefObject<any>;
+  author: User;
+  userMessageLastWatched: ILastWatchedMessage | undefined;
+  selecting: boolean;
+  pinnedMessageScreen: boolean;
+  messages: MessageProps[];
+  listOfPinnedMessages: Array<number>
+}
+
+interface DefaultFileTypeState {
+  animate: boolean;
+  heightOfMessage: number;
+  selected: boolean;
+
+}
+
+class DefaultFileType extends Component<DefaultFileTypeProps> {
+
+  state: DefaultFileTypeState = {
     animate: false,
     heightOfMessage: 0,
     selected: false,
-    message: this.props.message.content,
+    // message: this.props.message.content,
   };
 
   resetSelected = () => {
@@ -157,45 +169,12 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     useNativeDriver: true,
   });
 
-  shouldComponentUpdate(nextProps: Readonly<DefaultTextMessageProps>, nextState: Readonly<DefaultTextMessageState>, nextContext: any): boolean {
-    if(nextProps.idForAnimation === this.props.message.messageId) {
-      this.state.animate = true;
-      return true;
-    } else if(nextProps.selecting != this.props.selecting) {
-      this.setState({ selecting: nextProps.selecting });
-      if(!nextProps.selecting) this.resetSelected();
-      return true;
-    } else if(nextState.selected != this.state.selected) {
-      this.setState({ selected: nextState.selected })
-      return true;
-    } else if(this.state.selected !== nextState.selected) {
-      return true;
-    } else if(this.props.message.content !== nextProps.message.content) {
-      return true;
-    } else if(this.messageCompareHandler(nextProps.messages)) {
-      this.setState({ message: nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content })
-      return true;
-    } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
-      return true;
-    } else if(this.props.userMessageLastWatched !== nextProps.userMessageLastWatched) {
-      return true;
-    }
-
-    return false;
-  }
-
-  messageCompareHandler = (list: MessageProps[]) => {
-    const nextMessage = list.find(m => m.messageId === this.props.message.messageId);
-
-    if(this.state.message && this.state.message !== nextMessage?.content) {
-      return true;
-    }
-
-    return false;
-  }
+  // shouldComponentUpdate(nextProps: Readonly<DefaultFileTypeProps>, nextState: Readonly<DefaultFileTypeState>, nextContext: any): boolean {
+  //   return true;
+  // }
   
-  componentDidUpdate(prevProps: DefaultTextMessageProps) {
-    // console.log(`DefaultTextType updated\t#${++tmpUpdateCounter}`);
+  componentDidUpdate(prevProps: DefaultFileTypeProps) {
+    // console.log(`DefaultFileType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;
     if (!animate) return;
@@ -216,14 +195,16 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
 
   pressInTime: number = 0;
   render() {
-    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen } = this.props;
+    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, navigation, dispatch, listOfPinnedMessages } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
 
     const isUser = message.author.userId === author.userId;
 
+    // console.log('DefaultFileType content:', message.content);
+
     return (
       <ScrollView
-        key={this.props.message.content}
+        key={message.content as string}
         ref={(ref) => (this.scrollViewRef = ref)}
         horizontal={true}
         alwaysBounceHorizontal={false}
@@ -289,11 +270,11 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
         >
           <View style={[styles.messageBlockContainer, isUser && { justifyContent: 'flex-end' }]}>
             <View onLayout={(event) => this.setState({ heightOfMessage: event.nativeEvent.layout.height })} style={styles.messageContainer}>
-              { this.props.pinnedMessageScreen && isUser &&
+              { pinnedMessageScreen && isUser &&
                 <ScrollButton 
-                  navigation={this.props.navigation}
-                  dispatch={this.props.dispatch}
-                  messageId={this.props.message.messageId!}
+                  navigation={navigation}
+                  dispatch={dispatch}
+                  messageId={message.messageId!}
                   isUser={isUser}
                   verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
                   horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
@@ -301,18 +282,19 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
               }
               <View
                 onLayout={this.onLayout}
-                style={functionalStyles.messageContainer(isUser, message.content.length)}
+                style={styles.message}
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
-                <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
+                <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                { message.content &&
+                  <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
+                    {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
+                  </Text>
+                }
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                   <Text
-                    style={
-                      message.content.length > DEFAULT_CHARS_PER_LINE
-                        ? [styles.messageTimeStamp, styles.longMessageTimeStamp]
-                        : styles.messageTimeStamp
-                    }
+                    style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
                   >
                     {message.isEdited ? 'edited ' : ''}
                     {message.sendingTime.getHours().toString().padStart(2, '0')}:
@@ -320,11 +302,11 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
                   </Text>
                 </View>
               </View>
-              { this.props.pinnedMessageScreen && !isUser &&
+              { pinnedMessageScreen && !isUser &&
                 <ScrollButton 
-                  navigation={this.props.navigation}
-                  dispatch={this.props.dispatch}
-                  messageId={this.props.message.messageId!}
+                  navigation={navigation}
+                  dispatch={dispatch}
+                  messageId={message.messageId!}
                   isUser={isUser}
                   verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
                   horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
@@ -356,7 +338,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
           <SVG.ReplyIcon />
         </View>
       </ScrollView>
-    );
+    )
   }
 }
 
@@ -364,4 +346,4 @@ const mapStateToProps = (state: any) => ({
   idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
 });
 
-export default connect(mapStateToProps)(DefaultTextType);
+export default connect(mapStateToProps)(DefaultFileType);

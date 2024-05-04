@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DEFAULT_CHARS_PER_LINE, getCustomFontSize } from '../../ChatConstants';
-import DialogueMessagesPinnedMessageIcon from '../../SVG/DialogueMessagesPinnedMessageIcon';
+import * as SVG from '../../SVG';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import LineSeparator from '../General/LineSeparator';
@@ -79,7 +79,7 @@ class PinnedMessageView extends Component<PinnedMessageViewProps> {
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 onPress={() => propsForPinnedMessageScreen.navigation.navigate('PinnedMessages', propsForPinnedMessageScreen)}
               >
-                <DialogueMessagesPinnedMessageIcon />
+                <SVG.DialogueMessagesPinnedMessageIcon />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>

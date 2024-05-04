@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
-import HeaderBackButton from '../../SVG/HeaderBackButton';
+import * as SVG from '../../SVG';
 import { screenWidth } from '../../../../ChatList/Constants/ConstantsForChatlist';
 import { LeftPartOfHeaderProps } from './Interfaces/ILeftPartOfHeader';
 
@@ -31,7 +31,7 @@ class LeftPartOfHeader extends Component<LeftPartOfHeaderProps> {
           hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
           activeOpacity={1}
           onPress={() => navigation.goBack()}>
-          <HeaderBackButton />
+          <SVG.HeaderBackButton />
         </TouchableOpacity>
     );
   }

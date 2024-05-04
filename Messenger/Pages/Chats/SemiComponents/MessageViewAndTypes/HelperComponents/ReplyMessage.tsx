@@ -8,7 +8,7 @@ import { ReplyMessageProps } from './Interfaces/IReplyMessage';
 class ReplyMessage extends PureComponent<ReplyMessageProps> {
   isUser = this.props.message.author.userId == this.props.author.userId;
   render(): React.ReactNode {
-    const { handleLinkTo, message, replyMessage, onLayout, pinnedMessageScreen, selected, selecting } = this.props;
+    const { handleLinkTo, message, replyMessage, onLayout, pinnedMessageScreen, selected, selecting, author } = this.props;
 
     let text = '';
     replyMessage?.content.split('\n').forEach(m => text += `${m.trim()} `);
@@ -16,8 +16,8 @@ class ReplyMessage extends PureComponent<ReplyMessageProps> {
 
     return (
       <View>
-        <Text style={[styles.replyUserNameFont, this.props.message.author.userId==this.props.author.userId && { alignSelf: 'flex-end' }]}>
-          {this.isUser ? 'You' : this.props.userName}
+        <Text style={[styles.replyUserNameFont, this.props.message.author.userId === author.userId && { alignSelf: 'flex-end' }]}>
+          {replyMessage.author.name === author.name ? 'You' : replyMessage.author.name}
         </Text>
         <View 
           onLayout={(event) => onLayout(event)}

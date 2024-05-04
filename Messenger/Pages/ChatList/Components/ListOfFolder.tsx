@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { View, Dimensions, FlatList, Platform } from "react-native";
+import { View, Dimensions, FlatList, Platform, Text } from "react-native";
 import { listOfChatsStyle } from "../Styles/ListOfChatsStyle";
 import ChatContainer from "./List of folders containers/ChatContainer";
 import { connect, useSelector } from "react-redux";
@@ -7,17 +7,24 @@ import SelfProfile from "../../../dao/Models/SelfProfile";
 import { booleanForLogging } from "../ChatList";
 import { footerstyles } from "../Styles/FooterStyle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { dataSource } from "../../../dao/local/database";
+import Dialogue from "../../../dao/Models/Chats/Dialogue";
+import Channel from "../../../dao/Models/Chats/Channel";
+import Group from "../../../dao/Models/Chats/Group";
+import Folder from "../../../dao/Models/Folder";
 
 interface ListOfFolderProps {
   currentFolder: number;
   navigation: any;
   setVisibleModalWindowChatState: React.MutableRefObject<() => void>;
+  dialogues: Dialogue[];
 }
 
 const ListOfFolder: React.FC<ListOfFolderProps> = ({
   currentFolder,
   navigation,
   setVisibleModalWindowChatState,
+  dialogues
 }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -28,7 +35,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
   });
 
   const selfProfile: SelfProfile = useSelector((state: any) => {
-    const self: SelfProfile = state.selfProfileUser;
+    const self: SelfProfile = state.selfProfileUser.selfProfile;
     return self;
   });
 
@@ -37,18 +44,28 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
     return Tab;
   });
 
+  const tabs = selfProfile?.tabs;
+  const selectedTab = tabs && tabs[currentTab];
+
+  if (!selectedTab || !selfProfile?.tabs[currentTab]) {
+    return <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}><Text>Loading...</Text></View>; 
+  }
+
   const keyExtractor = (index: any) => index.toString();
 
-  const renderItem = ({ item, index }: any) => (
-    <ChatContainer
-      key={index}
-      chat={item}
-      nesting={0}
-      navigation={navigation}
-      setVisibleModalWindowChatState={setVisibleModalWindowChatState}
-    />
-  );
-
+  const manager = dataSource.manager;
+  const renderItem = ({ item, index }: any) => {
+    console.log('ListOfFolder', index);
+    return (
+      <ChatContainer
+        key={index}
+        chat={item}
+        nesting={0}
+        navigation={navigation}
+        setVisibleModalWindowChatState={setVisibleModalWindowChatState}
+      />
+    );
+  }
   const ListHeaderComponent = () => (
     <View style={[listOfChatsStyle.gapContainerHigh]} />
   );
@@ -77,7 +94,7 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
   return (
     <View>
       <FlatList
-        data={selfProfile.tabs[currentTab].folders[currentFolder].chats}
+        data={dialogues} // selfProfile.tabs[currentTab].folders[currentFolder].chats
         keyExtractor={keyExtractor}
         nestedScrollEnabled={true}
         renderItem={renderItem}
@@ -92,4 +109,8 @@ const ListOfFolder: React.FC<ListOfFolderProps> = ({
   );
 };
 
-export default connect(null)(React.memo(ListOfFolder));
+const mapStateToProps = (state: any) => ({
+  dialogues: state.selfProfileUser.dialogues
+})
+
+export default connect(mapStateToProps)(React.memo(ListOfFolder));

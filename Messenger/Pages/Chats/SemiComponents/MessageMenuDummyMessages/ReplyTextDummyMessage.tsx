@@ -5,10 +5,8 @@ import { wrapText } from '../MessageViewAndTypes/HelperFunctions/wrapText';
 import { screenHeight, screenWidth } from '../../../ChatList/Constants/ConstantsForChatlist';
 import { ReplyTextType } from './Interfaces/IReplyText';
 import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, width } from '../ChatConstants';
-import MessageItemStatusMessageNotReviewed from '../SVG/MessageItemStatusMessageNotReviewed';
-import MessageItemStatusMessageReviewed from '../SVG/MessageItemStatusMessageReviewed';
-import PinButton from '../SVG/PinButton';
 import LineSeparator from '../HelperComponents/General/LineSeparator';
+import * as SVG from './../SVG';
 
 class ReplyTextDummyMessage extends Component<ReplyTextType> {
   render(): React.ReactNode {
@@ -43,7 +41,7 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
               <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
               <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                {pinned&&<PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                {pinned&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
                 <Text
                   style={
                     message.content.length > DEFAULT_CHARS_PER_LINE
@@ -61,7 +59,10 @@ class ReplyTextDummyMessage extends Component<ReplyTextType> {
         </View>
         { isUser && 
           <View style={styles.messageViewStatus}>
-            { message.messageId!<=userMessageLastWatched?.value?.messageId!?<MessageItemStatusMessageReviewed />:<MessageItemStatusMessageNotReviewed /> }
+            { message.messageId! <= userMessageLastWatched?.messageId! ? 
+              <SVG.MessageItemStatusMessageReviewed /> : 
+              <SVG.MessageItemStatusMessageNotReviewed /> 
+            }
           </View> }
       </View>
     );

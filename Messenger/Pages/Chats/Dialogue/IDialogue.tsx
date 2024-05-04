@@ -1,4 +1,6 @@
+import { HubConnection } from "@microsoft/signalr";
 import { MessageProps } from "../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
+import ILastWatchedMessage from "../../../dao/Models/Chats/ILastWatchedMessage";
 
 export interface DialogueProps {
   listOfId: number[];
@@ -18,4 +20,8 @@ export interface DialogueState {
   listOfPinnedMessages: MessageProps[];
   pinnedMessage: MessageProps;
   messageIdForReplyAndEdit: number;
+  userId: number;
+  authorMessageLastWatched: ILastWatchedMessage | null,
+  userMessageLastWatched: ILastWatchedMessage | null,
+  edit: number
 }

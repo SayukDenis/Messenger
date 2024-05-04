@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import HeaderBranchButton from '../../SVG/HeaderBranchButton';
+import * as SVG from '../../SVG';
 import { RightPartOfHeaderProps } from './Interfaces/IRightPartOfHeader';
 
 class RightPartOfHeader extends Component<RightPartOfHeaderProps> {
@@ -24,7 +24,7 @@ class RightPartOfHeader extends Component<RightPartOfHeaderProps> {
         >
           { selecting ?
           <Text>Cancel</Text> :
-          <HeaderBranchButton /> }
+          <SVG.HeaderBranchButton /> }
         </TouchableOpacity>
       );
   }

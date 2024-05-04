@@ -5,5 +5,6 @@ export interface ScrollButtonProps {
   dispatch: Dispatch;
   messageId: number;
   isUser: boolean;
-  additionalGap?: number;
+  verticalOffset: number;
+  horizontalOffset: number;
 }

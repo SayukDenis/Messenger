@@ -37,8 +37,8 @@ export default class Message extends Model {
     messageType!: EMessageType;
 
     //add BeforeInset() // or after
-    @Column('integer', { nullable: true })
-    numberInChat: number;
+    @Column('double', { nullable: true })
+    coordinations: number;
 
     @Column('integer', { nullable: true })
     messageResponseId?: number;

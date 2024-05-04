@@ -6,11 +6,13 @@ export interface MessageProps {
     messageId?: number;
     author: User;
     content: string;
+    fileContent?: string;
+    fileName?: string;
     sendingTime: Date
     messageType: EMessageType;
     messageResponseId?: number;
     messageForwardId?: number;
     isEdited: boolean;
-    isDeleted: boolean;
+    sent: boolean;
     reactionOnMessage: Array<IUserReaction>;
 }

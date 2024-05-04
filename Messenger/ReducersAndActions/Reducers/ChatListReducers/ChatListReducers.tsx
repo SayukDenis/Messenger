@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import { selfProfileUser } from "../../UserReducersAndActions/Reducers/UserReducers";
 import { EnumForChatListBlurs } from "../../../Pages/ChatList/Components/Enums/EnumsForChatListBlurs";
 import { SET_USERS_ARRAY_FOR_CREATE_GROUP_OR_CHANNEL } from "../../Actions/ChatListActions/ChatListActions";
 
@@ -89,17 +88,21 @@ const currentPositionReducer = (
   }
 };
 
+const StateOfFolderSelectedArrayReducer = {
+  folderSelectedArray: []
+  // getSelfProfleUser().tabs[currentTab].folders.map(
+  //   (_, index) => index === 0
+  // ),
+}
+
 // Reducer for FolderSelectedArray
 const folderSelectedArrayReducer = (
-  state = {
-    folderSelectedArray: selfProfileUser.tabs[currentTab].folders.map(
-      (_, index) => index === 0
-    ),
-  },
+  state = StateOfFolderSelectedArrayReducer,
   action: any
 ) => {
   switch (action.type) {
     case "SET_FOLDER_SELECTED_ARRAY":
+      console.log('folderSelectedArrayReducer', action.folderSelectedArray);
       return {
         ...state,
         folderSelectedArray: action.folderSelectedArray,

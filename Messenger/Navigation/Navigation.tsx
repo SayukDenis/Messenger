@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import NavigationForSettings from "../Pages/Settings/NavigationForSettings";
 import NavigationForAuthorization from "../Pages/Authorization/NavigationForAuthorization";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import ChatListNavigation from "../Pages/ChatList/СhatListNavigation/ChatListNavigation";
 import DialogueNavigation from "../Pages/Chats/Dialogue/DialogueNavigation/DialogueNavigation";
 import { GroupNavigation } from "../Pages/Chats/Group/GroupNavigation/GroupNavigation";
@@ -13,10 +13,43 @@ import {
   GroupProfileNavigation,
   UserProfileNavigation,
 } from "../Pages/Profiles/SemiComponents/Navigation";
+import { initialization } from "../Initialization/Initialization";
+import { dataSource } from "../dao/local/database";
+import { setFolderSelectedArray } from "../ReducersAndActions/Actions/ChatListActions/ChatListActions";
+import { setDialogues, setSelfProfileUser } from "../ReducersAndActions/UserReducersAndActions/Actions/UserActions";
+import { Text, View } from "react-native";
+import SelfProfile from "../dao/Models/SelfProfile";
 
 export const Stack = createStackNavigator();
+
 const Navigation = () => {
-  return (
+
+  const dispatch = useDispatch();
+
+  const [fetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await initialization()
+      .then(spu => {
+        console.log('INITIALIZATION COMPLETE', (spu[0] as SelfProfile).tabs[0].folders.map((_, index) => index === 0));
+        dispatch(setFolderSelectedArray(
+          (spu[0] as SelfProfile).tabs[0].folders.map(
+            (_, index) => index === 0
+          ),
+        ));
+        dispatch(setDialogues(spu[1]));
+        dispatch(setSelfProfileUser(spu[0]));
+        setTimeout(() => {
+          setFetching(false);
+        }, 1000);
+      });
+      // if (!dataSource.isInitialized) await dataSource.initialize();
+    };
+    fetchData();
+  }, []);
+
+  return !fetching ? (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="ChatListNavigation"
@@ -54,6 +87,8 @@ const Navigation = () => {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  ) : (<View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+    <Text>Fetching...</Text>
+  </View>);
 };
 export default connect(null)(Navigation);
