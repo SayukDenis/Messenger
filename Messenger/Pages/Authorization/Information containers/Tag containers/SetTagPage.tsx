@@ -20,6 +20,7 @@ import {
   listentingServer,
   matchTagForAuthorizationEndPoint,
 } from "../../../ChatList/Constants/ServerConection";
+import { IsMatchTagsValidationHandler, LengthValidationHandler, SymbolValidationHandler } from "./TagValidationChain";
 
 interface SetTagPageProps {
   navigation: any;
@@ -42,28 +43,16 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
     navigation.goBack();
   };
   useEffect(() => {
-    textOfTips(inputTag);
+    validateTag(inputTag);
   }, [inputTag]);
-  const isMatchTags = async (tag: string) => {
-    try {
-      const serverUrl = listentingServer + matchTagForAuthorizationEndPoint;
-      const requestData = {
-        tag,
-      };
-      const response = await fetch(serverUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-      const data = await response.json();
-      console.log("Відповідь від сервера:", data);
-      return data.isMatch;
-    } catch (error) {
-      console.error("Помилка:", error);
-      return undefined;
-    }
+  const validateTag = async (input:string) => {
+    const lengthValidator = new LengthValidationHandler();
+    const symbolValidator = new SymbolValidationHandler();
+    const matchValidator = new IsMatchTagsValidationHandler();
+    
+    lengthValidator.setNext(symbolValidator).setNext(matchValidator);
+
+    await lengthValidator.handle(input, setTextOfTipsString, setIsValid);
   };
   const colorOfTips = (input: string) => {
     if (input.length == 0) {
@@ -72,39 +61,6 @@ const SetTagPage: React.FC<SetTagPageProps> = ({ navigation, route }) => {
       return "#A3FBA1";
     } else {
       return "red";
-    }
-  };
-  const textOfTips = async (input: string) => {
-    if (input.length == 0) {
-      setTextOfTipsString("We are waiting for your tag input");
-      return;
-    } else if (input.length < 5) {
-      setIsValid(false);
-      setTextOfTipsString("Your tag is shorter than 5 characters");
-      return;
-    } else if (input.length > 16) {
-      setIsValid(false);
-      setTextOfTipsString("Your tag is longer than 16 characters");
-      return;
-    } else if (!regex.test(input)) {
-      setIsValid(false);
-      setTextOfTipsString("Your tag has invalid characters.");
-      return;
-    } else {
-      try {
-        const isMatchTag = await isMatchTags(input);
-        if (isMatchTag) {
-          setIsValid(false);
-          setTextOfTipsString("This tag exists.");
-          return;
-        }
-        setIsValid(true);
-        setTextOfTipsString("Your tag is valid.");
-      } catch (error) {
-        console.error("Error checking if tag exists:", error);
-        setIsValid(false);
-        return "Error checking if tag exists.";
-      }
     }
   };
   return (
