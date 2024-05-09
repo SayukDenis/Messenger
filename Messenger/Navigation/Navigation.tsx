@@ -29,30 +29,31 @@ const Navigation = () => {
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await initialization()
-      .then(spu => {
-        console.log('INITIALIZATION COMPLETE', (spu[0] as SelfProfile).tabs[0].folders.map((_, index) => index === 0));
-        dispatch(setFolderSelectedArray(
-          (spu[0] as SelfProfile).tabs[0].folders.map(
-            (_, index) => index === 0
-          ),
-        ));
-        dispatch(setDialogues(spu[1]));
-        dispatch(setSelfProfileUser(spu[0]));
-        setTimeout(() => {
-          setFetching(false);
-        }, 1000);
-      });
-      // if (!dataSource.isInitialized) await dataSource.initialize();
-    };
-    fetchData();
+    // const fetchData = async () => {
+    //   await initialization()
+    //   .then(spu => {
+    //     console.log('INITIALIZATION COMPLETE', (spu[0] as SelfProfile).tabs[0].folders.map((_, index) => index === 0));
+    //     dispatch(setFolderSelectedArray(
+    //       (spu[0] as SelfProfile).tabs[0].folders.map(
+    //         (_, index) => index === 0
+    //       ),
+    //     ));
+    //     dispatch(setDialogues(spu[1]));
+    //     dispatch(setSelfProfileUser(spu[0]));
+    //     setTimeout(() => {
+    //       setFetching(false);
+    //     }, 1000);
+    //   });
+    //   // if (!dataSource.isInitialized) await dataSource.initialize();
+    // };
+    // fetchData();
+    setFetching(false);
   }, []);
 
   return !fetching ? (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="ChatListNavigation"
+        initialRouteName="DialogueNavigation" // ChatListNavigation
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen

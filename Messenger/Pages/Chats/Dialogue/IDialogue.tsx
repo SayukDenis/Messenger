@@ -25,4 +25,5 @@ export interface DialogueState {
   userMessageLastWatched: ILastWatchedMessage | null;
   edit: number;
   fileContent: string;
+  sendingTime: Date | null;
 }

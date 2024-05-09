@@ -48,9 +48,9 @@ class Dialogue extends Component<DialogueProps> {
 
     this._emitter = new EventEmitter();
     
-    dialogue = props.route.params.chat;
-    author = dialogue.users[0];
-    users = dialogue.users.filter(u => u.userId !== 0);
+    // dialogue = props.route.params.chat;
+    // author = dialogue.users[0];
+    // users = dialogue.users.filter(u => u.userId !== 0);
   }
   
   state: DialogueState = {
@@ -70,6 +70,7 @@ class Dialogue extends Component<DialogueProps> {
     userMessageLastWatched: null,
     edit: 0,
     fileContent: '',
+    sendingTime: null,
   }
 
   async componentDidMount(): Promise<void> {
@@ -414,13 +415,13 @@ class Dialogue extends Component<DialogueProps> {
     dispatch(resetSelectedMessage());
   }
 
-  previewPhotoHandler = (fileContent: string) => {
-    this.setState({ fileContent: fileContent })
+  previewPhotoHandler = (fileContent: string, sendingTime: Date | null) => {
+    this.setState({ fileContent, sendingTime })
   }
   
   render(): React.ReactNode {
     const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && m.content);
-    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, deleting, messageIdForReplyAndEdit, fileContent, userMessageLastWatched } = this.state;
+    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, deleting, messageIdForReplyAndEdit, fileContent, userMessageLastWatched, sendingTime } = this.state;
     const { navigation } = this.props;
 
     const connection = ChatHubService.getInstance();
@@ -449,11 +450,13 @@ class Dialogue extends Component<DialogueProps> {
           <PhotoPreview 
             fileContent={fileContent}
             backHandler={this.previewPhotoHandler}
+            author={author?.name}
+            sendingTime={sendingTime}
           />
           <Header 
             chatType={dialogue}
-            picture={dialogue.linkToPhoto}
-            displayName={author.name}
+            picture={dialogue?.linkToPhoto}
+            displayName={author?.name}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage != undefined ? pinnedMessage : {} as MessageProps}
             selecting={selecting}

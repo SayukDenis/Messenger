@@ -35,7 +35,7 @@ interface DefaultFileTypeProps {
   pinnedMessageScreen: boolean;
   messages: MessageProps[];
   listOfPinnedMessages: Array<number>;
-  photoPreview: (fileContent: string) => void;
+  photoPreview: (fileContent: string, sendingTime: Date | null) => void;
 }
 
 interface DefaultFileTypeState {
@@ -308,7 +308,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
                 <TouchableOpacity
                   activeOpacity={1}
-                  onPress={() => photoPreview(message.fileContent!)}
+                  onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
                 >
                   <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
                 </TouchableOpacity>
