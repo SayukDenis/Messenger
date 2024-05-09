@@ -24,7 +24,7 @@ export function getRandomElementsFromArray<T>(arr: T[], max = arr.length): T[] {
 export async function deleteDb() {
     const path = FileSystem.documentDirectory + '/SQLite/messenger.db';
     const info = await FileSystem.getInfoAsync(path);
-    console.log(info);
+    console.log('info:', info);
     if (info.exists)
         await FileSystem.deleteAsync(path).then(x => console.log('successfully deleted database'))
 }

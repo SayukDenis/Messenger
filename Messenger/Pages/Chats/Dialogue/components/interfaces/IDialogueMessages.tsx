@@ -30,6 +30,7 @@ export interface DialogueMessagesProps {
   emitter: EventEmitter;
   chatId: number;
   chatHubService: ChatHubService | null;
+  previewPhoto: (fileContent: string) => void;
 }
 
 export interface MessageViewHandleProps {

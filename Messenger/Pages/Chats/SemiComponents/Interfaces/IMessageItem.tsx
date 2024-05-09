@@ -21,4 +21,5 @@ export interface MessageItemProps {
   pinnedMessageScreen: boolean;
   listOfPinnedMessages: Array<number>;
   navigation: any;
+  photoPreview: (fileContent: string) => void;
 }

@@ -1,7 +1,7 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React, { Component } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DEFAULT_CHARS_PER_LINE, getCustomFontSize } from '../../ChatConstants';
+import { DEFAULT_CHARS_PER_LINE, getCustomFontSize, height, width } from '../../ChatConstants';
 import * as SVG from '../../SVG';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
@@ -56,11 +56,14 @@ class PinnedMessageView extends Component<PinnedMessageViewProps> {
             onPress={this.scrollToPinedMessage}
             style={styles.container}
           >
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ fontSize: getCustomFontSize(14) }}>Pinned message: </Text>
+              { pinnedMessage.fileContent && 
+                <Image source={{ uri: 'data:image/png;base64,' + pinnedMessage.fileContent }} style={{ width: height * 0.03, height: height * 0.03, marginRight: 5 }} /> 
+              }
               <Text 
                 onLayout={(event) => console.log(event.nativeEvent.layout)} 
-                style={{ fontSize: getCustomFontSize(14), width: 155 }}
+                style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.3 }}
                 numberOfLines={1}
                 ellipsizeMode='tail'
               >

@@ -230,6 +230,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       selecting={selecting}
       pinnedMessageHandler={this.setPinnedMessageHandler}
       pinnedMessageScreen={false}
+      photoPreview={this.props.previewPhoto}
       listOfPinnedMessages={this.props.pinnedMessages.map((m) => {
         return m.messageId!
       })}

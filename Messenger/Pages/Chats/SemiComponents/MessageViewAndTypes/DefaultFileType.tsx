@@ -34,7 +34,8 @@ interface DefaultFileTypeProps {
   selecting: boolean;
   pinnedMessageScreen: boolean;
   messages: MessageProps[];
-  listOfPinnedMessages: Array<number>
+  listOfPinnedMessages: Array<number>;
+  photoPreview: (fileContent: string) => void;
 }
 
 interface DefaultFileTypeState {
@@ -215,7 +216,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
 
   pressInTime: number = 0;
   render() {
-    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, navigation, dispatch, listOfPinnedMessages } = this.props;
+    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, navigation, dispatch, listOfPinnedMessages, photoPreview } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
 
     const isUser = message.author.userId === author.userId;
@@ -305,7 +306,12 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
                 style={styles.message}
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
-                <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => photoPreview(message.fileContent!)}
+                >
+                  <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                </TouchableOpacity>
                 { message.content &&
                   <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
                     {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}

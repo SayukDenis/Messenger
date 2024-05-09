@@ -82,17 +82,17 @@ export class ChatHubService {
     }
   }
 
-  public async pinMessage(message: any, chatId: number, unpin: boolean) {
+  public async pinMessage(messageId: number, userId: number, chatId: number, unpin: boolean) {
     try {
-      await this.hubConnection?.invoke('PinMessage', message, chatId, unpin);
+      await this.hubConnection?.invoke('PinMessage', messageId, userId, chatId, unpin);
     } catch (e) {
       throw e;
     }
   }
   
-  public async deleteMessage(messageId: number, chatId: number) : Promise<void> {
+  public async deleteMessage(messageId: number, userId: number, chatId: number) : Promise<void> {
     try {
-      await this.hubConnection?.invoke('DeleteMessage', messageId, chatId);
+      await this.hubConnection?.invoke('DeleteMessage', messageId, userId, chatId);
     } catch (e) {
       throw e;
     }

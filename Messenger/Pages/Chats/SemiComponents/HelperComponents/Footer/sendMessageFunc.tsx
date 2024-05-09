@@ -16,7 +16,7 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
 
   const connection = getChatHubService();
 
-  if(replyMessage?.content) {
+  if(replyMessage?.content || replyMessage.fileContent) {
     const msg = {
       messageId: messages[0].messageId! + 1,
       author: (author as User), // SelfProgile == User ?
@@ -56,10 +56,10 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
   } else if(editMessage?.content&&text!=messageToEdit?.content) {
     connection?.updateMessageText(text, messageToEdit?.messageId!, getChatId());
 
-    setMessages({} as MessageProps);
+    setMessages({ content: text } as MessageProps);
   } else {
     const msg = {
-      messageId: messages[0].messageId! + 1,
+      messageId: messages.length > 0 ? messages[0].messageId! + 1 : 0,
       author: (author as User), // SelfProgile == User ?
       content: text,
       sendingTime: new Date(),

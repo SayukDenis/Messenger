@@ -13,7 +13,7 @@ class MessageItem extends Component<MessageItemProps> {
   messageViewHandle = ({message}:MessageViewHandleProps) => {
     if(!message.content && message.messageType !== 2) return null;
 
-    const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users } = this.props;
+    const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users, photoPreview } = this.props;
 
     if(message.messageType === EMessageType.text && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && (m.content || m.fileContent)) >= 0) {
       return <ReplyTextType
@@ -61,6 +61,7 @@ class MessageItem extends Component<MessageItemProps> {
         selecting={selecting}
         pinnedMessageScreen={pinnedMessageScreen}
         listOfPinnedMessages={listOfPinnedMessages}
+        photoPreview={photoPreview}
       />;
     } else if(message.messageType === EMessageType.img) {
       // console.log('render img');
@@ -77,6 +78,7 @@ class MessageItem extends Component<MessageItemProps> {
         selecting={selecting}
         pinnedMessageScreen={pinnedMessageScreen}
         listOfPinnedMessages={listOfPinnedMessages}
+        photoPreview={photoPreview}
       />
     }
   };

@@ -21,7 +21,8 @@ export interface DialogueState {
   pinnedMessage: MessageProps;
   messageIdForReplyAndEdit: number;
   userId: number;
-  authorMessageLastWatched: ILastWatchedMessage | null,
-  userMessageLastWatched: ILastWatchedMessage | null,
-  edit: number
+  authorMessageLastWatched: ILastWatchedMessage | null;
+  userMessageLastWatched: ILastWatchedMessage | null;
+  edit: number;
+  fileContent: string;
 }

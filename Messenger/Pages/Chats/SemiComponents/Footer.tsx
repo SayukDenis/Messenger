@@ -202,7 +202,7 @@ class Footer extends Component<DialogueFooterProps> {
                   height={dynamicFooterHeight - FOOTER_INNER_TEXTINPUT_GAP}
                 />
                 <RightPartOfFooter 
-                  sendMessage={keyboardActive} 
+                  sendMessage={keyboardActive && text.length > 0} 
                   sendMessageHandler={sendMessageHandler} 
                   pressGalleryButtonHandler={this.pickImage} 
                   selecting={selecting}

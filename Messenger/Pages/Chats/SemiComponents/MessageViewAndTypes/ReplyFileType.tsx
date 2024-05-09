@@ -42,6 +42,7 @@ export interface ReplyFileTypeProps {
   listOfPinnedMessages: Array<number>;
   navigation: any;
   messagesWithCoords: CoordinationsOfMessage[];
+  photoPreview: (fileContent: string) => void;
 }
 
 export interface ReplyFileTypeState {
