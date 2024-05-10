@@ -291,7 +291,7 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
   }
 
   render() {
-    const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched } = this.props;
+    const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched, photoPreview } = this.props;
     const { selected, widthOfMessage, widthOfReply } = this.state;
 
     const isUser = message.author.userId == author.userId;
@@ -367,7 +367,12 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
                 <View 
                   style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
                 /> 
-                <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
+                >
+                  <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                </TouchableOpacity>
                 { message.content &&
                   <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
                     {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
