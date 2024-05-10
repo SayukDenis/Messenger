@@ -1,16 +1,13 @@
-import React, { Component, MutableRefObject } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Animated,
-  Easing,
-  Image,
-} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Animated, Easing, Image, } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width } from '../ChatConstants';
-import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { 
+  DEFAULT_CHARS_PER_LINE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width 
+} from '../ChatConstants';
+import { 
+  addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, 
+  removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage 
+} from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { functionalStyles, styles } from './Styles/ReplyFileType';
@@ -19,49 +16,14 @@ import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
-import { CoordinationsOfMessage } from '../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-import { Dispatch } from 'redux';
-import User from '../../../../dao/Models/User';
-import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
 import * as SVG from './../SVG';
-
-export interface ReplyFileTypeProps {
-  idForAnimation: number;
-  messages: MessageProps[];
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
-  id: number;
-  flatList: MutableRefObject<any>;
-  author: User;
-  userName: string;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-  dispatch: Dispatch;
-  pinnedMessageScreen: boolean;
-  listOfPinnedMessages: Array<number>;
-  navigation: any;
-  messagesWithCoords: CoordinationsOfMessage[];
-  photoPreview: (fileContent: string, sendingTime: Date | null) => void;
-}
-
-export interface ReplyFileTypeState {
-  sizeOfMessageContainer: [number, number];
-  widthOfMessage: number;
-  widthOfReply: number;
-  selected: boolean;
-  animate: boolean;
-  pressCoordinations: coordProps;
-  replyMessage: string;
-  message: string;
-}
-
+import { ReplyFileTypeState, ReplyFileTypeWithNavigationProps } from './Interfaces/IReplyFileType';
 
 let size: sizeProps[] = [];
 
 let tmpUpdateCounter = 0;
 
-class ReplyFileType extends Component<ReplyFileTypeProps> {
+class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
   state: ReplyFileTypeState = {
     sizeOfMessageContainer: [0, 0],
     widthOfMessage: 0,
@@ -80,7 +42,7 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
     });
   }
 
-  componentDidUpdate(prevProps: ReplyFileTypeProps) {
+  componentDidUpdate(prevProps: ReplyFileTypeWithNavigationProps) {
     console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;
@@ -101,7 +63,7 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
     // }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<ReplyFileTypeProps>, nextState: Readonly<ReplyFileTypeState>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps: Readonly<ReplyFileTypeWithNavigationProps>, nextState: Readonly<ReplyFileTypeState>, nextContext: any): boolean {
     const nextReplyMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content;
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 

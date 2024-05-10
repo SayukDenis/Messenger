@@ -12,7 +12,7 @@ import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PAD
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { ReplyTextTypeProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
+import { ReplyTextTypeWithReduxProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
 import { functionalStyles, styles } from './Styles/ReplyTextType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import ScrollButton from './SemiComponents/ScrollButton';
@@ -25,7 +25,7 @@ let size: sizeProps[] = [];
 
 let tmpUpdateCounter = 0;
 
-class ReplyTextType extends Component<ReplyTextTypeProps> {
+class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
   state: ReplyTextTypeState = {
     sizeOfMessageContainer: [0, 0],
     widthOfMessage: 0,
@@ -44,7 +44,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     });
   }
 
-  componentDidUpdate(prevProps: ReplyTextTypeProps) {
+  componentDidUpdate(prevProps: ReplyTextTypeWithReduxProps) {
     console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;
@@ -65,7 +65,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     // }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeWithReduxProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
     const nextReplyMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content;
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 

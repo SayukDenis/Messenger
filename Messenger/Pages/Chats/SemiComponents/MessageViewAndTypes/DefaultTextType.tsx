@@ -26,14 +26,14 @@ import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
-import { DefaultTextMessageProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
+import { DefaultTextMessageWithNavigationProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
 import * as SVG from './../SVG';
 
 let size: sizeProps[] = [];
 
 let tmpUpdateCounter = 0;
 
-class DefaultTextType extends Component<DefaultTextMessageProps> {
+class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
   state: DefaultTextMessageState = {
     animate: false,
     heightOfMessage: 0,
@@ -157,7 +157,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     useNativeDriver: true,
   });
 
-  shouldComponentUpdate(nextProps: Readonly<DefaultTextMessageProps>, nextState: Readonly<DefaultTextMessageState>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps: Readonly<DefaultTextMessageWithNavigationProps>, nextState: Readonly<DefaultTextMessageState>, nextContext: any): boolean {
     if(nextProps.idForAnimation === this.props.message.messageId) {
       this.state.animate = true;
       return true;
@@ -196,7 +196,7 @@ class DefaultTextType extends Component<DefaultTextMessageProps> {
     return false;
   }
   
-  componentDidUpdate(prevProps: DefaultTextMessageProps) {
+  componentDidUpdate(prevProps: DefaultTextMessageWithNavigationProps) {
     // console.log(`DefaultTextType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;

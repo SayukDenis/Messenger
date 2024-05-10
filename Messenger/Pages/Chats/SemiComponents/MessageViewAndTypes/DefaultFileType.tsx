@@ -3,11 +3,6 @@ import React, { Component } from 'react'
 import ScrollButton from './SemiComponents/ScrollButton';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
-import { Dispatch } from 'redux';
-import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
-import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import User from '../../../../dao/Models/User';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { Easing } from 'react-native-reanimated';
 import { DEFAULT_CHARS_PER_LINE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } from '../ChatConstants';
@@ -15,37 +10,11 @@ import { functionalStyles, styles } from './Styles/DefaultFileType';
 import { wrapText } from './HelperFunctions/wrapText';
 import { connect } from 'react-redux';
 import * as SVG from './../SVG';
+import { DefaultFileTypeState, DefaultFileTypeWithNavigationProps } from './Interfaces/IDefaultFileType';
 
-let size: sizeProps[] = [];
+class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
 
-let tmpUpdateCounter = 0;
-
-interface DefaultFileTypeProps {
-  dispatch: Dispatch;
-  navigation: any;
-
-  idForAnimation: number;
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
-  id: number;
-  flatList: React.MutableRefObject<any>;
-  author: User;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-  pinnedMessageScreen: boolean;
-  messages: MessageProps[];
-  listOfPinnedMessages: Array<number>;
-  photoPreview: (fileContent: string, sendingTime: Date | null) => void;
-}
-
-interface DefaultFileTypeState {
-  animate: boolean;
-  heightOfMessage: number;
-  selected: boolean;
-
-}
-
-class DefaultFileType extends Component<DefaultFileTypeProps> {
+  public static size: sizeProps[] = [];
 
   state: DefaultFileTypeState = {
     animate: false,
@@ -70,14 +39,15 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
 
   onLayout = (event: any) => {
     const { width, height } = event.nativeEvent.layout;
-    const idx = size.findIndex(m => m.ID === this.props.id);
+
+    const idx = DefaultFileType.size.findIndex(m => m.ID === this.props.id);
     if(idx >= 0) {
-      if(size[idx].layout.height !== height || size[idx].layout.width !== width) {
-        size[idx].layout.height = height;
-        size[idx].layout.width = width;
+      if(DefaultFileType.size[idx].layout.height !== height || DefaultFileType.size[idx].layout.width !== width) {
+        DefaultFileType.size[idx].layout.height = height;
+        DefaultFileType.size[idx].layout.width = width;
       }
     } else {
-      size = [...size, { ID: this.props.id, layout: { width, height } }];
+      DefaultFileType.size = [...DefaultFileType.size, { ID: this.props.id, layout: { width, height } }];
     }
   };
 
@@ -120,7 +90,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
 
-    const component = size.find((c) => c.ID === this.props.id);
+    const component = DefaultFileType.size.find((c) => c.ID === this.props.id);
 
     const componentPage = (await this.measureHandler() as componentPageProps);
 
@@ -170,7 +140,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
     useNativeDriver: true,
   });
 
-  shouldComponentUpdate(nextProps: Readonly<DefaultFileTypeProps>, nextState: Readonly<DefaultFileTypeState>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps: Readonly<DefaultFileTypeWithNavigationProps>, nextState: Readonly<DefaultFileTypeState>, nextContext: any): boolean {
     if(nextProps.idForAnimation === this.props.message.messageId) {
       this.state.animate = true;
       return true;
@@ -194,7 +164,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
     return false;
   }
   
-  componentDidUpdate(prevProps: DefaultFileTypeProps) {
+  componentDidUpdate(prevProps: DefaultFileTypeWithNavigationProps) {
     // console.log(`DefaultFileType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;

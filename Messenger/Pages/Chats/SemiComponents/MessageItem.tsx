@@ -3,12 +3,13 @@ import React, { Component, memo } from 'react'
 import { EMessageType } from '../../../dao/Models/EMessageType';
 import { MessageViewHandleProps } from '../Dialogue/components/interfaces/IDialogueMessages';
 import { MessageItemProps } from './Interfaces/IMessageItem';
-import DefaultTextType from './MessageViewAndTypes/DefaultTextType';
-import ReplyTextType from './MessageViewAndTypes/ReplyTextType';
-import DefaultFileType from './MessageViewAndTypes/DefaultFileType';
-import ReplyFileType from './MessageViewAndTypes/ReplyFileType';
+import TextTypeCreator from './MessageViewAndTypes/TextTypeCreator';
+import FileTypeCreator from './MessageViewAndTypes/FileTypeCreator';
 
 class MessageItem extends Component<MessageItemProps> {
+
+  public static TextFactory = new TextTypeCreator();
+  public static FileFactory = new FileTypeCreator();
 
   messageViewHandle = ({message}:MessageViewHandleProps) => {
     if(!message.content && message.messageType !== 2) return null;
@@ -16,70 +17,65 @@ class MessageItem extends Component<MessageItemProps> {
     const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users, photoPreview } = this.props;
 
     if(message.messageType === EMessageType.text && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && (m.content || m.fileContent)) >= 0) {
-      return <ReplyTextType
-        navigation={navigation}
-        key={message.messageId} 
-        messages={listOfMessages} 
-        message={message} 
-        setMessageMenuVisible={setMessageMenuVisible} 
-        id={message.messageId!} 
-        flatList={flatListRef!}
-        author={author}
-        userName={users?users[0]?.name:''}
-        userMessageLastWatched={userMessageLastWatched}
-        selecting={selecting}
-        pinnedMessageScreen={pinnedMessageScreen}
-        listOfPinnedMessages={listOfPinnedMessages}
-      />;
+      return MessageItem.TextFactory.ReplyType({ 
+        navigation, 
+        messages: listOfMessages,
+        message,
+        setMessageMenuVisible,
+        id: message.messageId!,
+        flatList: flatListRef!,
+        author,
+        userName: users ? users[0]?.name : '',
+        userMessageLastWatched,
+        selecting,
+        pinnedMessageScreen,
+        listOfPinnedMessages
+      });
     } else if(message.messageType === EMessageType.text) {
-      return <DefaultTextType
-        navigation={navigation}
-        key={message.messageId} 
-        message={message}
-        messages={listOfMessages}
-        setMessageMenuVisible={setMessageMenuVisible} 
-        id={message.messageId!} 
-        flatList={flatListRef!}
-        author={author}
-        userMessageLastWatched={userMessageLastWatched}
-        selecting={selecting}
-        pinnedMessageScreen={pinnedMessageScreen}
-        listOfPinnedMessages={listOfPinnedMessages}
-      />;
+      return MessageItem.TextFactory.DefaultType({
+        navigation,
+        message,
+        messages: listOfMessages,
+        setMessageMenuVisible,
+        id: message.messageId!, 
+        flatList: flatListRef!,
+        author,
+        userMessageLastWatched,
+        selecting,
+        pinnedMessageScreen,
+        listOfPinnedMessages
+      });
     } else if(message.messageType === EMessageType.img && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && (m.content || m.fileContent)) >= 0) {
-      return <ReplyFileType
-        navigation={navigation}
-        key={message.messageId} 
-        messages={listOfMessages} 
-        message={message} 
-        setMessageMenuVisible={setMessageMenuVisible} 
-        id={message.messageId!} 
-        flatList={flatListRef!}
-        author={author}
-        userName={users?users[0]?.name:''}
-        userMessageLastWatched={userMessageLastWatched}
-        selecting={selecting}
-        pinnedMessageScreen={pinnedMessageScreen}
-        listOfPinnedMessages={listOfPinnedMessages}
-        photoPreview={photoPreview}
-      />;
+      return MessageItem.FileFactory.ReplyType({
+        navigation,
+        messages: listOfMessages, 
+        message,
+        setMessageMenuVisible, 
+        id: message.messageId!, 
+        flatList: flatListRef!,
+        author,
+        userName: users ? users[0]?.name : '',
+        userMessageLastWatched,
+        selecting,
+        pinnedMessageScreen,
+        listOfPinnedMessages,
+        photoPreview
+      });
     } else if(message.messageType === EMessageType.img) {
-      // console.log('render img');
-      return <DefaultFileType 
-        navigation={navigation}
-        key={message.messageId} 
-        message={message}
-        messages={listOfMessages}
-        setMessageMenuVisible={setMessageMenuVisible} 
-        id={message.messageId!} 
-        flatList={flatListRef!}
-        author={author}
-        userMessageLastWatched={userMessageLastWatched}
-        selecting={selecting}
-        pinnedMessageScreen={pinnedMessageScreen}
-        listOfPinnedMessages={listOfPinnedMessages}
-        photoPreview={photoPreview}
-      />
+      return MessageItem.FileFactory.DefaultType({
+        navigation,
+        message,
+        messages: listOfMessages,
+        setMessageMenuVisible, 
+        id: message.messageId!, 
+        flatList: flatListRef!,
+        author,
+        userMessageLastWatched,
+        selecting,
+        pinnedMessageScreen,
+        listOfPinnedMessages,
+        photoPreview
+      });
     }
   };
 

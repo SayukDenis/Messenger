@@ -2,7 +2,34 @@
 import Message from '../../../../dao/Models/Message';
 import { MessageProps } from '../../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
 
-export class ChatHubService {
+interface IChatHubService {
+  sendMessageText: (msg: any) => Promise<void>;
+  sendMessageFile: (msg: any) => Promise<void>;
+  getFileFromMessage: () => Promise<void>;
+  updateMessageText: (newContent: string, messageId: number, chatId: number) => Promise<void>;
+  updateMessageFile: () => Promise<void>;
+  updateLastWatchedMessage: (messageId: number, chatId: number, userId: number) => Promise<void>;
+  pinMessage: (messageId: number, userId: number, chatId: number, unpin: boolean) => Promise<void>;
+  deleteMessage: (messageId: number, userId: number, chatId: number) => Promise<void>;
+  registerReceiveMessageText: (handler: (mes: Message) => void) => ChatHubService;
+  registerReceiveMessageFile: (handler: (mes: any) => void) => ChatHubService;
+  registerReceiveUpdateMessageText: (handler: (messageId: number, newContent: string) => void) => ChatHubService;
+  registerReceiveUpdateLastWatchedMessage: (handler: (messageId: number, chatId: number, userId: number) => void) => ChatHubService;
+  registerMessageSent: (handler: (messageId: number) => void) => ChatHubService;
+  registerPinMessage: (handler: (messageId: number, unpin: boolean) => void) => ChatHubService;
+  registerDeleteMessage: (handler: (messageId: number) => void) => ChatHubService;
+  unregisterReceiveMessageText: () => ChatHubService;
+  unregisterReceiveMessageFile: () => ChatHubService;
+  unregisterReceiveUpdateMessageText: () => ChatHubService;
+  unregisterReceiveUpdateLastWatchedMessage: () => ChatHubService;
+  unregisterMessageSent: () => ChatHubService;
+  unregisterPinMessage: () => ChatHubService;
+  unregisterDeleteMessage: () => ChatHubService;
+
+
+} 
+
+export class ChatHubService implements IChatHubService {
   private static instance: ChatHubService;
   private hubConnection: HubConnection | null = null;
 
@@ -82,7 +109,7 @@ export class ChatHubService {
     }
   }
 
-  public async pinMessage(messageId: number, userId: number, chatId: number, unpin: boolean) {
+  public async pinMessage(messageId: number, userId: number, chatId: number, unpin: boolean) : Promise<void> {
     try {
       await this.hubConnection?.invoke('PinMessage', messageId, userId, chatId, unpin);
     } catch (e) {
@@ -98,66 +125,98 @@ export class ChatHubService {
     }
   }
 
-  public async registerReceiveMessageText(handler: (mes: Message) => void) {
+  public registerReceiveMessageText(handler: (mes: Message) => void) {
     this.messageTextReceivedHandler = handler;
     this.hubConnection?.on("ReceiveMessageText", this.messageTextReceivedHandler!);
+
+    return ChatHubService.instance;
   }
 
-  public async registerReceiveMessageFile(handler: (mes: any) => void) {
+  public registerReceiveMessageFile(handler: (mes: any) => void) {
     this.messageFileReceivedHandler = handler;
     this.hubConnection?.on("ReceiveMessageFile", this.messageFileReceivedHandler!);
+
+    return ChatHubService.instance;
   }
 
-  public async registerReceiveUpdateMessageText(handler: (messageId: number, newContent: string) => void) {
+  public registerReceiveUpdateMessageText(handler: (messageId: number, newContent: string) => void) {
     this.messageTextUpdateReceivedHandler = handler;
     this.hubConnection?.on("UpdateMessageText", this.messageTextUpdateReceivedHandler!);
+
+    return ChatHubService.instance;
   }
 
-  public async registerReceiveUpdateLastWatchedMessage(handler: (messageId: number, chatId: number, userId: number) => void) {
+  public registerReceiveUpdateLastWatchedMessage(handler: (messageId: number, chatId: number, userId: number) => void) {
     this.lastWatchedMessageUpdateReceivedHandler = (messageId: number, chatId: number, userId: number) => {
       this.updatingLastWatchedMessage = false;
       handler(messageId, chatId, userId);
     }
     this.hubConnection?.on("UpdateLastWatchedMessage", this.lastWatchedMessageUpdateReceivedHandler!);
+
+    return ChatHubService.instance;
   }
   
-  public async registerMessageSent(handler: (messageId: number) => void) {
+  public registerMessageSent(handler: (messageId: number) => void) {
     this.messageSentHandler = handler;
     this.hubConnection?.on("MessageSent", this.messageSentHandler);
+
+    return ChatHubService.instance;
   }
 
-  public async registerPinMessage(handler: (messageId: number, unpin: boolean) => void) {
+  public registerPinMessage(handler: (messageId: number, unpin: boolean) => void) {
     this.pinMessageHandler = handler;
     this.hubConnection?.on('PinMessage', this.pinMessageHandler);
+
+    return ChatHubService.instance;
   }
 
-  public async registerDeleteMessage(handler: (messageId: number) => void) {
+  public registerDeleteMessage(handler: (messageId: number) => void) {
     this.deleteMessageHandler = handler;
     this.hubConnection?.on("DeleteMessage", this.deleteMessageHandler);
+
+    return ChatHubService.instance;
   }
 
-  public async unregisterReceiveMessageText() {
+  public unregisterReceiveMessageText() {
     this.hubConnection?.off("ReceiveMessageText", this.messageTextReceivedHandler!);
+
+    return ChatHubService.instance;
   }
   
-  public async unregisterReceiveMessageFile() {
+  public unregisterReceiveMessageFile() {
     this.hubConnection?.off("ReceiveMessageFile", this.messageFileReceivedHandler!);
+
+    return ChatHubService.instance;
   }
 
-  public async unregisterReceiveUpdateMessageText() {
+  public unregisterReceiveUpdateMessageText() {
     this.hubConnection?.off("UpdateMessageText", this.messageTextUpdateReceivedHandler!);
+
+    return ChatHubService.instance;
   }
 
-  public async unregisterReceiveUpdateLastWatchedMessage() {
+  public unregisterReceiveUpdateLastWatchedMessage() {
     this.hubConnection?.off("UpdateLastWatchedMessage", this.lastWatchedMessageUpdateReceivedHandler!);
+
+    return ChatHubService.instance;
   }
 
-  public async unregisterMessageSent() {
+  public unregisterMessageSent() {
     this.hubConnection?.off("MessageSent", this.messageSentHandler!);
+
+    return ChatHubService.instance;
   }
 
-  public async unregisterDeleteMessage() {
+  public unregisterPinMessage() {
+    this.hubConnection?.off("PinMessage", this.pinMessageHandler!);
+
+    return ChatHubService.instance;
+  }
+
+  public unregisterDeleteMessage() {
     this.hubConnection?.off("DeleteMessage", this.deleteMessageHandler!);
+
+    return ChatHubService.instance;
   }
 
   public async disconnect() {

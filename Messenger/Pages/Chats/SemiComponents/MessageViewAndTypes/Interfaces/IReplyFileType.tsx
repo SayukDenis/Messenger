@@ -1,14 +1,13 @@
-import { Dispatch } from "redux";
-import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
 import { MutableRefObject } from "react";
-import User from "../../../../../dao/Models/User";
 import { Layout } from "../../Interfaces/GeneralInterfaces/ILayout";
 import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
-import { coordProps } from "./IGeneralInterfaces";
+import User from "../../../../../dao/Models/User";
+import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
 import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
+import { Dispatch } from "redux";
+import { coordProps } from "./IGeneralInterfaces";
 
-export interface ReplyTextTypeProps {
-  navigation: any;
+export interface ReplyFileTypeProps {
   messages: MessageProps[];
   message: MessageProps;
   setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
@@ -20,15 +19,17 @@ export interface ReplyTextTypeProps {
   selecting: boolean;
   pinnedMessageScreen: boolean;
   listOfPinnedMessages: Array<number>;
+  navigation: any;
+  photoPreview: (fileContent: string, sendingTime: Date | null) => void;
 }
 
-export interface ReplyTextTypeWithReduxProps extends ReplyTextTypeProps {
-  dispatch: Dispatch;
-  messagesWithCoords: CoordinationsOfMessage[];
+export interface ReplyFileTypeWithNavigationProps extends ReplyFileTypeProps {
   idForAnimation: number;
+  messagesWithCoords: CoordinationsOfMessage[];
+  dispatch: Dispatch;
 }
 
-export interface ReplyTextTypeState {
+export interface ReplyFileTypeState {
   sizeOfMessageContainer: [number, number];
   widthOfMessage: number;
   widthOfReply: number;

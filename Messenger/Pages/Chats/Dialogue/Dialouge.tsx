@@ -74,6 +74,81 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   async componentDidMount(): Promise<void> {
+
+    //#region Handlers 
+
+    const messageSentHandler = (messageId: number) => {
+      const list = [...this.state.listOfMessages];
+      const m = { ...list.shift(), sent: true };
+      console.log(m);
+      console.log(m?.messageId, messageId);
+      
+      this.setState({ listOfMessages: [m, ...list] });
+    }
+
+    const receiveMessageTextHandler = (mes: any) => this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
+
+    const receiveMessageFileHandler = async (mes: any) => {
+      this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
+
+      // Processing and saving image/video to a gallery
+      // Create file path
+      const filePath = `${FileSystem.documentDirectory}image.png`;
+
+      try {
+        // Write base64 string to file
+        await FileSystem.writeAsStringAsync(filePath, mes.fileContent, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        // Save file to gallery
+        await MediaLibrary.saveToLibraryAsync(filePath);
+      } catch (error) {
+        console.error('Error saving image:', error);
+      }
+    }
+
+    const receiveLastWatchedMessageUpdate = (messageId: number, chatId: number, userId: number) => {
+      if(userId === author.userId) {
+        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
+        this.setState({ 
+          authorMessageLastWatched: { 
+            ...this.state.authorMessageLastWatched, 
+            messageId: messageId
+          } 
+        });
+      } else {
+        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
+        this.setState({ 
+          userMessageLastWatched: {
+            ...this.state.userMessageLastWatched, 
+            messageId: messageId
+          }
+        });
+      }
+    }
+
+    const receiveUpdateMessageTextHandler = (messageId: number, newContent: string) => {
+      console.log('UpdateMessageText for', Platform.OS, messageId, newContent)
+      if(messageId&&newContent) {
+        const list = [...this.state.listOfMessages];
+        const id = list.findIndex(m => m.messageId === messageId);
+        const m = { ...list[id] };
+        m.content = newContent;
+        m.isEdited = true;
+        this.setState({ listOfMessages: [...list.slice(0, id), m, ...list.slice(id + 1)] });
+      }
+    }
+
+    const pinMessageHandler = (messageId: number, unpin: boolean) => {
+      const m = this.state.listOfMessages.find(m => m.messageId === messageId);
+      this.pinMessageHandler(m!);
+    }
+
+    const deleteMessageHandler = (messageId: number) => this.onDeletePress(messageId);
+
+    //#endregion
+
     //#region Server 
 
     // fetch("http://192.168.0.108:5151/api/Chat/dialogue/1/2", {method: "POST",})
@@ -117,85 +192,26 @@ class Dialogue extends Component<DialogueProps> {
     const connection = ChatHubService.getInstance();
     connection.startConnection(author.userId);
 
-    connection.registerMessageSent((messageId: number) => {
-      const list = [...this.state.listOfMessages];
-      const m = { ...list.shift(), sent: true };
-      console.log(m);
-      console.log(m?.messageId, messageId);
-      
-      this.setState({ listOfMessages: [m, ...list] });
-    });
-    connection.registerReceiveMessageText((mes: any) => {
-      this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
-    });
-    connection.registerReceiveMessageFile(async (mes: any) => {
-      this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
-
-      // Processing and saving image/video to a gallery
-      // Create file path
-      const filePath = `${FileSystem.documentDirectory}image.png`;
-
-      try {
-        // Write base64 string to file
-        await FileSystem.writeAsStringAsync(filePath, mes.fileContent, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
-
-        // Save file to gallery
-        await MediaLibrary.saveToLibraryAsync(filePath);
-      } catch (error) {
-        console.error('Error saving image:', error);
-      }
-    }); 
-    connection.registerReceiveUpdateLastWatchedMessage((messageId: number, chatId: number, userId: number) => {
-      if(userId === author.userId) {
-        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
-        this.setState({ 
-          authorMessageLastWatched: { 
-            ...this.state.authorMessageLastWatched, 
-            messageId: messageId
-          } 
-        });
-      } else {
-        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
-        this.setState({ 
-          userMessageLastWatched: {
-            ...this.state.userMessageLastWatched, 
-            messageId: messageId
-          }
-        });
-      }
-    });
-    connection.registerReceiveUpdateMessageText((messageId: number, newContent: string) => {
-      console.log('UpdateMessageText for', Platform.OS, messageId, newContent)
-      if(messageId&&newContent) {
-        const list = [...this.state.listOfMessages];
-        const id = list.findIndex(m => m.messageId === messageId);
-        const m = { ...list[id] };
-        m.content = newContent;
-        m.isEdited = true;
-        this.setState({ listOfMessages: [...list.slice(0, id), m, ...list.slice(id + 1)] });
-      }
-    });
-    connection.registerPinMessage((messageId: number, unpin: boolean) => {
-      const m = this.state.listOfMessages.find(m => m.messageId === messageId);
-      this.pinMessageHandler(m!);
-    });
-    connection.registerDeleteMessage((messageId: number) => {
-      this.onDeletePress(messageId);
-    });
+    connection.registerMessageSent(messageSentHandler)
+      .registerReceiveMessageText(receiveMessageTextHandler)
+      .registerReceiveMessageFile(receiveMessageFileHandler)
+      .registerReceiveUpdateLastWatchedMessage(receiveLastWatchedMessageUpdate)
+      .registerReceiveUpdateMessageText(receiveUpdateMessageTextHandler)
+      .registerPinMessage(pinMessageHandler)
+      .registerDeleteMessage(deleteMessageHandler);
 
     //#endregion
+
   }
 
   componentWillUnmount(): void {
     const connection = ChatHubService.getInstance();
-    connection.unregisterMessageSent();
-    connection.unregisterDeleteMessage();
-    connection.unregisterReceiveMessageFile();
-    connection.unregisterReceiveMessageText();
-    connection.unregisterReceiveUpdateLastWatchedMessage();
-    connection.unregisterReceiveUpdateMessageText();
+    connection.unregisterMessageSent()
+      .unregisterDeleteMessage()
+      .unregisterReceiveMessageFile()
+      .unregisterReceiveMessageText()
+      .unregisterReceiveUpdateLastWatchedMessage()
+      .unregisterReceiveUpdateMessageText();
 
     connection.disconnect();
   }
