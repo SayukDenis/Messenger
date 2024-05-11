@@ -312,15 +312,23 @@ class MessageMenu extends Component<MessageMenuProps> {
     const { message } = coord;
 
     const messageTypeHandler = () => {
+      const coords = this.props.messagesWithCoords.find(m => m.id === coord.ID)?.height;
+
+      const replyMessage = messages.find(m => m.messageId === message?.messageResponseId);
+      const userName = replyMessage?.author.userId === userMessageLastWatched?.userId ? users[0].name : 'You';
+
+      console.log('MESSAGE MENU', replyMessage?.author.userId === userMessageLastWatched?.userId, replyMessage?.author.userId, userMessageLastWatched?.userId, userName);
+
       if(message?.messageType === EMessageType.text && message?.messageResponseId! >= 0 && messages.findIndex(m => m.messageId === message?.messageResponseId && (m.content || m.fileContent)) >= 0)
         return <ReplyTextDummyMessage 
           message={coord.message!} 
           messages={messages} 
           isUser={isUser} 
           height={coord.height} 
+          fullHeight={coords!}
           userMessageLastWatched={userMessageLastWatched} 
           pinned={coord.pinned} 
-          userName={users[0]?.name}
+          userName={userName}
         />
       else if(message?.messageType === EMessageType.text)
         return <DefaultTextDummyMessage 
@@ -338,7 +346,7 @@ class MessageMenu extends Component<MessageMenuProps> {
           height={coord.height}
           userMessageLastWatched={userMessageLastWatched}
           pinned={coord.pinned}
-          userName={users[0]?.name}
+          userName={userName}
         />
       else if(message?.messageType === EMessageType.img)
         return <DefaultFileType 
@@ -388,4 +396,8 @@ class MessageMenu extends Component<MessageMenuProps> {
   }
 }
 
-export default connect(null)(MessageMenu);
+const mapStateToProps = (state:any) => ({
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
+});
+
+export default connect(mapStateToProps)(MessageMenu);

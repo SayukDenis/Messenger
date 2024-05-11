@@ -264,7 +264,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     const newMessagePos = newMessage ? newMessage.coords + newMessage?.height : coord;
 
     if(nearestUnwatchedMessageId! > authorMessageLastWatched?.messageId! && chatHubService && scrollPos < newMessagePos!) {
-      console.log('invoke updateLastWatchedMessage', nearestUnwatchedMessageId!, authorMessageLastWatched?.messageId!);
+      // console.log('invoke updateLastWatchedMessage', nearestUnwatchedMessageId!, authorMessageLastWatched?.messageId!);
       chatHubService.updateLastWatchedMessage(
         nearestUnwatchedMessageId!, 
         chatId, 
@@ -299,7 +299,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       coord.pageY = HEIGHT_OF_FLATLIST + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(pressed && HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
       this.flatListRef.current.scrollToOffset({ 
-        offset: mesCoords?.coords! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT), 
+        offset: mesCoords?.coords! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + Math.ceil(MESSAGE_PADDING_VERTICAL/2) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) + (this.props.pinnedMessages.length > 0 ? height*0.05 : 0), 
         animated: true,
       });
 

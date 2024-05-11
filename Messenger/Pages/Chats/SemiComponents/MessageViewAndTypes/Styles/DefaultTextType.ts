@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     overflow:'visible'
   },
   messageBlockContainer: {
-    paddingBottom: MESSAGE_PADDING_VERTICAL,
+    paddingVertical: MESSAGE_PADDING_VERTICAL/2,
     flex: 1,
     alignSelf: 'stretch',
     alignItems: 'stretch',
@@ -34,7 +34,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: MESSAGE_PADDING_VERTICAL,
     paddingLeft: MESSAGE_PADDING_HORIZONTAL,
-    border: 'none',
     borderRadius: 10,
     maxWidth: '100%',
     minWidth: '15%'
@@ -47,7 +46,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: MESSAGE_PADDING_VERTICAL,
     paddingLeft: MESSAGE_PADDING_HORIZONTAL,
-    border: 'none',
     borderRadius: 10,
     maxWidth: '100%'
   },

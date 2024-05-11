@@ -23,7 +23,7 @@ class ReplyMessage extends Component<ReplyMessageProps> {
     return (
       <View>
         <Text style={[styles.replyUserNameFont, isUser && { alignSelf: 'flex-end' }]}>
-          { replyMessage.author.name === userName ? 'You' : replyMessage.author.name }
+          { userName }
         </Text>
         <View style={[styles.replyMessageContainer, !isUser && { alignSelf: 'flex-start' }]}
         >

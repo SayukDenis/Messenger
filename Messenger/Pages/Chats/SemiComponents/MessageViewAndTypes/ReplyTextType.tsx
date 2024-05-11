@@ -294,8 +294,6 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
     const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched } = this.props;
     const { selected, widthOfMessage, widthOfReply } = this.state;
 
-    console.log(message.messageId, widthOfMessage, widthOfReply);
-
     const isUser = message.author.userId == author.userId;
 
     return (

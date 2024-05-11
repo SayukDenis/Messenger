@@ -143,12 +143,13 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       listOfPinnedMessages={this.props.route?.params.listOfPinnedMessages.map((m) => {
         return m.messageId!
       })!}  
+      photoPreview={(fileContent: string, sendingTime: Date | null) => {}}
     />
   );
 
   ListHeaderComponent = () => (
     <View 
-      style={{ backgroundColor: 'transparent', height: screenHeight*0.06 }} 
+      style={{ backgroundColor: 'transparent', height: screenHeight*0.02 }} 
     />
   );
 
@@ -209,7 +210,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     const mes = listOfMessages.find(m => m.messageId==this.state.messageID);
 
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <BackGroundGradinetView>
           <MessageMenu 
             isUser={mes!=undefined&&mes.author.userId===author?.userId} 

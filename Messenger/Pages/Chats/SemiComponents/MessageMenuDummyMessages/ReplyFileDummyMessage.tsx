@@ -10,7 +10,7 @@ import { IReplyFileType } from './Interfaces/IReplyFile';
 
 class ReplyFileType extends Component<IReplyFileType> {
   render() {
-    const { message, messages, userName, userMessageLastWatched, height, isUser, pinned } = this.props;
+    const { message, messages, userMessageLastWatched, height, isUser, pinned, userName } = this.props;
 
     return (
         <View style={styles.replyContainer} >
