@@ -31,8 +31,6 @@ import * as SVG from './../SVG';
 
 let size: sizeProps[] = [];
 
-let tmpUpdateCounter = 0;
-
 class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
   state: DefaultTextMessageState = {
     animate: false,
@@ -158,28 +156,33 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
   });
 
   shouldComponentUpdate(nextProps: Readonly<DefaultTextMessageWithNavigationProps>, nextState: Readonly<DefaultTextMessageState>, nextContext: any): boolean {
-    if(nextProps.idForAnimation === this.props.message.messageId) {
-      this.state.animate = true;
+    const { message, listOfPinnedMessages, selecting, userMessageLastWatched } = this.props;
+    const { heightOfMessage, selected } = this.state;
+
+    if(nextProps.idForAnimation === message.messageId) {
+      // animate = true;
       return true;
-    } else if(nextProps.selecting != this.props.selecting) {
+    } else if(nextProps.selecting != selecting) {
       this.setState({ selecting: nextProps.selecting });
       if(!nextProps.selecting) this.resetSelected();
       return true;
-    } else if(nextState.selected != this.state.selected) {
+    } else if(nextState.selected != selected) {
       this.setState({ selected: nextState.selected })
       return true;
-    } else if(this.state.selected !== nextState.selected) {
+    } else if(selected !== nextState.selected) {
       return true;
-    } else if(this.props.message.content !== nextProps.message.content) {
+    } else if(message.content !== nextProps.message.content) {
       return true;
     } else if(this.messageCompareHandler(nextProps.messages)) {
-      this.setState({ message: nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content })
+      this.setState({ message: nextProps.messages.find(m => m.messageId === message.messageId)?.content })
       return true;
-    } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
+    } else if(listOfPinnedMessages.find(m => m === message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
       return true;
-    } else if(this.props.userMessageLastWatched?.messageId !== nextProps.userMessageLastWatched?.messageId) {
+    } else if(userMessageLastWatched?.messageId !== nextProps.userMessageLastWatched?.messageId) {
       return true;
-    } else if(this.props.message.sent !== nextProps.message.sent) {
+    } else if(message.sent !== nextProps.message.sent) {
+      return true;
+    } else if(heightOfMessage !== nextState.heightOfMessage) {
       return true;
     }
 
@@ -218,7 +221,7 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
 
   pressInTime: number = 0;
   render() {
-    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen } = this.props;
+    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, messagesWithCoords } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
 
     const isUser = message.author.userId === author.userId;
@@ -297,8 +300,8 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
-                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
-                  horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
+                  verticalOffset={(messagesWithCoords.find(m => m.id === message.messageId)?.height! - MESSAGE_PADDING_VERTICAL/2)} 
+                  horizontalOffset={0} 
                 />
               }
               <View
@@ -328,7 +331,7 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
                   dispatch={this.props.dispatch}
                   messageId={this.props.message.messageId!}
                   isUser={isUser}
-                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
+                  verticalOffset={(messagesWithCoords.find(m => m.id === message.messageId)?.height! - MESSAGE_PADDING_VERTICAL - SIZE_OF_SELECT_BUTTON) / 2} 
                   horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
                 />
               }
@@ -364,6 +367,7 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
 
 const mapStateToProps = (state: any) => ({
   idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
 export default connect(mapStateToProps)(DefaultTextType);

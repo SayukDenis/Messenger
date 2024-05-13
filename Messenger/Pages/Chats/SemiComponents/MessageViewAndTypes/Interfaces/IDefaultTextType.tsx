@@ -3,10 +3,12 @@ import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
 import User from "../../../../../dao/Models/User";
 import { Layout } from "../../Interfaces/GeneralInterfaces/ILayout";
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
+import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
 
 export interface DefaultTextMessageWithNavigationProps extends DefaultTextMessageProps {
   dispatch: Dispatch;
   idForAnimation: number;
+  messagesWithCoords: CoordinationsOfMessage[];
 }
 
 export interface DefaultTextMessageProps {

@@ -16,7 +16,7 @@ class ScrollButton extends Component<ScrollButtonProps> {
     return (
       <TouchableOpacity 
         style={[
-          { alignSelf: 'center', position: 'absolute' }, 
+          { alignSelf: 'center', position: 'absolute', backgroundColor: 'red' }, 
           isUser?{left: -(GAP+horizontalOffset+ICON_SIZE)}:{right: (horizontalOffset - GAP)},
           { bottom: isUser ? (verticalOffset - ICON_SIZE) / 2 : verticalOffset / 2 }
         ]}

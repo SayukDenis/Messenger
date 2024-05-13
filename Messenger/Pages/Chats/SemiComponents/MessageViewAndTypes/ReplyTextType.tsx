@@ -285,9 +285,9 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
     return scroll ? (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0) : -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
-  getSelectOffsetVertical = (scroll: boolean = false) => {
-    console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
-    return scroll ? this.state.sizeOfMessageContainer[1] : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
+  getSelectOffsetVertical = (scroll: boolean = false, isUser: boolean = false) => {
+    // console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
+    return scroll ? this.state.sizeOfMessageContainer[1] + (isUser ? -MESSAGE_PADDING_VERTICAL : MESSAGE_PADDING_VERTICAL) : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
   }
 
   render() {
@@ -357,7 +357,7 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
                   messageId={message.messageId!}
                   isUser={isUser}
                   horizontalOffset={this.getSelectOffsetHorizontal(true)}
-                  verticalOffset={this.getSelectOffsetVertical(true)}
+                  verticalOffset={this.getSelectOffsetVertical(true, true)}
                 />
               }
               <View 
@@ -390,7 +390,7 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
                   messageId={message.messageId!}
                   isUser={isUser}
                   horizontalOffset={this.getSelectOffsetHorizontal()}
-                  verticalOffset={this.getSelectOffsetVertical()}
+                  verticalOffset={this.getSelectOffsetVertical() + 3*MESSAGE_PADDING_VERTICAL}
                 />
               }
               {selecting && <SelectButton 

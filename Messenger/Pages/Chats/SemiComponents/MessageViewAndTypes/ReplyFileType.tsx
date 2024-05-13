@@ -281,12 +281,11 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
 
   getSelectOffsetHorizontal = (scroll: boolean = false) => {
     const { widthOfMessage, widthOfReply } = this.state;
-    console.log('\n_____________________\n', widthOfMessage, widthOfReply, '\n_____________________');
+    
     return scroll ? (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0) : -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
   getSelectOffsetVertical = (scroll: boolean = false) => {
-    console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
     return scroll ? this.state.sizeOfMessageContainer[1] : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
   }
 
