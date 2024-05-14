@@ -145,7 +145,13 @@ class Dialogue extends Component<DialogueProps> {
       this.pinMessageHandler(m!);
     }
 
+    const unpinAllMessagesHandler = (chatId: number) => this.unpinAllMessagesHandler(false);
+
     const deleteMessageHandler = (messageId: number) => this.onDeletePress(messageId);
+
+    const deleteSelectedMessagesHandler = (chatId: number, messagesId: Array<number>) => this.deleteSelectedMessages(messagesId);
+
+    const deleteAllMessagesHandler = (chatId: number) => this.deleteAllButtonHandler(false);
 
     //#endregion
 
@@ -198,7 +204,10 @@ class Dialogue extends Component<DialogueProps> {
       .registerReceiveUpdateLastWatchedMessage(receiveLastWatchedMessageUpdate)
       .registerReceiveUpdateMessageText(receiveUpdateMessageTextHandler)
       .registerPinMessage(pinMessageHandler)
-      .registerDeleteMessage(deleteMessageHandler);
+      .registerUnpinAllMessages(unpinAllMessagesHandler)
+      .registerDeleteMessage(deleteMessageHandler)
+      .registerDeleteSelectedMessages(deleteSelectedMessagesHandler)
+      .registerDeleteAllMessages(deleteAllMessagesHandler);
 
     //#endregion
 
@@ -391,22 +400,30 @@ class Dialogue extends Component<DialogueProps> {
     }
   }
 
-  unpinAllMessagesHandler = () => {
+  unpinAllMessagesHandler = (received: boolean = true) => {
+    if(received) ChatHubService.getInstance().unpinAllMessages(this.chatId);
+
     this.setState({ pinnedMessage: {} as MessageProps, listOfPinnedMessages: [] });
   }
 
-  deleteAllButtonHandler = () => {
+  deleteAllButtonHandler = (received: boolean = true) => {
+    if(received) ChatHubService.getInstance().deleteAllMessages(this.chatId);
+
     this.props.route.params.dispatch(removeCoordinationsOfAllMessages());
     this.setState({ listOfMessages: [] });
   }
 
-  deleteSelectedMessages = () => {
-    const { listOfId } = this.props;
+  deleteSelectedMessages = (messagesId?: Array<number>) => {
+    let { listOfId } = this.props;
+    if(messagesId) listOfId = [...messagesId];
+
     const { dispatch } = this.props.route.params;
     const { listOfMessages, listOfPinnedMessages } = this.state;
     const newListOfPinnedMessages = [...listOfPinnedMessages];
 
     listOfId.sort((a, b) => b - a);
+    if(!messagesId) ChatHubService.getInstance().deleteSelectedMessages(this.chatId, listOfId);
+
     let idx = 0;
     let idxOfPinned = 0;
     const listOfIdLen = listOfId.length - 1;

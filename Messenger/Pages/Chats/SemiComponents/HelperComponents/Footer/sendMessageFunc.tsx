@@ -9,7 +9,7 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
 
   const messageToEdit = messages.find(m => m.messageId == messageID);
 
-  if(!text && !fileContent) {
+  if((!text && !fileContent) || text === messageToEdit?.content) {
     onSendMessageOrCancelReplyAndEdit();
     return;
   }

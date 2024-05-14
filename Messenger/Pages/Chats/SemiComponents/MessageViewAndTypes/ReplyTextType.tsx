@@ -259,20 +259,13 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
     const { selecting, dispatch, id } = this.props;
     const { selected } = this.state;
     
-    if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
+    if(!(pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In)) return;
+
+    if (selecting) {
       this.setState({ selected: !selected });
       dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
-      return;
-    }
-
-    if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
-      await this.handlePress(event).then((layout) => {
-        this.props.setMessageMenuVisible(layout, true);
-      });
-    }
-
-    if(this.props.pinnedMessageScreen) {
+    } else {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });

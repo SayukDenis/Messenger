@@ -160,7 +160,7 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
     const { heightOfMessage, selected } = this.state;
 
     if(nextProps.idForAnimation === message.messageId) {
-      // animate = true;
+      this.state.animate = true;
       return true;
     } else if(nextProps.selecting != selecting) {
       this.setState({ selecting: nextProps.selecting });

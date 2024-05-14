@@ -140,6 +140,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       // setCoordsY={this.setCoordsYHandler}
       selecting={this.state.selecting}
       pinnedMessageScreen
+      userMessageLastWatched={this.props.route?.params.userMessageLastWatched}
       listOfPinnedMessages={this.props.route?.params.listOfPinnedMessages.map((m) => {
         return m.messageId!
       })!}  
@@ -206,7 +207,9 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
   }
 
   render(): React.ReactNode {
-    const { listOfMessages, author, userMessageLastWatched } = this.props.route?.params!;
+    const { listOfMessages, author, userMessageLastWatched, users } = this.props.route?.params!;
+    const { messageMenuVisible, deleteModalVisisble, listOfPinnedMessages, offsetForMessageMenu } = this.state;
+
     const mes = listOfMessages.find(m => m.messageId==this.state.messageID);
 
     return (
@@ -214,8 +217,8 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
         <BackGroundGradinetView>
           <MessageMenu 
             isUser={mes!=undefined&&mes.author.userId===author?.userId} 
-            users={this.props.route?.params.users!}
-            isVisible={this.state.messageMenuVisible} 
+            users={users}
+            isVisible={messageMenuVisible} 
             onOverlayPress={this.onOverlayPress} 
             coord={coord} 
             messages={listOfMessages}
@@ -225,7 +228,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
             onDeletePress={this.onDeletePressHandler}
           />
           <DeleteMessageModal 
-            deleting={this.state.deleteModalVisisble} 
+            deleting={deleteModalVisisble} 
             setDeletingHandler={this.onDeletePressHandler} 
             onDeletePress={this.DeleteHandler} 
             message={mes} 
@@ -253,14 +256,14 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
 
           <Animated.View style={{
             transform: [{
-              translateY: this.state.offsetForMessageMenu
+              translateY: offsetForMessageMenu
             }]
           }}>
             <FlatList 
-              key={this.state.listOfPinnedMessages.length}
+              key={listOfPinnedMessages.length}
               ref={this.flatListRef}
               style={{ height: height }}
-              data={this.state.listOfPinnedMessages} 
+              data={listOfPinnedMessages} 
               keyExtractor={this.keyExtractor}
               renderItem={this.renderItem}
               ListHeaderComponent={this.ListHeaderComponent}

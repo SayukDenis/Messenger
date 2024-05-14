@@ -16,7 +16,7 @@ export { default as MessageMenuCopyButton } from './MessageMenuCopyButton';
 export { default as MessageMenuEditButton } from './MessageMenuEditButton';
 export { default as MessageMenuForwardButton } from './MessageMenuForwardButton';
 export { default as MessageMenuReplyButton } from './MessageMenuReplyButton';
-export { default as MessageMenuSelectButton } from './MessageMenuReplyButton';
+export { default as MessageMenuSelectButton } from './MessageMenuSelectButton';
 export { default as PinButton } from './PinButton';
 export { default as ReplyAndEditMenuCancelButton } from './ReplyAndEditMenuCancelButton';
 export { default as ReplyAndEditMenuEditIcon } from './ReplyAndEditMenuEditIcon';

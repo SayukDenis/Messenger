@@ -16,7 +16,7 @@ class MessageItem extends Component<MessageItemProps> {
 
     const { listOfMessages, setMessageMenuVisible, flatListRef, author, userMessageLastWatched, selecting, pinnedMessageScreen, listOfPinnedMessages, navigation, users, photoPreview } = this.props;
 
-    const replyMessage = listOfMessages.find(m => m.messageId==message.messageResponseId);
+    const replyMessage = listOfMessages.find(m => m.messageId === message.messageResponseId);
     const userName = replyMessage?.author.userId === userMessageLastWatched?.userId ? users[0].name : 'You';
 
     if(message.messageType === EMessageType.text && message?.messageResponseId! >= 0 && listOfMessages.findIndex(m => m.messageId === message.messageResponseId && (m.content || m.fileContent)) >= 0) {
