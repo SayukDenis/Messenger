@@ -3,6 +3,7 @@ import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMes
 import User from "../../../../../dao/Models/User";
 import { Layout } from "../../Interfaces/GeneralInterfaces/ILayout";
 import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
+import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
 
 export interface DefaultFileTypeProps {
   navigation: any;
@@ -22,6 +23,7 @@ export interface DefaultFileTypeProps {
 export interface DefaultFileTypeWithNavigationProps extends DefaultFileTypeProps {
   dispatch: Dispatch;
   idForAnimation: number;
+  messagesWithCoords: CoordinationsOfMessage[];
 }
 
 export interface DefaultFileTypeState {

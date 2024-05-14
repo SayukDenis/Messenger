@@ -436,7 +436,7 @@ class Dialogue extends Component<DialogueProps> {
   }
   
   render(): React.ReactNode {
-    const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && m.content);
+    const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && (m.content || m.fileContent));
     const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, deleting, messageIdForReplyAndEdit, fileContent, userMessageLastWatched, sendingTime } = this.state;
     const { navigation } = this.props;
 

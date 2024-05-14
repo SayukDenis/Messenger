@@ -317,8 +317,6 @@ class MessageMenu extends Component<MessageMenuProps> {
       const replyMessage = messages.find(m => m.messageId === message?.messageResponseId);
       const userName = replyMessage?.author.userId === userMessageLastWatched?.userId ? users[0].name : 'You';
 
-      console.log('MESSAGE MENU', replyMessage?.author.userId === userMessageLastWatched?.userId, replyMessage?.author.userId, userMessageLastWatched?.userId, userName);
-
       if(message?.messageType === EMessageType.text && message?.messageResponseId! >= 0 && messages.findIndex(m => m.messageId === message?.messageResponseId && (m.content || m.fileContent)) >= 0)
         return <ReplyTextDummyMessage 
           message={coord.message!} 

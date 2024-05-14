@@ -186,7 +186,7 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
 
   pressInTime: number = 0;
   render() {
-    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, navigation, dispatch, listOfPinnedMessages, photoPreview } = this.props;
+    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, navigation, dispatch, listOfPinnedMessages, photoPreview, messagesWithCoords } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
 
     const isUser = message.author.userId === author.userId;
@@ -267,8 +267,8 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
                   dispatch={dispatch}
                   messageId={message.messageId!}
                   isUser={isUser}
-                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
-                  horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
+                  verticalOffset={(messagesWithCoords.find(m => m.id === message.messageId)?.height!)}
+                  horizontalOffset={0}
                 />
               }
               <View
@@ -304,7 +304,7 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
                   dispatch={dispatch}
                   messageId={message.messageId!}
                   isUser={isUser}
-                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
+                  verticalOffset={(messagesWithCoords.find(m => m.id === message.messageId)?.height! - MESSAGE_PADDING_VERTICAL - SIZE_OF_SELECT_BUTTON)}
                   horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
                 />
               }
@@ -340,6 +340,7 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
 
 const mapStateToProps = (state: any) => ({
   idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
 export default connect(mapStateToProps)(DefaultFileType);
