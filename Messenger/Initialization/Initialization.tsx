@@ -74,9 +74,14 @@ export async function initialization() {
 
   await deleteDb();
 
+  console.log('after "await deleteDb()"');
+
   if (!dataSource.isInitialized) {
+    console.log('in if check');
     await dataSource.initialize();
   }
+
+  console.log('after if checking');
 
   const manager = dataSource.manager;
 

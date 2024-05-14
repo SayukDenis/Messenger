@@ -1,16 +1,13 @@
-import React, { Component, MutableRefObject } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Animated,
-  Easing,
-  Image,
-} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Animated, Easing, Image, } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width } from '../ChatConstants';
-import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
+import { 
+  DEFAULT_CHARS_PER_LINE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width 
+} from '../ChatConstants';
+import { 
+  addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, 
+  removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage 
+} from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { functionalStyles, styles } from './Styles/ReplyFileType';
@@ -19,48 +16,14 @@ import ScrollButton from './SemiComponents/ScrollButton';
 import { wrapText } from './HelperFunctions/wrapText';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
-import { CoordinationsOfMessage } from '../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
-import { Dispatch } from 'redux';
-import User from '../../../../dao/Models/User';
-import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
 import * as SVG from './../SVG';
-
-export interface ReplyFileTypeProps {
-  idForAnimation: number;
-  messages: MessageProps[];
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
-  id: number;
-  flatList: MutableRefObject<any>;
-  author: User;
-  userName: string;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-  dispatch: Dispatch;
-  pinnedMessageScreen: boolean;
-  listOfPinnedMessages: Array<number>;
-  navigation: any;
-  messagesWithCoords: CoordinationsOfMessage[];
-}
-
-export interface ReplyFileTypeState {
-  sizeOfMessageContainer: [number, number];
-  widthOfMessage: number;
-  widthOfReply: number;
-  selected: boolean;
-  animate: boolean;
-  pressCoordinations: coordProps;
-  replyMessage: string;
-  message: string;
-}
-
+import { ReplyFileTypeState, ReplyFileTypeWithNavigationProps } from './Interfaces/IReplyFileType';
 
 let size: sizeProps[] = [];
 
 let tmpUpdateCounter = 0;
 
-class ReplyFileType extends Component<ReplyFileTypeProps> {
+class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
   state: ReplyFileTypeState = {
     sizeOfMessageContainer: [0, 0],
     widthOfMessage: 0,
@@ -79,7 +42,7 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
     });
   }
 
-  componentDidUpdate(prevProps: ReplyFileTypeProps) {
+  componentDidUpdate(prevProps: ReplyFileTypeWithNavigationProps) {
     console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;
@@ -100,7 +63,7 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
     // }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<ReplyFileTypeProps>, nextState: Readonly<ReplyFileTypeState>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps: Readonly<ReplyFileTypeWithNavigationProps>, nextState: Readonly<ReplyFileTypeState>, nextContext: any): boolean {
     const nextReplyMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content;
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 
@@ -137,7 +100,9 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
       return true;
     } else if(this.state.sizeOfMessageContainer[1] !== nextState.sizeOfMessageContainer[1] || this.state.sizeOfMessageContainer[0] !== nextState.sizeOfMessageContainer[0]) {
       return true;
-    } else if(this.props.userMessageLastWatched !== nextProps.userMessageLastWatched) {
+    } else if(this.props.userMessageLastWatched?.messageId !== nextProps.userMessageLastWatched?.messageId) {
+      return true;
+    } else if(this.props.message.sent !== nextProps.message.sent) {
       return true;
     }
     
@@ -294,20 +259,13 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
     const { selecting, dispatch, id } = this.props;
     const { selected } = this.state;
     
-    if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
+    if(!(pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In)) return;
+
+    if (selecting) {
       this.setState({ selected: !selected });
       dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
-      return;
-    }
-
-    if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
-      await this.handlePress(event).then((layout) => {
-        this.props.setMessageMenuVisible(layout, true);
-      });
-    }
-
-    if(this.props.pinnedMessageScreen) {
+    } else {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });
@@ -316,17 +274,16 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
 
   getSelectOffsetHorizontal = (scroll: boolean = false) => {
     const { widthOfMessage, widthOfReply } = this.state;
-    console.log('\n_____________________\n', widthOfMessage, widthOfReply, '\n_____________________');
+    
     return scroll ? (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0) : -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
   getSelectOffsetVertical = (scroll: boolean = false) => {
-    console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
     return scroll ? this.state.sizeOfMessageContainer[1] : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
   }
 
   render() {
-    const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched } = this.props;
+    const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched, photoPreview } = this.props;
     const { selected, widthOfMessage, widthOfReply } = this.state;
 
     const isUser = message.author.userId == author.userId;
@@ -402,7 +359,12 @@ class ReplyFileType extends Component<ReplyFileTypeProps> {
                 <View 
                   style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
                 /> 
-                <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
+                >
+                  <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                </TouchableOpacity>
                 { message.content &&
                   <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
                     {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}

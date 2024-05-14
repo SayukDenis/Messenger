@@ -8,7 +8,7 @@ import { coordProps } from "./IGeneralInterfaces";
 import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
 
 export interface ReplyTextTypeProps {
-  idForAnimation: number;
+  navigation: any;
   messages: MessageProps[];
   message: MessageProps;
   setMessageMenuVisible: (arg0: Layout, arg1: boolean)=>void;
@@ -18,11 +18,14 @@ export interface ReplyTextTypeProps {
   userName: string;
   userMessageLastWatched: ILastWatchedMessage | undefined;
   selecting: boolean;
-  dispatch: Dispatch;
   pinnedMessageScreen: boolean;
   listOfPinnedMessages: Array<number>;
-  navigation: any;
+}
+
+export interface ReplyTextTypeWithReduxProps extends ReplyTextTypeProps {
+  dispatch: Dispatch;
   messagesWithCoords: CoordinationsOfMessage[];
+  idForAnimation: number;
 }
 
 export interface ReplyTextTypeState {

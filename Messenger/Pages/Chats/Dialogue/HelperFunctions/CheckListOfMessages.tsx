@@ -10,6 +10,10 @@ export const checkListOfMessagesDifference = (prev: MessageProps[], next: Messag
       return true;
     } else if(prev[i].sent !== next[i].sent) {
       return true;
+    } else if(prev[i].messageId !== next[i].messageId) {
+      return true;
+    } else if(prev[i].isEdited !== next[i].isEdited) {
+      return true;
     }
   }
 

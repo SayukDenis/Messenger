@@ -1,3 +1,4 @@
+import { CoordinationsOfMessage } from "../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
 import ILastWatchedMessage from "../../../../dao/Models/Chats/ILastWatchedMessage";
 import User from "../../../../dao/Models/User";
 import { Layout } from "./GeneralInterfaces/ILayout";
@@ -18,6 +19,7 @@ export interface MessageMenuProps {
   userMessageLastWatched: ILastWatchedMessage | undefined;
   pinnedMessageScreen: boolean;
   users: User[];
+  messagesWithCoords: CoordinationsOfMessage[];
 }
 
 export interface MessageMenuState {

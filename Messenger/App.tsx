@@ -8,6 +8,7 @@ import { initialization } from "./Initialization/Initialization";
 import { dataSource } from "./dao/local/database";
 import 'react-native-url-polyfill/auto';
 import Navigation from "./Navigation/Navigation";
+import 'react-native-reanimated';
 
 const manager = dataSource.manager;
 

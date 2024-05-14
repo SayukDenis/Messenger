@@ -13,6 +13,9 @@ import { GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR, MESSAGE_BUTTON_HEIGHT,
   NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize 
 } from "./ChatConstants";
 import * as SVG from './SVG';
+import { EMessageType } from "../../../dao/Models/EMessageType";
+import ReplyFileType from "./MessageMenuDummyMessages/ReplyFileDummyMessage";
+import DefaultFileType from "./MessageMenuDummyMessages/DefaultFileDummyMessage";
 
 const containerWidth = new Animated.Value(0); 
 const firstContainerTranslate = new Animated.Value(0); 
@@ -306,6 +309,53 @@ class MessageMenu extends Component<MessageMenuProps> {
       return null;
     }
     const { onOverlayPress, coord, messages, isUser, userMessageLastWatched, pinnedMessageScreen, users } = this.props;
+    const { message } = coord;
+
+    const messageTypeHandler = () => {
+      const coords = this.props.messagesWithCoords.find(m => m.id === coord.ID)?.height;
+
+      const replyMessage = messages.find(m => m.messageId === message?.messageResponseId);
+      const userName = replyMessage?.author.userId === userMessageLastWatched?.userId ? users[0].name : 'You';
+
+      if(message?.messageType === EMessageType.text && message?.messageResponseId! >= 0 && messages.findIndex(m => m.messageId === message?.messageResponseId && (m.content || m.fileContent)) >= 0)
+        return <ReplyTextDummyMessage 
+          message={coord.message!} 
+          messages={messages} 
+          isUser={isUser} 
+          height={coord.height} 
+          fullHeight={coords!}
+          userMessageLastWatched={userMessageLastWatched} 
+          pinned={coord.pinned} 
+          userName={userName}
+        />
+      else if(message?.messageType === EMessageType.text)
+        return <DefaultTextDummyMessage 
+          message={coord.message}
+          isUser={isUser} 
+          height={coord.height} 
+          userMessageLastWatched={userMessageLastWatched} 
+          pinned={coord.pinned}
+        />
+      else if(message?.messageType === EMessageType.img && message?.messageResponseId! >= 0 && messages.findIndex(m => m.messageId === message?.messageResponseId && (m.content || m.fileContent)) >= 0)
+        return <ReplyFileType
+          message={message}
+          messages={messages}
+          isUser={isUser}
+          height={coord.height}
+          fullHeight={coords!}
+          userMessageLastWatched={userMessageLastWatched}
+          pinned={coord.pinned}
+          userName={userName}
+        />
+      else if(message?.messageType === EMessageType.img)
+        return <DefaultFileType 
+          message={message}
+          isUser={isUser}
+          height={coord.height}
+          userMessageLastWatched={userMessageLastWatched}
+          pinned={coord.pinned}
+        />
+    }
     
     this.animateMenu();
     
@@ -319,23 +369,7 @@ class MessageMenu extends Component<MessageMenuProps> {
         }}
       >
         <View style={{ top: coord.componentPageY, height: coord.height }}>
-          {(coord.message?.messageResponseId! >= 0 && messages.find(m => m.messageId === coord.message?.messageResponseId)?.content) ?
-          <ReplyTextDummyMessage 
-            message={coord.message!} 
-            messages={messages} 
-            isUser={isUser} 
-            height={coord.height} 
-            userMessageLastWatched={userMessageLastWatched} 
-            pinned={coord.pinned} 
-            userName={users[0]?.name}
-          />:
-          <DefaultTextDummyMessage 
-            message={coord.message}
-            isUser={isUser} 
-            height={coord.height} 
-            userMessageLastWatched={userMessageLastWatched} 
-            pinned={coord.pinned}
-          />}
+          {messageTypeHandler()}
         </View>
         <View 
           style={[styles.buttonsContainer, !isUser&&{ height: MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT }, this.handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR }]}
@@ -361,4 +395,8 @@ class MessageMenu extends Component<MessageMenuProps> {
   }
 }
 
-export default connect(null)(MessageMenu);
+const mapStateToProps = (state:any) => ({
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
+});
+
+export default connect(mapStateToProps)(MessageMenu);

@@ -91,6 +91,8 @@ const setCoordinationsOfMessageReducer = (state = setCoordinationsOfMessage, act
         addToMessagesWithCoords[i].coords = addToMessagesWithCoords[i + 1].height + addToMessagesWithCoords[i + 1].coords;
       }
 
+      // console.log(addToMessagesWithCoords);
+
       return { ...state, messagesWithCoords: [...addToMessagesWithCoords] };
     case 'UPDATE_COORDINATIONS_OF_MESSAGE':
       const updatedMessagesWithCoords = [...state.messagesWithCoords];

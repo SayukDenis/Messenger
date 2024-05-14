@@ -3,8 +3,9 @@ import { height, width } from "../../../ChatConstants";
 
 export const styles = StyleSheet.create({
   mainContainer: { 
-    position: 'absolute', 
-    bottom: -height*0.15, 
+    position: 'absolute',
+    height: height * 0.05,
+    bottom: -height*0.155, 
     backgroundColor: '#fff', 
     overflow: 'hidden', 
     borderRadius: 9999, 
@@ -26,7 +27,8 @@ export const styles = StyleSheet.create({
     width: width*0.9, 
     paddingVertical: 10, 
     paddingHorizontal: 20, 
-    alignItems: 'center' 
+    alignItems: 'center',
+    height: height * 0.05
   },
   trackCurrentAndTotal: { 
     flexDirection: 'row', 

@@ -12,7 +12,7 @@ import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, FLATLIST_HEIGHT, MESSAGE_PAD
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { connect } from 'react-redux';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import { ReplyTextTypeProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
+import { ReplyTextTypeWithReduxProps, ReplyTextTypeState } from './Interfaces/IReplyTextType';
 import { functionalStyles, styles } from './Styles/ReplyTextType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import ScrollButton from './SemiComponents/ScrollButton';
@@ -25,7 +25,7 @@ let size: sizeProps[] = [];
 
 let tmpUpdateCounter = 0;
 
-class ReplyTextType extends Component<ReplyTextTypeProps> {
+class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
   state: ReplyTextTypeState = {
     sizeOfMessageContainer: [0, 0],
     widthOfMessage: 0,
@@ -44,7 +44,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     });
   }
 
-  componentDidUpdate(prevProps: ReplyTextTypeProps) {
+  componentDidUpdate(prevProps: ReplyTextTypeWithReduxProps) {
     console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;
@@ -65,7 +65,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     // }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
+  shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeWithReduxProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
     const nextReplyMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageResponseId)?.content;
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 
@@ -259,20 +259,13 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     const { selecting, dispatch, id } = this.props;
     const { selected } = this.state;
     
-    if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
+    if(!(pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In)) return;
+
+    if (selecting) {
       this.setState({ selected: !selected });
       dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
       dispatch(selected ? removeSelectedMessage(id) : addSelectedMessage(id));
-      return;
-    }
-
-    if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
-      await this.handlePress(event).then((layout) => {
-        this.props.setMessageMenuVisible(layout, true);
-      });
-    }
-
-    if(this.props.pinnedMessageScreen) {
+    } else {
       await this.handlePress(event).then((layout) => {
         this.props.setMessageMenuVisible(layout, true);
       });
@@ -285,16 +278,14 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
     return scroll ? (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0) : -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
-  getSelectOffsetVertical = (scroll: boolean = false) => {
-    console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
-    return scroll ? this.state.sizeOfMessageContainer[1] : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
+  getSelectOffsetVertical = (scroll: boolean = false, isUser: boolean = false) => {
+    // console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
+    return scroll ? this.state.sizeOfMessageContainer[1] + (isUser ? -MESSAGE_PADDING_VERTICAL : MESSAGE_PADDING_VERTICAL) : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
   }
 
   render() {
     const { message, author, selecting, messages, pinnedMessageScreen, userName, dispatch, navigation, listOfPinnedMessages, userMessageLastWatched } = this.props;
     const { selected, widthOfMessage, widthOfReply } = this.state;
-
-    console.log(message.messageId, widthOfMessage, widthOfReply);
 
     const isUser = message.author.userId == author.userId;
 
@@ -359,7 +350,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   messageId={message.messageId!}
                   isUser={isUser}
                   horizontalOffset={this.getSelectOffsetHorizontal(true)}
-                  verticalOffset={this.getSelectOffsetVertical(true)}
+                  verticalOffset={this.getSelectOffsetVertical(true, true)}
                 />
               }
               <View 
@@ -392,7 +383,7 @@ class ReplyTextType extends Component<ReplyTextTypeProps> {
                   messageId={message.messageId!}
                   isUser={isUser}
                   horizontalOffset={this.getSelectOffsetHorizontal()}
-                  verticalOffset={this.getSelectOffsetVertical()}
+                  verticalOffset={this.getSelectOffsetVertical() + 3*MESSAGE_PADDING_VERTICAL}
                 />
               }
               {selecting && <SelectButton 

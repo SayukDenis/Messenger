@@ -3,11 +3,6 @@ import React, { Component } from 'react'
 import ScrollButton from './SemiComponents/ScrollButton';
 import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
-import { Dispatch } from 'redux';
-import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
-import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
-import User from '../../../../dao/Models/User';
-import ILastWatchedMessage from '../../../../dao/Models/Chats/ILastWatchedMessage';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { Easing } from 'react-native-reanimated';
 import { DEFAULT_CHARS_PER_LINE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } from '../ChatConstants';
@@ -15,36 +10,11 @@ import { functionalStyles, styles } from './Styles/DefaultFileType';
 import { wrapText } from './HelperFunctions/wrapText';
 import { connect } from 'react-redux';
 import * as SVG from './../SVG';
+import { DefaultFileTypeState, DefaultFileTypeWithNavigationProps } from './Interfaces/IDefaultFileType';
 
-let size: sizeProps[] = [];
+class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
 
-let tmpUpdateCounter = 0;
-
-interface DefaultFileTypeProps {
-  dispatch: Dispatch;
-  navigation: any;
-
-  idForAnimation: number;
-  message: MessageProps;
-  setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
-  id: number;
-  flatList: React.MutableRefObject<any>;
-  author: User;
-  userMessageLastWatched: ILastWatchedMessage | undefined;
-  selecting: boolean;
-  pinnedMessageScreen: boolean;
-  messages: MessageProps[];
-  listOfPinnedMessages: Array<number>
-}
-
-interface DefaultFileTypeState {
-  animate: boolean;
-  heightOfMessage: number;
-  selected: boolean;
-
-}
-
-class DefaultFileType extends Component<DefaultFileTypeProps> {
+  public static size: sizeProps[] = [];
 
   state: DefaultFileTypeState = {
     animate: false,
@@ -69,14 +39,15 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
 
   onLayout = (event: any) => {
     const { width, height } = event.nativeEvent.layout;
-    const idx = size.findIndex(m => m.ID === this.props.id);
+
+    const idx = DefaultFileType.size.findIndex(m => m.ID === this.props.id);
     if(idx >= 0) {
-      if(size[idx].layout.height !== height || size[idx].layout.width !== width) {
-        size[idx].layout.height = height;
-        size[idx].layout.width = width;
+      if(DefaultFileType.size[idx].layout.height !== height || DefaultFileType.size[idx].layout.width !== width) {
+        DefaultFileType.size[idx].layout.height = height;
+        DefaultFileType.size[idx].layout.width = width;
       }
     } else {
-      size = [...size, { ID: this.props.id, layout: { width, height } }];
+      DefaultFileType.size = [...DefaultFileType.size, { ID: this.props.id, layout: { width, height } }];
     }
   };
 
@@ -119,7 +90,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
     const { nativeEvent } = event;
     const { pageX, pageY } = nativeEvent;
 
-    const component = size.find((c) => c.ID === this.props.id);
+    const component = DefaultFileType.size.find((c) => c.ID === this.props.id);
 
     const componentPage = (await this.measureHandler() as componentPageProps);
 
@@ -169,11 +140,31 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
     useNativeDriver: true,
   });
 
-  // shouldComponentUpdate(nextProps: Readonly<DefaultFileTypeProps>, nextState: Readonly<DefaultFileTypeState>, nextContext: any): boolean {
-  //   return true;
-  // }
+  shouldComponentUpdate(nextProps: Readonly<DefaultFileTypeWithNavigationProps>, nextState: Readonly<DefaultFileTypeState>, nextContext: any): boolean {
+    if(nextProps.idForAnimation === this.props.message.messageId) {
+      this.state.animate = true;
+      return true;
+    } else if(nextProps.selecting != this.props.selecting) {
+      this.setState({ selecting: nextProps.selecting });
+      if(!nextProps.selecting) this.resetSelected();
+      return true;
+    } else if(nextState.selected != this.state.selected) {
+      this.setState({ selected: nextState.selected })
+      return true;
+    } else if(this.state.selected !== nextState.selected) {
+      return true;
+    } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
+      return true;
+    } else if(this.props.userMessageLastWatched?.messageId !== nextProps.userMessageLastWatched?.messageId) {
+      return true;
+    } else if(this.props.message.sent !== nextProps.message.sent) {
+      return true;
+    }
+    
+    return false;
+  }
   
-  componentDidUpdate(prevProps: DefaultFileTypeProps) {
+  componentDidUpdate(prevProps: DefaultFileTypeWithNavigationProps) {
     // console.log(`DefaultFileType updated\t#${++tmpUpdateCounter}`);
 
     const { animate } = this.state;
@@ -195,7 +186,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
 
   pressInTime: number = 0;
   render() {
-    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, navigation, dispatch, listOfPinnedMessages } = this.props;
+    const { message, author, userMessageLastWatched, selecting, pinnedMessageScreen, navigation, dispatch, listOfPinnedMessages, photoPreview, messagesWithCoords } = this.props;
     const { animate, heightOfMessage, selected } = this.state;
 
     const isUser = message.author.userId === author.userId;
@@ -276,8 +267,8 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
                   dispatch={dispatch}
                   messageId={message.messageId!}
                   isUser={isUser}
-                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
-                  horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
+                  verticalOffset={(messagesWithCoords.find(m => m.id === message.messageId)?.height!)}
+                  horizontalOffset={0}
                 />
               }
               <View
@@ -285,7 +276,12 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
                 style={styles.message}
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
-                <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
+                >
+                  <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                </TouchableOpacity>
                 { message.content &&
                   <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
                     {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
@@ -308,7 +304,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
                   dispatch={dispatch}
                   messageId={message.messageId!}
                   isUser={isUser}
-                  verticalOffset={(heightOfMessage-SIZE_OF_SELECT_BUTTON) / 2} 
+                  verticalOffset={(messagesWithCoords.find(m => m.id === message.messageId)?.height! - MESSAGE_PADDING_VERTICAL - SIZE_OF_SELECT_BUTTON)}
                   horizontalOffset={-(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL)} 
                 />
               }
@@ -344,6 +340,7 @@ class DefaultFileType extends Component<DefaultFileTypeProps> {
 
 const mapStateToProps = (state: any) => ({
   idForAnimation: state.ChatReducer.activateAnimationOfBackgroundForScrolledMessage.id,
+  messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
 });
 
 export default connect(mapStateToProps)(DefaultFileType);

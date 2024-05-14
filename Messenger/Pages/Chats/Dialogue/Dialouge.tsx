@@ -9,7 +9,6 @@ import BackGroundGradinetView from '../../SemiComponents/BackGroundGradientView'
 import * as DialogueModel from '../../../dao/Models/Chats/Dialogue';
 import { connect } from 'react-redux';
 import User from '../../../dao/Models/User';
-import ILastWatchedMessage from '../../../dao/Models/Chats/ILastWatchedMessage';
 import DialogueMessages from './components/DialogueMessages';
 import Header from '../SemiComponents/Header';
 import { MessageProps } from '../SemiComponents/Interfaces/GeneralInterfaces/IMessage';
@@ -21,6 +20,8 @@ import EventEmitter from 'events';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { ChatHubService } from "../Dialogue/services/ChatHubService";
+import PhotoPreview from '../SemiComponents/PhotoPreview';
+import { width } from '../SemiComponents/ChatConstants';
 
 let coord: Layout;
 let author: User;
@@ -47,9 +48,9 @@ class Dialogue extends Component<DialogueProps> {
 
     this._emitter = new EventEmitter();
     
-    dialogue = props.route.params.chat;
-    author = dialogue.users[0];
-    users = dialogue.users.filter(u => u.userId !== 0);
+    // dialogue = props.route.params.chat;
+    // author = dialogue.users[0];
+    // users = dialogue.users.filter(u => u.userId !== 0);
   }
   
   state: DialogueState = {
@@ -67,10 +68,93 @@ class Dialogue extends Component<DialogueProps> {
     userId: Platform.OS === "android" ? 1 : 2,
     authorMessageLastWatched: null,
     userMessageLastWatched: null,
-    edit: 0
+    edit: 0,
+    fileContent: '',
+    sendingTime: null,
   }
 
   async componentDidMount(): Promise<void> {
+
+    //#region Handlers 
+
+    const messageSentHandler = (messageId: number) => {
+      const list = [...this.state.listOfMessages];
+      const m = { ...list.shift(), sent: true };
+      console.log(m);
+      console.log(m?.messageId, messageId);
+      
+      this.setState({ listOfMessages: [m, ...list] });
+    }
+
+    const receiveMessageTextHandler = (mes: any) => this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
+
+    const receiveMessageFileHandler = async (mes: any) => {
+      this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
+
+      // Processing and saving image/video to a gallery
+      // Create file path
+      const filePath = `${FileSystem.documentDirectory}image.png`;
+
+      try {
+        // Write base64 string to file
+        await FileSystem.writeAsStringAsync(filePath, mes.fileContent, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        // Save file to gallery
+        await MediaLibrary.saveToLibraryAsync(filePath);
+      } catch (error) {
+        console.error('Error saving image:', error);
+      }
+    }
+
+    const receiveLastWatchedMessageUpdate = (messageId: number, chatId: number, userId: number) => {
+      if(userId === author.userId) {
+        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
+        this.setState({ 
+          authorMessageLastWatched: { 
+            ...this.state.authorMessageLastWatched, 
+            messageId: messageId
+          } 
+        });
+      } else {
+        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
+        this.setState({ 
+          userMessageLastWatched: {
+            ...this.state.userMessageLastWatched, 
+            messageId: messageId
+          }
+        });
+      }
+    }
+
+    const receiveUpdateMessageTextHandler = (messageId: number, newContent: string) => {
+      console.log('UpdateMessageText for', Platform.OS, messageId, newContent)
+      if(messageId&&newContent) {
+        const list = [...this.state.listOfMessages];
+        const id = list.findIndex(m => m.messageId === messageId);
+        const m = { ...list[id] };
+        m.content = newContent;
+        m.isEdited = true;
+        this.setState({ listOfMessages: [...list.slice(0, id), m, ...list.slice(id + 1)] });
+      }
+    }
+
+    const pinMessageHandler = (messageId: number, unpin: boolean) => {
+      const m = this.state.listOfMessages.find(m => m.messageId === messageId);
+      this.pinMessageHandler(m!);
+    }
+
+    const unpinAllMessagesHandler = (chatId: number) => this.unpinAllMessagesHandler(false);
+
+    const deleteMessageHandler = (messageId: number) => this.onDeletePress(messageId);
+
+    const deleteSelectedMessagesHandler = (chatId: number, messagesId: Array<number>) => this.deleteSelectedMessages(messagesId);
+
+    const deleteAllMessagesHandler = (chatId: number) => this.deleteAllButtonHandler(false);
+
+    //#endregion
+
     //#region Server 
 
     // fetch("http://192.168.0.108:5151/api/Chat/dialogue/1/2", {method: "POST",})
@@ -94,101 +178,49 @@ class Dialogue extends Component<DialogueProps> {
           
           const msgs : any[] = [];
           (result[1] as Array<any>).forEach((m, index) => {
-            msgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true });
+            msgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true, messageType: m.type });
           });
+          
+          const pinnedMsgs : any[] = [];
+          (result[0].pinnedMessages as Array<any>).forEach((m, index) => {
+            console.log('pinned message:', { ...m, fileContent: m.fileContent?.length });
+            pinnedMsgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true, messageType: m.type });
+          })
 
-          // const img1 = new Message(author, 'image', EMessageType.img);
-          // const img2 = new Message(users[0], 'image', EMessageType.img);
-
-          this.setState({ listOfMessages: [...msgs.reverse()] });
+          this.setState({ 
+            listOfMessages: [...msgs.sort((m1, m2) => m2.messageId! - m1.messageId!)],
+            listOfPinnedMessages: [...pinnedMsgs.sort((m1, m2) => m1.messageId! - m2.messageId!)],
+            pinnedMessage: pinnedMsgs.sort(m => result[0]?.lastWatchedMessages.find((obj : any) => obj.userId === author.userId).messageId - m.messageId!)[0]
+          });
         })
         .catch(error => console.error('error while fetching', error));
 
-
-    console.log('\n_________________\n', Platform.OS, author.userId, '\n_________________');
     const connection = ChatHubService.getInstance();
     connection.startConnection(author.userId);
 
-    connection.registerMessageSent((messageId: number) => {
-      const list = [...this.state.listOfMessages];
-      const m = list.shift();
-      console.log(m);
-      console.log(m?.messageId, messageId);
-      m!.sent = true;
-      m!.messageId = messageId;
-      this.setState({ listOfMessages: [...list, m] });
-    });
-    connection.registerReceiveMessageText((mes: any) => {
-      this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
-    });
-    connection.registerReceiveMessageFile(async (mes: any) => {
-      this.setMessages({ ...mes, sendingTime: new Date(mes.sendingTime), isDeleted: false });
-
-      // Processing and saving image/video to a gallery
-      // Create file path
-      const filePath = `${FileSystem.documentDirectory}image.png`;
-
-      try {
-        // Write base64 string to file
-        await FileSystem.writeAsStringAsync(filePath, mes.fileContent, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
-
-        // Save file to gallery
-        await MediaLibrary.saveToLibraryAsync(filePath);
-      } catch (error) {
-        console.error('Error saving image:', error);
-      }
-    }); 
-    connection.registerReceiveUpdateLastWatchedMessage((messageId: number, chatId: number, userId: number) => {
-      if(userId === author.userId) {
-        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
-        this.setState({ 
-          authorMessageLastWatched: { 
-            ...this.state.authorMessageLastWatched, 
-            messageId: messageId
-          } 
-        });
-      } else {
-        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
-        this.setState({ 
-          userMessageLastWatched: {
-            ...this.state.userMessageLastWatched, 
-            messageId: messageId
-          }
-        });
-      }
-    });
-    connection.registerReceiveUpdateMessageText((messageId: number, newContent: string) => {
-      console.log('UpdateMessageText for', Platform.OS, messageId, newContent)
-      if(messageId&&newContent) {
-        const list = [...this.state.listOfMessages];
-        const id = list.findIndex(m => m.messageId === messageId);
-        const m = { ...list[id] };
-        m.content = newContent;
-        m.isEdited = true;
-        this.setState({ listOfMessages: [...list.slice(0, id), m, ...list.slice(id + 1)] });
-      }
-    });
-    connection.registerPinMessage((messageId: number, unpin: boolean) => {
-      const m = this.state.listOfMessages.find(m => m.messageId === messageId);
-      this.pinMessageHandler(m!);
-    });
-    connection.registerDeleteMessage((messageId: number) => {
-      this.onDeletePress(messageId);
-    });
+    connection.registerMessageSent(messageSentHandler)
+      .registerReceiveMessageText(receiveMessageTextHandler)
+      .registerReceiveMessageFile(receiveMessageFileHandler)
+      .registerReceiveUpdateLastWatchedMessage(receiveLastWatchedMessageUpdate)
+      .registerReceiveUpdateMessageText(receiveUpdateMessageTextHandler)
+      .registerPinMessage(pinMessageHandler)
+      .registerUnpinAllMessages(unpinAllMessagesHandler)
+      .registerDeleteMessage(deleteMessageHandler)
+      .registerDeleteSelectedMessages(deleteSelectedMessagesHandler)
+      .registerDeleteAllMessages(deleteAllMessagesHandler);
 
     //#endregion
+
   }
 
   componentWillUnmount(): void {
     const connection = ChatHubService.getInstance();
-    connection.unregisterMessageSent();
-    connection.unregisterDeleteMessage();
-    connection.unregisterReceiveMessageFile();
-    connection.unregisterReceiveMessageText();
-    connection.unregisterReceiveUpdateLastWatchedMessage();
-    connection.unregisterReceiveUpdateMessageText();
+    connection.unregisterMessageSent()
+      .unregisterDeleteMessage()
+      .unregisterReceiveMessageFile()
+      .unregisterReceiveMessageText()
+      .unregisterReceiveUpdateLastWatchedMessage()
+      .unregisterReceiveUpdateMessageText();
 
     connection.disconnect();
   }
@@ -201,7 +233,10 @@ class Dialogue extends Component<DialogueProps> {
 
     //console.log('Dialogue update state');
     
-    const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, selecting, listOfPinnedMessages, pinnedMessage, authorMessageLastWatched, userMessageLastWatched, edit } = this.state;
+    const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, selecting, listOfPinnedMessages, pinnedMessage, authorMessageLastWatched, userMessageLastWatched, edit, fileContent } = this.state;
+
+    // console.log('THIS:\n', listOfMessages);
+    // console.log('NEXT:\n', nextState.listOfMessages);
 
     if(messageID !== nextState.messageID) {
       return true;
@@ -229,9 +264,11 @@ class Dialogue extends Component<DialogueProps> {
       return true;
     } else if(edit !== nextState.edit) {
       return true;
+    } else if(fileContent !== nextState.fileContent) {
+      return true;
     }
 
-    //console.log("Didn't update");
+    // console.log("Didn't update");
 
     return false;
   }
@@ -256,11 +293,10 @@ class Dialogue extends Component<DialogueProps> {
   }
 
   setEditMessageHandler = () => {
-    if(!this.state.isEdit) {
+    if(!this.state.isEdit)
       this.setState({ editMessage: this.state.listOfMessages.find(m => m.messageId === this.state.messageID)! });
-    }
     else
-    this.setState({ editMessage: {} as MessageProps });
+      this.setState({ editMessage: {} as MessageProps });
   }
 
   handleMessagePressOrSwipe = (coordinations:Layout, pressed:boolean, callback: () => void) => {
@@ -275,13 +311,16 @@ class Dialogue extends Component<DialogueProps> {
   };
 
   updateMessageContent = (messageId: number|undefined, newContent: string|undefined) => {
-    if(messageId&&newContent) {
-      const id = this.state.listOfMessages.findIndex(m => m.messageId === messageId);  
-      this.state.listOfMessages[id].content = newContent;
-      this.state.listOfMessages[id].isEdited = true;
-      console.log(this.state.listOfMessages[id]);
-    }
-    this.setState({ listOfMessages: [...this.state.listOfMessages] });
+    if(!messageId || !newContent) return;
+
+    const list = [...this.state.listOfMessages];
+    const id = list.findIndex(m => m.messageId === messageId);
+    const m = { ...list[id] };
+    
+    m.content = newContent;
+    m.isEdited = true;
+
+    this.setState({ listOfMessages: [...list.slice(0, id), m, ...list.slice(id + 1)] });
   };
 
   setMessages = (mes:MessageProps) => {
@@ -289,7 +328,8 @@ class Dialogue extends Component<DialogueProps> {
       this.setState({ listOfMessages: [mes, ...this.state.listOfMessages] });
     } else{
       const m = this.state.listOfMessages.find(m => m.messageId === this.state.messageID);
-      this.updateMessageContent(m?.messageId, m?.content as string)
+      console.log('SET MESSAGES', mes.content);
+      this.updateMessageContent(m?.messageId, mes.content as string)
     }
   };
   
@@ -360,22 +400,30 @@ class Dialogue extends Component<DialogueProps> {
     }
   }
 
-  unpinAllMessagesHandler = () => {
+  unpinAllMessagesHandler = (received: boolean = true) => {
+    if(received) ChatHubService.getInstance().unpinAllMessages(this.chatId);
+
     this.setState({ pinnedMessage: {} as MessageProps, listOfPinnedMessages: [] });
   }
 
-  deleteAllButtonHandler = () => {
+  deleteAllButtonHandler = (received: boolean = true) => {
+    if(received) ChatHubService.getInstance().deleteAllMessages(this.chatId);
+
     this.props.route.params.dispatch(removeCoordinationsOfAllMessages());
     this.setState({ listOfMessages: [] });
   }
 
-  deleteSelectedMessages = () => {
-    const { listOfId } = this.props;
+  deleteSelectedMessages = (messagesId?: Array<number>) => {
+    let { listOfId } = this.props;
+    if(messagesId) listOfId = [...messagesId];
+
     const { dispatch } = this.props.route.params;
     const { listOfMessages, listOfPinnedMessages } = this.state;
     const newListOfPinnedMessages = [...listOfPinnedMessages];
 
     listOfId.sort((a, b) => b - a);
+    if(!messagesId) ChatHubService.getInstance().deleteSelectedMessages(this.chatId, listOfId);
+
     let idx = 0;
     let idxOfPinned = 0;
     const listOfIdLen = listOfId.length - 1;
@@ -399,10 +447,14 @@ class Dialogue extends Component<DialogueProps> {
     dispatch(removeCoordinationsOfSelectedMessages(listOfId));
     dispatch(resetSelectedMessage());
   }
+
+  previewPhotoHandler = (fileContent: string, sendingTime: Date | null) => {
+    this.setState({ fileContent, sendingTime })
+  }
   
   render(): React.ReactNode {
-    const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && m.content);
-    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, deleting, messageIdForReplyAndEdit } = this.state;
+    const mes = this.state.listOfMessages?.find(m => m.messageId === this.state.messageID && (m.content || m.fileContent));
+    const { messageMenuVisible, listOfMessages, pinnedMessage, selecting, listOfPinnedMessages, messageID, isReply, isEdit, editMessage, deleting, messageIdForReplyAndEdit, fileContent, userMessageLastWatched, sendingTime } = this.state;
     const { navigation } = this.props;
 
     const connection = ChatHubService.getInstance();
@@ -421,14 +473,23 @@ class Dialogue extends Component<DialogueProps> {
             onEditPress={this.pressEditButton} 
             onDeletePress={this.setDeletingHandler}
             onSelectPress={this.setSelectingHandler}
-            onPinPress={() => connection.pinMessage(mes?.messageId, this.getChatId(), listOfPinnedMessages.findIndex(m => m.messageId === mes?.messageId) >= 0)} // this.pinMessageHandler
-            userMessageLastWatched={this.state.userMessageLastWatched!}
+            onPinPress={() => { 
+              connection.pinMessage(mes?.messageId!, author.userId!, this.getChatId(), listOfPinnedMessages.findIndex(m => m.messageId === mes?.messageId) >= 0)
+              this.pinMessageHandler(mes!);
+            }} // this.pinMessageHandler
+            userMessageLastWatched={userMessageLastWatched!}
             pinnedMessageScreen={false}
+          />
+          <PhotoPreview 
+            fileContent={fileContent}
+            backHandler={this.previewPhotoHandler}
+            author={author?.name}
+            sendingTime={sendingTime}
           />
           <Header 
             chatType={dialogue}
-            picture={dialogue.linkToPhoto}
-            displayName={author.name}
+            picture={dialogue?.linkToPhoto}
+            displayName={author?.name}
             activityTime={'Online recently'} // Last activity from user
             pinnedMessage={pinnedMessage != undefined ? pinnedMessage : {} as MessageProps}
             selecting={selecting}
@@ -440,7 +501,7 @@ class Dialogue extends Component<DialogueProps> {
               author,
               messageID,
               unpinAllMessagesHandler: this.unpinAllMessagesHandler,
-              userMessageLastWatched: this.state.userMessageLastWatched!,
+              userMessageLastWatched: userMessageLastWatched!,
               onUnpinPress: this.pinMessageHandler,
               onDeletePress: this.onDeletePress,
               users
@@ -459,8 +520,8 @@ class Dialogue extends Component<DialogueProps> {
             isEdit={isEdit}
             author={author}
             users={users}
-            userMessageLastWatched={this.state.userMessageLastWatched!}
-            authorMessageLastWatched={this.state.userMessageLastWatched!}
+            userMessageLastWatched={userMessageLastWatched!}
+            authorMessageLastWatched={userMessageLastWatched!}
             selecting={selecting}
             hasPinnedMessage={listOfPinnedMessages?.length>0}
             pinnedMessages={listOfPinnedMessages}
@@ -468,6 +529,7 @@ class Dialogue extends Component<DialogueProps> {
             emitter={this._emitter}
             chatId={this.chatId}
             chatHubService={connection}
+            previewPhoto={this.previewPhotoHandler}
           />
           <Footer 
             messages={listOfMessages} 
@@ -490,7 +552,10 @@ class Dialogue extends Component<DialogueProps> {
           <DeleteMessageModal 
             deleting={deleting} 
             setDeletingHandler={this.setDeletingHandler} 
-            onDeletePress={() => connection.deleteMessage(mes?.messageId!, this.getChatId())} // this.onDeletePress 
+            onDeletePress={() => {
+              connection.deleteMessage(mes?.messageId!, author.userId!, this.getChatId());
+              this.onDeletePress(mes?.messageId);
+            }} // this.onDeletePress 
             message={mes} 
             author={author as User}
           />

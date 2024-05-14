@@ -136,7 +136,7 @@ class Footer extends Component<DialogueFooterProps> {
       base64: true // Request base64 representation of the image
     });
 
-    this.setState({ displayImage: (result as any).base64 });
+    this.setState({ displayImage: result.assets![0].base64 });
 
     this.textInput.current?.focus();
   };
@@ -202,7 +202,7 @@ class Footer extends Component<DialogueFooterProps> {
                   height={dynamicFooterHeight - FOOTER_INNER_TEXTINPUT_GAP}
                 />
                 <RightPartOfFooter 
-                  sendMessage={keyboardActive} 
+                  sendMessage={keyboardActive && text.length > 0} 
                   sendMessageHandler={sendMessageHandler} 
                   pressGalleryButtonHandler={this.pickImage} 
                   selecting={selecting}

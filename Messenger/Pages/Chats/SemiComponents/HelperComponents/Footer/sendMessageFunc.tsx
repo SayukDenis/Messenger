@@ -9,16 +9,16 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
 
   const messageToEdit = messages.find(m => m.messageId == messageID);
 
-  if(!text && !fileContent) {
+  if((!text && !fileContent) || text === messageToEdit?.content) {
     onSendMessageOrCancelReplyAndEdit();
     return;
   }
 
   const connection = getChatHubService();
 
-  if(replyMessage?.content) {
+  if(replyMessage?.content || replyMessage.fileContent) {
     const msg = {
-      messageId: messages.length,
+      messageId: messages[0].messageId! + 1,
       author: (author as User), // SelfProgile == User ?
       content: text,
       sendingTime: new Date(),
@@ -55,9 +55,11 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
       connection?.sendMessageText(msgServ);
   } else if(editMessage?.content&&text!=messageToEdit?.content) {
     connection?.updateMessageText(text, messageToEdit?.messageId!, getChatId());
+
+    setMessages({ content: text } as MessageProps);
   } else {
     const msg = {
-      messageId: messages.length,
+      messageId: messages.length > 0 ? messages[0].messageId! + 1 : 0,
       author: (author as User), // SelfProgile == User ?
       content: text,
       sendingTime: new Date(),

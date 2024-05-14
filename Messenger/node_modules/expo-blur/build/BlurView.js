@@ -1,7 +1,10 @@
+// Copyright © 2024 650 Industries.
+'use client';
 import { requireNativeViewManager } from 'expo-modules-core';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 const NativeBlurView = requireNativeViewManager('ExpoBlurView');
+// TODO: Class components are not supported with React Server Components.
 export default class BlurView extends React.Component {
     blurViewRef = React.createRef();
     /**
@@ -13,10 +16,11 @@ export default class BlurView extends React.Component {
         return this.blurViewRef?.current;
     }
     render() {
-        const { tint = 'default', intensity = 50, blurReductionFactor = 4, style, children, ...props } = this.props;
-        return (React.createElement(View, { ...props, style: [styles.container, style] },
-            React.createElement(NativeBlurView, { ref: this.blurViewRef, tint: tint, intensity: intensity, blurReductionFactor: blurReductionFactor, style: StyleSheet.absoluteFill }),
-            children));
+        const { tint = 'default', intensity = 50, blurReductionFactor = 4, experimentalBlurMethod = 'none', style, children, ...props } = this.props;
+        return (<View {...props} style={[styles.container, style]}>
+        <NativeBlurView ref={this.blurViewRef} tint={tint} intensity={intensity} blurReductionFactor={blurReductionFactor} experimentalBlurMethod={experimentalBlurMethod} style={StyleSheet.absoluteFill}/>
+        {children}
+      </View>);
     }
 }
 const styles = StyleSheet.create({

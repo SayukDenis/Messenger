@@ -50,7 +50,8 @@ export const styles = StyleSheet.create({
     border: 'none',
     borderRadius: 10,
     maxWidth: '100%',
-    minWidth: '15%'
+    minWidth: '15%',
+    alignItems: 'center'
   },
   replyMessageBackground: {
     position: 'absolute', 
@@ -76,7 +77,8 @@ export const styles = StyleSheet.create({
     paddingLeft: MESSAGE_PADDING_HORIZONTAL,
     border: 'none',
     borderRadius: 10,
-    maxWidth: '100%'
+    maxWidth: '100%',
+    alignItems: 'center'
   },
   messageInfoContainer: {
     alignSelf: 'flex-end', 

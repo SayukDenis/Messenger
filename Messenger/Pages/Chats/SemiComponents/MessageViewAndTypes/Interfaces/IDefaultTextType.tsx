@@ -3,14 +3,16 @@ import { MessageProps } from "../../Interfaces/GeneralInterfaces/IMessage";
 import User from "../../../../../dao/Models/User";
 import { Layout } from "../../Interfaces/GeneralInterfaces/ILayout";
 import ILastWatchedMessage from "../../../../../dao/Models/Chats/ILastWatchedMessage";
+import { CoordinationsOfMessage } from "../../../../../ReducersAndActions/Reducers/ChatReducers/ChatsReducers";
 
-export interface DefaultTextMessageNavigationProps {
+export interface DefaultTextMessageWithNavigationProps extends DefaultTextMessageProps {
   dispatch: Dispatch;
-  navigation: any;
+  idForAnimation: number;
+  messagesWithCoords: CoordinationsOfMessage[];
 }
 
-export interface DefaultTextMessageProps extends DefaultTextMessageNavigationProps {
-  idForAnimation: number;
+export interface DefaultTextMessageProps {
+  navigation: any;
   message: MessageProps;
   setMessageMenuVisible: (arg0: Layout, arg1: boolean) => void;
   id: number;
