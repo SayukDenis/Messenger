@@ -342,6 +342,7 @@ class MessageMenu extends Component<MessageMenuProps> {
           messages={messages}
           isUser={isUser}
           height={coord.height}
+          fullHeight={coords!}
           userMessageLastWatched={userMessageLastWatched}
           pinned={coord.pinned}
           userName={userName}

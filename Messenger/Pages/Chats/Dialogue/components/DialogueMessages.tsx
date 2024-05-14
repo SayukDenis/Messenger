@@ -285,7 +285,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       const scrollOffset = this.flatListRef.current._listRef._scrollMetrics.offset;
 
       Animated.timing(this.state.keyboardHeight, {
-        toValue: -(MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) - (mesCoords?.coords! + height*0.08)),
+        toValue: -(MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) - (mesCoords?.coords! + height*0.08) - ((this.state.footerGap as any)._value - height * 0.02)),
         duration: scrollOffset <= 39 ? 200 : 100,
         useNativeDriver: false
       }).start();
@@ -299,7 +299,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       coord.pageY = HEIGHT_OF_FLATLIST + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
     } else if(pressed && HEIGHT_OF_FLATLIST - coord.componentPageY - mesCoords?.height! < MESSAGE_MENU_HEIGHT - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT)) {
       this.flatListRef.current.scrollToOffset({ 
-        offset: mesCoords?.coords! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + Math.ceil(MESSAGE_PADDING_VERTICAL/2) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) + (this.props.pinnedMessages.length > 0 ? height*0.05 : 0), 
+        offset: mesCoords?.coords! - MESSAGE_MENU_HEIGHT + HEIGHT_OF_HEADER_OFFSET + Math.ceil(MESSAGE_PADDING_VERTICAL/2) + (isUser ? 0 : MESSAGE_BUTTON_HEIGHT) + (this.props.pinnedMessages.length > 0 ? height*0.05 : 0) + ((this.state.footerGap as any)._value - height * 0.02), 
         animated: true,
       });
 

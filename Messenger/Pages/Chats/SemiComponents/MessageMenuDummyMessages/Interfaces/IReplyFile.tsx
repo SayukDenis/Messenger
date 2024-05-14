@@ -7,6 +7,7 @@ export interface IReplyFileType {
   isUser: boolean;
   userName: string;
   height: number;
+  fullHeight: number;
   userMessageLastWatched: ILastWatchedMessage|undefined;
   pinned: boolean;
 }
