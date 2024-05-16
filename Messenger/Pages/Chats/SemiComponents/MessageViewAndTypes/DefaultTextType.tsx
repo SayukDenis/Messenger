@@ -311,7 +311,7 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
                 <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  { this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.012}/>}
                   <Text
                     style={
                       message.content.length > DEFAULT_CHARS_PER_LINE

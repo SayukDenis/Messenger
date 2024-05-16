@@ -19,16 +19,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     overflow: 'hidden',
     maxHeight: MAX_FOOTER_HEIGHT,
-    minHeight: FOOTER_HEIGHT
+    minHeight: FOOTER_HEIGHT + height * 0.02
   },
   gradientContainer: {
     maxHeight: MAX_FOOTER_HEIGHT,
-    minHeight: FOOTER_HEIGHT,
+    minHeight: FOOTER_HEIGHT + height * 0.02,
     backgroundColor:"white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     zIndex: 5,
-    justifyContent:"center",
+    justifyContent:"flex-start",
   },
   gradient: {
     opacity: 0.5,
@@ -44,14 +44,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     height: height*0.06,
     maxHeight: MAX_FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP,
-    minHeight: FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP
+    minHeight: FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP + height * 0.016
   },
   footer: {
     paddingVertical: 0,
     display: 'flex',
     flexDirection: 'row',
     maxHeight: MAX_FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP,
-    minHeight: FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP,
+    minHeight: FOOTER_HEIGHT - FOOTER_INNER_CONTAINER_GAP + height * 0.02,
     alignSelf: 'stretch',
     borderStyle: 'solid',
     borderTopLeftRadius: 10,

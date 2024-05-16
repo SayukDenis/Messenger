@@ -269,6 +269,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
               ListHeaderComponent={this.ListHeaderComponent}
               ListFooterComponent={this.ListFooterComponent}
               inverted
+              showsVerticalScrollIndicator={false}
             />
           </Animated.View>
         </BackGroundGradinetView>

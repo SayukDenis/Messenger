@@ -17,13 +17,6 @@ import { EMessageType } from "../../../dao/Models/EMessageType";
 import ReplyFileType from "./MessageMenuDummyMessages/ReplyFileDummyMessage";
 import DefaultFileType from "./MessageMenuDummyMessages/DefaultFileDummyMessage";
 
-const containerWidth = new Animated.Value(0); 
-const firstContainerTranslate = new Animated.Value(0); 
-const secondContainerTranslate = new Animated.Value(0);
-const thirdContainerTranslate = new Animated.Value(0);
-const fourthContainerTranslate = new Animated.Value(0);
-const fifthContainerTranslate = new Animated.Value(0);
-const sixthContainerTranslate = new Animated.Value(0);
 
 class MessageMenu extends Component<MessageMenuProps> {
   shouldComponentUpdate(nextProps: Readonly<MessageMenuProps>, nextState: Readonly<MessageMenuState>, nextContext: any): boolean {
@@ -110,109 +103,118 @@ class MessageMenu extends Component<MessageMenuProps> {
   //#region  Animation constants 
   durationOfAnimation: number = 15;
   easing: EasingFunction = Easing.linear;
-  firstContainerOpacity = firstContainerTranslate.interpolate({
+
+  containerWidth = new Animated.Value(0); 
+  firstContainerTranslate = new Animated.Value(0); 
+  secondContainerTranslate = new Animated.Value(0);
+  thirdContainerTranslate = new Animated.Value(0);
+  fourthContainerTranslate = new Animated.Value(0);
+  fifthContainerTranslate = new Animated.Value(0);
+  sixthContainerTranslate = new Animated.Value(0);
+
+  firstContainerOpacity = this.firstContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
-  firstContainerPositionY = firstContainerTranslate.interpolate({
+  firstContainerPositionY = this.firstContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
-  secondContainerOpacity = secondContainerTranslate.interpolate({
+  secondContainerOpacity = this.secondContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  secondContainerPositionY = secondContainerTranslate.interpolate({
+  secondContainerPositionY = this.secondContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
   // Аналогічно для інших контейнерів
-  thirdContainerOpacity = thirdContainerTranslate.interpolate({
+  thirdContainerOpacity = this.thirdContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  thirdContainerPositionY = thirdContainerTranslate.interpolate({
+  thirdContainerPositionY = this.thirdContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
-  fourthContainerOpacity = fourthContainerTranslate.interpolate({
+  fourthContainerOpacity = this.fourthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  fourthContainerPositionY = fourthContainerTranslate.interpolate({
+  fourthContainerPositionY = this.fourthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
-  fifthContainerOpacity = fifthContainerTranslate.interpolate({
+  fifthContainerOpacity = this.fifthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  fifthContainerPositionY = fifthContainerTranslate.interpolate({
+  fifthContainerPositionY = this.fifthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
 
-  sixthContainerOpacity = sixthContainerTranslate.interpolate({
+  sixthContainerOpacity = this.sixthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
 
-  sixthContainerPositionY = sixthContainerTranslate.interpolate({
+  sixthContainerPositionY = this.sixthContainerTranslate.interpolate({
     inputRange: [0, 1],
     outputRange: [screenHeight * 0.05, 0],
   });
   //#endregion
 
   animateMenu = (close: boolean = false) => {
-    const animateOfFirstContainer = Animated.timing(firstContainerTranslate, {
+    const animateOfFirstContainer = Animated.timing(this.firstContainerTranslate, {
       toValue: close ? 0 : 1, // Верхня позиція (видимий) або поза екраном (не видимий)
       duration: this.durationOfAnimation, // Тривалість анімації
       easing: this.easing,
       useNativeDriver: false,
     });
-    const animateOfSecondContainer = Animated.timing(secondContainerTranslate, {
+    const animateOfSecondContainer = Animated.timing(this.secondContainerTranslate, {
       toValue: close ? 0 : 1,
       duration: this.durationOfAnimation,
       easing: this.easing,
       useNativeDriver: false,
     });
   
-    const animateOfThirdContainer = Animated.timing(thirdContainerTranslate, {
+    const animateOfThirdContainer = Animated.timing(this.thirdContainerTranslate, {
       toValue: close ? 0 : 1,
       duration: this.durationOfAnimation,
       easing: this.easing,
       useNativeDriver: false,
     });
   
-    const animateOfFourthContainer = Animated.timing(fourthContainerTranslate, {
+    const animateOfFourthContainer = Animated.timing(this.fourthContainerTranslate, {
       toValue: close ? 0 : 1,
       duration: this.durationOfAnimation,
       easing: this.easing,
       useNativeDriver: false,
     });
   
-    const animateOfFifthContainer = Animated.timing(fifthContainerTranslate, {
+    const animateOfFifthContainer = Animated.timing(this.fifthContainerTranslate, {
       toValue: close ? 0 : 1,
       duration: this.durationOfAnimation,
       easing: this.easing,
       useNativeDriver: false,
     });
     
-    const animateOfSixthContainer = Animated.timing(sixthContainerTranslate, {
+    const animateOfSixthContainer = Animated.timing(this.sixthContainerTranslate, {
       toValue: close ? 0 : 1,
       duration: this.durationOfAnimation,
       easing: this.easing,
       useNativeDriver: false,
     });
 
-    const containerSize = Animated.timing(containerWidth, {
+    const containerSize = Animated.timing(this.containerWidth, {
       toValue: close ? 0 : 1,
       duration: this.durationOfAnimation,
       useNativeDriver: true,
@@ -229,6 +231,16 @@ class MessageMenu extends Component<MessageMenuProps> {
     ];
 
     Animated.sequence(close ? sequence.reverse() : sequence).start();
+  }
+
+  onButtonpPress = () => {
+    this.containerWidth.setValue(0); 
+    this.firstContainerTranslate.setValue(0); 
+    this.secondContainerTranslate.setValue(0);
+    this.thirdContainerTranslate.setValue(0);
+    this.fourthContainerTranslate.setValue(0);
+    this.fifthContainerTranslate.setValue(0);
+    this.sixthContainerTranslate.setValue(0);
   }
 
   helperFunc = (index: number) => {
@@ -269,7 +281,7 @@ class MessageMenu extends Component<MessageMenuProps> {
         opacity: this.firstContainerOpacity,
       }
       default: {
-        return { transform: [{ scale: containerWidth }] }
+        return { transform: [{ scale: this.containerWidth }] }
       }
     }
   };
@@ -380,7 +392,7 @@ class MessageMenu extends Component<MessageMenuProps> {
               {(button.text==='Reply'||(button.text==='Copy'&&pinnedMessageScreen)) && <View style={this.handleTrianglePosition()} />}
               <TouchableOpacity 
                 key={index} 
-                onPress={() => {button.action!(); onOverlayPress()}} 
+                onPress={() => { this.onButtonpPress(); button.action!(); onOverlayPress() }} 
                 activeOpacity={1} 
                 style={styles.button}
               >

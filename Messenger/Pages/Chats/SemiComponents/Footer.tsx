@@ -53,26 +53,32 @@ class Footer extends Component<DialogueFooterProps> {
       return true;
     } else if(this.state.displayImage !== nextState.displayImage) {
       return true;
+    } else if(this.props.keyboardHeightUpdate !== nextProps.keyboardHeightUpdate) {
+      return true;
     }
 
     return false;
   }
 
   componentDidUpdate(prevProps: Readonly<DialogueFooterProps>, prevState: Readonly<DialogueFooterState>, snapshot?: any): void {
-    const { isEdit, isReply, editMessage, keyboardActive, } = this.props;
+    const { isEdit, isReply, editMessage, keyboardActive, keyboardHeightUpdate } = this.props;
 
-    if(keyboardActive && keyboardActive !== prevProps.keyboardActive) {
+    const heightUpdate = (keyboardActive && keyboardHeightUpdate !== prevProps.keyboardHeightUpdate);
+
+    if((keyboardActive && keyboardActive !== prevProps.keyboardActive) || heightUpdate) {
+      
       Animated.timing(this.state.bottomOffset, {
         toValue: SOFT_MENU_BAR_HEIGHT + KEYBOARD_HEIGHT,
-        duration: 200,
+        duration: heightUpdate ? 0 : 200,
         useNativeDriver: false
       }).start();
       Animated.timing(this.state.heightOfImageBackground, {
         toValue: height - KEYBOARD_HEIGHT,
-        duration: 200,
+        duration: heightUpdate ? 0 : 200,
         useNativeDriver: false
       }).start();
     } else if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) {
+      console.log('FOOTER #2');
       Animated.timing(this.state.bottomOffset, {
         toValue: SOFT_MENU_BAR_HEIGHT,
         duration: 200,
@@ -86,7 +92,7 @@ class Footer extends Component<DialogueFooterProps> {
     }
     
     // Have a little lagging for some reason
-    if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) this.textInput.current?.blur();
+    // if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) this.textInput.current?.blur();
 
     //console.log('Footer #1', !keyboardActive);
 
@@ -217,7 +223,8 @@ class Footer extends Component<DialogueFooterProps> {
 }
 
 const mapStateToProps = (state: any) => ({
-  keyboardActive: state.ChatReducer.handleKeyboardAppearing.show
+  keyboardActive: state.ChatReducer.handleKeyboardAppearing.show,
+  keyboardHeightUpdate: state.ChatReducer.handleKeyboardAppearing.update
 })
 
 export default connect(mapStateToProps)(Footer);

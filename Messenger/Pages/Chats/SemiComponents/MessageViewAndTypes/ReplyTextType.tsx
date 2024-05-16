@@ -362,7 +362,7 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
                 /> 
                 <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.012}/>}
                   <Text
                     style={
                       message.content.length > DEFAULT_CHARS_PER_LINE

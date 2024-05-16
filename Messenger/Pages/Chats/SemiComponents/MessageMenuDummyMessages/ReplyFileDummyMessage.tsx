@@ -30,11 +30,15 @@ class ReplyFileType extends Component<IReplyFileType> {
                     {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
                   </Text>
                 }
-                <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  { pinned && <SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
-                  <Text
-                    style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
-                  >
+                <View style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}>
+                  { pinned && 
+                    <SVG.PinButton
+                      color={message.content.length > 0 ? '#000' : '#fff'} 
+                      style={styles.messageInfoContainer} 
+                      size={screenHeight*0.014}
+                    />
+                  }
+                  <Text style={[styles.messageTimeStampFontStylesNoText, message.content.length > 0 && styles.messageTimeStampFontStylesText]}>
                     {message.isEdited ? 'edited ' : ''}
                     {message.sendingTime.getHours().toString().padStart(2, '0')}:
                     {message.sendingTime.getMinutes().toString().padStart(2, '0')}

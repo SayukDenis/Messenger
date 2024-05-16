@@ -66,3 +66,7 @@ export const removeCoordinationsOfAllMessages = () => ({
 export const handleKeyboardAppearing = () => ({
   type: 'HANDLE_KEYBOARD_APPEARING'
 })
+
+export const handleKeyboardHeightUpdate = () => ({
+  type: 'HANDLE_KEYBOARD_HEIGHT_UPDATE'
+})

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { DialogueMessagesProps, DialogueMessagesReduxProps, DialogueMessagesState, messageCoordsProps } from "./interfaces/IDialogueMessages";
-import { Animated, FlatList, Keyboard, View, KeyboardEvent, Platform } from "react-native";
+import { Animated, FlatList, Keyboard, View, KeyboardEvent, Platform, Easing } from "react-native";
 import { connect } from "react-redux";
 import { FLATLIST_HEIGHT, KEYBOARD_HEIGHT, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height, setKeyboardHeight } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
-import { addCoordinationsOfMessage, handleKeyboardAppearing, setScrollStateForPinnedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
+import { addCoordinationsOfMessage, handleKeyboardAppearing, handleKeyboardHeightUpdate, setScrollStateForPinnedMessage, updateCoordinationsOfMessage } from "../../../../ReducersAndActions/Actions/ChatActions/ChatActions";
 import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/IMessage";
 import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
@@ -28,22 +28,51 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   keyboardDidShowListener: EmitterSubscription | null = null;
   keyboardDidHideListener: EmitterSubscription | null = null;
 
-  handleKeyboardDidShow = (event: KeyboardEvent) => {
-    if(KEYBOARD_HEIGHT === 0) setKeyboardHeight(event.endCoordinates.height);
-    this.props.dispatch!(handleKeyboardAppearing());
+  // handleKeyboardDidShow = (event: KeyboardEvent) => {
+  //   if(KEYBOARD_HEIGHT === 0) setKeyboardHeight(event.endCoordinates.height);
+  //   this.props.dispatch!(handleKeyboardAppearing());
+  //   Animated.timing(this.state.flatListHeight, {
+  //     toValue: height*0.94-event.endCoordinates.height,
+  //     duration: 200,
+  //     useNativeDriver: false
+  //   }).start();
+  // };
+
+  // handleKeyboardDidHide = () => {
+  //   this.props.dispatch!(handleKeyboardAppearing());
+  //   Animated.timing(this.state.flatListHeight, {
+  //     toValue: height*0.94,
+  //     duration: 200,
+  //     useNativeDriver: false
+  //   }).start();
+  // };
+
+  handleKeyboardWillShow = (event: KeyboardEvent) => {
+    if(KEYBOARD_HEIGHT !== event.endCoordinates.height) setKeyboardHeight(event.endCoordinates.height);
+    
+    if(!this.props.keyboardActive)
+      this.props.dispatch!(handleKeyboardAppearing());
+    else
+      this.props.dispatch!(handleKeyboardHeightUpdate());
+    
+    console.log('HANDLE KEYBOARD WILL SHOW', KEYBOARD_HEIGHT, event.duration);
     Animated.timing(this.state.flatListHeight, {
-      toValue: height*0.94-event.endCoordinates.height,
-      duration: 200,
-      useNativeDriver: false
+      toValue: height * 0.94 - KEYBOARD_HEIGHT,
+      duration: event.duration, // Use the duration from the event for smoother animation
+      easing: Easing.bezier(0.9, 0.9, 0.9, 1), // Adjust easing based on keyboard animation curve if needed
+      useNativeDriver: false,
     }).start();
   };
 
-  handleKeyboardDidHide = () => {
+  handleKeyboardWillHide = (event: KeyboardEvent) => {
+    console.log('HANDLE KEYBOARD WILL HIDE', event.endCoordinates.height);
+
     this.props.dispatch!(handleKeyboardAppearing());
     Animated.timing(this.state.flatListHeight, {
-      toValue: height*0.94,
-      duration: 200,
-      useNativeDriver: false
+      toValue: height * 0.94,
+      duration: event.duration, // Use the duration from the event for smoother animation
+      easing: Easing.bezier(0.9, 0.9, 0.9, 1), // Adjust easing based on keyboard animation curve if needed
+      useNativeDriver: false,
     }).start();
   };
 
@@ -75,13 +104,13 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     this.props.emitter.addListener('changeDynamicFooterHeight', this.dynamicFooterHeightHandler); 
 
     this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this.handleKeyboardDidShow
+      'keyboardWillShow',
+      this.handleKeyboardWillShow
     );
 
     this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      this.handleKeyboardDidHide
+      'keyboardWillHide',
+      this.handleKeyboardWillHide
     );
   }
 
@@ -383,6 +412,7 @@ const mapStateToProps = (state:any) => ({
   scrollToPinnedMessage: state.ChatReducer.scrollToPinnedMessage.scroll,
   idOfPinnedMessage: state.ChatReducer.scrollToPinnedMessage.id,
   messagesWithCoords: state.ChatReducer.setCoordinationsOfMessage.messagesWithCoords,
+  keyboardActive: state.ChatReducer.handleKeyboardAppearing.show
 });
 
 export default connect(mapStateToProps)(DialogueMessages);

@@ -276,22 +276,33 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
                 style={styles.message}
               >
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
-                >
-                  <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
-                </TouchableOpacity>
+                { 
+                  !pinnedMessageScreen ? 
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
+                    >
+                      <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                    </TouchableOpacity> 
+                  :
+                    <View>
+                      <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                    </View>
+                }
                 { message.content &&
                   <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
                     {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
                   </Text>
                 }
-                <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
-                  <Text
-                    style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
-                  >
+                <View style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}>
+                  { listOfPinnedMessages.findIndex(m => m === message.messageId) >= 0 && 
+                    <SVG.PinButton
+                      color={message.content.length > 0 ? '#000' : '#fff'} 
+                      style={styles.messageInfoContainer} 
+                      size={screenHeight*0.014}
+                    />
+                  }
+                  <Text style={[styles.messageTimeStampFontStylesNoText, message.content.length > 0 && styles.messageTimeStampFontStylesText]}>
                     {message.isEdited ? 'edited ' : ''}
                     {message.sendingTime.getHours().toString().padStart(2, '0')}:
                     {message.sendingTime.getMinutes().toString().padStart(2, '0')}

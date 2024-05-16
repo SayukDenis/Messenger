@@ -20,7 +20,6 @@ export const styles = StyleSheet.create({
   buttonsContainer: {
     position:'absolute',
     height: MESSAGE_MENU_HEIGHT,
-    backgroundColor: 'red'
   },
   button: {
     backgroundColor:'rgb(231,230,228)',

@@ -22,7 +22,7 @@ class DefaultTextDummyMessage extends Component<DefaultTextMessageProps> {
               <View style={{ position: 'absolute', height: screenHeight, width: screenWidth, zIndex: -1, opacity: 1, backgroundColor:isUser?'#E09EFF':'#fff' }} /> 
               <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
               <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                {pinned&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                {pinned&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.012}/>}
                 <Text
                   style={
                     message.content.length > DEFAULT_CHARS_PER_LINE

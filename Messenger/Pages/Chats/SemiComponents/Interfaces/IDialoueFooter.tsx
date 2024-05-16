@@ -8,6 +8,8 @@ import { HubConnection } from "@microsoft/signalr";
 import { ChatHubService } from "../../Dialogue/services/ChatHubService";
 
 export interface DialogueFooterProps {
+  keyboardActive: boolean;
+  keyboardHeightUpdate: boolean;
   author: User;
   users: User[];
   messages: MessageProps[];
@@ -20,7 +22,6 @@ export interface DialogueFooterProps {
   messageID: number;
   selecting: boolean;
   deleteSelectedMessages: () => void;
-  keyboardActive: boolean;
   dispatch: Dispatch;
   emitter: EventEmitter;
   getChatHubService: () => ChatHubService | null;
