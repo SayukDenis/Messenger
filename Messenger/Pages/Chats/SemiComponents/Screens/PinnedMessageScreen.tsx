@@ -65,10 +65,6 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
     return item.messageId?.toString();
   }
 
-  // setCoordsYHandler = (newCoordsY:coordY[]) => {
-  //   coordsY = [...newCoordsY];
-  // }
-
   flatListRef = React.createRef<any>();
   handleMessagePress = async (coordinations:Layout) => {
 
@@ -114,7 +110,7 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       await new Promise(resolve => setTimeout(resolve, 200));
 
       
-      coordinations.componentPageY = HEIGHT_OF_HEADER; // - (isUser ? 0 : MESSAGE_BUTTON_HEIGHT);
+      coordinations.componentPageY = HEIGHT_OF_HEADER;
       coordinations.pageY = HEIGHT_OF_HEADER + MESSAGE_MENU_HEIGHT + mesCoords?.height!;
     } else {
       coordinations.pageY = coordinations.componentPageY + mesCoords?.height! + MESSAGE_MENU_HEIGHT;
@@ -137,7 +133,6 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
       coordsY={coordsY}
       author={this.props.route?.params.author!}
       messageID={this.props.route?.params.messageID!}
-      // setCoordsY={this.setCoordsYHandler}
       selecting={this.state.selecting}
       pinnedMessageScreen
       userMessageLastWatched={this.props.route?.params.userMessageLastWatched}
@@ -191,8 +186,6 @@ class PinnedMessageScreen extends Component<PinnedMessageScreenProps> {
 
   DeleteHandler = () => {
     const { listOfPinnedMessages } = this.state;
-
-    console.log('DeleteHandler in PinnedMessageScreen');
 
     const mes = listOfPinnedMessages.find(m => m.messageId === coord.message?.messageId);
     this.props.route?.params.onUnpinPress(mes!);

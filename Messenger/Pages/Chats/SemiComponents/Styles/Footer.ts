@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   footerWhileSelecting: { 
     justifyContent: 'space-between', 
     paddingHorizontal: width * 0.075, 
-    alignItems: 'flex-start' 
+    alignItems: 'center' 
   }
 });
 

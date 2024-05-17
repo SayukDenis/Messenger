@@ -13,7 +13,6 @@ class ReplyMessage extends PureComponent<ReplyMessageProps> {
     let text = '';
     replyMessage?.content.split('\n').forEach(m => text += `${m.trim()} `);
     text.trimEnd();
-    console.log('replyMessage', replyMessage.content);
 
     return (
       <View>

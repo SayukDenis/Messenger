@@ -165,8 +165,6 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
   }
   
   componentDidUpdate(prevProps: DefaultFileTypeWithNavigationProps) {
-    // console.log(`DefaultFileType updated\t#${++tmpUpdateCounter}`);
-
     const { animate } = this.state;
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
@@ -178,10 +176,6 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
     if (idForAnimation !== prevProps.idForAnimation) {
       this.setState({ animate: idForAnimation === this.props.message.messageId });
     }
-
-    // if (!selecting && prevProps.selecting) {
-    //   this.resetSelected();
-    // }
   }
 
   pressInTime: number = 0;
@@ -191,8 +185,6 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
 
     const isUser = message.author.userId === author.userId;
 
-    // console.log('DefaultFileType content:', message.content);
-
     return (
       <ScrollView
         key={message.content as string}
@@ -201,7 +193,6 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
         alwaysBounceHorizontal={false}
         pagingEnabled
         scrollEnabled={!pinnedMessageScreen&&!selecting}
-        //contentOffset={pinnedMessageScreen?{ x: 5, y: 0 }:{ x: 0, y: 0 }}
         bounces={false}
         overScrollMode={'never'}
         onScrollEndDrag={this.onScrollEndDrag}
@@ -226,22 +217,16 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
           activeOpacity={1}
           onPressIn={(event) => {
             this.pressInTime = (new Date()).getTime();
-            //console.log('pressInTime: ', this.pressInTime);
 
             const { locationX, locationY } = event.nativeEvent;
             this.pressCoordinations = { locationX_In: locationX, locationY_In: locationY };
           }}
           onPressOut={(event: GestureResponderEvent) => {
             const pressOutTime = (new Date()).getTime();
-            //console.log('pressOutTime:', pressOutTime);
-            //console.log('Differecne in time:', pressOutTime - this.pressInTime);
-
-            //console.log('DefaultTextType:', this.props.id, this.props.message.messageId);
+            
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
             const { dispatch, setMessageMenuVisible, id } = this.props;
-
-            //console.log('\npressIn  coords:', locationX_In, locationY_In, '\npressOut coords:', locationX, locationY);
 
             if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
               dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
@@ -249,8 +234,6 @@ class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
               this.setState({ selected: !selected });
               return;
             }
-
-
 
             if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
               this.handlePress(event).then((layout) => {
