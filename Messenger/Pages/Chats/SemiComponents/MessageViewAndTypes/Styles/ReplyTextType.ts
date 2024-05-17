@@ -47,7 +47,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: MESSAGE_PADDING_VERTICAL,
     paddingLeft: MESSAGE_PADDING_HORIZONTAL,
-    border: 'none',
     borderRadius: 10,
     maxWidth: '100%',
     minWidth: '15%',
@@ -75,7 +74,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: MESSAGE_PADDING_VERTICAL,
     paddingLeft: MESSAGE_PADDING_HORIZONTAL,
-    border: 'none',
     borderRadius: 10,
     maxWidth: '100%',
     alignItems: 'center'

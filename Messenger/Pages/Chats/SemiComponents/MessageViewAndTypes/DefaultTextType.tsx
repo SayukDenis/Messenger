@@ -200,8 +200,6 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
   }
   
   componentDidUpdate(prevProps: DefaultTextMessageWithNavigationProps) {
-    // console.log(`DefaultTextType updated\t#${++tmpUpdateCounter}`);
-
     const { animate } = this.state;
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
@@ -259,22 +257,16 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
           activeOpacity={1}
           onPressIn={(event) => {
             this.pressInTime = (new Date()).getTime();
-            //console.log('pressInTime: ', this.pressInTime);
 
             const { locationX, locationY } = event.nativeEvent;
             this.pressCoordinations = { locationX_In: locationX, locationY_In: locationY };
           }}
           onPressOut={(event: GestureResponderEvent) => {
             const pressOutTime = (new Date()).getTime();
-            //console.log('pressOutTime:', pressOutTime);
-            //console.log('Differecne in time:', pressOutTime - this.pressInTime);
-
-            //console.log('DefaultTextType:', this.props.id, this.props.message.messageId);
+            
             const { locationX, locationY } = event.nativeEvent;
             const { locationX_In, locationY_In } = this.pressCoordinations;
             const { dispatch, setMessageMenuVisible, id } = this.props;
-
-            //console.log('\npressIn  coords:', locationX_In, locationY_In, '\npressOut coords:', locationX, locationY);
 
             if (selecting && pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
               dispatch(selected ? decrementNumberOfSelectedMessages() : incrementNumberOfSelectedMessages());
@@ -282,8 +274,6 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
               this.setState({ selected: !selected });
               return;
             }
-
-
 
             if (pressOutTime - this.pressInTime > 30 && locationX === locationX_In && locationY === locationY_In) {
               this.handlePress(event).then((layout) => {
@@ -311,7 +301,7 @@ class DefaultTextType extends Component<DefaultTextMessageWithNavigationProps> {
                 <View style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser) } />
                 <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  { this.props.listOfPinnedMessages.findIndex(m=>m===this.props.message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.012}/>}
                   <Text
                     style={
                       message.content.length > DEFAULT_CHARS_PER_LINE

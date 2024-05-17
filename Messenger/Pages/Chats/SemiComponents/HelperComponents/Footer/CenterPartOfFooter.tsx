@@ -50,8 +50,6 @@ class CenterPartOfFooter extends Component<CenterPartOfFooterProps> {
         onContentSizeChange={(event) => {
           const { contentSize } = event.nativeEvent;
           const { width: textInputWidth, height: textInputHeight } = contentSize;
-          console.log('TEXT', text, text.includes('\n'));
-          // if(text === '') return setDynamicFooterHeight(FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP);
 
           setDynamicFooterHeight(Math.max(FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP, textInputHeight));
           this.setState({ prevTextInputHeight: textInputHeight });

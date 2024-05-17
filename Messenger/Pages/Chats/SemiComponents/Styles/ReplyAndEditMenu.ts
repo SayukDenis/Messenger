@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
     height:0,
-    bottom: screenHeight*0.055,
+    bottom: screenHeight*0.0575,
   },
   innerContainer: {
     height:height*0.052, 

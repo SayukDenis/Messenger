@@ -12,6 +12,7 @@ import { ChatHubService } from "../../services/ChatHubService";
 export interface DialogueMessagesProps {
   scrollToPinnedMessage: boolean;
   idOfPinnedMessage: number;
+  keyboardActive: boolean;
   setMessageMenuVisible:(coordinations: Layout, pressed: boolean, callback: () => void)=>void; 
   messageID:number;
   listOfMessages:MessageProps[];

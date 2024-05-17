@@ -147,12 +147,15 @@ const setCoordinationsOfMessageReducer = (state = setCoordinationsOfMessage, act
 }
 
 const handleKeyboardAppearing = {
-  show: false
+  show: false,
+  update: false
 }
 const handleKeyboardAppearingReducer = (state = handleKeyboardAppearing, action:any) => {
   switch(action.type) {
     case 'HANDLE_KEYBOARD_APPEARING':
       return { ...state, show: !state.show }
+    case 'HANDLE_KEYBOARD_HEIGHT_UPDATE':
+      return { ...state, update: !state.update }
     default:
       return state;
   }

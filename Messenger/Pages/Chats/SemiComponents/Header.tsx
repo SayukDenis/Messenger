@@ -25,9 +25,7 @@ class Header extends Component<DialogueHeaderProps> {
   }
 
   componentDidUpdate(prevProps: Readonly<DialogueHeaderProps>, prevState: Readonly<DialogueHeaderState>, snapshot?: any): void {
-    if(this.props.selecting !== prevProps.selecting && this.props.selecting && this.props.counterOfSelectedMessages !== prevProps.counterOfSelectedMessages && this.props.counterOfSelectedMessages <= 0) this.props.cancelSelection();
-
-    //console.log('Header updated');
+    if(this.props.selecting && this.props.counterOfSelectedMessages !== prevProps.counterOfSelectedMessages && this.props.counterOfSelectedMessages <= 0) this.props.cancelSelection();
   }
 
   render(): React.ReactNode {

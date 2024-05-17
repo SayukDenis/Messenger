@@ -21,13 +21,10 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { ChatHubService } from "../Dialogue/services/ChatHubService";
 import PhotoPreview from '../SemiComponents/PhotoPreview';
-import { width } from '../SemiComponents/ChatConstants';
 
 let coord: Layout;
 let author: User;
 let users: User[];
-
-// const user:SelfProfile = useSelector((state: any) => state.selfProfileUser);
 
 let dialogue:DialogueModel.default;
 let messageMenuCallback: (() => void) | undefined;
@@ -80,8 +77,6 @@ class Dialogue extends Component<DialogueProps> {
     const messageSentHandler = (messageId: number) => {
       const list = [...this.state.listOfMessages];
       const m = { ...list.shift(), sent: true };
-      console.log(m);
-      console.log(m?.messageId, messageId);
       
       this.setState({ listOfMessages: [m, ...list] });
     }
@@ -110,7 +105,6 @@ class Dialogue extends Component<DialogueProps> {
 
     const receiveLastWatchedMessageUpdate = (messageId: number, chatId: number, userId: number) => {
       if(userId === author.userId) {
-        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
         this.setState({ 
           authorMessageLastWatched: { 
             ...this.state.authorMessageLastWatched, 
@@ -118,7 +112,6 @@ class Dialogue extends Component<DialogueProps> {
           } 
         });
       } else {
-        console.log(Platform.OS, userId === author.userId, `Updated lastWatchedMessage for ${userId} in chat ${chatId}. Last message id is ${messageId}`);
         this.setState({ 
           userMessageLastWatched: {
             ...this.state.userMessageLastWatched, 
@@ -129,7 +122,6 @@ class Dialogue extends Component<DialogueProps> {
     }
 
     const receiveUpdateMessageTextHandler = (messageId: number, newContent: string) => {
-      console.log('UpdateMessageText for', Platform.OS, messageId, newContent)
       if(messageId&&newContent) {
         const list = [...this.state.listOfMessages];
         const id = list.findIndex(m => m.messageId === messageId);
@@ -168,7 +160,7 @@ class Dialogue extends Component<DialogueProps> {
         .then(result => {
           author = result[0]?.users[Platform.OS === 'android' ? 0 : 1];
           users = [result[0]?.users[Platform.OS === 'android' ? 1 : 0]];
-          console.log('\n_________________\n', 'Aboba', Platform.OS, author.userId, '\n_________________');
+          
           this.setState({
             authorMessageLastWatched: result[0]?.lastWatchedMessages.find((obj : any) => obj.userId === author.userId),
             userMessageLastWatched: result[0]?.lastWatchedMessages.find((obj : any) => obj.userId === users[0].userId)
@@ -182,10 +174,7 @@ class Dialogue extends Component<DialogueProps> {
           });
           
           const pinnedMsgs : any[] = [];
-          (result[0].pinnedMessages as Array<any>).forEach((m, index) => {
-            console.log('pinned message:', { ...m, fileContent: m.fileContent?.length });
-            pinnedMsgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true, messageType: m.type });
-          })
+          (result[0].pinnedMessages as Array<any>).forEach((m, index) => pinnedMsgs.push({ ...m, sendingTime: new Date(m.sendingTime), sent: true, messageType: m.type }));
 
           this.setState({ 
             listOfMessages: [...msgs.sort((m1, m2) => m2.messageId! - m1.messageId!)],
@@ -220,23 +209,19 @@ class Dialogue extends Component<DialogueProps> {
       .unregisterReceiveMessageFile()
       .unregisterReceiveMessageText()
       .unregisterReceiveUpdateLastWatchedMessage()
-      .unregisterReceiveUpdateMessageText();
+      .unregisterReceiveUpdateMessageText()
+      .unregisterPinMessage()
+      .unregisterUnpinAllMessages()
+      .unregisterDeleteSelectedMessages()
+      .unregisterDeleteAllMessages();
 
     connection.disconnect();
   }
 
   shouldComponentUpdate(nextProps: Readonly<DialogueProps>, nextState: Readonly<DialogueState>, nextContext: any): boolean {
-    if(this.props !== nextProps) {
-      //console.log('Dialogue update props');
-      return true;
-    }
-
-    //console.log('Dialogue update state');
-    
+    if(this.props !== nextProps) return true;
+        
     const { messageID, messageMenuVisible, listOfMessages, isReply, isEdit, editMessage, deleting, selecting, listOfPinnedMessages, pinnedMessage, authorMessageLastWatched, userMessageLastWatched, edit, fileContent } = this.state;
-
-    // console.log('THIS:\n', listOfMessages);
-    // console.log('NEXT:\n', nextState.listOfMessages);
 
     if(messageID !== nextState.messageID) {
       return true;
@@ -267,8 +252,6 @@ class Dialogue extends Component<DialogueProps> {
     } else if(fileContent !== nextState.fileContent) {
       return true;
     }
-
-    // console.log("Didn't update");
 
     return false;
   }
@@ -328,7 +311,6 @@ class Dialogue extends Component<DialogueProps> {
       this.setState({ listOfMessages: [mes, ...this.state.listOfMessages] });
     } else{
       const m = this.state.listOfMessages.find(m => m.messageId === this.state.messageID);
-      console.log('SET MESSAGES', mes.content);
       this.updateMessageContent(m?.messageId, mes.content as string)
     }
   };
@@ -415,35 +397,28 @@ class Dialogue extends Component<DialogueProps> {
 
   deleteSelectedMessages = (messagesId?: Array<number>) => {
     let { listOfId } = this.props;
-    if(messagesId) listOfId = [...messagesId];
-
+    if (messagesId && messagesId.length > 0) listOfId = [...messagesId];
+  
     const { dispatch } = this.props.route.params;
     const { listOfMessages, listOfPinnedMessages } = this.state;
-    const newListOfPinnedMessages = [...listOfPinnedMessages];
-
+  
     listOfId.sort((a, b) => b - a);
-    if(!messagesId) ChatHubService.getInstance().deleteSelectedMessages(this.chatId, listOfId);
-
-    let idx = 0;
-    let idxOfPinned = 0;
-    const listOfIdLen = listOfId.length - 1;
-    for(let i = 0; i < listOfMessages.length; i++) {
-      if(listOfMessages[i].messageId === listOfId[idx] || newListOfPinnedMessages[idxOfPinned]?.messageId === listOfId[listOfIdLen - idx]) {
-        if(listOfMessages[i].messageId === listOfId[idx]) {
-          listOfMessages[i] = { messageId: listOfMessages[i].messageId } as MessageProps;
-        }
-        if(newListOfPinnedMessages[idxOfPinned]?.messageId === listOfId[listOfIdLen - idx]) {
-          newListOfPinnedMessages[idxOfPinned++] = { messageId: -1 } as MessageProps;
-        }
-        idx++;
-      }
+  
+    if (!messagesId?.length) {
+      ChatHubService.getInstance().deleteSelectedMessages(this.chatId, listOfId);
     }
-    
+  
+    const idsToDelete = new Set(listOfId);
+  
+    const newListOfMessages = listOfMessages.filter(message => !idsToDelete.has(message.messageId!));
+    const newListOfPinnedMessages = listOfPinnedMessages.filter(message => !idsToDelete.has(message.messageId!));
+  
     this.setState({ 
-      listOfMessages: [...listOfMessages], 
+      listOfMessages: newListOfMessages, 
       selecting: false,
-      listOfPinnedMessages: [...newListOfPinnedMessages.filter(m => m.messageId !== -1)]
+      listOfPinnedMessages: newListOfPinnedMessages
     });
+  
     dispatch(removeCoordinationsOfSelectedMessages(listOfId));
     dispatch(resetSelectedMessage());
   }
@@ -476,7 +451,7 @@ class Dialogue extends Component<DialogueProps> {
             onPinPress={() => { 
               connection.pinMessage(mes?.messageId!, author.userId!, this.getChatId(), listOfPinnedMessages.findIndex(m => m.messageId === mes?.messageId) >= 0)
               this.pinMessageHandler(mes!);
-            }} // this.pinMessageHandler
+            }}
             userMessageLastWatched={userMessageLastWatched!}
             pinnedMessageScreen={false}
           />
@@ -509,7 +484,6 @@ class Dialogue extends Component<DialogueProps> {
             countOfPinnedMessages={listOfPinnedMessages.length}
             currentNumOfPinnedMessage={listOfPinnedMessages.findIndex(m => m.messageId === pinnedMessage?.messageId) + 1}
             deleteAllButtonHandler={this.deleteAllButtonHandler}
-            //dispatch={this.props.route.params.dispatch}
           />
           <DialogueMessages 
             navigation={navigation}
@@ -555,7 +529,7 @@ class Dialogue extends Component<DialogueProps> {
             onDeletePress={() => {
               connection.deleteMessage(mes?.messageId!, author.userId!, this.getChatId());
               this.onDeletePress(mes?.messageId);
-            }} // this.onDeletePress 
+            }}
             message={mes} 
             author={author as User}
           />

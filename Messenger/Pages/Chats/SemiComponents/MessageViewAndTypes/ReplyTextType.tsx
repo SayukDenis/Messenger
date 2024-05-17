@@ -23,8 +23,6 @@ import * as SVG from './../SVG';
 
 let size: sizeProps[] = [];
 
-let tmpUpdateCounter = 0;
-
 class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
   state: ReplyTextTypeState = {
     sizeOfMessageContainer: [0, 0],
@@ -45,10 +43,8 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
   }
 
   componentDidUpdate(prevProps: ReplyTextTypeWithReduxProps) {
-    console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
-
     const { animate } = this.state;
-    //console.log('animate', animate);
+    
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
       this.setState({ animate: false });
@@ -59,10 +55,6 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
     if (idForAnimation !== prevProps.idForAnimation) {
       this.setState({ animate: idForAnimation === this.props.message.messageId });
     }
-
-    // if (!selecting && prevProps.selecting) {
-    //   this.resetSelected();
-    // }
   }
 
   shouldComponentUpdate(nextProps: Readonly<ReplyTextTypeWithReduxProps>, nextState: Readonly<ReplyTextTypeState>, nextContext: any): boolean {
@@ -70,31 +62,24 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 
     if(nextProps.idForAnimation === this.props.message.messageId) {
-      console.log('reply #1');
       this.state.animate = true;
       return true;
     } else if(nextProps.selecting != this.props.selecting) {
-      console.log('reply #2');
       this.setState({ selecting: nextProps.selecting });
       if(!nextProps.selecting) this.resetSelected();
       return true;
     } else if(nextState.selected != this.state.selected) {
-      console.log('reply #3');
       this.setState({ selected: nextState.selected })
       return true;
     } else if(this.state.selected !== nextState.selected) {
-      console.log('reply #4');
       return true;
     } else if(this.messageCompareHandler(nextProps.messages)) {
-      console.log('reply #5');
       this.setState({ message: nextMessage })
       return true;
     } else if(this.state.replyMessage && this.state.replyMessage !== nextReplyMessage) {
-      console.log('reply #6');
       this.setState({ replyMessage: nextReplyMessage })
       return true;
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
-      console.log('reply #7');
       return true;
     } else if(this.state.widthOfMessage !== nextState.widthOfMessage) {
       return true;
@@ -103,6 +88,8 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
     } else if(this.state.sizeOfMessageContainer[1] !== nextState.sizeOfMessageContainer[1] || this.state.sizeOfMessageContainer[0] !== nextState.sizeOfMessageContainer[0]) {
       return true;
     } else if(this.props.userMessageLastWatched !== nextProps.userMessageLastWatched) {
+      return true;
+    } else if(this.props.message.sent !== nextProps.message.sent) {
       return true;
     }
     
@@ -160,7 +147,7 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
     } else {
       size = [...size, { ID: this.props.id, layout: { width, height } }];
     }
-    console.log('widthOfMessage', this.props.message.messageId, width);
+    
     this.setState({ widthOfMessage: width });
   };
 
@@ -274,12 +261,11 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
 
   getSelectOffsetHorizontal = (scroll: boolean = false) => {
     const { widthOfMessage, widthOfReply } = this.state;
-    console.log('\n_____________________\n', widthOfMessage, widthOfReply, '\n_____________________');
+    
     return scroll ? (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0) : -(SIZE_OF_SELECT_BUTTON + MESSAGE_PADDING_VERTICAL + (widthOfReply > widthOfMessage ? widthOfReply - widthOfMessage : 0));
   }
 
   getSelectOffsetVertical = (scroll: boolean = false, isUser: boolean = false) => {
-    // console.log('\n******************\n', this.props.id, this.state.sizeOfMessageContainer[1], '\n******************\n');
     return scroll ? this.state.sizeOfMessageContainer[1] + (isUser ? -MESSAGE_PADDING_VERTICAL : MESSAGE_PADDING_VERTICAL) : (this.state.sizeOfMessageContainer[1]-SIZE_OF_SELECT_BUTTON) / 2;
   }
 
@@ -312,7 +298,7 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
             ref={(ref) => (this.componentRef = ref)}
             onLayout={(event) => {
               const { width, height } = event.nativeEvent.layout;
-              if(this.props.pinnedMessageScreen) console.log('\n===========================\n', this.props.id, width, height, '\n===========================');
+              
               if(width && height)
                 this.setState({ sizeOfMessageContainer: [width, height] });
             }}
@@ -332,7 +318,7 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
               handleLinkTo={pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
               onLayout={(event:any) => {
                 const width = event.nativeEvent.layout.width;
-                console.log('widthOfReply', this.props.message.messageId, width);
+                
                 if(width)
                   this.setState({ widthOfReply: width });
               }}
@@ -362,7 +348,7 @@ class ReplyTextType extends Component<ReplyTextTypeWithReduxProps> {
                 /> 
                 <Text style={{ fontSize: DEFAULT_FONT_SIZE, maxWidth: width * 0.6 }}>{wrapText(message.content, DEFAULT_CHARS_PER_LINE)}</Text>
                 <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
+                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.012}/>}
                   <Text
                     style={
                       message.content.length > DEFAULT_CHARS_PER_LINE

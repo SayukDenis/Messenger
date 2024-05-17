@@ -32,7 +32,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingVertical: 3,
     paddingHorizontal: 3,
-    border: 'none',
     borderRadius: 10,
     maxWidth: '100%',
     minWidth: '15%',
@@ -40,27 +39,32 @@ export const styles = StyleSheet.create({
   },
   messageInfoContainer: {
     alignSelf: 'flex-end', 
-    marginBottom: screenHeight*0.0015, 
     marginLeft: screenHeight*0.003, 
-    marginRight: -screenHeight*0.001
+    marginRight: screenHeight*0.002
   },
   messageTimeStampNoText: {
     position: 'absolute',
-    left: -width*0.08,
-    bottom: width*0.01,
-    fontWeight: '700',
+    right: 0,
+    marginRight: width*0.015,
+    bottom: width*0.015,
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     paddingVertical: 1,
     paddingHorizontal: 2,
-    color: 'white',
     borderRadius: 5,
-    fontSize: getCustomFontSize(9),
+    flexDirection: 'row'
   },
   messageTimeStampText: { 
-    bottom: 0, 
+    backgroundColor: 'transparent', 
+    bottom: width*0.005
+  },
+  messageTimeStampFontStylesNoText: {
+    fontSize: getCustomFontSize(9),
+    color: 'white',
+    fontWeight: '700',
+  },
+  messageTimeStampFontStylesText: { 
     fontWeight: 'normal', 
     color: 'black', 
-    backgroundColor: 'transparent' 
   },
   messageViewStatus: { 
     position: 'absolute', 

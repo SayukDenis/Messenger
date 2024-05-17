@@ -95,8 +95,6 @@ class MessageItem extends Component<MessageItemProps> {
           }
           if(typeof pinnedMessageHandler === 'function')
             pinnedMessageHandler(item.messageId!, height);
-
-          console.log('id', item.messageId)
         }}
       >
         {this.messageViewHandle({ message: item })}

@@ -27,7 +27,6 @@ class Footer extends Component<DialogueFooterProps> {
   }
 
   setDynamicFooterHeight = (action: number) => {
-    console.log('action', action);
     this.setState({ 
       dynamicFooterHeight: FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP + action,
     });
@@ -53,23 +52,28 @@ class Footer extends Component<DialogueFooterProps> {
       return true;
     } else if(this.state.displayImage !== nextState.displayImage) {
       return true;
+    } else if(this.props.keyboardHeightUpdate !== nextProps.keyboardHeightUpdate) {
+      return true;
     }
 
     return false;
   }
 
   componentDidUpdate(prevProps: Readonly<DialogueFooterProps>, prevState: Readonly<DialogueFooterState>, snapshot?: any): void {
-    const { isEdit, isReply, editMessage, keyboardActive, } = this.props;
+    const { isEdit, isReply, editMessage, keyboardActive, keyboardHeightUpdate } = this.props;
 
-    if(keyboardActive && keyboardActive !== prevProps.keyboardActive) {
+    const heightUpdate = (keyboardActive && keyboardHeightUpdate !== prevProps.keyboardHeightUpdate);
+
+    if((keyboardActive && keyboardActive !== prevProps.keyboardActive) || heightUpdate) {
+      
       Animated.timing(this.state.bottomOffset, {
         toValue: SOFT_MENU_BAR_HEIGHT + KEYBOARD_HEIGHT,
-        duration: 200,
+        duration: heightUpdate ? 0 : 200,
         useNativeDriver: false
       }).start();
       Animated.timing(this.state.heightOfImageBackground, {
         toValue: height - KEYBOARD_HEIGHT,
-        duration: 200,
+        duration: heightUpdate ? 0 : 200,
         useNativeDriver: false
       }).start();
     } else if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) {
@@ -84,16 +88,10 @@ class Footer extends Component<DialogueFooterProps> {
         useNativeDriver: false
       }).start();
     }
-    
-    // Have a little lagging for some reason
-    if(!keyboardActive && keyboardActive !== prevProps.keyboardActive) this.textInput.current?.blur();
-
-    //console.log('Footer #1', !keyboardActive);
 
     if(isEdit === prevProps.isEdit && isReply === prevProps.isReply) return;
 
     if (isEdit && editMessage.content) {
-      //console.log('Footer #2', !keyboardActive);
       this.textInput.current && this.textInput.current.focus();
       this.setState({ text: editMessage.content });
     } else {
@@ -145,8 +143,6 @@ class Footer extends Component<DialogueFooterProps> {
     const { isReply, replyMessage, onSendMessageOrCancelReplyAndEdit, isEdit, editMessage, selecting, deleteSelectedMessages, keyboardActive, author, users } = this.props;
     const { text, dynamicFooterHeight } = this.state;
     const { textInput, setText, sendMessageHandler, setDynamicFooterHeight } = this;
-
-    // console.log('Footer dynamicFooterHeight', dynamicFooterHeight)
 
     return(
       <Animated.View 
@@ -217,7 +213,8 @@ class Footer extends Component<DialogueFooterProps> {
 }
 
 const mapStateToProps = (state: any) => ({
-  keyboardActive: state.ChatReducer.handleKeyboardAppearing.show
+  keyboardActive: state.ChatReducer.handleKeyboardAppearing.show,
+  keyboardHeightUpdate: state.ChatReducer.handleKeyboardAppearing.update
 })
 
 export default connect(mapStateToProps)(Footer);

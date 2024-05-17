@@ -21,8 +21,6 @@ import { ReplyFileTypeState, ReplyFileTypeWithNavigationProps } from './Interfac
 
 let size: sizeProps[] = [];
 
-let tmpUpdateCounter = 0;
-
 class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
   state: ReplyFileTypeState = {
     sizeOfMessageContainer: [0, 0],
@@ -43,10 +41,8 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
   }
 
   componentDidUpdate(prevProps: ReplyFileTypeWithNavigationProps) {
-    console.log(`ReplyTextType updated\t#${++tmpUpdateCounter}`);
-
     const { animate } = this.state;
-    //console.log('animate', animate);
+    
     if (!animate) return;
     Animated.sequence([this.fadeIn, this.fadeOut]).start(() => {
       this.setState({ animate: false });
@@ -57,10 +53,6 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
     if (idForAnimation !== prevProps.idForAnimation) {
       this.setState({ animate: idForAnimation === this.props.message.messageId });
     }
-
-    // if (!selecting && prevProps.selecting) {
-    //   this.resetSelected();
-    // }
   }
 
   shouldComponentUpdate(nextProps: Readonly<ReplyFileTypeWithNavigationProps>, nextState: Readonly<ReplyFileTypeState>, nextContext: any): boolean {
@@ -68,31 +60,24 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
     const nextMessage = nextProps.messages.find(m => m.messageId === this.props.message.messageId)?.content;
 
     if(nextProps.idForAnimation === this.props.message.messageId) {
-      console.log('reply #1');
       this.state.animate = true;
       return true;
     } else if(nextProps.selecting != this.props.selecting) {
-      console.log('reply #2');
       this.setState({ selecting: nextProps.selecting });
       if(!nextProps.selecting) this.resetSelected();
       return true;
     } else if(nextState.selected != this.state.selected) {
-      console.log('reply #3');
       this.setState({ selected: nextState.selected })
       return true;
     } else if(this.state.selected !== nextState.selected) {
-      console.log('reply #4');
       return true;
     } else if(this.messageCompareHandler(nextProps.messages)) {
-      console.log('reply #5');
       this.setState({ message: nextMessage })
       return true;
     } else if(this.state.replyMessage && this.state.replyMessage !== nextReplyMessage) {
-      console.log('reply #6');
       this.setState({ replyMessage: nextReplyMessage })
       return true;
     } else if(this.props.listOfPinnedMessages.find(m => m === this.props.message.messageId) !== nextProps.listOfPinnedMessages.find(m => m === nextProps.message.messageId)) {
-      console.log('reply #7');
       return true;
     } else if(this.state.widthOfMessage !== nextState.widthOfMessage) {
       return true;
@@ -160,7 +145,7 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
     } else {
       size = [...size, { ID: this.props.id, layout: { width, height } }];
     }
-    console.log('widthOfMessage', this.props.message.messageId, width);
+    
     this.setState({ widthOfMessage: width });
   };
 
@@ -295,7 +280,6 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
         alwaysBounceHorizontal={false} 
         pagingEnabled 
         scrollEnabled={!pinnedMessageScreen}
-        //contentOffset={pinnedMessageScreen?{ x: 5, y: 0 }:{ x: 0, y: 0 }}
         bounces={false}
         overScrollMode={'never'}
         showsHorizontalScrollIndicator={false}
@@ -311,7 +295,7 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
             ref={(ref) => (this.componentRef = ref)}
             onLayout={(event) => {
               const { width, height } = event.nativeEvent.layout;
-              if(this.props.pinnedMessageScreen) console.log('\n===========================\n', this.props.id, width, height, '\n===========================');
+              
               if(width && height)
                 this.setState({ sizeOfMessageContainer: [width, height] });
             }}
@@ -331,7 +315,7 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
               handleLinkTo={pinnedMessageScreen ? this.onPressOut : this.handleLinkTo}
               onLayout={(event:any) => {
                 const width = event.nativeEvent.layout.width;
-                console.log('widthOfReply', message.messageId, width);
+                
                 if(width)
                   this.setState({ widthOfReply: width });
               }}
@@ -359,22 +343,33 @@ class ReplyFileType extends Component<ReplyFileTypeWithNavigationProps> {
                 <View 
                   style={functionalStyles.backgroundWithShadeEffect(selecting, selected, isUser)} 
                 /> 
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
-                >
-                  <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
-                </TouchableOpacity>
+                { 
+                  !pinnedMessageScreen ? 
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => photoPreview(message.fileContent!, message.sendingTime)}
+                    >
+                      <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                    </TouchableOpacity> 
+                  :
+                    <View>
+                      <Image source={{ uri: 'data:image/png;base64,' + message.fileContent }} style={{ width: 250, height: 250, borderRadius: 9 }} />
+                    </View>
+                }
                 { message.content &&
                   <Text style={{ fontSize: getCustomFontSize(14), maxWidth: width * 0.6, paddingHorizontal: 5 }}>
                     {wrapText(message.content, DEFAULT_CHARS_PER_LINE)}
                   </Text>
                 }
-                <View style={{ flexDirection: 'row', alignSelf:'flex-end' }}>
-                  {listOfPinnedMessages.findIndex(m=>m===message.messageId)>=0&&<SVG.PinButton style={styles.messageInfoContainer} size={screenHeight*0.008}/>}
-                  <Text
-                    style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}
-                  >
+                <View style={[styles.messageTimeStampNoText, message.content.length > 0 && styles.messageTimeStampText]}>
+                  { listOfPinnedMessages.findIndex(m => m === message.messageId) >= 0 && 
+                    <SVG.PinButton
+                      color={message.content.length > 0 ? '#000' : '#fff'} 
+                      style={styles.messageInfoContainer} 
+                      size={screenHeight*0.014}
+                    />
+                  }
+                  <Text style={[styles.messageTimeStampFontStylesNoText, message.content.length > 0 && styles.messageTimeStampFontStylesText]}>
                     {message.isEdited ? 'edited ' : ''}
                     {message.sendingTime.getHours().toString().padStart(2, '0')}:
                     {message.sendingTime.getMinutes().toString().padStart(2, '0')}

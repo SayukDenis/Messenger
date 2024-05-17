@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   mainContainer: { 
     position: 'absolute',
     height: height * 0.05,
-    bottom: -height*0.155, 
+    bottom: -height*0.1825, 
     backgroundColor: '#fff', 
     overflow: 'hidden', 
     borderRadius: 9999, 
