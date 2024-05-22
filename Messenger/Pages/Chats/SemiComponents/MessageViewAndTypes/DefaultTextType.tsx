@@ -19,7 +19,7 @@ import {
   setAnimationOfBackgroundForScrolledMessage,
 } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } from '../ChatConstants';
+import { ChatConstants } from '../ChatConstants';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { functionalStyles, styles } from './Styles/DefaultTextType';
 import ScrollButton from './SemiComponents/ScrollButton';
@@ -28,6 +28,8 @@ import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 import { DefaultTextMessageWithNavigationProps, DefaultTextMessageState } from './Interfaces/IDefaultTextType';
 import * as SVG from './../SVG';
+
+const { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, height, width } = ChatConstants.getInstance();
 
 let size: sizeProps[] = [];
 

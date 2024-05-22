@@ -1,5 +1,7 @@
 import { StyleSheet, ViewStyle } from "react-native";
-import { screenHeight, screenWidth } from "../../../../../ChatList/Constants/ConstantsForChatlist";
+import { ChatConstants } from "../../../ChatConstants"; 
+
+const { width, height } = ChatConstants.getInstance();
 
 export const styles = StyleSheet.create({
   container: { 
@@ -16,8 +18,8 @@ export const functionalStyles = {
   animatedContainer: (copyPopUpPositionY: any) => {
     return { 
       position: 'absolute', 
-      bottom: screenHeight*0.03, 
-      width: screenWidth*0.9, 
+      bottom: height * 0.03, 
+      width: width * 0.9, 
       alignSelf: 'center', 
       transform: [{ translateY: copyPopUpPositionY }] 
     } as ViewStyle;

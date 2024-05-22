@@ -8,6 +8,7 @@ import { Dispatch } from "redux";
 import EventEmitter from 'events';
 import { HubConnection } from "@microsoft/signalr";
 import { ChatHubService } from "../../services/ChatHubService";
+import { ConcreteSubject } from "../../HelperFunctions/Observer";
 
 export interface DialogueMessagesProps {
   scrollToPinnedMessage: boolean;
@@ -28,7 +29,7 @@ export interface DialogueMessagesProps {
   setPinnedMessage: (id: number) => void;
   navigation: any;
   messagesWithCoords: CoordinationsOfMessage[];
-  emitter: EventEmitter;
+  emitter: ConcreteSubject;
   chatId: number;
   chatHubService: ChatHubService | null;
   previewPhoto: (fileContent: string, sendingTime: Date | null) => void;

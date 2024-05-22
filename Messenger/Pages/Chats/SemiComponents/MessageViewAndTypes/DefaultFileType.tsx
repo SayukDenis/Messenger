@@ -5,12 +5,14 @@ import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 import { addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage } from '../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { Easing } from 'react-native-reanimated';
-import { DEFAULT_CHARS_PER_LINE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } from '../ChatConstants';
+import { ChatConstants } from '../ChatConstants';
 import { functionalStyles, styles } from './Styles/DefaultFileType';
 import { wrapText } from './HelperFunctions/wrapText';
 import { connect } from 'react-redux';
 import * as SVG from './../SVG';
 import { DefaultFileTypeState, DefaultFileTypeWithNavigationProps } from './Interfaces/IDefaultFileType';
+
+const { DEFAULT_CHARS_PER_LINE, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, height, screenHeight, width } = ChatConstants.getInstance();
 
 class DefaultFileType extends Component<DefaultFileTypeWithNavigationProps> {
 

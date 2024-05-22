@@ -3,7 +3,9 @@ import React, { Component } from 'react'
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import * as SVG from '../../SVG';
 import { ScrollButtonProps } from './Interfaces/IScrollButton';
-import { screenHeight } from '../../ChatConstants';
+import { ChatConstants } from '../../ChatConstants';
+
+const { screenHeight } = ChatConstants.getInstance();
 
 const GAP = 10;
 

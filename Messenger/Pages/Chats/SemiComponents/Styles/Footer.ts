@@ -1,5 +1,9 @@
 import { StyleSheet } from "react-native";
-import { FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, MAX_FOOTER_HEIGHT, height, screenWidth, width } from "../ChatConstants";
+import { ChatConstants } from "../ChatConstants";
+
+const {
+  FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, MAX_FOOTER_HEIGHT, height, screenWidth, width
+} = ChatConstants.getInstance();
 
 const styles = StyleSheet.create({
   wrapperAnimatedContainer: { 

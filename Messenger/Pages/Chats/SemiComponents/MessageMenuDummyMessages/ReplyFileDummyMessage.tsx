@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { DEFAULT_CHARS_PER_LINE, getCustomFontSize, width } from '../ChatConstants';
+import { ChatConstants } from '../ChatConstants';
 import { functionalStyles, styles } from './../MessageViewAndTypes/Styles/ReplyFileType';
 import ReplyMessage from './HelperComponents/ReplyMessage';
 import { wrapText } from './../MessageViewAndTypes/HelperFunctions/wrapText';
 import * as SVG from './../SVG';
 import { IReplyFileType } from './Interfaces/IReplyFile';
+
+const { DEFAULT_CHARS_PER_LINE, getCustomFontSize, width } = ChatConstants.getInstance();
 
 class ReplyFileType extends Component<IReplyFileType> {
   render() {

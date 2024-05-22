@@ -6,6 +6,7 @@ import { Dispatch } from "redux";
 import EventEmitter from 'events';
 import { HubConnection } from "@microsoft/signalr";
 import { ChatHubService } from "../../Dialogue/services/ChatHubService";
+import { ConcreteSubject } from "../../Dialogue/HelperFunctions/Observer";
 
 export interface DialogueFooterProps {
   keyboardActive: boolean;
@@ -23,7 +24,7 @@ export interface DialogueFooterProps {
   selecting: boolean;
   deleteSelectedMessages: () => void;
   dispatch: Dispatch;
-  emitter: EventEmitter;
+  emitter: ConcreteSubject;
   getChatHubService: () => ChatHubService | null;
   getAuthor: () => any;
   getChatId: () => number;

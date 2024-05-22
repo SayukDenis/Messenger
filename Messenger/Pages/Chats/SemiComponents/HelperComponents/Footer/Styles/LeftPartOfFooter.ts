@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
-import { height } from "../../../ChatConstants";
+import { ChatConstants } from "../../../ChatConstants";
+
+const { height } = ChatConstants.getInstance();
 
 export const styles = StyleSheet.create({
   container: { 

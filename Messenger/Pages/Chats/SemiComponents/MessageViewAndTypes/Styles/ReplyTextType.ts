@@ -1,6 +1,10 @@
 import { StyleSheet, Dimensions, ViewStyle } from "react-native";
 import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, getCustomFontSize } from "../../ChatConstants";
+import { ChatConstants } from "../../ChatConstants";
+
+const {
+  DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, getCustomFontSize
+} = ChatConstants.getInstance();
 
 const { width, height } = Dimensions.get('screen');
 

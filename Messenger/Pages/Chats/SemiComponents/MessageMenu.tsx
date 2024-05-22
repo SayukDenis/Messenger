@@ -8,15 +8,18 @@ import { connect } from "react-redux";
 import * as Clipboard from 'expo-clipboard';
 import DefaultTextDummyMessage from "./MessageMenuDummyMessages/DefaultTextDummyMessage";
 import ReplyTextDummyMessage from "./MessageMenuDummyMessages/ReplyTextDummyMessage";
-import { GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR, MESSAGE_BUTTON_HEIGHT, 
-  MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_HORIZONTAL, MESSAGE_TRIANGLE_SIZE, 
-  NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize 
-} from "./ChatConstants";
+import { ChatConstants } from "./ChatConstants";
 import * as SVG from './SVG';
 import { EMessageType } from "../../../dao/Models/EMessageType";
 import ReplyFileType from "./MessageMenuDummyMessages/ReplyFileDummyMessage";
 import DefaultFileType from "./MessageMenuDummyMessages/DefaultFileDummyMessage";
+import DialogueMessagesType from "./HelperComponents/MessageMenu/DialogueMessagesType";
+import PinnedMessageScreenType from "./HelperComponents/MessageMenu/PinnedMessageScreenType";
 
+const { 
+  GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_HORIZONTAL, 
+  MESSAGE_TRIANGLE_SIZE, NOT_USER_GAP_BETWEEN_MENU_AND_MESSAGE, getCustomFontSize 
+} = ChatConstants.getInstance();
 
 class MessageMenu extends Component<MessageMenuProps> {
   shouldComponentUpdate(nextProps: Readonly<MessageMenuProps>, nextState: Readonly<MessageMenuState>, nextContext: any): boolean {
@@ -276,10 +279,10 @@ class MessageMenu extends Component<MessageMenuProps> {
         }
       }
       case 5: 
-      return {
-        transform: [{ translateY: this.firstContainerPositionY }],
-        opacity: this.firstContainerOpacity,
-      }
+        return {
+          transform: [{ translateY: this.firstContainerPositionY }],
+          opacity: this.firstContainerOpacity,
+        }
       default: {
         return { transform: [{ scale: this.containerWidth }] }
       }
@@ -383,25 +386,28 @@ class MessageMenu extends Component<MessageMenuProps> {
         <View style={{ top: coord.componentPageY, height: coord.height }}>
           {messageTypeHandler()}
         </View>
-        <View 
-          style={[styles.buttonsContainer, !isUser&&{ height: MESSAGE_MENU_HEIGHT - MESSAGE_BUTTON_HEIGHT }, this.handleMenuPosition(), pinnedMessageScreen&&{ height: MESSAGE_BUTTON_HEIGHT * 4 + MESSAGE_TRIANGLE_SIZE + GAP_BETWEEN_MESSAGE_MENU_AND_SOFT_MENU_BAR }]}
-        >
-          {(pinnedMessageScreen?this.pinnedMessageScreenButtons:this.buttons).map((button, index) => {
-            return button.text=='Edit'&&!isUser? null: 
-            <Animated.View key={button.text} style={this.helperFunc(index)}>
-              {(button.text==='Reply'||(button.text==='Copy'&&pinnedMessageScreen)) && <View style={this.handleTrianglePosition()} />}
-              <TouchableOpacity 
-                key={index} 
-                onPress={() => { this.onButtonpPress(); button.action!(); onOverlayPress() }} 
-                activeOpacity={1} 
-                style={styles.button}
-              >
-                {button.svg}
-                <Text style={{color:button.color, marginLeft: 5, fontSize: getCustomFontSize(14)}}>{button.text}</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          })}
-        </View>
+        { !pinnedMessageScreen ?
+          <DialogueMessagesType 
+            buttons={this.buttons}
+            handleMenuPosition={this.handleMenuPosition}
+            handleTrianglePosition={this.handleTrianglePosition}
+            helperFunc={this.helperFunc}
+            isUser={isUser}
+            onButtonpPress={this.onButtonpPress}
+            onOverlayPress={onOverlayPress}
+            pinnedMessageScreen={pinnedMessageScreen}
+          /> :
+          <PinnedMessageScreenType
+            buttons={this.buttons}
+            handleMenuPosition={this.handleMenuPosition}
+            handleTrianglePosition={this.handleTrianglePosition}
+            helperFunc={this.helperFunc}
+            isUser={isUser}
+            onButtonpPress={this.onButtonpPress}
+            onOverlayPress={onOverlayPress}
+            pinnedMessageScreen={pinnedMessageScreen}
+          />
+        }
       </TouchableOpacity>
     );
   }

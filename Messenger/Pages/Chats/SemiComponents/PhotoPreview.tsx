@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { ScrollView, Image, TouchableOpacity, Text, View, Animated } from 'react-native';
 import { styles } from './Styles/PhotoPreview';
-import { getCustomFontSize, height, width } from './ChatConstants';
+import { ChatConstants } from './ChatConstants';
 import Constants from 'expo-constants';
 import * as SVG from './SVG';
+
+const { getCustomFontSize, height, width } = ChatConstants.getInstance();
 
 interface PhotoPreviewProps {
   fileContent: string;

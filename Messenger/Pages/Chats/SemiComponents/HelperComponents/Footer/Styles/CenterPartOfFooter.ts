@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
-import { FOOTER_HEIGHT, FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT, getCustomFontSize, height, width } from "../../../ChatConstants";
+import { ChatConstants } from "../../../ChatConstants";
 
+const { FOOTER_HEIGHT, FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT, getCustomFontSize, height, width } = ChatConstants.getInstance();
 
 export const styles = StyleSheet.create({
   messageInput: {

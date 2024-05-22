@@ -1,6 +1,8 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
-import { getCustomFontSize } from "../ChatConstants";
+import { ChatConstants } from "../ChatConstants";
+
+const { getCustomFontSize } = ChatConstants.getInstance();
 
 const { width, height } = Dimensions.get('screen');
 

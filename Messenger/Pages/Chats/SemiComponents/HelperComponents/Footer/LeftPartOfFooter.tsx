@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { styles } from './Styles/LeftPartOfFooter';
 import * as SVG from '../../SVG';
-import { height } from '../../ChatConstants';
+import { ChatConstants } from '../../ChatConstants';
 import { LeftPartOfFooterProps, LeftPartOfFooterState } from './Interfaces/ILeftPartOfFooter';
+
+const { height } = ChatConstants.getInstance();
 
 class LeftPartOfFooter extends Component<LeftPartOfFooterProps> {
   state: LeftPartOfFooterState = {

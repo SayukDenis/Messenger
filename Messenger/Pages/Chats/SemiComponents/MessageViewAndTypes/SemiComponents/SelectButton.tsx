@@ -1,8 +1,10 @@
 import { View, StyleSheet } from 'react-native';
 import React, { Component } from 'react';
 import * as SVG from '../../SVG';
-import { SIZE_OF_SELECT_BUTTON } from '../../ChatConstants';
+import { ChatConstants } from '../../ChatConstants';
 import { SelectButtonProps } from './Interfaces/ISelectButton';
+
+const { SIZE_OF_SELECT_BUTTON } = ChatConstants.getInstance();
 
 class SelectButton extends Component<SelectButtonProps> {
   render(): React.ReactNode {

@@ -2,7 +2,7 @@ import React from "react";
 import { Component, RefObject } from "react";
 import { DialogueFooterProps, DialogueFooterState, EChangeFooterHeight } from "./Interfaces/IDialoueFooter";
 import { Animated, Image, TextInput, View, TouchableOpacity } from "react-native";
-import { FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, KEYBOARD_HEIGHT, SOFT_MENU_BAR_HEIGHT, height, width } from "./ChatConstants";
+import { ChatConstants } from "./ChatConstants";
 import { sendMessage } from "./HelperComponents/Footer/sendMessageFunc";
 import ReplyAndEditMenu from "./HelperComponents/Footer/ReplyAndEditMenu";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,13 +13,17 @@ import RightPartOfFooter from "./HelperComponents/Footer/RightPartOfFooter";
 import { connect } from "react-redux";
 import * as ImagePicker from 'expo-image-picker';
 
+const { 
+  FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, getKeyboardHeight, SOFT_MENU_BAR_HEIGHT, height, width 
+} = ChatConstants.getInstance();
+
 class Footer extends Component<DialogueFooterProps> {
   state: DialogueFooterState = {
     text: '',
     bottomOffset: new Animated.Value(SOFT_MENU_BAR_HEIGHT),
     dynamicFooterHeight: FOOTER_HEIGHT,
     displayImage: '',
-    heightOfImageBackground: new Animated.Value(height - KEYBOARD_HEIGHT),
+    heightOfImageBackground: new Animated.Value(height - getKeyboardHeight()),
   }
 
   setText = (newText: string) => {
@@ -30,7 +34,7 @@ class Footer extends Component<DialogueFooterProps> {
     this.setState({ 
       dynamicFooterHeight: FOOTER_HEIGHT - FOOTER_INNER_TEXTINPUT_GAP + action,
     });
-    this.props.emitter.emit('changeDynamicFooterHeight', { height: action - FOOTER_INNER_TEXTINPUT_GAP });
+    this.props.emitter.changeDynamicFooterHeight(action - FOOTER_INNER_TEXTINPUT_GAP);
   }
 
   textInput: RefObject<TextInput> = React.createRef();
@@ -67,12 +71,12 @@ class Footer extends Component<DialogueFooterProps> {
     if((keyboardActive && keyboardActive !== prevProps.keyboardActive) || heightUpdate) {
       
       Animated.timing(this.state.bottomOffset, {
-        toValue: SOFT_MENU_BAR_HEIGHT + KEYBOARD_HEIGHT,
+        toValue: SOFT_MENU_BAR_HEIGHT + getKeyboardHeight(),
         duration: heightUpdate ? 0 : 200,
         useNativeDriver: false
       }).start();
       Animated.timing(this.state.heightOfImageBackground, {
-        toValue: height - KEYBOARD_HEIGHT,
+        toValue: height - getKeyboardHeight(),
         duration: heightUpdate ? 0 : 200,
         useNativeDriver: false
       }).start();

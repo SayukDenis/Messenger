@@ -1,13 +1,15 @@
 import { View, Text, Image } from 'react-native';
 import React, { Component } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DEFAULT_CHARS_PER_LINE, getCustomFontSize, height, width } from '../../ChatConstants';
+import { ChatConstants } from '../../ChatConstants';
 import * as SVG from '../../SVG';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { setAnimationOfBackgroundForScrolledMessage, setScrollStateForPinnedMessage } from '../../../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import LineSeparator from '../General/LineSeparator';
 import { styles } from './Styles/PinnedMessageView';
 import { PinnedMessageViewProps } from './Interfaces/IPinnedMessageView';
+
+const { DEFAULT_CHARS_PER_LINE, getCustomFontSize, height, width } = ChatConstants.getInstance();
 
 class PinnedMessageView extends Component<PinnedMessageViewProps> {
 

@@ -16,11 +16,11 @@ import { Layout } from '../SemiComponents/Interfaces/GeneralInterfaces/ILayout';
 import { removeCoordinationsOfAllMessages, removeCoordinationsOfMessage, removeCoordinationsOfSelectedMessages, resetSelectedMessage } from '../../../ReducersAndActions/Actions/ChatActions/ChatActions';
 import { DialogueProps, DialogueState } from './IDialogue';
 import { checkListOfMessagesDifference } from './HelperFunctions/CheckListOfMessages';
-import EventEmitter from 'events';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { ChatHubService } from "../Dialogue/services/ChatHubService";
 import PhotoPreview from '../SemiComponents/PhotoPreview';
+import { ConcreteObserver, ConcreteSubject } from './HelperFunctions/Observer';
 
 let coord: Layout;
 let author: User;
@@ -31,6 +31,7 @@ let messageMenuCallback: (() => void) | undefined;
 
 
 class Dialogue extends Component<DialogueProps> {
+  public static subject = new ConcreteSubject();
 
   chatId : number = 0;
 
@@ -39,11 +40,8 @@ class Dialogue extends Component<DialogueProps> {
   }
   getChatId = () => this.chatId;
 
-  private _emitter: EventEmitter;
   constructor(props:any) {
     super(props);
-
-    this._emitter = new EventEmitter();
     
     // dialogue = props.route.params.chat;
     // author = dialogue.users[0];
@@ -500,7 +498,7 @@ class Dialogue extends Component<DialogueProps> {
             hasPinnedMessage={listOfPinnedMessages?.length>0}
             pinnedMessages={listOfPinnedMessages}
             setPinnedMessage={this.setPinnedMessageHandler}
-            emitter={this._emitter}
+            emitter={Dialogue.subject}
             chatId={this.chatId}
             chatHubService={connection}
             previewPhoto={this.previewPhotoHandler}
@@ -518,7 +516,7 @@ class Dialogue extends Component<DialogueProps> {
             onSendMessageOrCancelReplyAndEdit={this.sendMessageOrCancelReplyAndEditHandler}
             selecting={selecting}
             deleteSelectedMessages={this.deleteSelectedMessages}
-            emitter={this._emitter}
+            emitter={Dialogue.subject}
             getChatHubService={ChatHubService.getInstance}
             getAuthor={this.getAuthor}
             getChatId={this.getChatId}

@@ -3,7 +3,7 @@ import Message from '../../../../dao/Models/Message';
 
 type IChatHubService = {
   sendMessageText: (msg: any) => Promise<void>;
-  sendMessageFile: (msg: any) => Promise<void>;
+  sendMessageFile: (msg: any, fileName: string) => Promise<void>;
   getFileFromMessage: () => Promise<void>;
   updateMessageText: (newContent: string, messageId: number, chatId: number) => Promise<void>;
   updateMessageFile: () => Promise<void>;
@@ -86,9 +86,9 @@ export class ChatHubService implements IChatHubService {
     }
   }
 
-  public async sendMessageFile(msg: any) : Promise<void> {
+  public async sendMessageFile(msg: any, fileName: string) : Promise<void> {
     try {
-      await this.hubConnection?.invoke('SendMessageFile', msg);
+      await this.hubConnection?.invoke('SendMessageFile', msg, fileName);
     } catch (e) {
       throw e;
     }

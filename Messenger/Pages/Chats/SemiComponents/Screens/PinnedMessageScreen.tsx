@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import HeaderContainer from '../../../SemiComponents/HeaderContainer';
 import * as SVG from './../SVG';
 import BackGroundGradinetView from '../../../SemiComponents/BackGroundGradientView';
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, getCustomFontSize, height, width } from '../ChatConstants';
+import { ChatConstants } from '../ChatConstants';
 import MessageItem from '../MessageItem';
 import { heightOfHeader, screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
 import MessageMenu from '../MessageMenu';
@@ -11,6 +11,8 @@ import DeleteMessageModal from '../DeleteMessageModal';
 import { MessageProps } from '../Interfaces/GeneralInterfaces/IMessage';
 import { Layout } from '../Interfaces/GeneralInterfaces/ILayout';
 import { PinnedMessageScreenProps, PinnedMessageScreenState, coordY } from '../Interfaces/IPinnedMessageScreen';
+
+const { MESSAGE_BUTTON_HEIGHT, MESSAGE_TRIANGLE_SIZE, SOFT_MENU_BAR_HEIGHT, getCustomFontSize, height, width } = ChatConstants.getInstance()
 
 let coord: Layout;
 let coordsY: coordY[] = [];

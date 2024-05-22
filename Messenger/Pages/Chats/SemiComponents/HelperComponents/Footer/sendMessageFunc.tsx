@@ -50,7 +50,7 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
     };
 
     if(fileContent)
-      connection?.sendMessageFile({ ...msgServ, FileName: 'image', Type: EMessageType.img });
+      connection?.sendMessageFile({ ...msgServ, Type: EMessageType.img }, 'image.png');
     else
       connection?.sendMessageText(msgServ);
   } else if(editMessage?.content&&text!=messageToEdit?.content) {
@@ -91,7 +91,7 @@ export const sendMessage = ({text, setText, messages, setMessages, replyMessage,
         };
 
     if(fileContent)
-      connection?.sendMessageFile({ ...msgServ, FileName: 'image', Type: EMessageType.img });
+      connection?.sendMessageFile({ ...msgServ, Type: EMessageType.img }, 'image.png');
     else
       connection?.sendMessageText(msgServ);
   }

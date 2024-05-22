@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { styles } from './Styles/CenterPartOfFooter';
 import * as SVG from '../../SVG';
 import { CenterPartOfFooterProps } from './Interfaces/ICenterPartOfFooter';
-import { FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT } from '../../ChatConstants';
+import { ChatConstants } from '../../ChatConstants';
+
+const { FOOTER_HEIGHT, FOOTER_INNER_CONTAINER_GAP, FOOTER_INNER_TEXTINPUT_GAP, MAX_FOOTER_HEIGHT }  = ChatConstants.getInstance();
 
 interface CenterPartOfFooterState {
   prevTextInputHeight: number;

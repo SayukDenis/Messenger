@@ -1,6 +1,10 @@
 import { StyleSheet, ViewStyle } from "react-native";
 import { screenHeight, screenWidth } from "../../../../ChatList/Constants/ConstantsForChatlist";
-import { DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, getCustomFontSize, width } from "../../ChatConstants";
+import { ChatConstants } from "../../ChatConstants";
+
+const { 
+  DEFAULT_CHARS_PER_LINE, DEFAULT_FONT_SIZE, MESSAGE_PADDING_HORIZONTAL, MESSAGE_PADDING_VERTICAL, getCustomFontSize, width 
+} = ChatConstants.getInstance();
 
 export const styles = StyleSheet.create({
   swipeableContainer: {

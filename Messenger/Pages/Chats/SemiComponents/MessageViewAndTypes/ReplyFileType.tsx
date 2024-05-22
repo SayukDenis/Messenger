@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Animated, Easing, Image, } from 'react-native';
 import { screenHeight } from '../../../ChatList/Constants/ConstantsForChatlist';
-import { 
-  DEFAULT_CHARS_PER_LINE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width 
-} from '../ChatConstants';
+import { ChatConstants } from '../ChatConstants';
 import { 
   addSelectedMessage, decrementNumberOfSelectedMessages, incrementNumberOfSelectedMessages, 
   removeSelectedMessage, resetNumberOfSelectedMessages, resetSelectedMessage, setAnimationOfBackgroundForScrolledMessage 
@@ -18,6 +16,8 @@ import SelectButton from './SemiComponents/SelectButton';
 import { componentPageProps, coordProps, sizeProps } from './Interfaces/IGeneralInterfaces';
 import * as SVG from './../SVG';
 import { ReplyFileTypeState, ReplyFileTypeWithNavigationProps } from './Interfaces/IReplyFileType';
+
+const { DEFAULT_CHARS_PER_LINE, FLATLIST_HEIGHT, MESSAGE_PADDING_VERTICAL, SIZE_OF_SELECT_BUTTON, getCustomFontSize, width } = ChatConstants.getInstance();
 
 let size: sizeProps[] = [];
 

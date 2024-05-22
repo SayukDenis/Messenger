@@ -1,9 +1,11 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import React, { PureComponent } from 'react';
-import { DEFAULT_CHARS_PER_LINE, height } from '../../ChatConstants';
+import { ChatConstants } from '../../ChatConstants';
 import { styles } from '../Styles/ReplyTextType';
 import LineSeparator from '../../HelperComponents/General/LineSeparator';
 import { ReplyMessageProps } from './Interfaces/IReplyMessage';
+
+const { DEFAULT_CHARS_PER_LINE, height } = ChatConstants.getInstance();
 
 class ReplyMessage extends PureComponent<ReplyMessageProps> {
   isUser = this.props.message.author.userId == this.props.author.userId;

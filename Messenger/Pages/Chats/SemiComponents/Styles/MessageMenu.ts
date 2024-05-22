@@ -1,6 +1,8 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../../ChatList/Constants/ConstantsForChatlist";
-import { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT } from "../ChatConstants";
+import { ChatConstants } from "../ChatConstants";
+
+const { MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT } = ChatConstants.getInstance();
 
 const { width, height } = Dimensions.get('screen');
 

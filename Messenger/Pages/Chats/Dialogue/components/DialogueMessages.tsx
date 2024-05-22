@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { DialogueMessagesProps, DialogueMessagesReduxProps, DialogueMessagesState, messageCoordsProps } from "./interfaces/IDialogueMessages";
 import { Animated, FlatList, Keyboard, View, KeyboardEvent, Platform, Easing } from "react-native";
 import { connect } from "react-redux";
-import { FLATLIST_HEIGHT, KEYBOARD_HEIGHT, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height, setKeyboardHeight } from "../../SemiComponents/ChatConstants";
+import { ChatConstants } from "../../SemiComponents/ChatConstants";
 import styles from "./Styles/DialogueMessages";
 import MessageItem from "../../SemiComponents/MessageItem";
 import { EmitterSubscription } from "react-native";
@@ -11,8 +11,11 @@ import { MessageProps } from "../../SemiComponents/Interfaces/GeneralInterfaces/
 import { Layout } from "../../SemiComponents/Interfaces/GeneralInterfaces/ILayout";
 import { heightOfHeader } from "../../../ChatList/Constants/ConstantsForChatlist";
 import { checkListOfMessagesDifference } from "../HelperFunctions/CheckListOfMessages";
+import { ConcreteObserver } from "../HelperFunctions/Observer";
 
 let pinnedMessagesWithCoords:messageCoordsProps[] = [];
+
+ const { FLATLIST_HEIGHT, getKeyboardHeight, MESSAGE_BUTTON_HEIGHT, MESSAGE_MENU_HEIGHT, MESSAGE_PADDING_VERTICAL, SOFT_MENU_BAR_HEIGHT, height, setKeyboardHeight } = ChatConstants.getInstance();
 
 class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessagesReduxProps> {
   state:DialogueMessagesState = {
@@ -29,7 +32,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   keyboardDidHideListener: EmitterSubscription | null = null;
 
   handleKeyboardWillShow = (event: KeyboardEvent) => {
-    if(KEYBOARD_HEIGHT !== event.endCoordinates.height) setKeyboardHeight(event.endCoordinates.height);
+    console.log('Show keyboard')
+    if(getKeyboardHeight() !== event.endCoordinates.height) setKeyboardHeight(event.endCoordinates.height);
     
     if(!this.props.keyboardActive)
       this.props.dispatch!(handleKeyboardAppearing());
@@ -37,7 +41,7 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
       this.props.dispatch!(handleKeyboardHeightUpdate());
     
     Animated.timing(this.state.flatListHeight, {
-      toValue: height * 0.94 - KEYBOARD_HEIGHT,
+      toValue: height * 0.94 - getKeyboardHeight(),
       duration: event.duration,
       useNativeDriver: false,
     }).start();
@@ -52,8 +56,8 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
     }).start();
   };
 
-  dynamicFooterHeightHandler = (data: any) => {
-    const toValue = Math.min((height * 0.025+SOFT_MENU_BAR_HEIGHT+(this.props.isReply||this.props.isEdit?height*0.055-SOFT_MENU_BAR_HEIGHT:0)) + data.height, height * 0.105 + (this.props.isReply||this.props.isEdit?height*0.055-SOFT_MENU_BAR_HEIGHT:0))
+  dynamicFooterHeightHandler = (dfh: number) => {
+    const toValue = Math.min((height * 0.025+SOFT_MENU_BAR_HEIGHT+(this.props.isReply||this.props.isEdit?height*0.055-SOFT_MENU_BAR_HEIGHT:0)) + dfh, height * 0.105 + (this.props.isReply||this.props.isEdit?height*0.055-SOFT_MENU_BAR_HEIGHT:0))
     Animated.timing(this.state.footerGap, {
       toValue: toValue,
       duration: 50,
@@ -75,7 +79,9 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   componentDidMount() {
     pinnedMessagesWithCoords = [];
 
-    this.props.emitter.addListener('changeDynamicFooterHeight', this.dynamicFooterHeightHandler); 
+    // this.props.emitter.addListener('changeDynamicFooterHeight', this.dynamicFooterHeightHandler); 
+    const observer = new ConcreteObserver();
+    this.props.emitter.attach(observer, this.dynamicFooterHeightHandler);
 
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardWillShow',
@@ -98,12 +104,14 @@ class DialogueMessages extends Component<DialogueMessagesProps & DialogueMessage
   componentWillUnmount() {
     this.keyboardDidShowListener!.remove();
     this.keyboardDidHideListener!.remove();
-    this.props.emitter.removeListener('changeDynamicFooterHeight', this.dynamicFooterHeightHandler);
+    //this.props.emitter.removeListener('changeDynamicFooterHeight', this.dynamicFooterHeightHandler);
+    this.props.emitter.detachAll();
   }
 
   shouldComponentUpdate(nextProps: Readonly<DialogueMessagesProps>, nextState: Readonly<DialogueMessagesState>, nextContext: any): boolean {
-    
-    const { listOfMessages, hasPinnedMessage, scrollToPinnedMessage, selecting, idOfPinnedMessage, pinnedMessages, isEdit, isReply, authorMessageLastWatched, messagesWithCoords } = this.props;
+    console.log(this.props.emitter.state);
+
+    const { listOfMessages, hasPinnedMessage, scrollToPinnedMessage, selecting, idOfPinnedMessage, pinnedMessages, isEdit, isReply, authorMessageLastWatched, messagesWithCoords, emitter } = this.props;
     
     const { pinnedMessageId } = this.state;
     //if(this.props !== nextProps) return true;

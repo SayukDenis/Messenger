@@ -1,9 +1,11 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import React, { Component } from 'react';
-import { DEFAULT_CHARS_PER_LINE, height } from '../../ChatConstants';
+import { ChatConstants } from '../../ChatConstants';
 import { styles } from '../../MessageViewAndTypes/Styles/ReplyTextType';
 import LineSeparator from '../../HelperComponents/General/LineSeparator';
 import { MessageProps } from '../../Interfaces/GeneralInterfaces/IMessage';
+
+const { DEFAULT_CHARS_PER_LINE, height } = ChatConstants.getInstance();
 
 interface ReplyMessageProps {
   message: MessageProps;

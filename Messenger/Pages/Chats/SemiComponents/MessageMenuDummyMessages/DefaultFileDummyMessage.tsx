@@ -1,10 +1,12 @@
 import { Image, Text, View } from 'react-native';
 import React, { Component } from 'react';
-import { DEFAULT_CHARS_PER_LINE, getCustomFontSize, screenHeight, screenWidth, width } from '../ChatConstants';
+import { ChatConstants } from '../ChatConstants';
 import { styles, functionalStyles } from './../MessageViewAndTypes/Styles/DefaultFileType';
 import { wrapText } from './../MessageViewAndTypes/HelperFunctions/wrapText';
 import * as SVG from './../SVG';
 import { IDefaultFile } from './Interfaces/IDefaultFile';
+
+const { DEFAULT_CHARS_PER_LINE, getCustomFontSize, screenHeight, screenWidth, width } = ChatConstants.getInstance();
 
 class DefaultFileType extends Component<IDefaultFile> {
   render() {
