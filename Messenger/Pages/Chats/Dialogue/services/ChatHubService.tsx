@@ -1,7 +1,7 @@
 ﻿import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import Message from '../../../../dao/Models/Message';
 
-type IChatHubService = {
+interface IChatHubService {
   sendMessageText: (msg: any) => Promise<void>;
   sendMessageFile: (msg: any, fileName: string) => Promise<void>;
   getFileFromMessage: () => Promise<void>;

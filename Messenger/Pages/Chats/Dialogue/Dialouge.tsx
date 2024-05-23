@@ -21,6 +21,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { ChatHubService } from "../Dialogue/services/ChatHubService";
 import PhotoPreview from '../SemiComponents/PhotoPreview';
 import { ConcreteObserver, ConcreteSubject } from './HelperFunctions/Observer';
+import { Director } from './services/DirectorForConnectionBuild';
 
 let coord: Layout;
 let author: User;
@@ -144,7 +145,7 @@ class Dialogue extends Component<DialogueProps> {
     const deleteAllMessagesHandler = (chatId: number) => this.deleteAllButtonHandler(false);
 
     //#endregion
-
+   
     //#region Server 
 
     // fetch("http://192.168.0.108:5151/api/Chat/dialogue/1/2", {method: "POST",})
@@ -182,19 +183,25 @@ class Dialogue extends Component<DialogueProps> {
         })
         .catch(error => console.error('error while fetching', error));
 
-    const connection = ChatHubService.getInstance();
-    connection.startConnection(author.userId);
 
-    connection.registerMessageSent(messageSentHandler)
-      .registerReceiveMessageText(receiveMessageTextHandler)
-      .registerReceiveMessageFile(receiveMessageFileHandler)
-      .registerReceiveUpdateLastWatchedMessage(receiveLastWatchedMessageUpdate)
-      .registerReceiveUpdateMessageText(receiveUpdateMessageTextHandler)
-      .registerPinMessage(pinMessageHandler)
-      .registerUnpinAllMessages(unpinAllMessagesHandler)
-      .registerDeleteMessage(deleteMessageHandler)
-      .registerDeleteSelectedMessages(deleteSelectedMessagesHandler)
-      .registerDeleteAllMessages(deleteAllMessagesHandler);
+    const director = new Director();
+    const connectionBuilder = ChatHubService.getInstance();
+
+    director.setConnectionBuilder(connectionBuilder);
+    director.buildDialogueConnection({
+      messageSentHandler,
+      receiveMessageTextHandler,
+      receiveMessageFileHandler,
+      receiveLastWatchedMessageUpdate,
+      receiveUpdateMessageTextHandler,
+      pinMessageHandler,
+      unpinAllMessagesHandler,
+      deleteMessageHandler,
+      deleteSelectedMessagesHandler,
+      deleteAllMessagesHandler
+    });
+
+    connectionBuilder.startConnection(author.userId);
 
     //#endregion
 
